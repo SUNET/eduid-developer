@@ -1,0 +1,65 @@
+
+=INFO REPORT==== 11-Dec-2014::15:15:19 ===
+Starting RabbitMQ 3.2.4 on Erlang R16B03
+Copyright (C) 2007-2013 GoPivotal, Inc.
+Licensed under the MPL.  See http://www.rabbitmq.com/
+
+=INFO REPORT==== 11-Dec-2014::15:15:19 ===
+node           : rabbit@3197424b190c
+home dir       : /var/lib/rabbitmq
+config file(s) : (none)
+cookie hash    : 3tIdOsWv14y0bbVFGHiUdg==
+log            : /var/log/rabbitmq/rabbit@3197424b190c.log
+sasl log       : /var/log/rabbitmq/rabbit@3197424b190c-sasl.log
+database dir   : /var/lib/rabbitmq/mnesia/rabbit@3197424b190c
+
+=INFO REPORT==== 11-Dec-2014::15:15:19 ===
+Limiting to approx 524188 file handles (471767 sockets)
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Memory limit set to 6382MB of 15955MB total.
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Disk free limit set to 50MB
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Adding vhost '/'
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Creating user 'guest'
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Setting user tags for user 'guest' to [administrator]
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Setting permissions for 'guest' in '/' to '.*', '.*', '.*'
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+msg_store_transient: using rabbit_msg_store_ets_index to provide index
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+msg_store_persistent: using rabbit_msg_store_ets_index to provide index
+
+=WARNING REPORT==== 11-Dec-2014::15:15:20 ===
+msg_store_persistent: rebuilding indices from scratch
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+started TCP Listener on [::]:5672
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Server startup complete; 0 plugins started.
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Creating user 'eduid'
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Adding vhost 'eduid_msg'
+
+=INFO REPORT==== 11-Dec-2014::15:15:20 ===
+Setting permissions for 'eduid' in 'eduid_msg' to '.*', '.*', '.*'
+
+=INFO REPORT==== 11-Dec-2014::15:15:21 ===
+Adding vhost 'eduid_vhost'
+
+=INFO REPORT==== 11-Dec-2014::15:15:21 ===
+Setting permissions for 'eduid' in 'eduid_vhost' to '.*', '.*', '.*'
