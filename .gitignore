@@ -2,3 +2,5 @@
 \#*
 .*~
 mongodb/data
+*/run
+*/log

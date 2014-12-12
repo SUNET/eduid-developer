@@ -9,12 +9,14 @@ if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
 fi
 
-mkdir -p data/db log/mongodb
+mkdir run log etc
 
 $sudo docker run --rm=true \
-    --name mongodb \
-    -v $PWD/log:/var/log/mongodb \
-    -v $PWD/data:/data \
+    --name signup \
     -v $PWD/etc:/opt/eduid/etc \
+    -v $PWD/run:/opt/eduid/run \
+    -v $PWD/log:/var/log/eduid \
+    --link mongodb:mongodb \
+    --link rabbitmq:rabbitmq \
     $DOCKERARGS \
-    docker.sunet.se/eduid/mongodb
+    docker.sunet.se/eduid/eduid-signup
