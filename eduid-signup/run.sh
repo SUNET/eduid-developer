@@ -13,7 +13,7 @@ fi
 
 mkdir -p run log etc
 
-srcdir=$(echo ~/work/NORDUnet/${name})
+srcdir=$(echo ~/work/NORDUnet/eduid-${name})
 if [ -d "${srcdir}" ]; then
     # map developers local source copy into /opt/eduid/src and set PYTHONPATH accordingly
     src_volume="-v ${srcdir}:/opt/eduid/src --env=PYTHONPATH=/opt/eduid/src"
@@ -28,6 +28,7 @@ fi
 $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
+    --hostname ${name} \
     --dns=172.17.42.1 \
     -v $PWD/etc:/opt/eduid/etc \
     -v $PWD/run:/opt/eduid/run \
@@ -35,6 +36,3 @@ $sudo docker run --rm=true \
     $src_volume \
     $DOCKERARGS \
     docker.sunet.se/eduid/eduid-${name}
-
-    #--link mongodb:mongodb \
-    #--link rabbitmq:rabbitmq \

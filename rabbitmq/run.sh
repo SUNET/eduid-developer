@@ -22,6 +22,7 @@ fi
 $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
+    --hostname ${name} \
     --dns=172.17.42.1 \
     -v $PWD/log:/var/log/rabbitmq \
     -v $PWD/etc:/etc/rabbitmq \
