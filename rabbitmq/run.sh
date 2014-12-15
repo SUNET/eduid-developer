@@ -13,7 +13,7 @@ fi
 
 mkdir -p log etc
 
-if [ $($sudo docker ps | awk '{print $NF}' | grep -qx $name) ]; then
+if $sudo docker ps | awk '{print $NF}' | grep -qx $name; then
     echo "$0: Docker container with name $name already running. Press enter to restart it, or ctrl+c to abort."
     read foo
     $sudo docker kill $name
