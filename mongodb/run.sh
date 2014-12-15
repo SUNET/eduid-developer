@@ -13,6 +13,7 @@ mkdir -p data/db log/mongodb
 
 $sudo docker run --rm=true \
     --name mongodb \
+    --dns=172.17.42.1 \
     -v $PWD/log:/var/log/mongodb \
     -v $PWD/data:/data \
     -v $PWD/etc:/opt/eduid/etc \

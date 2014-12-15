@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ $(id -u) -ne 0 ]; then
+    sudo="sudo"
+fi
+
+$sudo docker ps | tail -n +2 | while read line; do
+    cid=$(echo $line | awk '{print $NF}')
+    ip=$($sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${cid})
+    printf "%-20s %s\n" ${ip} ${cid}
+    $sudo unbound-control local_data_remove "${cid}"
+    $sudo unbound-control local_data "${cid} IN A ${ip}"
+done
