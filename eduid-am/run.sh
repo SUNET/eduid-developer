@@ -5,13 +5,19 @@
 #   DOCKERARGS="--entrypoint /bin/bash -i -t" bash -x ./run.sh
 #
 
-name="rabbitmq"
+name="eduid-am"
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
 fi
 
 mkdir -p log etc
+
+srcdir=$(echo ~/work/NORDUnet/${name})
+if [ -d "${srcdir}" ]; then
+    # map developers local source copy into /opt/eduid/src and set PYTHONPATH accordingly
+    src_volume="-v ${srcdir}:/opt/eduid/src --env=PYTHONPATH=/opt/eduid/src"
+fi
 
 if $sudo docker ps | awk '{print $NF}' | grep -qx $name; then
     echo "$0: Docker container with name $name already running. Press enter to restart it, or ctrl+c to abort."
@@ -24,7 +30,8 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    -v $PWD/log:/var/log/rabbitmq \
-    -v $PWD/etc:/etc/rabbitmq \
+    -v $PWD/etc:/opt/eduid/etc \
+    -v $PWD/log:/var/log/eduid \
+    $src_volume \
     $DOCKERARGS \
     docker.sunet.se/eduid/${name}
