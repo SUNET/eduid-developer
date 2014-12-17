@@ -41,7 +41,7 @@ Now, start some containers with the files in this repository.
 
     # (cd rabbitmq && ./run.sh) &
     # (cd mongodb && ./run.sh) &
-    # (cd signup && ./run.sh) &
+    # (cd eduid-signup && ./run.sh) &
 
 and then, update local-data in your unbound resolver with the IPs of your
 newly started containers
