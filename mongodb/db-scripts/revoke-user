@@ -1,0 +1,119 @@
+#!/opt/eduid/bin/python
+#
+# Revoke a user by eduPersonPrincipalName
+#
+
+import sys
+import datetime
+import bson
+import pymongo
+from pymongo import MongoClient, ReadPreference
+
+
+def print_value(key, value):
+    if isinstance(value, basestring):
+        print("  {!s:>25}: {!s}".format(key, value.encode('utf-8')))
+    elif isinstance(value, datetime.datetime):
+        print("  {!s:>25}: {!s}".format(key, value.isoformat()))
+    else:
+        print("  {!s:>25}: {!r}".format(key, value))
+
+
+def show_user(user):
+    # Show general unidentified attributes
+    for (key, value) in sorted(user.items()):
+        if key == 'passwords':
+            continue
+        print_value(key, value)
+
+
+def remove_user(user, coll, aux_collections):
+    for aux in aux_collections:
+        print('Removing from {!s}'.format(aux['name']))
+        aux['coll'].remove({aux['key']: user['_id']})
+    print('Removing from eduid_am.attributes')
+    coll.update({'_id': user['_id']}, {'eduPersonPrincipalName': user['eduPersonPrincipalName'],
+                                       'revoked_ts': datetime.datetime.utcnow(),
+                                       })
+
+def main(eppn):
+    client = MongoClient('mongodb://localhost:27017/', read_preference=ReadPreference.SECONDARY)
+
+    coll = client['eduid_am']['attributes']
+
+    aux_collections = [{'name': 'eduid_idp_authninfo.authn_info',
+                        'coll': client['eduid_idp_authninfo']['authn_info'],
+                        'key': '_id',
+                        },
+                       {'name': 'eduid_signup.registered',
+                        'coll': client['eduid_signup']['registered'],
+                        'key': '_id',
+                        },
+                       {'name': 'eduid_dashboard.profiles',
+                        'coll': client['eduid_dashboard']['profiles'],
+                        'key': '_id',
+                        },
+                       {'name': 'eduid_dashboard.verifications',
+                        'coll': client['eduid_dashboard']['verifications'],
+                        'key': 'user_oid',
+                        },
+                       {'name': 'eduid_dashboard.wizards',
+                        'coll': client['eduid_dashboard']['wizards'],
+                        'key': 'userid',
+                        },
+                       {'name': 'eduid_idp_authninfo.authn_info',
+                        'coll': client['eduid_idp_authninfo']['authn_info'],
+                        'key': '_id',
+                        },
+                       {'name': 'eduid_idp_pysaml2.ident',
+                        'coll': client['eduid_idp_pysaml2']['ident'],
+                        'key': 'user_id',
+                        },
+                       #{'name': 'eduid_idp_pysaml2.session',
+                       # 'coll': client['eduid_idp_pysaml2']['session'],
+                       # 'key': '',
+                       #},
+                       {'name': 'eduid_tou.consent',
+                        'coll': client['eduid_tou']['consent'],
+                        'key': 'user_id',
+                        },
+                       ]
+    separator = ''
+    user_iter = coll.find({'eduPersonPrincipalName': eppn})
+    if not user_iter:
+        return False
+
+    count = 0
+    for user in user_iter:
+        count += 1
+        print('Collection aduid_am.attributes:')
+        show_user(user)
+
+        print('\nEnter the eppn in UPPER CASE letters to remove the user and all related\n'
+              'information from the following database.collections:\n')
+
+        print('  eduid_am.attributes')
+        for this in aux_collections:
+            print('  {!s}'.format(this['name']))
+
+        print('')
+        answer = raw_input("Confirm eppn: ")
+
+        if answer == user['eduPersonPrincipalName'].upper():
+            print('Removing')
+            remove_user(user, coll, aux_collections)
+        else:
+            print('Abort')
+
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        sys.stderr.write("Syntax: revoke-user eppn\n")
+        sys.exit(1)
+
+    if main(sys.argv[1]):
+        sys.exit(0)
+
+    sys.exit(1)

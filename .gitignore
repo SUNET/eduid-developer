@@ -4,4 +4,5 @@
 mongodb/data
 */run
 */log
-
+eduid-idp/etc/*_metadata.xml
+eduid-dashboard/etc/*_metadata.xml

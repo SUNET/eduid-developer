@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="urn:mace:shibboleth:metadata:1.0" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" entityID="https://dev.idp.eduid.se/idp.xml"><ns0:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><ns0:Extensions><ns1:Scope regexp="false">dev.eduid.se</ns1:Scope></ns0:Extensions><ns0:KeyDescriptor use="encryption"><ns2:KeyInfo><ns2:X509Data><ns2:X509Certificate>MIIDgDCCAjigAwIBAgIEUrLhgjANBgkqhkiG9w0BAQsFADAxMQswCQYDVQQGEwJT
+RTEiMCAGA1UEAxMZZGV2LTIwMTMxMjE5LmlkcC5lZHVpZC5zZTAeFw0xMzEyMTkx
+MjA3MzJaFw0xNjEyMTgxMjA3NDRaMDExCzAJBgNVBAYTAlNFMSIwIAYDVQQDExlk
+ZXYtMjAxMzEyMTkuaWRwLmVkdWlkLnNlMIIBUjANBgkqhkiG9w0BAQEFAAOCAT8A
+MIIBOgKCATEA1f/fv5GSVkRNkPj1xVshkDlVaVTSeofLjJeFK820uVMaZagUsn8T
+mML2YdH8CyLEAZgeU8V/oF2P1SFieG1Ex3lBflLGWw/7pQqe08tjfTkeJthntJJR
+W2gCa4I0v1bsJS02U7pVizDv4/3zIo1EpAHrmu7NOs9ybCHA0RnrdQk6aHppe6nz
+571Cz3F6zlp9sc4X3Dbf1sVtXHSArUjOh3bgjQnvOAAirJqSYzZgav54WwLzcsas
+JMEwLnRSiyRxXm0dnuqhsM7xlJM/G7X35zhBQFwxUKJ33b1xu9PPFfoqIH/NjoPU
+gj15jTxvXQam0DvkHMFQvn87bfrtdW187ENZ2lPBYw/yFfF2Mffh0xYKlemJ7LEs
+Y1FMJStI+7vKEq9DHGedUfufhFEZNtJW0wIDAQABo0AwPjAMBgNVHRMBAf8EAjAA
+MA8GA1UdDwEB/wQFAwMHoAAwHQYDVR0OBBYEFPM+gGbOGyvozZ3L44342h8VTKCN
+MA0GCSqGSIb3DQEBCwUAA4IBMQBlBpfl/507hO/upCjKsmtKL7SMufq/kGXb1VB8
+gFiBHgH96woVz/AwHRAVfdrKsQxriXFnOAlgnSAgUtfOmrO8t2mDJ3nxVLW/eKfz
+ZfrQCTLxcZpQnzmYlNCyFepjbpb0E9I2wkUeY4DvdzzMlQFwxjSDWa2NPc5UiXAe
+EswKK3kEA0luYKv2EN6oiylL5fYP5yx5Hdb22hrUW/Wel2pEGxLK2+Z7vzz87irI
+g/7m8/uxxFfPciT39R2t/lZu21ZxnL0zafvT8/NT7ZvSdn/uvZyhETtg4TqL02QZ
+xkPaPHxjjBMdLtLPmmHXVgaYczQFoO8GrxfsR+gkCEu4mbVn5rhFxl/r/OrwxacI
+hJCVd8ooEGRINTG+TBMufZC9UxoIdxjQRwrevhXTQAkfWT2+
+</ns2:X509Certificate></ns2:X509Data></ns2:KeyInfo></ns0:KeyDescriptor><ns0:KeyDescriptor use="signing"><ns2:KeyInfo><ns2:X509Data><ns2:X509Certificate>MIIDgDCCAjigAwIBAgIEUrLhgjANBgkqhkiG9w0BAQsFADAxMQswCQYDVQQGEwJT
+RTEiMCAGA1UEAxMZZGV2LTIwMTMxMjE5LmlkcC5lZHVpZC5zZTAeFw0xMzEyMTkx
+MjA3MzJaFw0xNjEyMTgxMjA3NDRaMDExCzAJBgNVBAYTAlNFMSIwIAYDVQQDExlk
+ZXYtMjAxMzEyMTkuaWRwLmVkdWlkLnNlMIIBUjANBgkqhkiG9w0BAQEFAAOCAT8A
+MIIBOgKCATEA1f/fv5GSVkRNkPj1xVshkDlVaVTSeofLjJeFK820uVMaZagUsn8T
+mML2YdH8CyLEAZgeU8V/oF2P1SFieG1Ex3lBflLGWw/7pQqe08tjfTkeJthntJJR
+W2gCa4I0v1bsJS02U7pVizDv4/3zIo1EpAHrmu7NOs9ybCHA0RnrdQk6aHppe6nz
+571Cz3F6zlp9sc4X3Dbf1sVtXHSArUjOh3bgjQnvOAAirJqSYzZgav54WwLzcsas
+JMEwLnRSiyRxXm0dnuqhsM7xlJM/G7X35zhBQFwxUKJ33b1xu9PPFfoqIH/NjoPU
+gj15jTxvXQam0DvkHMFQvn87bfrtdW187ENZ2lPBYw/yFfF2Mffh0xYKlemJ7LEs
+Y1FMJStI+7vKEq9DHGedUfufhFEZNtJW0wIDAQABo0AwPjAMBgNVHRMBAf8EAjAA
+MA8GA1UdDwEB/wQFAwMHoAAwHQYDVR0OBBYEFPM+gGbOGyvozZ3L44342h8VTKCN
+MA0GCSqGSIb3DQEBCwUAA4IBMQBlBpfl/507hO/upCjKsmtKL7SMufq/kGXb1VB8
+gFiBHgH96woVz/AwHRAVfdrKsQxriXFnOAlgnSAgUtfOmrO8t2mDJ3nxVLW/eKfz
+ZfrQCTLxcZpQnzmYlNCyFepjbpb0E9I2wkUeY4DvdzzMlQFwxjSDWa2NPc5UiXAe
+EswKK3kEA0luYKv2EN6oiylL5fYP5yx5Hdb22hrUW/Wel2pEGxLK2+Z7vzz87irI
+g/7m8/uxxFfPciT39R2t/lZu21ZxnL0zafvT8/NT7ZvSdn/uvZyhETtg4TqL02QZ
+xkPaPHxjjBMdLtLPmmHXVgaYczQFoO8GrxfsR+gkCEu4mbVn5rhFxl/r/OrwxacI
+hJCVd8ooEGRINTG+TBMufZC9UxoIdxjQRwrevhXTQAkfWT2+
+</ns2:X509Certificate></ns2:X509Data></ns2:KeyInfo></ns0:KeyDescriptor><ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://dev.idp.eduid.se/slo/soap" /><ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://dev.idp.eduid.se/slo/post" /><ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://dev.idp.eduid.se/slo/redirect" /><ns0:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</ns0:NameIDFormat><ns0:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</ns0:NameIDFormat><ns0:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://dev.idp.eduid.se/sso/redirect" /><ns0:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://dev.idp.eduid.se/sso/post" /></ns0:IDPSSODescriptor><ns0:Organization><ns0:OrganizationName xml:lang="en">eduID TEST</ns0:OrganizationName><ns0:OrganizationDisplayName xml:lang="en">eduID TEST</ns0:OrganizationDisplayName><ns0:OrganizationURL xml:lang="en">http://www.eduid.se/</ns0:OrganizationURL></ns0:Organization><ns0:ContactPerson contactType="technical"><ns0:GivenName>eduID</ns0:GivenName><ns0:SurName>developers</ns0:SurName><ns0:EmailAddress>eduid-dev@SEGATE.SUNET.SE</ns0:EmailAddress></ns0:ContactPerson><ns0:ContactPerson contactType="support"><ns0:GivenName>Support</ns0:GivenName><ns0:EmailAddress>support@eduid.se</ns0:EmailAddress></ns0:ContactPerson></ns0:EntityDescriptor>

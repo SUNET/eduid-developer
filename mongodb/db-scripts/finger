@@ -1,0 +1,155 @@
+#!/opt/eduid/bin/python
+#
+# Show information about a specific eduID user
+#
+
+import sys
+import datetime
+import bson
+import pymongo
+from pymongo import MongoClient, ReadPreference
+
+def print_subinfo(key, value):
+    attrs = {'mailAliases': 'email',
+             'mobile': 'mobile',
+             }
+    main_attr = attrs[key]
+    key_text = "{!s:>25}".format('{!s} (list)'.format(key))
+    for this in value:
+        v_text = ''
+        metadata = ['{!s}={!s}'.format(x, this[x]) for x in this.keys() if x != main_attr]
+        if metadata:
+            metadata = '(' + ', '.join(metadata) + ')'
+        print("  {key_text}: {value!s} {metadata}".format(key_text=key_text,
+                                                          value=this.get(main_attr),
+                                                          metadata=metadata)
+              )
+        key_text = "{!s:>25}".format('')
+
+
+def print_datecount(key, value):
+    key_text = "{!s:>25}".format('{!s} (list)'.format(key))
+    for date, count in sorted(value.items()):
+        v_text = '{!s}: {!s}'.format(date, count)
+        print("  {key_text}: {value!s}".format(key_text=key_text,
+                                               value=v_text,
+                                               ))
+        key_text = "{!s:>25}".format('')
+
+
+def print_value(key, value):
+    if isinstance(value, basestring):
+        print("  {!s:>25}: {!s}".format(key, value.encode('utf-8')))
+    elif isinstance(value, datetime.datetime):
+        print("  {!s:>25}: {!s}".format(key, value.isoformat()))
+    else:
+        print("  {!s:>25}: {!r}".format(key, value))
+
+
+def print_credential(key, value, aux_collections):
+    key_text = "{!s:>25}".format('{!s} (list)'.format(key))
+    for this in value:
+        metadata = []
+        authn_info = aux_collections['authn_info']['coll']
+        for last_used in authn_info.find({aux_collections['authn_info']['key']: this['id']}):
+            if 'success_ts' in last_used:
+                this['last_used'] = last_used['success_ts'].isoformat()
+        for key, val in sorted(this.items()):
+            val_str = str(val)
+            if key not in['id', 'last_used']:
+                if len(val_str) > 16:
+                    val_str = val_str[:16] + '...'
+            metadata.append('{!s}={!s}'.format(key, val_str))
+        metadata = ', '.join(metadata)
+        print("  {!s:>25}: {!s}".format(key_text, metadata))
+        key_text = ''
+
+
+def show_user(user, aux_collections):
+    # Show general unidentified attributes
+    for (key, value) in sorted(user.items()):
+        if key in ['mailAliases', 'mobile']:
+            print_subinfo(key, value)
+            continue
+        if key == 'passwords':
+            print_credential(key, value, aux_collections)
+            continue
+        print_value(key, value)
+
+    for aux in aux_collections.values():
+        data = aux['coll'].find({aux['key']: user['_id']})
+        if data:
+            print('\n  Collection {!s}:'.format(aux['name']))
+            for this in data:
+                for (key, value) in sorted(this.items()):
+                    if key in ['_id']:
+                        continue
+                    if key in ['success_count', 'fail_count']:
+                        print_datecount(key, value)
+                        continue
+                    print_value(key, value)
+
+
+def main(search_for):
+    client = MongoClient('mongodb://localhost:27017/', read_preference=ReadPreference.SECONDARY)
+
+    coll = client['eduid_am']['attributes']
+
+    aux_collections = {'authn_info': {'name': 'eduid_idp_authninfo.authn_info',
+                                      'coll': client['eduid_idp_authninfo']['authn_info'],
+                                      'key': '_id',
+                                      },
+                       'signup':     {'name': 'eduid_signup.registered',
+                                      'coll': client['eduid_signup']['registered'],
+                                      'key': '_id',
+                                      },
+                       'dashboard':  {'name': 'eduid_dashboard.profiles',
+                                      'coll': client['eduid_dashboard']['profiles'],
+                                      'key': '_id',
+                                      },
+                       'verifications': {'name': 'eduid_dashboard.verifications',
+                                         'coll': client['eduid_dashboard']['verifications'],
+                                         'key': 'user_oid',
+                                         },
+                       }
+    count = 0
+    seen = {}
+
+    try:
+        found_id = coll.find({'_id': bson.ObjectId(search_for)})
+    except bson.errors.InvalidId:
+        found_id = []
+    separator = ''
+    for user_iter in [found_id,
+                      coll.find({'$or': [{'email': search_for},
+                                         {'mailAliases.email': search_for},
+                                         {'mobile': search_for},
+                                         {'norEduPersonNIN': search_for},
+                                         {'eduPersonPrincipalName': search_for},
+                                         ]
+                                 })]:
+        if not user_iter:
+            continue
+        for user in user_iter:
+            if user['_id'] in seen:
+                continue
+            if separator:
+                print separator
+            separator = '-' * 79
+            seen[user['_id']] = 1
+            count += 1
+            print('Collection eduid_am.attributes:')
+            show_user(user, aux_collections)
+
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        sys.stderr.write("Syntax: finger e-mail/mobile/NIN/eppn\n")
+        sys.exit(1)
+
+    if main(sys.argv[1]):
+        sys.exit(0)
+
+    sys.exit(1)

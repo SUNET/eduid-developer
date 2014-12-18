@@ -1,0 +1,21 @@
+#!/opt/eduid/bin/python
+#
+# List all users in the eduid_am db.
+#
+
+import pymongo
+from pymongo import MongoClient, ReadPreference
+
+client = MongoClient('mongodb://localhost:27017/', read_preference=ReadPreference.SECONDARY)
+
+db = client['eduid_am']
+coll = db['attributes']
+
+for user in coll.find():
+    # Filter out only the verified e-mail addresses from mailAliases
+    aliases = [x.get('email') for x in user.get('mailAliases', []) if x.get('verified') == True]
+    print("{_id!s} {mail!r:35} {eppn!r:12} {aliases!r}".format(
+            _id = user['_id'],
+            mail = user.get('mail'),
+            eppn = user.get('eduPersonPrincipalName'),
+            aliases = aliases))
