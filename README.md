@@ -40,8 +40,8 @@ Linking is not the answer. When a named container restarts with a new IP the
     # service unbound reload
 
 
-Starting
---------
+Running
+-------
 
 Now, start some containers with the files in this repository. I would recommend
 starting all these in a 'screen'.
@@ -68,4 +68,14 @@ Turq (a mock HTTP server) is used to fake 'OK' responses to all calls to the VCC
 authentication backend. The 'control-panel' for Turq is available at
 
   http://turq.docker:13085/+turq/
+
+
+Services
+--------
+
+  http://signup.docker:8080/
+  http://dashboard.docker:8080/
+
+  http://turq.docker:13085/+turq/
+  http://rabbitmq.docker:15672/   (login: admin/password)
 

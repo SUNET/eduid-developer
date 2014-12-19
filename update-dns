@@ -7,7 +7,7 @@ fi
 $sudo docker ps | tail -n +2 | while read line; do
     cid=$(echo $line | awk '{print $NF}')
     ip=$($sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${cid})
-    printf "%-20s %s\n" ${ip} ${cid}
-    $sudo unbound-control local_data_remove "${cid}.docker"
-    $sudo unbound-control local_data "${cid}.docker 60 IN A ${ip}"
+    printf "%-20s %s.docker\n" ${ip} ${cid}
+    $sudo unbound-control local_data_remove "${cid}.docker" > /dev/null
+    $sudo unbound-control local_data "${cid}.docker 60 IN A ${ip}" > /dev/null
 done
