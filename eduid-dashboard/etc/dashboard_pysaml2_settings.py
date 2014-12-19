@@ -8,7 +8,7 @@ from saml2 import attributemaps
 
 DEFAULT_ATTRIBUTEMAPS = path.dirname(attributemaps.__file__)
 
-BASE_URL = 'http://dashboard./'
+BASE_URL = 'http://dashboard.docker:8080/'
 SAML2DIR = path.dirname(__file__)
 
 SAML_CONFIG = {
@@ -54,12 +54,12 @@ SAML_CONFIG = {
                 # present in our metadata
 
                 # the keys of this dictionary are entity ids
-                'http://idp.:8080/idp.xml': {
+                'http://idp.docker:8080/idp.xml': {
                     'single_sign_on_service': {
-                        saml2.BINDING_HTTP_REDIRECT: 'http://idp.:8080/sso/redirect',
+                        saml2.BINDING_HTTP_REDIRECT: 'http://idp.docker:8080/sso/redirect',
                     },
                     'single_logout_service': {
-                        saml2.BINDING_HTTP_REDIRECT: 'http://idp.:8080/slo/redirect',
+                        saml2.BINDING_HTTP_REDIRECT: 'http://idp.docker:8080/slo/redirect',
                     },
                 },
             },
