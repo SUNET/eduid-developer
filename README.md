@@ -64,8 +64,8 @@ newly started containers
 Authentication
 --------------
 
-Turq (a mock HTTP server) is used to fake 'OK' responses to all calls to the VCCS
-authentication backend. The 'control-panel' for Turq is available at
+Turq (a mock HTTP server) is used to fake 'OK' responses to all calls to the
+VCCS authentication backend. The 'control-panel' for Turq is available at
 
   http://turq.docker:13085/+turq/
 
@@ -79,3 +79,13 @@ Services
   http://turq.docker:13085/+turq/
   http://rabbitmq.docker:15672/   (login: admin/password)
 
+
+Live code reloads
+-----------------
+
+For the different eduid components I've tried to set up the containers to
+'mount' a developers local source tree in /opt/eduid/src which will then
+also be inserted into the PYTHONPATH. The current mechanism for finding the
+source on the developers machine is a bit crude (it just looks for stuff
+under ~/work/NORDUnet/ where I happen to have my source code copies).
+Feel free to improve it, but this gives us a starting point.
