@@ -48,6 +48,7 @@ starting all these in a 'screen'.
 
     # (cd rabbitmq && ./run.sh) &
     # (cd mongodb && ./run.sh) &
+    # ./update-dns
     # (cd eduid-am && ./run.sh) &
     # (cd eduid_msg && ./run.sh) &
     # (cd eduid-signup && ./run.sh) &
@@ -89,3 +90,11 @@ also be inserted into the PYTHONPATH. The current mechanism for finding the
 source on the developers machine is a bit crude (it just looks for stuff
 under ~/work/NORDUnet/ where I happen to have my source code copies).
 Feel free to improve it, but this gives us a starting point.
+
+
+Signup
+------
+
+The confirmation code will be available in the log file
+eduid-developer/eduid-signup/log/eduid-signup.log (the whole confirmation
+e-mail will be logged instead of sent using SMTP).
