@@ -27,5 +27,6 @@ $sudo docker run --rm=true \
     -v $PWD/log:/var/log/mongodb \
     -v $PWD/data:/data \
     -v $PWD/etc:/opt/eduid/etc \
+    -v $PWD/db-scripts:/opt/eduid/db-scripts \
     $DOCKERARGS \
     docker.sunet.se/eduid/${name}
