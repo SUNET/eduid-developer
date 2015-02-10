@@ -1,0 +1,6 @@
+{{ sitename }} behöver bekräfta ditt personnummer.
+
+Gå till {{ sitelink }} och ange nedanstående kod:
+
+{{ code }}
+

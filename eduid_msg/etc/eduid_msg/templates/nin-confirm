@@ -1,0 +1,6 @@
+{{ sitename }} wants to confirm your national identity number.
+
+Please visit {{ sitelink }} and enter the confirmation code below:
+
+{{ code }}
+

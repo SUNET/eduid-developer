@@ -1,0 +1,5 @@
+{{ sitename }} wants to confirm that you are the owner of {{ phonenumber }}.
+
+Go to {{ sitelink }} and enter the confirmation code below:
+
+{{ code }}
