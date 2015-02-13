@@ -87,9 +87,12 @@ Live code reloads
 For the different eduid components I've tried to set up the containers to
 'mount' a developers local source tree in /opt/eduid/src which will then
 also be inserted into the PYTHONPATH. The current mechanism for finding the
-source on the developers machine is a bit crude (it just looks for stuff
-under ~/work/NORDUnet/ where I happen to have my source code copies).
-Feel free to improve it, but this gives us a starting point.
+source on the developers machine is through an environment variable
+`EDUID_SRC_PATH` (and defaults to ~/work/NORDUnet). Just be careful to not
+use '~' in the `EDUID_SRC_PATH`, since it may be expanded as a different user.
+
+Both the main package and its eduid dependencies will be mounted for each 
+container (as long as they are present at `EDUID_SRC_PATH`).
 
 
 Signup

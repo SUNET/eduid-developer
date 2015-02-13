@@ -5,18 +5,32 @@
 #   DOCKERARGS="--entrypoint /bin/bash -i -t" bash -x ./run.sh
 #
 
+. ../common.sh
+
 name="signup"
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
 fi
 
-mkdir -p run log etc
+mkdir -p run log etc src
 
-srcdir=$(echo ~/work/NORDUnet/eduid-${name})
+host_src_path="$(echo $(get_code_path))"
+guest_src_path="/opt/eduid/src"
+
+srcdir="${host_src_path}/eduid-${name}"
 if [ -d "${srcdir}" ]; then
     # map developers local source copy into /opt/eduid/src and set PYTHONPATH accordingly
-    src_volume="-v ${srcdir}:/opt/eduid/src --env=PYTHONPATH=/opt/eduid/src"
+    src_volume="-v ${srcdir}:${guest_src_path}/eduid-${name}"
+    env_vars="--env=PYTHONPATH=${guest_src_path}/eduid-${name}"
+
+    am_dir="${host_src_path}/eduid-am"
+    if [ -d "${am_dir}" ]; then
+        src_volume+=" -v ${am_dir}:${guest_src_path}/eduid-am"
+        env_vars+=":${guest_src_path}/eduid-am"
+    fi
+
+    src_volume+=" ${env_vars}"
 fi
 
 if $sudo docker ps | awk '{print $NF}' | grep -qx $name; then
