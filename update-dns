@@ -10,5 +10,6 @@ $sudo docker ps | tail -n +2 | while read line; do
     printf "%-20s %s.docker\n" ${ip} ${cid}
     $sudo unbound-control local_data_remove "${cid}.docker." > /dev/null
     $sudo unbound-control local_data "${cid}.docker. 60 IN A ${ip}" > /dev/null
-    $sudo unbound-control local_data "${ip} 60 ${cid}.docker." > /dev/null
+    ptr=$(echo $ip | awk -F . '{print $4"."$3"."$2"."$1".in-addr.arpa."}')
+    $sudo unbound-control local_data "${ptr} 60 IN PTR ${cid}.docker."
 done
