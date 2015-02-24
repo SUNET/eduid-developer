@@ -1,0 +1,4 @@
+Key generation:
+
+   certtool -p --outfile oathaead-snakeoil.key
+   openssl rsa -in oathaead-snakeoil.key -pubout -out oathaead-snakeoil.pem

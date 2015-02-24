@@ -38,7 +38,7 @@ done
 #
 # User eduid_am, read
 #
-for db in eduid_signup eduid_dashboard; do
+for db in eduid_signup eduid_dashboard eduid_api; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_am"}) == 0) {
          db.addUser( { user: "eduid_am", pwd: "eduid_am_pw", roles: ["read"] } );
@@ -88,6 +88,29 @@ for db in eduid_am eduid_tou; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_idp"}) == 0) {
          db.addUser( { user: "eduid_idp", pwd: "eduid_idp_pw", roles: ["read"] } );
+      }
+'
+done
+
+# -------------------------------------------------------------------------------------
+#
+# User eduid_api, readWrite
+#
+for db in eduid_api; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_api"}) == 0) {
+         db.addUser( { user: "eduid_api", pwd: "eduid_api_pw", roles: ["readWrite"] } );
+      }
+'
+done
+
+#
+# User eduid_api, read
+#
+for db in eduid_am; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_api"}) == 0) {
+         db.addUser( { user: "eduid_api", pwd: "eduid_api_pw", roles: ["read"] } );
       }
 '
 done
