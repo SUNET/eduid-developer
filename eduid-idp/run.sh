@@ -13,32 +13,10 @@ if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
 fi
 
-mkdir -p log etc src
+mkdir -p log etc src run
 
-host_src_path="$(echo $(get_code_path))"
-guest_src_path="/opt/eduid/src"
-
-srcdir="${host_src_path}/eduid-IdP"
-if [ -d "${srcdir}" ]; then
-    # map developers local source copy into /opt/eduid/src and set PYTHONPATH accordingly
-    src_volume="-v ${srcdir}:${guest_src_path}/eduid-IdP"
-    env_vars="--env=PYTHONPATH=${guest_src_path}/eduid-IdP:${guest_src_path}/eduid-IdP/src"
-
-    am_dir="${host_src_path}/eduid-am"
-    if [ -d "${am_dir}" ]; then
-        src_volume+=" -v ${am_dir}:${guest_src_path}/eduid-am"
-        env_vars+=":${guest_src_path}/eduid-am"
-    fi
-
-    htmldir=$(echo $(get_code_path)/eduid-IdP-html)
-    if [ -d "${htmldir}" ]; then
-        # map developers local source copy into /opt/eduid
-        src_volume+=" -v ${htmldir}:${guest_src_path}/eduid-IdP-html"
-        env_vars+=":${guest_src_path}/eduid-IdP-html"
-    fi
-  
-    src_volume+=" ${env_vars}"
-fi
+src_params="$(get_developer_params eduid-IdP eduid-am eduid-IdP-html)"
+echo "Source parameters: ${src_params}"
 
 if $sudo docker ps | awk '{print $NF}' | grep -qx $name; then
     echo "$0: Docker container with name $name already running. Press enter to restart it, or ctrl+c to abort."
@@ -51,8 +29,9 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    -v $PWD/etc:/opt/eduid/etc \
+    -v $PWD/etc:/opt/eduid/etc/eduid-${name}:ro \
+    -v $PWD/run:/opt/eduid/run \
     -v $PWD/log:/var/log/eduid \
-    $src_volume \
+    $src_params \
     $DOCKERARGS \
     docker.sunet.se/eduid/eduid-${name}
