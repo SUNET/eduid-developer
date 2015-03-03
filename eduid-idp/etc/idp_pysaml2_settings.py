@@ -45,10 +45,10 @@ CONFIG = {
         },
     },
     "debug": 1,
-    "key_file": "/opt/eduid/etc/idp-public-snakeoil.key",
-    "cert_file": "/opt/eduid/etc/idp-public-snakeoil.pem",
+    "key_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.key",
+    "cert_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem",
     "metadata": {
-        "local": ["/opt/eduid/etc/dashboard_metadata.xml",
+        "local": ["/opt/eduid/eduid-idp/etc/dashboard_metadata.xml",
                   ],
     },
     "organization": {
@@ -74,10 +74,10 @@ CONFIG = {
     #"xmlsec_binary": "/bin/false",  # pysaml2 checks for this
     # This database holds the map between a subjects local identifier and
     # the identifier returned to a SP
-    "attribute_map_dir": "/opt/eduid/etc/attributemaps",
+    "attribute_map_dir": "/opt/eduid/eduid-idp/etc/attributemaps",
     "logger": {
         "rotating": {
-            "filename": "/var/log/eduid/idp.log",
+            "filename": "/var/log/eduid/pysaml2.log",
             "maxBytes": 500000,
             "backupCount": 5,
         },
