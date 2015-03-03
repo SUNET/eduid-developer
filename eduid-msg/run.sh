@@ -13,7 +13,7 @@ if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
 fi
 
-mkdir -p log etc src
+mkdir -p log etc src run
 
 src_params="$(get_developer_params eduid_msg eduid-am)"
 echo "Source parameters: ${src_params}"
@@ -29,7 +29,8 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    -v $PWD/etc:/opt/eduid/etc \
+    -v $PWD/etc:/opt/eduid/eduid-msg/etc:ro \
+    -v $PWD/run:/opt/eduid/eduid-msg/run \
     -v $PWD/log:/var/log/eduid \
     $src_volume \
     $DOCKERARGS \
