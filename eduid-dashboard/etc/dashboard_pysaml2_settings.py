@@ -75,8 +75,8 @@ SAML_CONFIG = {
     'debug': 1,
 
     # certificate
-    'key_file': '/opt/eduid/etc/dashboard-public-snakeoil.key',  # private part
-    'cert_file': '/opt/eduid/etc/dashboard-public-snakeoil.pem',  # public part
+    'key_file': '/opt/eduid/etc/eduid-dashboard/dashboard-public-snakeoil.key',  # private part
+    'cert_file': '/opt/eduid/etc/eduid-dashboard/dashboard-public-snakeoil.pem',  # public part
 
 
     # own metadata settings

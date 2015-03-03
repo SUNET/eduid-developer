@@ -29,8 +29,8 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    -v $PWD/etc:/opt/eduid/etc/eduid-${name}:ro \
-    -v $PWD/run:/opt/eduid/run \
+    -v $PWD/etc:/opt/eduid/eduid-${name}/etc:ro \
+    -v $PWD/run:/opt/eduid/eduid-${name}/run \
     -v $PWD/log:/var/log/eduid \
     $src_params \
     $DOCKERARGS \
