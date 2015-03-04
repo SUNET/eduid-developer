@@ -2,7 +2,7 @@
 #
 # To debug your container:
 #
-#   DOCKERARGS="--entrypoint /bin/bash -i -t" bash -x ./run.sh
+#   DOCKERARGS="--entrypoint /bin/bash" bash -x ./run.sh
 #
 
 . ../common.sh
@@ -29,9 +29,10 @@ ${sudo} docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    $src_params \
+    -v $PWD/etc:/opt/eduid/${name}/etc:ro \
     -v $PWD/log:/var/log/eduid \
-    -v $PWD/etc:/opt/eduid/eduid-lookup-mobile/etc \
-    --env=EDUID_LOOKUP_MOBILE_CONFIG=/opt/eduid/eduid-lookup-mobile/etc \
+    --env=EDUID_LOOKUP_MOBILE_CONFIG=/opt/eduid/${name}/etc \
+    $src_params \
     $DOCKERARGS \
+    -i -t \
     docker.sunet.se/eduid/${name}

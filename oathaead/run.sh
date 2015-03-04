@@ -2,7 +2,7 @@
 #
 # To debug your container:
 #
-#   DOCKERARGS="--entrypoint /bin/bash -i -t" bash -x ./run.sh
+#   DOCKERARGS="--entrypoint /bin/bash" bash -x ./run.sh
 #
 
 name="oathaead"
@@ -13,11 +13,8 @@ fi
 
 mkdir -p log etc
 
-srcdir=$(echo ~/work/NORDUnet/eduid-api)
-if [ -d "${srcdir}" ]; then
-    # map developers local source copy into /opt/eduid/src and set PYTHONPATH accordingly
-    src_volume="-v ${srcdir}:/opt/eduid/src --env=PYTHONPATH=/opt/eduid/src:/opt/eduid/src/src"
-fi
+src_params="$(get_developer_params eduid-api)"
+echo "Source parameters: ${src_params}"
 
 if $sudo docker ps | awk '{print $NF}' | grep -qx $name; then
     echo "$0: Docker container with name $name already running. Press enter to restart it, or ctrl+c to abort."
@@ -30,9 +27,9 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    -v $PWD/etc:/opt/eduid/etc \
+    -v $PWD/etc:/opt/eduid/eduid-oathaead/etc \
     -v $PWD/log:/var/log/eduid \
-    --device=/dev/ttyACM0:/dev/ttyACM0:rw \
-    $src_volume \
+    $src_params \
     $DOCKERARGS \
+    -i -t \
     docker.sunet.se/eduid/eduid-api

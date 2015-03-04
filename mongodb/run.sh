@@ -5,6 +5,8 @@
 #   DOCKERARGS="--entrypoint /bin/bash -i -t" bash -x ./run.sh
 #
 
+. ../common.sh
+
 name="mongodb"
 
 if [ $(id -u) -ne 0 ]; then
@@ -29,4 +31,5 @@ $sudo docker run --rm=true \
     -v $PWD/etc:/opt/eduid/etc \
     -v $PWD/db-scripts:/opt/eduid/db-scripts \
     $DOCKERARGS \
+    -i -t \
     docker.sunet.se/eduid/${name}

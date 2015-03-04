@@ -2,7 +2,7 @@
 #
 # To debug your container:
 #
-#   DOCKERARGS="--entrypoint /bin/bash -i -t" bash -x ./run.sh
+#   DOCKERARGS="--entrypoint /bin/bash" bash -x ./run.sh
 #
 
 . ../common.sh
@@ -13,7 +13,7 @@ if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
 fi
 
-mkdir -p run log etc src
+mkdir -p log etc src run
 
 src_params="$(get_developer_params eduid-${name} eduid-am)"
 echo "Source parameters: ${src_params}"
@@ -34,4 +34,5 @@ $sudo docker run --rm=true \
     -v $PWD/log:/var/log/eduid \
     $src_params \
     $DOCKERARGS \
+    -i -t \
     docker.sunet.se/eduid/eduid-${name}

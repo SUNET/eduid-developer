@@ -2,7 +2,7 @@
 #
 # To debug your container:
 #
-#   DOCKERARGS="--entrypoint /bin/bash -i -t" bash -x ./run.sh
+#   DOCKERARGS="--entrypoint /bin/bash" bash -x ./run.sh
 #
 
 . ../common.sh
@@ -34,4 +34,5 @@ $sudo docker run --rm=true \
     -v $PWD/log:/var/log/eduid \
     $src_params \
     $DOCKERARGS \
+    -i -t \
     docker.sunet.se/eduid/eduid-${name}

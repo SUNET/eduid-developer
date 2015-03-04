@@ -5,6 +5,8 @@
 #   DOCKERARGS="--entrypoint /bin/bash -i -t" bash -x ./run.sh
 #
 
+. ../common.sh
+
 name="rabbitmq"
 
 if [ $(id -u) -ne 0 ]; then
@@ -24,7 +26,8 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
+    -v $PWD/etc:/etc/rabbitmq:ro \
     -v $PWD/log:/var/log/rabbitmq \
-    -v $PWD/etc:/etc/rabbitmq \
     $DOCKERARGS \
+    -i -t \
     docker.sunet.se/eduid/${name}

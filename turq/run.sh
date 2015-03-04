@@ -2,8 +2,10 @@
 #
 # To debug your container:
 #
-#   DOCKERARGS="--entrypoint /bin/bash -i -t" bash -x ./run.sh
+#   DOCKERARGS="--entrypoint /bin/bash" bash -x ./run.sh
 #
+
+. ../common.sh
 
 name="turq"
 
@@ -23,4 +25,5 @@ $sudo docker run --rm=true \
     --hostname ${name} \
     --dns=172.17.42.1 \
     $DOCKERARGS \
+    -i -t \
     docker.sunet.se/eduid/${name}

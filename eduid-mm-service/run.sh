@@ -29,10 +29,11 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    -v $PWD/etc:/opt/eduid/etc \
+    -v $PWD/etc:/opt/eduid/${name}/etc:ro \
     -v $PWD/log:/var/log/eduid \
     -e "mm_truststore_pw=foobar" \
     -e "mm_keystore_pw=barfoo" \
-    $src_volume \
+    $src_params \
     $DOCKERARGS \
+    -i -t \
     docker.sunet.se/eduid/${name}
