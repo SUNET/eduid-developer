@@ -14,5 +14,7 @@ print("MsgRelay: {!r}".format(msgrelay))
 print(msgrelay.get_postal_address('190001019876'))
 print()
 
-print(msgrelay.get_relations_to('190001019876', '20001019876'))
-print()
+for nin in ['200202025678', '197512125432', '195010106543']:
+    print("Relations to {!r}:".format(nin))
+    print(msgrelay.get_relations_to('190001019876', nin))
+    print()
