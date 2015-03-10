@@ -15,7 +15,7 @@ fi
 
 mkdir -p log etc
 
-src_params="$(get_developer_params ${name})"
+src_params="$(get_developer_params ${name} eduid_lookup_mobile)"
 echo "Source parameters: ${src_params}"
 
 if ${sudo} docker ps | awk '{print $NF}' | grep -qx $name; then
