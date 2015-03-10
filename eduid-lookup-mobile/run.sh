@@ -31,7 +31,6 @@ ${sudo} docker run --rm=true \
     --dns=172.17.42.1 \
     -v $PWD/etc:/opt/eduid/${name}/etc:ro \
     -v $PWD/log:/var/log/eduid \
-    --env=EDUID_LOOKUP_MOBILE_CONFIG=/opt/eduid/${name}/etc \
     $src_params \
     $DOCKERARGS \
     -i -t \
