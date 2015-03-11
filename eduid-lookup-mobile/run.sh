@@ -15,7 +15,7 @@ fi
 
 mkdir -p log etc
 
-src_params="$(get_developer_params ${name})"
+src_params="$(get_developer_params ${name} eduid_lookup_mobile)"
 echo "Source parameters: ${src_params}"
 
 if ${sudo} docker ps | awk '{print $NF}' | grep -qx $name; then
@@ -31,7 +31,6 @@ ${sudo} docker run --rm=true \
     --dns=172.17.42.1 \
     -v $PWD/etc:/opt/eduid/${name}/etc:ro \
     -v $PWD/log:/var/log/eduid \
-    --env=EDUID_LOOKUP_MOBILE_CONFIG=/opt/eduid/${name}/etc \
     $src_params \
     $DOCKERARGS \
     -i -t \
