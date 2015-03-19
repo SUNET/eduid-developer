@@ -18,6 +18,10 @@ function get_developer_params {
     for name in $*; do
 	srcdir="${host_src_path}/${name}"
 	if [ -d "${srcdir}" ]; then
+	    if [ -d "${srcdir}/src" ]; then
+		# Some packages, like eduid-IdP, has the Python package in a src/ dir
+		srcdir+="/src"
+	    fi
             # map developers local source copy into /opt/eduid/src and set PYTHONPATH accordingly
 	    src_volumes+=" -v ${srcdir}:${guest_src_path}/${name}"
 	    if [ "x${pp}" = "x" ]; then
