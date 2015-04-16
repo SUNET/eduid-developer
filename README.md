@@ -36,6 +36,7 @@ Linking is not the answer. When a named container restarts with a new IP the
         interface: 127.0.0.1
         interface: 172.17.42.1
         access-control: 172.17.0.0/16 allow
+        local-data: "pypi.docker A 172.17.42.1"
     EOF
     # service unbound reload
 
@@ -80,6 +81,40 @@ Services
   http://turq.docker:13085/+turq/
   http://rabbitmq.docker:15672/   (login: admin/password)
 
+Local PyPI server
+-----------------
+
+If packages needs to be tested locally then change setup.py to reflect
+the new version that is to be used, change setup.sh to point to
+pypi.docker instead of e.g. pypi.nordu.net and install pypiserver.
+
+  # pip install pypiserver passlib
+  # apt-get install apache2-utils
+  # mkdir -p ~/workspace/pypi/packages
+
+Create at least one user to use when uploading packages.
+
+  # htpasswd -sc .htaccess
+
+Run pypiserver as a background job on port 8080 that redirects
+to your main PyPI server if a package could not be found locally.
+
+  # pypi-server --fallback-url https://pypi.nordu.net/simple -p 8080 -P .htaccess packages &
+
+Create a ~./pypirc file containing at least:
+
+  [distutils]
+  index-servers = internal
+
+  [internal]
+  repository: http://localhost:8080
+  username: <your pypiserver user>
+  password: <your pypiserver password>
+
+To upload a package, go to the directory containing the project that
+you would like to upload and issue:
+
+  # python setup.py sdist upload -r internal
 
 Live code reloads
 -----------------
