@@ -88,33 +88,23 @@ If packages needs to be tested locally then change setup.py to reflect
 the new version that is to be used, change setup.sh to point to
 pypi.docker instead of e.g. pypi.nordu.net and install pypiserver.
 
-    # pip install pypiserver passlib
-    # apt-get install apache2-utils
-    # mkdir -p ~/workspace/pypi/packages
+    # (cd pypiserver && ./run.sh) &
 
-Create at least one user to use when uploading packages.
+You need to update DNS settings in you local docker configuration.
 
-    # htpasswd -sc .htaccess
+    # sudo vi /etc/default/docker
 
-Run pypiserver as a background job on port 8080 that redirects
-to your main PyPI server if a package could not be found locally.
+add
 
-    # pypi-server --fallback-url https://pypi.nordu.net/simple -p 8080 -P .htaccess packages &
+    DOCKER_OPTS="--dns 172.17.42.1"
 
-Create a ~./pypirc file containing at least:
+To add a package, go to the directory containing the project that
+you would like to add:
 
-    [distutils]
-    index-servers = internal
+    # python setup.py sdist
 
-    [internal]
-    repository: http://localhost:8080
-    username: <your pypiserver user>
-    password: <your pypiserver password>
-
-To upload a package, go to the directory containing the project that
-you would like to upload and issue:
-
-    # python setup.py sdist upload -r internal
+Copy the package from the dist directory to the directory package
+under the pypiserver directory.
 
 Live code reloads
 -----------------
