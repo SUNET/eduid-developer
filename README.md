@@ -50,7 +50,7 @@ starting all these in a 'screen'.
     # (cd mongodb && ./run.sh) &
     # ./update-dns
     # (cd eduid-am && ./run.sh) &
-    # (cd eduid_msg && ./run.sh) &
+    # (cd eduid-msg && ./run.sh) &
     # (cd eduid-signup && ./run.sh) &
     # (cd eduid-dashboard && ./run.sh) &
     # (cd eduid-idp && ./run.sh) &
