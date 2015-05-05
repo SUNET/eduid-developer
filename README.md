@@ -36,7 +36,6 @@ Linking is not the answer. When a named container restarts with a new IP the
         interface: 127.0.0.1
         interface: 172.17.42.1
         access-control: 172.17.0.0/16 allow
-        local-data: "pypi.docker A 172.17.42.1"
     EOF
     # service unbound reload
 
@@ -86,7 +85,7 @@ Local PyPI server
 
 If packages needs to be tested locally then change setup.py to reflect
 the new version that is to be used, change setup.sh to point to
-pypi.docker instead of e.g. pypi.nordu.net and install pypiserver.
+pypiserver.docker instead of e.g. pypi.nordu.net, build and run pypiserver.
 
     # (cd pypiserver && ./run.sh) &
 
