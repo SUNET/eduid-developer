@@ -114,3 +114,15 @@ for db in eduid_am; do
       }
 '
 done
+
+# -------------------------------------------------------------------------------------
+#
+# User eduid_lookup_mobile, readWrite
+#
+for db in eduid_lookup_mobile; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_lookup_mobile"}) == 0) {
+         db.addUser( { user: "eduid_lookup_mobile", pwd: "eduid_lookup_mobile_pw", roles: ["readWrite"] } );
+      }
+'
+done
