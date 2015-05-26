@@ -37,7 +37,7 @@ Linking is not the answer. When a named container restarts with a new IP the
         interface: 172.17.42.1
         access-control: 172.17.0.0/16 allow
     EOF
-    # service unbound reload
+    # service unbound restart
 
 
 Running
