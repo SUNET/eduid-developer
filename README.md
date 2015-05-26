@@ -51,6 +51,7 @@ starting all these in a 'screen'.
     # ./update-dns
     # (cd eduid-am && ./run.sh) &
     # (cd eduid-msg && ./run.sh) &
+    # (cd eduid-lookup-mobile && ./run.sh) &
     # (cd eduid-signup && ./run.sh) &
     # (cd eduid-dashboard && ./run.sh) &
     # (cd eduid-idp && ./run.sh) &
