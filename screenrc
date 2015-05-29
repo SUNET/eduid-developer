@@ -1,0 +1,20 @@
+screen -t "rabbitmq"
+stuff "cd rabbitmq && ./run.sh"
+screen -t "mongodb"
+stuff "cd mongodb && ./run.sh"
+screen -t "eduid-am"
+stuff "sleep 10; ./update-dns; cd eduid-am && ./run.sh"
+screen -t "eduid-msg"
+stuff "sleep 10; cd eduid-msg && ./run.sh"
+screen -t "eduid-signup"
+stuff "sleep 10; cd eduid-signup && ./run.sh"
+screen -t "eduid-dashboard"
+stuff "sleep 10; cd eduid-dashboard && ./run.sh"
+screen -t "eduid-idp"
+stuff "sleep 10; cd eduid-idp && ./run.sh"
+screen -t "eduid-lookup-mobile"
+stuff "sleep 10; cd eduid-lookup-mobile && ./run.sh"
+screen -t "turq"
+stuff "sleep 10; cd turq && ./run.sh"
+screen -t "developer"
+stuff "sleep 12; ./update-dns;"
