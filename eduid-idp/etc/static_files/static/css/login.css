@@ -1,8 +1,19 @@
 ﻿body, 
 .well,
-.form-actions {
+.form-actions,
+.container .jumbotron {
     background-color:#bbded9;
     background-image:url(../img/texture.png);
+}
+
+.container .jumbotron {
+    color:#fff;
+    padding-top: 12em!important;
+    padding-bottom: 12em;
+    text-align: center;
+}
+.jumbotron h1 {
+    font-size:72px;
 }
 
 h1,
