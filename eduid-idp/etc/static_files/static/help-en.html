@@ -12,28 +12,60 @@
 
     <link href="/static/css/bootstrap-3.2.0.min.css" rel="stylesheet" media="screen">
     <link href="/static/css/screen.css" rel="stylesheet" media="screen">
+    <link href="/static/css/login.css" rel="stylesheet" />
     <link href="/static/favicon.ico" rel="shortcut icon" />
   </head>
   <body>
     <div class="container">
-      <div class="masthead">
-        <ul class="nav nav-pills pull-right">
-          <li class="active">
-              <a href="/static/help-en.html" target="_blank">Help</a></li>
-        </ul>
-      <a href="https://www.eduid.se/">
-        <img src="/static/img/logo_eduID_g_color.svg" alt="Logotype"/>
-      </a>
-        <a href="http://www.sunet.se/">
-              <img src="/static/img/SUNET_badge.png" alt="SUNET logotype"/>
-        </a>
-      </div>
-      <div class="clearfix"></div>
-      <div id="content-block">
-        
-  <div class="row">
-    <h3>Frequently Asked Questions about eduID</h3>
-    <div class="accordion col-md-12" id="accordion2">
+      <header id="header" class="header">
+        <div class="logo"></div>
+        <nav class="navbar navbar-default" id="eduid-idp-navbar">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">
+                <div id="eduid-logo-small" class="logo"></div>
+              </a>
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#eduid-idp-menu" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+          <div class="collapse navbar-collapse" id="eduid-idp-menu">
+            <ul  class="nav navbar-nav">
+              <li>
+                <a href="/">Student</a>
+              </li>
+              <li>
+                <a href="/">Technician</a>
+              </li>
+              <li>
+                <a href="/">Personal</a>
+              </li>
+              <li>
+                <a href="/">FAQ</a>
+              </li>
+            </ul>
+            <div class="buttons nav navbar-nav navbar-right">
+              <div class="button orange">
+                      <!-- Link leads to signup page -->
+                <a href="https://signup.eduid.se/">Sign up</a>
+              </div>
+                <div class="button white-border">
+                      <!-- Link leads to login page -->
+                  <a href="https://dashboard.eduid.se/">Sign in</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      
+  <div class="jumbotron eduid-help">
+    <h2>Frequently Asked Questions about eduID</h2>
+    <div class="panel-group" id="accordion2">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
@@ -153,7 +185,7 @@
       </div>
       <div class="clearfix"></div>
       <div class="footer">
-        <p>&copy; SUNET 2013-2014</p>
+        <p>&copy; SUNET 2013-2015</p>
       </div>
     </div>
 

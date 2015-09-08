@@ -15,6 +15,9 @@
 .jumbotron h1 {
     font-size:72px;
 }
+.container .jumbotron div.panel-body {
+    color: #222;
+}
 
 h1,
 h2,
@@ -372,7 +375,7 @@ button[type=submit].btn {
         background-size: 80px;
     }
     .header nav#eduid-idp-navbar li {
-        margin:0 10px;
+        margin:0 7px;
     }
     .header nav#eduid-idp-navbar li.button {
         padding:0 20px;
@@ -387,7 +390,11 @@ button[type=submit].btn {
         font-size:12px;
         padding:20px;
     }
-        
+
+    .container .jumbotron h2 {
+        font-size: 48px;
+        margin-top: -20px;
+    }   
     
 }
 @media only screen and (max-width: 767px) {
@@ -508,6 +515,10 @@ button[type=submit].btn {
         margin: 7.5px 0px;
     }
 
+    .container .jumbotron h2 {
+        font-size: 36px;
+        margin-top: -72px;
+    }
 }
 
 @media only screen and (min-width: 768px) {
