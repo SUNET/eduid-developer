@@ -89,12 +89,8 @@ input:focus {
 .header .logo {
     float: left;
     margin: 0; }
-.header nav#eduid-idp-navbar {
-      margin-top:4px;
-  }
 .header nav#eduid-idp-navbar li {
     list-style: none;
-    float: left;
     margin: 0 30px;
     line-height: 40px; }
 .header nav#eduid-idp-navbar li.current-menu-item a {
@@ -496,7 +492,7 @@ button[type=submit].btn {
     }
 
     nav.navbar.navbar-default#eduid-idp-navbar {
-        background-color: #58B78C;
+        background-color: #333;
         border-color: #333;
     }
 
@@ -505,14 +501,75 @@ button[type=submit].btn {
         margin-top: -4px;
     } 
 
-    ul.nav.navbar-nav li a {
+    .header nav#eduid-idp-navbar ul.nav.navbar-nav li a {
         color: #eee;
+        display: block;
+        padding: 10px 0;
+        width: 100%;
+        border-bottom: 1px solid #CCC;
+    }
+
+    .header nav#eduid-idp-navbar ul.nav.navbar-nav li a:hover {
+        color: #aaa;
     }
 
     div#eduid-idp-menu > div.buttons.nav {
         float:none;
         margin-top: 10px;
         margin: 7.5px 0px;
+    }
+
+    #eduid-idp-navbar div.navbar-header > span, 
+    #eduid-idp-navbar div.navbar-header > span:before, 
+    #eduid-idp-navbar div.navbar-header > span:after {
+        cursor: pointer;
+        border-radius: 2px;
+        height: 5px;
+        width: 35px;
+        right: 0;
+        background: white;
+        position: absolute;
+        display: block;
+        content: '';
+        border-color: transparent;
+        padding: 0;
+        margin-left: -15px;
+        border: 0;
+
+        -webkit-transition: all 250ms;
+        -moz-transition: all 250ms;
+        -o-transition: all 250ms;
+        transition: all 250ms;
+    }
+    #eduid-idp-navbar div.navbar-header > span {
+        top:10px;
+    }
+    #eduid-idp-navbar div.navbar-header > span:before {
+        top: -10px;
+    }
+    #eduid-idp-navbar div.navbar-header > span:after {
+        bottom: -10px; 
+    }
+    #eduid-idp-navbar div.navbar-header > span.open {
+        background-color: transparent;
+    }
+    #eduid-idp-navbar div.navbar-header > span.open:before {
+        top: 0;
+
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    #eduid-idp-navbar div.navbar-header > span.open:after {
+        bottom:0;
+
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        transform: rotate(-45deg);
     }
 
     .container .jumbotron h2 {
