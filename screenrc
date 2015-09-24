@@ -8,13 +8,19 @@ screen -t "eduid-msg"
 stuff "sleep 10; cd eduid-msg && ./run.sh"
 screen -t "eduid-signup"
 stuff "sleep 10; cd eduid-signup && ./run.sh"
+screen -t "eduid-signup-log"
+stuff "cd eduid-signup && tail -F log/eduid-signup.log"
 screen -t "eduid-dashboard"
 stuff "sleep 10; cd eduid-dashboard && ./run.sh"
+screen -t "eduid-dashboard-log"
+stuff "cd eduid-dashboard && tail -F log/eduid-dashboard.log"
 screen -t "eduid-idp"
 stuff "sleep 10; cd eduid-idp && ./run.sh"
 screen -t "eduid-lookup-mobile"
 stuff "sleep 10; cd eduid-lookup-mobile && ./run.sh"
 screen -t "turq"
 stuff "sleep 10; cd turq && ./run.sh"
+screen -t "pypiserver"
+stuff "cd pypiserver && ls packages"
 screen -t "developer"
 stuff "sleep 12; ./update-dns;"
