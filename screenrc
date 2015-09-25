@@ -18,6 +18,8 @@ screen -t "eduid-idp"
 stuff "sleep 10; cd eduid-idp && ./run.sh"
 screen -t "eduid-lookup-mobile"
 stuff "sleep 10; cd eduid-lookup-mobile && ./run.sh"
+screen -t "eduid-html"
+stuff "cd eduid-html && ./run.sh"
 screen -t "turq"
 stuff "sleep 10; cd turq && ./run.sh"
 screen -t "pypiserver"
