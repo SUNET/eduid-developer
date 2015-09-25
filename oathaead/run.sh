@@ -6,6 +6,7 @@
 #
 
 name="oathaead"
+oath_yhsm_device="/dev/ttyACM0"
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
@@ -29,6 +30,8 @@ $sudo docker run --rm=true \
     --dns=172.17.42.1 \
     -v $PWD/etc:/opt/eduid/eduid-oathaead/etc \
     -v $PWD/log:/var/log/eduid \
+    --env "eduid_name=eduid-oathaead" \
+    --device=${oath_yhsm_device}:${oath_yhsm_device}:rw \
     $src_params \
     $DOCKERARGS \
     -i -t \
