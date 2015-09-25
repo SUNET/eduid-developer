@@ -31,6 +31,15 @@ stuff "sleep 10; cd eduid-lookup-mobile && ./run.sh"
 screen -t "eduid-html"
 stuff "cd eduid-html && ./run.sh"
 
+screen -t "eduid-api"
+stuff "cd eduid-api && ./run.sh"
+
+screen -t "oathaead"
+stuff "cd oathaead && ./run.sh"
+
+screen -t "eduid-actions"
+stuff "cd eduid-actions && ./run.sh"
+
 screen -t "turq"
 stuff "sleep 10; cd turq && ./run.sh"
 
