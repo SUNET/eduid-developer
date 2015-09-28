@@ -5,16 +5,17 @@
 #   DOCKERARGS="--entrypoint /bin/bash" bash -x ./run.sh
 #
 
-name="oathaead"
-oath_yhsm_device="/dev/ttyACM0"
+. ../common.sh
+
+name="actions"
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
 fi
 
-mkdir -p log etc
+mkdir -p log etc src run
 
-src_params="$(get_developer_params eduid-api)"
+src_params="$(get_developer_params eduid-${name} eduid-userdb)"
 echo "Source parameters: ${src_params}"
 
 if $sudo docker ps | awk '{print $NF}' | grep -qx $name; then
@@ -28,11 +29,11 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    -v $PWD/etc:/opt/eduid/eduid-oathaead/etc \
+    -v $PWD/etc:/opt/eduid/eduid-${name}/etc:ro \
+    -v $PWD/run:/opt/eduid/eduid-${name}/run \
+    -v $PWD/scripts:/opt/eduid/eduid-${name}/scripts \
     -v $PWD/log:/var/log/eduid \
-    --env "eduid_name=eduid-oathaead" \
-    --device=${oath_yhsm_device}:${oath_yhsm_device}:rw \
     $src_params \
     $DOCKERARGS \
     -i -t \
-    docker.sunet.se/eduid/eduid-api
+    docker.sunet.se/eduid/eduid-${name}
