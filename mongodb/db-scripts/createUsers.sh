@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# Create users for the eduID local developer environment.
+#
 
 # -------------------------------------------------------------------------------------
 #
@@ -123,6 +126,30 @@ for db in eduid_lookup_mobile; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_lookup_mobile"}) == 0) {
          db.addUser( { user: "eduid_lookup_mobile", pwd: "eduid_lookup_mobile_pw", roles: ["readWrite"] } );
+      }
+'
+done
+
+
+# -------------------------------------------------------------------------------------
+#
+# User eduid_actions, readWrite
+#
+for db in eduid_actions; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_actions"}) == 0) {
+         db.addUser( { user: "eduid_actions", pwd: "eduid_actions_pw", roles: ["readWrite"] } );
+      }
+'
+done
+
+#
+# User eduid_actions, read
+#
+for db in eduid_am; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_actions"}) == 0) {
+         db.addUser( { user: "eduid_actions", pwd: "eduid_actions_pw", roles: ["read"] } );
       }
 '
 done
