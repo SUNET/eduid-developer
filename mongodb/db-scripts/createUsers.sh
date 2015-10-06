@@ -76,7 +76,7 @@ done
 #
 # User eduid_idp, readWrite
 #
-for db in eduid_idp eduid_idp_authninfo eduid_idp_pysaml2; do
+for db in eduid_idp eduid_idp_authninfo eduid_idp_pysaml2 eduid_actions; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_idp"}) == 0) {
          db.addUser( { user: "eduid_idp", pwd: "eduid_idp_pw", roles: ["readWrite"] } );
