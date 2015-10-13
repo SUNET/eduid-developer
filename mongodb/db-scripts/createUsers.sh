@@ -95,6 +95,17 @@ for db in eduid_am eduid_tou; do
 '
 done
 
+#
+# User eduid_actions, readWrite
+#
+for db in eduid_tou; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_actions"}) == 0) {
+         db.addUser( { user: "eduid_actions", pwd: "eduid_actions_pw", roles: ["readWrite"] } );
+      }
+'
+done
+
 # -------------------------------------------------------------------------------------
 #
 # User eduid_api, readWrite
@@ -139,6 +150,17 @@ for db in eduid_actions; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_actions"}) == 0) {
          db.addUser( { user: "eduid_actions", pwd: "eduid_actions_pw", roles: ["readWrite"] } );
+      }
+'
+done
+
+#
+# User eduid_am, readWrite
+#
+for db in eduid_actions; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_am"}) == 0) {
+         db.addUser( { user: "eduid_am", pwd: "eduid_am_pw", roles: ["readWrite"] } );
       }
 '
 done
