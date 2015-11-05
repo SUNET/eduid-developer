@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+        # <class 'etcd.EtcdResult'>(
+        #   {'newKey': False,
+        #    '_prev_node': <class 'etcd.EtcdResult'>(
+        #   {'newKey': False,
+        #    '_children': [],
+        #    'createdIndex': 338,
+        #    'modifiedIndex': 338,
+        #    'value': u'172.17.0.46:8080',
+        #    'expiration': u'2015-11-05T14:36:52.365970666Z',
+        #    'key': u'/services/eduid-signup/mod:signup:8080',
+        #    'ttl': 31,
+        #    'action': None,
+        #    'dir': False}),
+        #  'raft_index': 12806,
+        #  '_children': [],
+        #  'createdIndex': 339,
+        #  'modifiedIndex': 339,
+        #  'value': u'172.17.0.46:8080',
+        #  'etcd_index': 338,
+        #  'expiration': u'2015-11-05T14:38:22.357925449Z',
+        #  'key': u'/services/eduid-signup/mod:signup:8080',
+        #  'ttl': 120,
+        #  'action': u'set',
+        #  'dir': False})
+
+import etcd
+import time
+import json
+
+client = etcd.Client(host='172.17.42.1',
+                     port=4001,
+                     allow_reconnect=True)
+
+MAP = {'/services/eduid-signup/mod:signup:8080': '/vulcand/backends/b1/servers/srv1'}
+
+while True:
+    try:
+        t = client.read('/services', recursive=True, wait=True)
+        print t
+
+        for (map_key, map_value) in MAP.items():
+            if t.key == map_key:
+                print "Known app now at {!s}".format(t.value)
+
+                if t.value is not None:
+                    data = {'URL': 'http://{!s}'.format(t.value)}
+
+                    client.write(map_value, json.dumps(data), ttl=t.ttl)
+                    print ('Updated {!s} (TTL {!s})'.format(map_value, t.ttl))
+                    print ''
+                else:
+                    print ('Removing {!s}'.format(map_value))
+                    client.delete(map_value)
+        print ''
+
+    except etcd.EtcdException:
+        pass
+    finally:
+        time.sleep(1)
