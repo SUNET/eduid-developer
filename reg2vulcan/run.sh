@@ -8,7 +8,7 @@
 
 . ../common.sh
 
-name="registrator"
+name="reg2vulcan"
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
@@ -22,12 +22,15 @@ fi
 
 HostIP=172.17.42.1
 
+# No expiry at the moment, seems that refreshes are not always performed?
+# Possibly this is reg2vulcan timing out on the etcd connection.
+#
 #    -ttl 120 \
 #    -ttl-refresh 90 \
 
 $sudo docker rm $name
 docker run --rm=true \
-    --name=registrator \
+    --name=${name} \
     --volume=/var/run/docker.sock:/tmp/docker.sock \
     -h $(hostname) \
     docker.sunet.se/library/registrator:v7-dev \
