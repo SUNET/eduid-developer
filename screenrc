@@ -11,7 +11,7 @@ screen -t "registrator"
 stuff "sleep 3; cd registrator && ./run.sh"
 
 screen -t "reg2vulcan"
-stuff "sleep 3; cd registrator && ./reg2vulcan"
+stuff "sleep 3; cd reg2vulcan && ./run.sh"
 
 screen -t "vulcand"
 stuff "sleep 3; cd vulcand && ./run.sh"
