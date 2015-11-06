@@ -27,7 +27,7 @@ docker run --rm=true \
     --name=registrator \
     --volume=/var/run/docker.sock:/tmp/docker.sock \
     -h $(hostname) \
-    registrator:v7-dev \
+    docker.sunet.se/library/registrator:v7-dev \
     -ttl 120 \
     -ttl-refresh 90 \
     -ip $HostIP \

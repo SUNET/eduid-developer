@@ -32,6 +32,6 @@ $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
     --net host \
-    local/vulcand:latest \
+    docker.sunet.se/library/vulcand:latest \
     -etcd=http://${HostIP}:4001 \
     -logSeverity=DEBUG
