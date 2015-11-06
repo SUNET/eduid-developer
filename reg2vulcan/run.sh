@@ -33,7 +33,4 @@ docker run --rm=true \
     --name=${name} \
     --volume=/var/run/docker.sock:/tmp/docker.sock \
     -h $(hostname) \
-    docker.sunet.se/library/registrator:v7-dev \
-    -ip $HostIP \
-    -internal \
-    etcd://${HostIP}:4001/services
+    docker.sunet.se/eduid/${name}
