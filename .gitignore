@@ -5,3 +5,6 @@ mongodb/data
 */run
 */log
 *.pyc
+env
+.idea
+pypiserver/packages/
