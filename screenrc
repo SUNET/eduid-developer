@@ -4,6 +4,18 @@ stuff "cd rabbitmq && ./run.sh"
 screen -t "mongodb"
 stuff "cd mongodb && ./run.sh"
 
+screen -t "etcd"
+stuff "cd etcd && ./run.sh"
+
+screen -t "registrator"
+stuff "sleep 3; cd registrator && ./run.sh"
+
+screen -t "reg2vulcan"
+stuff "sleep 3; cd registrator && ./reg2vulcan"
+
+screen -t "vulcand"
+stuff "sleep 3; cd vulcand && ./run.sh"
+
 screen -t "eduid-am"
 stuff "sleep 10; ./update-dns; cd eduid-am && ./run.sh"
 
@@ -50,4 +62,4 @@ screen -t "pypiserver"
 stuff "cd pypiserver && ls packages"
 
 screen -t "developer"
-stuff "sleep 12; ./update-dns;"
+stuff "sleep 6; ./update-dns; sleep 6; ./update-dns"
