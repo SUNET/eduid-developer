@@ -26,6 +26,7 @@ echo ""
 echo "*** Access etcd like this:"
 echo ""
 echo "    docker exec -i -t etcd /etcdctl member list"
+echo "    docker exec -i -t etcd /etcdctl ls --recursive"
 echo ""
 
 $sudo docker rm $name
