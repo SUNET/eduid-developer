@@ -20,6 +20,8 @@ import sys
 import etcd
 import time
 import json
+import logging
+
 
 APPS = ['signup', 'dashboard', 'idp', 'actions', 'landing-page']
 MAP = {'/services/eduid-signup/': '/vulcand/backends/signup/servers/',
@@ -30,13 +32,16 @@ MAP = {'/services/eduid-signup/': '/vulcand/backends/signup/servers/',
        }
 
 
-def configure_vulcand(client):
+def configure_vulcand(client, logger):
     """
     Set up vulcand configuration. Since etcd runs without persistent storage
     in the eduid-developer setting, this needs to be done at every startup.
 
     :param client: etcd client
+    :param logger: logging logger
+
     :type client: etcd.Client
+    :type logger: logging.logger
     :return:
     """
     for app in APPS:
@@ -47,18 +52,23 @@ def configure_vulcand(client):
         app_be = {'Type': 'http'}
         client.write('/vulcand/frontends/{!s}/frontend'.format(app), json.dumps(app_fe))
         client.write('/vulcand/backends/{!s}/backend'.format(app), json.dumps(app_be))
+        logger.info('Configured frontend+backend for app {!r}'.format(app))
 
 
-def loop(client):
+def loop(client, logger):
     """
     Wait for etcd events in the /services subtree. Look for a prefix-match in MAP
     and translate the data from registrator format to vulcand format. Finally,
     store the data in the /vulcand part of the tree.
 
     :param client: etcd client
+    :param logger: logging logger
+
     :type client: etcd.Client
+    :type logger: logging.logger
     :return:
     """
+    logger.info('Waiting for changes under /services in etcd')
     while True:
         try:
             this = client.read('/services', recursive=True, wait=True)
@@ -70,7 +80,7 @@ def loop(client):
             for (map_prefix, map_value) in MAP.items():
                 if this.key.startswith(map_prefix):
                     found = True
-                    print "{!s} now at {!s}".format(this.key, this.value)
+                    logger.info('{!s} now at {!s}'.format(this.key, this.value))
 
                     docker_info = this.key.split('/')[-1]
                     update_key = map_value + docker_info
@@ -79,14 +89,12 @@ def loop(client):
                         data = {'URL': 'http://{!s}'.format(this.value)}
 
                         client.write(update_key, json.dumps(data), ttl=this.ttl)
-                        print ('Updated {!s} (TTL {!s}, at {!s})'.format(update_key, this.ttl, this.value))
-                        print ''
+                        logger.info('Updated {!s} (TTL {!s}, at {!s})'.format(update_key, this.ttl, this.value))
                     else:
-                        print ('Removing {!s}'.format(update_key))
+                        logger.info('Removing {!s}'.format(update_key))
                         client.delete(update_key)
             if not found:
-                print('Ignored: {!s} -> {!s}'.format(this.key, this.value))
-            print ''
+                logger.debug('Ignored: {!s} -> {!s}'.format(this.key, this.value))
 
         except etcd.EtcdException:
             pass
@@ -95,12 +103,16 @@ def loop(client):
 
 
 def main():
+    logging.basicConfig(level = logging.INFO, stream = sys.stderr,
+                        format='%(asctime)s %(name)s %(threadName)s: %(levelname)s %(message)s')
+    logger = logging.getLogger('reg2vulcan')
     client = etcd.Client(host='172.17.42.1',
                          port=4001,
                          allow_reconnect=True)
+    logger.info('Connected to etcd: {!s}'.format(client))
 
-    configure_vulcand(client)
-    return loop(client)
+    configure_vulcand(client, logger)
+    return loop(client, logger)
 
 
 if __name__ == '__main__':
