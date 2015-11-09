@@ -1,4 +1,0 @@
-
-Crash dump was written to: erl_crash.dump
-eheap_alloc: Cannot allocate 177423032 bytes of memory (of type "old_heap").
-Aborted (core dumped)
