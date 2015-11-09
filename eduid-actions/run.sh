@@ -15,7 +15,7 @@ fi
 
 mkdir -p log etc src run
 
-src_params="$(get_developer_params eduid-${name} eduid-userdb eduid-am eduid_action.tou gunicorn pyramid pyramid_jinja2 eduid-html)"
+src_params="$(get_developer_params eduid-${name} eduid-userdb eduid-am eduid_action.tou eduid-html)"
 echo "Source parameters: ${src_params}"
 
 if $sudo docker ps | awk '{print $NF}' | grep -qx $name; then
@@ -28,7 +28,7 @@ $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
-    --dns=172.17.42.1 \
+    --dns=172.17.0.1 \
     -v $PWD/etc:/opt/eduid/eduid-${name}/etc:ro \
     -v $PWD/run:/opt/eduid/eduid-${name}/run \
     -v $PWD/scripts:/opt/eduid/eduid-${name}/scripts \
