@@ -175,3 +175,27 @@ for db in eduid_am; do
       }
 '
 done
+
+#
+# User eduid_idproofing_letter, read
+#
+for db in eduid_am; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_idproofing_letter"}) == 0) {
+         db.addUser( { user: "eduid_idproofing_letter", pwd: "eduid_idproofing_letter_pw", roles: ["read"] } );
+      }
+'
+done
+
+#
+# User eduid_idproofing_letter, readWrite
+#
+for db in eduid_idproofing_letter; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_idproofing_letter"}) == 0) {
+         db.addUser( { user: "eduid_idproofing_letter", pwd: "eduid_idproofing_letter_pw", roles: ["readWrite"] } );
+      }
+'
+done
+
+

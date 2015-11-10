@@ -29,10 +29,9 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    -v $PWD/etc/sites-enabled:/etc/nginx/sites-enabled:ro \
     -v $PWD/scripts:/opt/eduid/eduid-${name}/scripts \
     -v $PWD/log:/var/log/eduid \
     $src_params \
     $DOCKERARGS \
     -i -t \
-    docker.sunet.se/eduid/nginx
+    docker.sunet.se/eduid/eduid-${name}
