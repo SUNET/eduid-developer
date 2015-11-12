@@ -8,7 +8,7 @@ from saml2 import attributemaps
 
 DEFAULT_ATTRIBUTEMAPS = path.dirname(attributemaps.__file__)
 
-BASE_URL = 'http://dashboard.docker:8080/'
+BASE_URL = 'http://eduid.docker/dashboard/'
 SAML2DIR = path.dirname(__file__)
 
 SAML_CONFIG = {

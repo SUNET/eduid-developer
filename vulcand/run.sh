@@ -34,4 +34,5 @@ $sudo docker run --rm=true \
     --net host \
     docker.sunet.se/library/vulcand:latest \
     -etcd=http://${HostIP}:4001 \
-    -logSeverity=DEBUG
+    -logSeverity=DEBUG \
+    -port=80

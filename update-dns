@@ -18,3 +18,7 @@ $sudo docker ps | tail -n +2 | while read line; do
 	echo "No IP for ${cid}"
     fi
 done
+
+
+# Add common name for the IP address vulcand listens on
+unbound-control local_data "eduid.docker. 60 IN A 172.17.42.1"

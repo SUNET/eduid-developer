@@ -30,8 +30,9 @@ $sudo docker run --rm=true \
     --hostname ${name} \
     --dns=172.17.42.1 \
     -v $PWD/scripts:/opt/eduid/eduid-${name}/scripts \
-    -v $PWD/log:/var/log/eduid \
+    -v $PWD/log:/var/log/nginx \
     $src_params \
     $DOCKERARGS \
+    -p 80 \
     -i -t \
     docker.sunet.se/eduid/eduid-${name}
