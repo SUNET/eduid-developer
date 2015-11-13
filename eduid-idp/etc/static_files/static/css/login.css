@@ -1,4 +1,4 @@
-﻿body, 
+﻿body,
 .well,
 .form-actions,
 .container .jumbotron {
@@ -91,8 +91,14 @@ input:focus {
     margin: 0; }
 .header nav#eduid-idp-navbar li {
     list-style: none;
-    margin: 0 30px;
+    margin: 0 17px;
     line-height: 40px; }
+.header nav#eduid-idp-navbar li:first-child {
+    margin-left: 0;
+}
+.header nav#eduid-idp-navbar li:last-child {
+    margin-right: 0;
+}
 .header nav#eduid-idp-navbar li.current-menu-item a {
       color: #fff;
       border-bottom: 3px solid #fff; }
@@ -112,11 +118,11 @@ input:focus {
 .header nav#eduid-idp-navbar a {
     font-family: 'Roboto-Medium';
     font-size: 14px;
-    text-transform: uppercase; 
+    text-transform: uppercase;
     color:#3f5c57;
   }
 .header nav#eduid-idp-navbar a:hover {
-      color: #fff; 
+      color: #fff;
         text-decoration:none;}
 .header .buttons {
     float: right; }
@@ -125,19 +131,25 @@ input:focus {
       height: 40px;
       padding-top: 0;
       padding-bottom: 0;
-      margin: 0 10px; 
+      margin: 0 10px;
       border:4px solid transparent;
     }
 
-    
+
 .header .buttons .button.log-out {
-        background-color:#747474;
-        border-color:#747474;
-    }
+    background-color:#747474;
+    border-color:#747474;
+}
+
 .header .buttons .button.orange {
-        background:#dd650e;
-        border-color:#dd650e;
-    }
+    background:#dd650e;
+    border-color:#dd650e;
+}
+.header .buttons .button.orange:hover {
+    background:#c85c0e;
+    border-color:#c85c0e;
+}
+
 .header .buttons .button.white-border {
         background: transparent;
         border-color: #fff; }
@@ -230,6 +242,14 @@ a.btn-warning {
     margin-left: 15px;
 }
 
+.alert-danger {
+    color: #a94442;
+    background-color: transparent;
+    border-color: #ebccd1;
+    border: 2px solid #a94442;
+    padding: .2em;
+}
+
 
 /* Buttons
     -------------------------------------------------------------------------------------- */
@@ -237,7 +257,7 @@ a.btn-warning {
 .buttons .button {
     padding: 0;
 }
-.buttons .button a { 
+.buttons .button a {
     padding:20px 40px;
 }
 
@@ -262,17 +282,26 @@ a.btn-warning {
     background-color:#58b78b;
 }
 .btn-primary,
-.btn-primary:hover,
-.btn-success,
-.btn-success:hover {
+.btn-success {
     background:#58b78c;
     border-color:#58b78c;
 }
-.btn-warning,
-.btn-warning:hover {
+
+.btn-primary:hover,
+.btn-success:hover {
+    background:#4a9c77;
+    border-color:#4a9c77;
+}
+.btn-warning {
     background:#dd650d;
     border-color:#dd650d;
 }
+
+.btn-warning:hover {
+    background:#C85C0E;
+    border-color:#C85C0E;
+}
+
 input[type=submit].btn,
 button[type=submit].btn {
     display: block;
@@ -287,7 +316,7 @@ button[type=submit].btn {
 	     url('../fonts/roboto-light-webfont.woff') format('woff'),
          url('../fonts/roboto-light-webfont.svg#webfontZam02nTh') format('svg'),
 	     url('../fonts/roboto-light-webfont.ttf') format('truetype');
-	     
+
 	font-weight: normal;
 	font-style: normal;
 }
@@ -299,7 +328,7 @@ button[type=submit].btn {
 	     url('../fonts/roboto-regular-webfont.woff') format('woff'),
          url('../fonts/roboto-regular-webfont.svg#webfontZam02nTh') format('svg'),
 	     url('../fonts/roboto-regular-webfont.ttf') format('truetype');
-	     
+
 	font-weight: normal;
 	font-style: normal;
 }
@@ -311,7 +340,7 @@ button[type=submit].btn {
 	     url('../fonts/roboto-black-webfont.woff') format('woff'),
          url('../fonts/roboto-black-webfont.svg#webfontZam02nTh') format('svg'),
 	     url('../fonts/roboto-black-webfont.ttf') format('truetype');
-	     
+
 	font-weight: normal;
 	font-style: normal;
 }
@@ -323,7 +352,7 @@ button[type=submit].btn {
 	     url('../fonts/roboto-medium-webfont.woff') format('woff'),
          url('../fonts/roboto-medium-webfont.svg#webfontZam02nTh') format('svg'),
 	     url('../fonts/roboto-medium-webfont.ttf') format('truetype');
-	     
+
 	font-weight: normal;
 	font-style: normal;
 }
@@ -390,8 +419,8 @@ button[type=submit].btn {
     .container .jumbotron h2 {
         font-size: 48px;
         margin-top: -20px;
-    }   
-    
+    }
+
 }
 @media only screen and (max-width: 767px) {
 
@@ -436,12 +465,12 @@ button[type=submit].btn {
         float:none;
         height:auto;
     }
-    #header .buttons a { 
+    #header .buttons a {
         display:block;
         padding:10px 0;
         line-height:1em;
     }
-       
+
     .profile-combo > .col-md-3 {
         padding:0;
     }
@@ -471,7 +500,7 @@ button[type=submit].btn {
         padding:0;
         font-size:13px
     }
-    
+
     /* Footer */
     .footer {
         padding:20px 0;
@@ -499,7 +528,7 @@ button[type=submit].btn {
     div.logo#eduid-logo-small {
         margin-left: -90px;
         margin-top: -4px;
-    } 
+    }
 
     .header nav#eduid-idp-navbar ul.nav.navbar-nav li a {
         color: #eee;
@@ -519,8 +548,8 @@ button[type=submit].btn {
         margin: 7.5px 0px;
     }
 
-    #eduid-idp-navbar div.navbar-header > span, 
-    #eduid-idp-navbar div.navbar-header > span:before, 
+    #eduid-idp-navbar div.navbar-header > span,
+    #eduid-idp-navbar div.navbar-header > span:before,
     #eduid-idp-navbar div.navbar-header > span:after {
         cursor: pointer;
         border-radius: 2px;
@@ -548,7 +577,7 @@ button[type=submit].btn {
         top: -10px;
     }
     #eduid-idp-navbar div.navbar-header > span:after {
-        bottom: -10px; 
+        bottom: -10px;
     }
     #eduid-idp-navbar div.navbar-header > span.open {
         background-color: transparent;
