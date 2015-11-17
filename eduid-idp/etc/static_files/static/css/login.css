@@ -63,10 +63,11 @@ label {
 }
 input {
     width:100%;
-    height:60px;
+    height:45px;
     padding:0 20px;
     border-radius: 0;
     box-shadow: none;
+    font-size: 16px;
 }
 input:focus {
     outline:0;
@@ -181,6 +182,19 @@ input:focus {
     background: url(../img/sprite.png) 1px 0 no-repeat;
 }
 
+.media {
+    position:absolute;
+    bottom:0;
+    left:50%;
+    margin-left:-162px;
+    width:325px;
+    height:320px;
+    background-image:url(../img/robot.png);
+    background-repeat:no-repeat;
+    background-position:center bottom;
+    background-size:contain;
+}
+
 .well {
     border:none;
     box-shadow:none;
@@ -219,10 +233,10 @@ legend {
     border:1px solid #a9a9a9;
 }
 .control-group:nth-of-type(1) .input-append:before {
-    background-position:-76px -89px;
+    background-position:-76px -97px;
 }
 .control-group:nth-of-type(2) .input-append:before {
-    background-position:13px -92px;
+    background-position:13px -100px;
 }
 .forgot-password {
     color:#a7500d;
@@ -262,8 +276,8 @@ a.btn-warning {
 }
 
 .btn {
-    height:60px;
-    line-height:60px;
+    height:45px;
+    line-height:45px;
     border-radius: 0;
     padding: 0 40px;
     text-transform:uppercase;
