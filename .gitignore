@@ -5,3 +5,5 @@ mongodb/data
 */run
 */log
 *.pyc
+.*.swp
+.*.swo
