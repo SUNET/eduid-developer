@@ -5,6 +5,16 @@
     background-color:#bbded9;
     background-image:url(../img/texture.png);
 }
+html {
+    height:100%;
+}
+body {
+    position:relative;
+    min-height:100%;
+    padding-bottom:360px;
+    background-image:url(../img/texture.png);
+    background-repeat: repeat;
+}
 
 .container .jumbotron {
     color:#fff;
