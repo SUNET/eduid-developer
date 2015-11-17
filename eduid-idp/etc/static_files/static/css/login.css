@@ -456,6 +456,10 @@ button[type=submit].btn {
         padding:0;
     }
 
+    body {
+        padding-bottom: 250px;
+    }
+
     #header {
         position: fixed;
         top: 0;
@@ -628,6 +632,10 @@ button[type=submit].btn {
     .container .jumbotron h2 {
         font-size: 36px;
         margin-top: -72px;
+    }
+    .media {
+        width: 250px;
+        margin-left: -125px;
     }
 }
 
