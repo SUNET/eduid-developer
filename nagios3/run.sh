@@ -10,7 +10,7 @@
 
 name="nagios3"
 
-mkdir -p log fcgiwrap php5-fpm
+mkdir -p log run
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
@@ -26,8 +26,6 @@ $sudo docker rm $name
 docker run --rm=true \
     --name=${name} \
     -v $PWD/log:/var/log/nagios3 \
-    -v $PWD/fcgiwrap:/fcgiwrap \
-    -v $PWD/php5-fpm:/php5-fpm \
-    -v $PWD/run:/opt/eduid/nagios3/run \
+    -v $PWD/run:/var/run/nagios3 \
     -h $(hostname) \
     docker.sunet.se/eduid/${name}
