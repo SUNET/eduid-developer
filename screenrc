@@ -1,3 +1,6 @@
+screen -t "unbound"
+stuff "cd unbound && ./run.sh^M"
+
 screen -t "rabbitmq"
 stuff "cd rabbitmq && ./run.sh"
 
