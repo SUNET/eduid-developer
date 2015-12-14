@@ -29,11 +29,11 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --dns=172.17.42.1 \
-    -v $PWD/etc:/opt/eduid/eduid-${name}/etc:ro \
-    -v $PWD/run:/opt/eduid/eduid-${name}/run \
-    -v $PWD/scripts:/opt/eduid/eduid-${name}/scripts \
+    -v $PWD/etc:/opt/eduid/${name}/etc:ro \
+    -v $PWD/run:/opt/eduid/${name}/run \
+    -v $PWD/scripts:/opt/eduid/${name}/scripts \
     -v $PWD/log:/var/log/eduid \
-    -e IDPROOFING_LETTER_SETTINGS=$PWD/etc/dev.py \
+    -e IDPROOFING_LETTER_SETTINGS=/opt/eduid/${name}/etc/dev.py \
     $src_params \
     $DOCKERARGS \
     -i -t \

@@ -9,11 +9,11 @@ __author__ = 'lundberg'
 DEBUG = True
 
 # Absolute filesystem path to the Flask project directory:
-PROJECT_ROOT = /opt/eduid/eduid-idproofing-letter/
+PROJECT_ROOT = '/opt/eduid/eduid-idproofing-letter/'
 
 # Absolute filesystem path to the secret file which holds this project's
 # SECRET_KEY. Will be auto-generated the first time this file is interpreted.
-SECRET_FILE = normpath(join(PROJECT_ROOT, 'SECRET'))
+SECRET_FILE = join('/opt/eduid/eduid-idproofing-letter/run/', 'SECRET')
 
 # Try to load the SECRET_KEY from our SECRET_FILE. If that fails, then generate
 # a random SECRET_KEY and save it into our SECRET_FILE for future loading. If
@@ -38,6 +38,6 @@ CELERY_CONFIG = {
     'CELERY_TASK_SERIALIZER': 'json',
 }
 
-LOG_FILE = '/var/log/eduid/eduid-idproofing-letter/idproofing_letter.log'
+LOG_FILE = '/var/log/eduid/idproofing_letter.log'
 LOG_LEVEL = 'DEBUG'
 
