@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export GREP_OPTIONS=""
+
 DOCKERIP=$(ifconfig docker0 | grep "inet addr:" | awk '{print $2}' | awk -F : '{print $2}')
 
 if [ $(id -u) -ne 0 ]; then
