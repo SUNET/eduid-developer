@@ -34,6 +34,9 @@ stuff "sleep 10; cd eduid-actions && ./run.sh"
 screen -t "eduid-lookup-mobile"
 stuff "sleep 10; cd eduid-lookup-mobile && ./run.sh"
 
+screen -t "eduid-idproofing-letter"
+stuff "sleep 10; cd eduid-idproofing-letter && ./run.sh"
+
 screen -t "eduid-html"
 stuff "cd eduid-html && ./run.sh"
 
