@@ -11,6 +11,10 @@ fi
 $sudo docker ps | tail -n +2 | while read line; do
     cid=$(echo $line | awk '{print $NF}')
     ip=$($sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${cid})
+    if [ "x${ip}" = "x" ]; then
+	echo "${cid} - No IP address"
+	continue
+    fi
     printf "%-20s %s.docker\n" ${ip} ${cid}
     $sudo unbound-control -s ${DOCKERIP} local_data_remove "${cid}.docker." > /dev/null
     $sudo unbound-control -s ${DOCKERIP} local_data "${cid}.docker. 60 IN A ${ip}" > /dev/null
