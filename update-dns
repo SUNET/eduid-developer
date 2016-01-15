@@ -8,6 +8,8 @@ if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
 fi
 
+ttl=1
+
 $sudo docker ps | tail -n +2 | while read line; do
     cid=$(echo $line | awk '{print $NF}')
     ip=$($sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${cid})
@@ -17,7 +19,7 @@ $sudo docker ps | tail -n +2 | while read line; do
     fi
     printf "%-20s %s.docker\n" ${ip} ${cid}
     $sudo unbound-control -s ${DOCKERIP} local_data_remove "${cid}.docker." > /dev/null
-    $sudo unbound-control -s ${DOCKERIP} local_data "${cid}.docker. 60 IN A ${ip}" > /dev/null
+    $sudo unbound-control -s ${DOCKERIP} local_data "${cid}.docker. ${ttl} IN A ${ip}" > /dev/null
     ptr=$(echo $ip | awk -F . '{print $4"."$3"."$2"."$1".in-addr.arpa."}')
     $sudo unbound-control -s ${DOCKERIP} local_data "${ptr} 60 IN PTR ${cid}.docker."
 done
