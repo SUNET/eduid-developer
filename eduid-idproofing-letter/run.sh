@@ -28,7 +28,7 @@ $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
-    --dns=172.17.42.1 \
+    --dns=172.17.0.1 \
     -v $PWD/etc:/opt/eduid/${name}/etc:ro \
     -v $PWD/run:/opt/eduid/${name}/run \
     -v $PWD/scripts:/opt/eduid/${name}/scripts \

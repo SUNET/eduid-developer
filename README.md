@@ -34,7 +34,7 @@ Linking is not the answer. When a named container restarts with a new IP the
     server:
         local-zone: docker. static
         interface: 127.0.0.1
-        interface: 172.17.42.1
+        interface: 172.17.0.1
         access-control: 172.17.0.0/16 allow
     EOF
     # service unbound restart
