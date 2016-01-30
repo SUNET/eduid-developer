@@ -32,7 +32,7 @@ else
     tag_object="$(git tag -v ${last_tag} 2>&1 | grep ^object | cut -d' ' -f2)"
 
     revision_range="${tag_object}..HEAD"
-   
+
     git_log="$(git log --pretty="format:%H${t}%aN${t}%s${t}%G?" \
         ${revision_range} --first-parent | grep -v "${t}G$")"
 fi
