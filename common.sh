@@ -34,3 +34,7 @@ function get_developer_params {
 
     echo "${src_volumes} ${pp}"
 }
+
+function docker0_ipaddress {
+    ifconfig docker0 | grep "inet addr:" | awk '{print $2}' | awk -F : '{print $2}'
+}

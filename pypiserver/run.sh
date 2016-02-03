@@ -25,7 +25,7 @@ $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
-    --dns=172.17.42.1 \
+    --dns=$(docker0_ipaddress) \
     -v $PWD/etc:/opt/eduid/pypiserver/etc:ro \
     -v $PWD/log:/var/log/pypiserver \
     -v $PWD/packages:/opt/eduid/pypiserver/packages:ro \

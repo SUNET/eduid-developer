@@ -5,8 +5,6 @@
 #   DOCKERARGS="--entrypoint /bin/bash" bash -x ./run.sh
 #
 
-ipaddress_docker0=$(ifconfig docker0 | grep "inet addr:" | awk '{print $2}' | awk -F : '{print $2}')
-
 . ../common.sh
 
 name="unbound"
@@ -35,7 +33,7 @@ $sudo docker run --rm=true \
     -v $PWD/log:/var/log \
     -v /dev/random:/dev/random:ro \
     -v /dev/urandom:/dev/urandom:ro \
-    -e "unbound_interface=${ipaddress_docker0}" \
+    -e "unbound_interface=`docker0_ipaddress`" \
     $src_params \
     $DOCKERARGS \
     -i -t \
