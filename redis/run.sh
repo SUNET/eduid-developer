@@ -28,7 +28,10 @@ $sudo docker run --rm=true \
     --dns=$(docker0_ipaddress) \
     -v $PWD/log:/var/log/redis \
     -v $PWD/data:/data \
-    -v $PWD/etc:/opt/eduid/etc \
+    -v $PWD/etc/redis.conf:/etc/redis/redis.conf \
     $DOCKERARGS \
     -i -t \
     docker.sunet.se/eduid/${name}
+
+
+    #-v $PWD/etc:/opt/eduid/etc \
