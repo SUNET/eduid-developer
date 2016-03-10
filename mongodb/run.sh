@@ -25,7 +25,7 @@ $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
-    --dns=$(docker0_ipaddress) \
+    --net=${DOCKER_NETWORK} \
     -v $PWD/log:/var/log/mongodb \
     -v $PWD/data:/data \
     -v $PWD/etc:/opt/eduid/etc \

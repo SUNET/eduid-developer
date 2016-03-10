@@ -2,24 +2,31 @@
 
 export GREP_OPTIONS=""
 
-DOCKERIP=$(ifconfig docker0 | grep "inet addr:" | awk '{print $2}' | awk -F : '{print $2}')
+UNBOUNDIP=127.0.0.1
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
 fi
 
-ttl=1
+ttl=60
 
-$sudo docker ps | tail -n +2 | while read line; do
-    cid=$(echo $line | awk '{print $NF}')
-    ip=$($sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${cid})
+
+data=$($sudo docker network inspect --format \
+    '{{ range $container := .Containers }} {{ $container.Name }}+{{ $container.IPv4Address }} {{ end }}' \
+    eduid_dev)
+
+items=$(echo $data | tr " " "\n")
+for item in $items; do
+    cid=$(echo $item | cut -d \+ -f 1)
+    ip=$(echo $item | cut -d \+ -f 2 | cut -d \/ -f 1)
     if [ "x${ip}" = "x" ]; then
-	echo "${cid} - No IP address"
-	continue
+        echo "${cid} - No IP address"
+        continue
     fi
     printf "%-20s %s.docker\n" ${ip} ${cid}
-    $sudo unbound-control -s ${DOCKERIP} local_data_remove "${cid}.docker." > /dev/null
-    $sudo unbound-control -s ${DOCKERIP} local_data "${cid}.docker. ${ttl} IN A ${ip}" > /dev/null
+    $sudo unbound-control -s ${UNBOUNDIP} local_data_remove "${cid}.docker." > /dev/null
+    $sudo unbound-control -s ${UNBOUNDIP} local_data "${cid}.docker. ${ttl} IN A ${ip}" > /dev/null
     ptr=$(echo $ip | awk -F . '{print $4"."$3"."$2"."$1".in-addr.arpa."}')
-    $sudo unbound-control -s ${DOCKERIP} local_data "${ptr} 60 IN PTR ${cid}.docker."
+    $sudo unbound-control -s ${UNBOUNDIP} local_data "${ptr} 60 IN PTR ${cid}.docker."
 done
+

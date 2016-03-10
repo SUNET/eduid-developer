@@ -96,7 +96,7 @@ You need to update DNS settings in you local docker configuration.
 
 add
 
-    DOCKER_OPTS="--dns 172.17.42.1"
+    DOCKER_OPTS="--dns 127.0.0.1"
 
 To add a package, go to the directory containing the project that
 you would like to add:
