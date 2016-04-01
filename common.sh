@@ -1,6 +1,6 @@
 #
 # Set up a docker network
-DOCKER_NETWORK=eduid_dev
+DOCKER_NETWORK=docker
 docker network create -d bridge --subnet 172.20.0.0/16 ${DOCKER_NETWORK}
 
 # Return (echo) the base path to developers source repositorys
