@@ -32,7 +32,7 @@ $sudo docker rm $name
 $sudo docker run \
     --name ${name} \
     --hostname ${name} \
-    --dns=$(docker0_ipaddress) \
+    --net=${DOCKER_NETWORK} \
     -p 4001:4001 -p 2379:2379 \
     docker.sunet.se/library/etcd:v2.2.5 \
     -name etcd \

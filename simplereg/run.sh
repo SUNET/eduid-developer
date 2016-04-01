@@ -31,7 +31,7 @@ HostIP=$(docker0_ipaddress)
 $sudo docker rm $name
 docker run --rm=true \
     --name=${name} \
-    --dns=$(docker0_ipaddress) \
+    --net=${DOCKER_NETWORK} \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     -e REGISTRATOR_ETCD=1 \
     -e REGISTRATOR_DEBUG=0 \
