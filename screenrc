@@ -1,3 +1,6 @@
+screen -t "etcd"
+stuff "cd etcd && ./run.sh"
+
 screen -t "rabbitmq"
 stuff "cd rabbitmq && ./run.sh"
 
