@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. common.sh
+
 export GREP_OPTIONS=""
 
 UNBOUNDIP=127.0.0.1
@@ -13,7 +15,7 @@ ttl=60
 
 data=$($sudo docker network inspect --format \
     '{{ range $container := .Containers }} {{ $container.Name }}+{{ $container.IPv4Address }} {{ end }}' \
-    eduid_dev)
+    $DOCKER_NETWORK)
 
 items=$(echo $data | tr " " "\n")
 for item in $items; do
