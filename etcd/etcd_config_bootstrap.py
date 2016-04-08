@@ -41,7 +41,7 @@ def init_etcd_client(host=None, port=None):
     return etcd.Client(host, port)
 
 
-def write_configuration(client, config, base_namespace_depth, base_ns='', depth=1):
+def write_configuration(client, config, base_namespace_depth, base_ns='', depth=0):
     """
     :param client: etcd client
     :type client: etcd.Client
@@ -90,28 +90,30 @@ def write_configuration(client, config, base_namespace_depth, base_ns='', depth=
     are the ones we want write to etcd.
 
     This will result in the following key-value pairs being written to etcd:
-    /eduid/webapp/oidc_proofing -> {"LOG_TYPE": ["rotating", "gelf"], "MONGO_URI": "mongodb://user:pw@mongodb.docker"}
-    /eduid/webapp/common -> {"SAML_CONFIG": {"xmlsec_binary": "/usr/bin/xmlsec1"}}
+    /eduid/webapp/oidc_proofing/log_type -> '["rotating", "gelf"]'
+    /eduid/webapp/oidc_proofing/mongo_uri -> 'mongodb://user:pw@mongodb.docker'
+    /eduid/webapp/common/saml_config -> '{"xmlsec_binary": "/usr/bin/xmlsec1"}'
     """
 
-    for key, value in config.items():
+    depth += 1
+    for level in config.keys():
         if depth < base_namespace_depth:
-            base_ns = '{!s}/{!s}'.format(base_ns, key)
-            depth += 1
-            write_configuration(client, value, base_namespace_depth, base_ns, depth)
-            break
+            base_ns = '{!s}/{!s}'.format(base_ns, level)
+            write_configuration(client, config[level], base_namespace_depth, base_ns, depth)
+        else:
+            ns = '{!s}/{!s}'.format(base_ns, level)
+            for key, value in config[level].items():
+                fq_key = '{!s}/{!s}'.format(ns, key).lower()
+                json_value = json.dumps(value)
 
-        fq_key = '{!s}/{!s}'.format(base_ns, key)
-        json_value = json.dumps(value)
+                try:
+                    client.write(fq_key, json_value)
+                except etcd.EtcdConnectionFailed as e:
+                    sys.stderr.writelines(str(e)+'\n')
+                    sys.exit(1)
 
-        try:
-            client.write(fq_key.lower(), json_value)
-        except etcd.EtcdConnectionFailed as e:
-            sys.stderr.writelines(str(e)+'\n')
-            sys.exit(1)
-
-        if VERBOSE:
-            print('{!s} -> {!s}'.format(fq_key, json_value))
+                if VERBOSE:
+                    print('{!s} -> {!s}'.format(fq_key, json_value))
 
 
 def main():
