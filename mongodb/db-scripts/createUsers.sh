@@ -230,3 +230,14 @@ for db in eduid_oidc_proofing; do
 '
 done
 
+#
+# User eduid_authn, read
+#
+for db in eduid_am; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_authn,"}) == 0) {
+         db.addUser( { user: "eduid_authn", pwd: "eduid_authn_pw", roles: ["read"] } );
+      }
+'
+done
+
