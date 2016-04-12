@@ -1,4 +1,8 @@
 #
+# Set up a docker network
+DOCKER_NETWORK=docker
+docker network create -d bridge --subnet 172.20.0.0/16 ${DOCKER_NETWORK}
+
 # Return (echo) the base path to developers source repositorys
 function get_code_path {
   EDUID_SRC_PATH=${EDUID_SRC_PATH-'~/work/NORDUnet'}
@@ -35,6 +39,3 @@ function get_developer_params {
     echo "${src_volumes} ${pp}"
 }
 
-function docker0_ipaddress {
-    ifconfig docker0 | grep "inet addr:" | awk '{print $2}' | awk -F : '{print $2}'
-}

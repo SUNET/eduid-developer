@@ -35,8 +35,8 @@ CONFIG = {
                     "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
                 },
             },
-            "subject_data": ("mongodb", "mongodb://eduid_idp:eduid_idp_pw@mongodb.docker/eduid_idp_pysaml2"),
-            "session_storage": ("mongodb", "mongodb://eduid_idp:eduid_idp_pw@mongodb.docker/eduid_idp_pysaml2"),
+            "subject_data": ("mongodb", "mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_pysaml2"),
+            "session_storage": ("mongodb", "mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_pysaml2"),
             "name_id_format": [NAMEID_FORMAT_TRANSIENT,
                                NAMEID_FORMAT_PERSISTENT],
 

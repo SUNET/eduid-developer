@@ -25,7 +25,7 @@ $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
-    --dns=$(docker0_ipaddress) \
+    --net=${DOCKER_NETWORK} \
     -v $PWD/log:/var/log/redis \
     -v $PWD/data:/data \
     -v $PWD/etc/redis.conf:/etc/redis/redis.conf \

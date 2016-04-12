@@ -23,7 +23,7 @@ $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
-    --dns=$(docker0_ipaddress) \
+    --net=${DOCKER_NETWORK} \
     $DOCKERARGS \
     -i -t \
     docker.sunet.se/eduid/${name}

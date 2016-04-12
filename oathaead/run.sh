@@ -27,7 +27,7 @@ $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
-    --dns=$(docker0_ipaddress) \
+    --net=${DOCKER_NETWORK}
     -v $PWD/etc:/opt/eduid/eduid-oathaead/etc \
     -v $PWD/log:/var/log/eduid \
     --env "eduid_name=eduid-oathaead" \

@@ -28,7 +28,7 @@ $sudo docker rm $name
 $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
-    --dns=$(docker0_ipaddress) \
+    --net=${DOCKER_NETWORK} \
     -v $PWD/etc:/opt/eduid/eduid-${name}/etc:ro \
     -v $PWD/run:/opt/eduid/eduid-${name}/run \
     -v $PWD/scripts:/opt/eduid/eduid-${name}/scripts \
