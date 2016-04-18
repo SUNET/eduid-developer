@@ -91,7 +91,7 @@ def show_user(user, aux_collections):
 
 
 def main(search_for):
-    client = MongoClient('mongodb://localhost:27017/', read_preference=ReadPreference.SECONDARY)
+    client = MongoClient('mongodb://mongodb.docker:27017/', read_preference=ReadPreference.SECONDARY)
 
     coll = client['eduid_am']['attributes']
 

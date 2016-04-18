@@ -37,7 +37,7 @@ def remove_user(user, coll, aux_collections):
                                        })
 
 def main(eppn):
-    client = MongoClient('mongodb://localhost:27017/', read_preference=ReadPreference.SECONDARY)
+    client = MongoClient('mongodb://mongodb.docker:27017/', read_preference=ReadPreference.SECONDARY)
 
     coll = client['eduid_am']['attributes']
 

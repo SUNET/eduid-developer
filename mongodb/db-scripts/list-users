@@ -6,7 +6,7 @@
 import pymongo
 from pymongo import MongoClient, ReadPreference
 
-client = MongoClient('mongodb://localhost:27017/', read_preference=ReadPreference.SECONDARY)
+client = MongoClient('mongodb://mongodb.docker:27017/', read_preference=ReadPreference.SECONDARY)
 
 db = client['eduid_am']
 coll = db['attributes']
