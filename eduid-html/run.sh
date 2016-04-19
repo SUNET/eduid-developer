@@ -29,7 +29,6 @@ $sudo docker run --rm=true \
     --name ${name} \
     --hostname ${name} \
     --net=${DOCKER_NETWORK} \
-    -v $PWD/scripts:/opt/eduid/eduid-${name}/scripts \
     -v $PWD/log:/var/log/eduid \
     $src_params \
     $DOCKERARGS \
