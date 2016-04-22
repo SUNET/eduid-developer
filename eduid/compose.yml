@@ -1,0 +1,317 @@
+---
+version: '2'
+services:
+
+  actions:
+    image: docker.sunet.se/eduid/eduid-actions
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+    volumes:
+      - ../eduid-actions/etc:/opt/eduid/eduid-actions/etc:ro
+      - ../eduid-actions/run:/opt/eduid/eduid-actions/run
+      - ../eduid-actions/scripts:/opt/eduid/eduid-actions/scripts:ro
+      - ../eduid-actions/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
+      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou"
+    depends_on:
+      - mongodb
+
+  am:
+    image: docker.sunet.se/eduid/eduid-am
+    networks:
+      dev:
+    volumes:
+      - ../eduid-am/etc:/opt/eduid/eduid-am/etc:ro
+      - ../eduid-am/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-signup-amp:/opt/eduid/src/eduid-signup-amp:ro
+      - ../sources/eduid-dashboard-amp:/opt/eduid/src/eduid-dashboard-amp:ro
+      - ../sources/eduid-actions:/opt/eduid/src/eduid-actions:ro
+      - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-actions:/opt/eduid/src/eduid_action.tou"
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+  api:
+    image: docker.sunet.se/eduid/eduid-api
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+    volumes:
+      - ../eduid-api/etc:/opt/eduid/eduid-api/etc:ro
+      - ../eduid-api/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-api"
+    depends_on:
+      - mongodb
+
+  dashboard:
+    image: docker.sunet.se/eduid/eduid-dashboard
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+        ipv4_address: 172.16.10.220
+    volumes:
+      - ../eduid-dashboard/etc:/opt/eduid/eduid-dashboard/etc:ro
+      - ../eduid-dashboard/run:/opt/eduid/eduid-dashboard/run
+      - ../eduid-dashboard/scripts:/opt/eduid/eduid-dashboard/scripts:ro
+      - ../eduid-dashboard/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-dashboard:/opt/eduid/src/eduid-dashboard:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-common"
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - redis
+
+  html:
+    image: docker.sunet.se/eduid/eduid-html
+    expose:
+      - 80
+    networks:
+      dev:
+        ipv4_address: 172.16.10.230
+    volumes:
+      - ../eduid-html/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
+
+  idproofing-letter:
+    image: docker.sunet.se/eduid/eduid-idproofing-letter
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+    volumes:
+      - ../eduid-idproofing-letter/etc:/opt/eduid/eduid-idproofing-letter/etc:ro
+      - ../eduid-idproofing-letter/run:/opt/eduid/eduid-idproofing-letter/run
+      - ../eduid-idproofing-letter/scripts:/opt/eduid/eduid-idproofing-letter/scripts:ro
+      - ../eduid-idproofing-letter/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-idproofing-letter:/opt/eduid/src/eduid-idproofing-letter:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-idproofing-letter"
+      - "IDPROOFING_LETTER_SETTINGS=/opt/eduid/eduid-idproofing-letter/etc/dev.py"
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+  idp:
+    image: docker.sunet.se/eduid/eduid-idp
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+        ipv4_address: 172.16.10.200
+    volumes:
+      - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
+      - ../eduid-idp/run:/opt/eduid/eduid-idp/run
+      - ../eduid-idp/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-IdP:/opt/eduid/src/eduid-IdP:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-action.tou:/opt/eduid/src/eduid-action.tou:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-action.tou"
+    depends_on:
+      - mongodb
+      - redis
+
+  lookup-mobile:
+    image: docker.sunet.se/eduid/eduid-lookup-mobile
+    networks:
+      dev:
+    volumes:
+      - ../eduid-lookup-mobile/etc:/opt/eduid/eduid-lookup-mobile/etc:ro
+      - ../eduid-lookup-mobile/run:/opt/eduid/eduid-lookup-mobile/run
+      - ../eduid-lookup-mobile/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-lookup-mobile"
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+#  mm-service:
+#    image: docker.sunet.se/eduid/eduid-mm-service
+#    networks:
+#      dev:
+#    volumes:
+#      - ../eduid-mm-service/etc:/opt/eduid/eduid-mm-service/etc:ro
+#      - ../eduid-mm-service/log:/var/log/eduid
+#      # source volumes
+#      - ../sources/eduid-mm-service:/opt/eduid/src/eduid-mm-service:ro
+#      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+#    environment:
+#      - "PYTHONPATH=/opt/eduid/src/eduid-mm-service:/opt/eduid/src/eduid-am"
+#      - "mm_truststore_pw=foobar"
+#      - "mm_keystore_pw=barfoo"
+
+  msg:
+    image: docker.sunet.se/eduid/eduid-msg
+    networks:
+      dev:
+    volumes:
+      - ../eduid-msg/etc:/opt/eduid/eduid-msg/etc:ro
+      - ../eduid-msg/run:/opt/eduid/eduid-msg/run
+      - ../eduid-msg/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-am"
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+  signup:
+    image: docker.sunet.se/eduid/eduid-signup
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+        ipv4_address: 172.16.10.210
+    volumes:
+      - ../eduid-signup/etc:/opt/eduid/eduid-signup/etc:ro
+      - ../eduid-signup/run:/opt/eduid/eduid-signup/run
+      - ../eduid-signup/scripts:/opt/eduid/eduid-signup/scripts:ro
+      - ../eduid-signup/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-signup:/opt/eduid/src/eduid-signup:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-signup:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb"
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - redis
+
+  etcd:
+    image: docker.sunet.se/library/etcd:v2.2.5
+    expose:
+      - 2379
+      - 2380
+      - 4001
+    networks:
+      dev:
+        ipv4_address: 172.16.10.254
+    command: >-
+      -name etcd
+      -advertise-client-urls http://172.16.10.254:2379,http://172.16.10.254:4001
+      -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
+      -initial-advertise-peer-urls http://172.16.10.254:2380
+      -listen-peer-urls http://0.0.0.0:2380
+      -initial-cluster-token etcd-cluster-1
+      -initial-cluster etcd=http://172.16.10.254:2380
+      -initial-cluster-state new
+      -data-dir /data
+    volumes:
+      - ../etcd/data:/data
+
+  mongodb:
+    image: docker.sunet.se/eduid/mongodb
+    expose:
+      - 27017
+    networks:
+      dev:
+    volumes:
+      - ../mongodb/data:/data
+      - ../mongodb/etc:/opt/eduid/etc:ro
+      - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
+
+  oathaead:
+    image: docker.sunet.se/eduid/eduid-api
+    networks:
+      dev:
+    volumes:
+      - ../eduid-oathaead/etc:/opt/eduid/eduid-oathaead/etc:ro
+      - ../eduid-oathaead/run:/opt/eduid/eduid-oathaead/run
+      - ../eduid-oathaead/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-api"
+      - "eduid_name=eduid-oathaead"
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    depends_on:
+      - mongodb
+
+  pypiserver:
+    image: docker.sunet.se/eduid/pypiserver
+    networks:
+      dev:
+    volumes:
+      - ../pypiserver/etc:/opt/eduid/pypiserver/etc:ro
+      - ../pypiserver/log:/var/log/eduid
+      - ../pypiserver/packages:/opt/eduid/pypiserver/packages
+
+  rabbitmq:
+    image: docker.sunet.se/eduid/rabbitmq
+    networks:
+      dev:
+    volumes:
+      - ../rabbitmq/etc:/etc/rabbitmq:ro
+      - ../rabbitmq/log:/var/log/rabbitmq
+
+  redis:
+    image: docker.sunet.se/eduid/redis
+    networks:
+      dev:
+    volumes:
+      - ../redis/etc:/etc/redis:ro
+      - ../redis/log:/var/log/redis
+      - ../redis/data:/data
+
+  simplereg:
+    image: docker.sunet.se/eduid/simplereg
+    networks:
+      dev:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "REGISTRATOR_ETCD=1"
+      - "REGISTRATOR_DEBUG=0"
+      - "ETCD_HOST=eduid_etcd_1.eduid_dev"
+    depends_on:
+      - etcd
+
+  turq:
+    image: docker.sunet.se/eduid/turq
+    networks:
+      dev:
+
+networks:
+  dev:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.10.0/24
+        gateway: 172.16.10.1
