@@ -19,7 +19,7 @@ services:
       - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
       - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou"
+      - "PYTHONPATH=/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou"
     depends_on:
       - mongodb
 
@@ -38,7 +38,7 @@ services:
       - ../sources/eduid-actions:/opt/eduid/src/eduid-actions:ro
       - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-actions:/opt/eduid/src/eduid_action.tou"
+      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-actions:/opt/eduid/src/eduid_action.tou"
     depends_on:
       - mongodb
       - rabbitmq
@@ -55,7 +55,7 @@ services:
       # source volumes
       - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-api"
+      - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
     depends_on:
       - mongodb
 
@@ -80,7 +80,7 @@ services:
       - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-common"
+      - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
     depends_on:
       - mongodb
       - rabbitmq
@@ -135,7 +135,7 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-action.tou:/opt/eduid/src/eduid-action.tou:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-action.tou"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action.tou"
     depends_on:
       - mongodb
       - redis
@@ -207,7 +207,7 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-signup:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb"
+      - "PYTHONPATH=/opt/eduid/src/eduid-signup:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src"
     depends_on:
       - mongodb
       - rabbitmq
@@ -257,7 +257,7 @@ services:
       # source volumes
       - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-api"
+      - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
       - "eduid_name=eduid-oathaead"
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0"
