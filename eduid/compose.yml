@@ -135,10 +135,11 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-action.tou:/opt/eduid/src/eduid-action.tou:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-action.tou"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb:/opt/eduid/src/eduid-action.tou"
     depends_on:
       - mongodb
       - redis
+      - turq
 
   lookup-mobile:
     image: docker.sunet.se/eduid/eduid-lookup-mobile
