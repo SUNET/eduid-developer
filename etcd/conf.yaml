@@ -29,8 +29,16 @@ eduid:
                 version: v1
                 plugins:
                     - apispec.ext.marshmallow
+            CLIENT_REGISTRATION_INFO:
+                client_id: client1
+                client_secret: abcdef
+            PROVIDER_CONFIGURATION_INFO:
+                issuer: http://localhost:5000
             MONGO_URI: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.docker
         authn:
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.docker
+        support:
+            SECRET_KEY: supersecretkey
+            MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.docker
 
