@@ -241,3 +241,13 @@ for db in eduid_am; do
 '
 done
 
+#
+# User eduid_support, read
+#
+for db in eduid_am eduid_signup eduid_dashboard eduid_oidc_proofing eduid_idproofing_letter eduid_api eduid_actions eduid_lookup_mobile eduid_tou eduid_idp eduid_idp_authninfo eduid_idp_pysaml2; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_support"}) == 0) {
+         db.addUser( { user: "eduid_support", pwd: "eduid_support_pw", roles: ["read"] } );
+      }
+'
+done
