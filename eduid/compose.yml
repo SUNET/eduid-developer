@@ -241,6 +241,7 @@ services:
       - 27017
     networks:
       dev:
+        ipv4_address: 172.16.10.253
     volumes:
       - ../mongodb/data:/data
       - ../mongodb/etc:/opt/eduid/etc:ro
