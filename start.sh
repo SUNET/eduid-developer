@@ -12,6 +12,7 @@ fi
     printf "172.16.10.210\tsignup.eduid_dev signup.docker\n";
     printf "172.16.10.220\tdashboard.eduid_dev dashboard.docker\n";
     printf "172.16.10.230\thtml.eduid_dev html.docker\n";
+    printf "172.16.10.252\tredis.eduid_dev redis.docker\n";
     printf "172.16.10.253\tmongodb.eduid_dev mongodb.docker\n";
     printf "172.16.10.254\tetcd.eduid_dev etcd.docker\n";
 ) \
