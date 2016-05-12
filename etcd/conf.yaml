@@ -39,6 +39,6 @@ eduid:
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.docker
         support:
-            SECRET_KEY: supersecretkey
+            SECRET_KEY: "123456"
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.docker
 
