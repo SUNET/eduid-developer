@@ -118,6 +118,26 @@ services:
       - mongodb
       - rabbitmq
 
+  authn:
+    image: docker.sunet.se/eduid/eduid-authn
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+        ipv4_address: 172.16.10.202
+    volumes:
+      - ../eduid-authn/etc:/opt/eduid/etc:ro
+      - ../eduid-authn/run:/opt/eduid/run
+      - ../eduid-authn/log:/var/log
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+    depends_on:
+      - redis
+
   idp:
     image: docker.sunet.se/eduid/eduid-idp
     #expose:
