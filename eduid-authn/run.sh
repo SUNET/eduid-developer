@@ -7,7 +7,7 @@
 
 . ../common.sh
 
-name="actions"
+name="eduid-authn"
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
@@ -15,7 +15,7 @@ fi
 
 mkdir -p log etc src run
 
-src_params="$(get_developer_params eduid-${name} eduid-userdb eduid-am eduid_action.tou eduid-html)"
+src_params="$(get_developer_params "eduid-webapp")"
 echo "Source parameters: ${src_params}"
 
 if $sudo docker ps | awk '{print $NF}' | grep -qx $name; then
@@ -26,14 +26,13 @@ fi
 
 $sudo docker rm $name
 $sudo docker run --rm=true \
-    --name ${name} \
-    --hostname ${name} \
+    --name authn \
+    --hostname authn \
     --net=${DOCKER_NETWORK} \
-    -v $PWD/etc:/opt/eduid/eduid-${name}/etc:ro \
-    -v $PWD/run:/opt/eduid/eduid-${name}/run \
-    -v $PWD/scripts:/opt/eduid/eduid-${name}/scripts \
+    -v $PWD/etc:/opt/eduid/${name}/etc:ro \
+    -v $PWD/run:/opt/eduid/${name}/run \
     -v $PWD/log:/var/log/eduid \
     $src_params \
     $DOCKERARGS \
     -i -t \
-    docker.sunet.se/eduid/eduid-${name}
+    docker.sunet.se/eduid/${name}:latest

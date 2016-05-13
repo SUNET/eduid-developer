@@ -30,10 +30,10 @@ except IOError:
     except IOError:
         raise Exception('Cannot open file `%s` for writing.' % SECRET_FILE)
 
-MONGO_URI = 'mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb.docker'
+MONGO_URI = 'mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb'
 
 CELERY_CONFIG = {
-    'BROKER_URL': 'amqp://eduid:eduid_pw@rabbitmq.docker/msg',
+    'BROKER_URL': 'amqp://eduid:eduid_pw@rabbitmq/msg',
     'CELERY_RESULT_BACKEND': 'amqp',
     'CELERY_TASK_SERIALIZER': 'json',
 }
@@ -47,3 +47,4 @@ EKOPOST_DEBUG_PDF = '/opt/eduid/eduid-idproofing-letter/run/letter.pdf'
 LOG_FILE = '/var/log/eduid/idproofing_letter.log'
 LOG_LEVEL = 'DEBUG'
 
+LETTER_WAIT_TIME_HOURS = 0.1  # 6 min
