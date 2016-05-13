@@ -15,7 +15,7 @@ eduid:
             REDIS_HOST: redis.docker
             # SAML2 config
             SAML2_LOGIN_REDIRECT_URL: /
-            SAML2_SETTINGS_MODULE: ../authn/tests/saml2_settings.py
+            SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
             SAML2_LOGOUT_REDIRECT_URL: http://html.docker/
             SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
@@ -38,6 +38,15 @@ eduid:
         authn:
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.docker
+            TESTING: no
+            SESSION_COOKIE_PATH: /
+            SESSION_COOKIE_HTTPONLY: False
+            SESSION_COOKIE_SECURE: False
+            PERMANENT_SESSION_LIFETIME: 3600
+            LOGGER_NAME: eduid_webapp.authn
+            SERVER_NAME: authn.docker:8080
+            REDIS_PORT: 6379
+            REDIS_DB: 0
         support:
             SECRET_KEY: "123456"
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.docker
