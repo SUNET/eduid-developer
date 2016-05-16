@@ -8,6 +8,7 @@ services:
     #  - 5000
     networks:
       dev:
+        ipv4_address: 172.16.10.240
     volumes:
       - ../eduid-actions/etc:/opt/eduid/eduid-actions/etc:ro
       - ../eduid-actions/run:/opt/eduid/eduid-actions/run
