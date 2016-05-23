@@ -15,6 +15,8 @@ fi
     printf "172.16.10.252\tredis.eduid_dev redis.docker\n";
     printf "172.16.10.253\tmongodb.eduid_dev mongodb.docker\n";
     printf "172.16.10.254\tetcd.eduid_dev etcd.docker\n";
+    printf "172.16.10.221\tactions.eduid_dev actions.docker\n";
+    printf "172.16.10.222\tauthn.eduid_dev authn.docker\n";
 ) \
     | while read line; do
     if ! grep -q "^${line}$" /etc/hosts; then
