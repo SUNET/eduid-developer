@@ -49,6 +49,7 @@ CONFIG = {
     "cert_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem",
     "metadata": {
         "local": ["/opt/eduid/eduid-idp/etc/dashboard_metadata.xml",
+                  "/opt/eduid/eduid-idp/etc/authn_metadata.xml",
                   ],
     },
     "organization": {
