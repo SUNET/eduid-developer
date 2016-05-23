@@ -57,8 +57,8 @@ GWjmsNKnnx9xjXcGjbeemN2HZmqaNoaZOYIRf120tm8yQZck5uiUUqgT8+obQj6W
         </ns1:X509Data>
       </ns1:KeyInfo>
     </ns0:KeyDescriptor>
-    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://authn.docker:8080/saml2/ls/"/>
-    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://authn.docker:8080/saml2/acs/" index="1"/>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://authn.docker:8080/logout"/>
+    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://authn.docker:8080/saml2-acs" index="1"/>
   </ns0:SPSSODescriptor>
   <ns0:Organization>
     <ns0:OrganizationName xml:lang="en">eduID</ns0:OrganizationName>
