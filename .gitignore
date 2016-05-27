@@ -2,6 +2,7 @@
 \#*
 .*~
 mongodb/data
+redis/data
 */run
 */log
 *.pyc
