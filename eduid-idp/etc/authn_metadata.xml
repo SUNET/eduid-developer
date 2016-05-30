@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="http://www.w3.org/2000/09/xmldsig#" entityID="http://authn.docker:8080/saml2/metadata/">
+
+  <ns0:Extensions>
+    <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
+      <samla:Attribute xmlns:samla="urn:oasis:names:tc:SAML:2.0:assertion"
+		       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+		       Name="http://macedir.org/entity-category">
+        <samla:AttributeValue>http://www.swamid.se/category/nren-service</samla:AttributeValue>
+        <samla:AttributeValue>http://www.swamid.se/category/research-and-education</samla:AttributeValue>
+      </samla:Attribute>
+    </mdattr:EntityAttributes>
+
+    <!-- This EntityAttribute makes the IdP require AL2 login to the dashboard
+    <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
+      <samla:Attribute xmlns:samla="urn:oasis:names:tc:SAML:2.0:assertion"
+		       NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+		       Name="http://www.swamid.se/assurance-requirement">
+      <samla:AttributeValue>http://www.swamid.se/policy/assurance/al2</samla:AttributeValue>
+      </samla:Attribute>
+    </mdattr:EntityAttributes>
+    -->
+
+  </ns0:Extensions>
+
+  <ns0:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <ns0:KeyDescriptor use="encryption">
+      <ns1:KeyInfo>
+        <ns1:X509Data>
+          <ns1:X509Certificate>MIIDvzCCAnegAwIBAgIEVJFF/jANBgkqhkiG9w0BAQsFADA7MQswCQYDVQQGEwJT
+RTEeMBwGA1UEChMVRURVSUQgTE9DQUwgREVWRUxPUEVSMQwwCgYDVQQDEwNpZHAw
+HhcNMTQxMjE3MDg1OTQ0WhcNMjQxMjE0MDg1OTUxWjA7MQswCQYDVQQGEwJTRTEe
+MBwGA1UEChMVRURVSUQgTE9DQUwgREVWRUxPUEVSMQwwCgYDVQQDEwNpZHAwggFS
+MA0GCSqGSIb3DQEBAQUAA4IBPwAwggE6AoIBMQC8zE8PpUjSEbI+qs5bnWK58Ivz
+Zdirex2g1IHcOyRoKkOzERwRdpGBp0t5h9vz6NJzje4zro6xiK06dVRcpZZQ2eYZ
+iMz0j8YUVd95HepsZRZhJoOM4xAxGcpoLPReP2qAf1e/Cl48tDz5BNgMhmOKibWQ
+0zMQpFBkGAni8JMFNZrs8L2IpoMAoAun7PtLZyRJh1V838k8ZCpmHqBHq7CvZtKR
+Vtog5FUFeyAHvMz+1fhamFEsnRpV2nDrmnKyTOYWhfqOAjAbZjh3wDmYeSKyeb+k
+RkLh4zjbMAsQQ+wGd8I/1M83t+vS2tsMuGnu8mnQT55vZvFRk4BsxBdlI1AFpcCi
+JmlLdHB2GEmMyGJQ7i27/3YzUChlHqEMAoDUXGhOcZ2sD72vBfDblat8sy/TAgMB
+AAGjazBpMAwGA1UdEwEB/wQCMAAwFAYDVR0RBA0wC4IJZGFzaGJvYXJkMBMGA1Ud
+JQQMMAoGCCsGAQUFBwMBMA8GA1UdDwEB/wQFAwMHIAAwHQYDVR0OBBYEFLHAu1Py
+3W//cNrd/nnRh6U43EaYMA0GCSqGSIb3DQEBCwUAA4IBMQCi1cP55JzNPMJS4oJ7
+ifarmmEdXTn3WeY3Bnjyfe4veP7ZxomUkBNCRg6bWxT98XQPEkznVHYCLIroikkH
+ui5fA+pLD4cLSTnTDSQhlL/DU3K7XJI3zVGeM2d7MOLzMsczBzItAN4jDaaIP5PN
+JuSaJEvmY5vGa1xJZZMMc4+XIx5Hr3Zai04ysKIaB9mWzqd5b5h+yQRty06SH21w
+y2SJomXNSIeYaZ1kICPK42s6UT36Uuu6DaFhv49UFgYXt9wZ2tqtzsumK1sP9Z2l
+p2+EySCxK+M1HieATpSRQG/+jR7TsF+AJzCrreH83785rLi3wOW3Twde7AHJiqMN
+GWjmsNKnnx9xjXcGjbeemN2HZmqaNoaZOYIRf120tm8yQZck5uiUUqgT8+obQj6W
+/AGZ
+</ns1:X509Certificate>
+        </ns1:X509Data>
+      </ns1:KeyInfo>
+    </ns0:KeyDescriptor>
+    <ns0:KeyDescriptor use="signing">
+      <ns1:KeyInfo>
+        <ns1:X509Data>
+          <ns1:X509Certificate>MIIDvzCCAnegAwIBAgIEVJFF/jANBgkqhkiG9w0BAQsFADA7MQswCQYDVQQGEwJT
+RTEeMBwGA1UEChMVRURVSUQgTE9DQUwgREVWRUxPUEVSMQwwCgYDVQQDEwNpZHAw
+HhcNMTQxMjE3MDg1OTQ0WhcNMjQxMjE0MDg1OTUxWjA7MQswCQYDVQQGEwJTRTEe
+MBwGA1UEChMVRURVSUQgTE9DQUwgREVWRUxPUEVSMQwwCgYDVQQDEwNpZHAwggFS
+MA0GCSqGSIb3DQEBAQUAA4IBPwAwggE6AoIBMQC8zE8PpUjSEbI+qs5bnWK58Ivz
+Zdirex2g1IHcOyRoKkOzERwRdpGBp0t5h9vz6NJzje4zro6xiK06dVRcpZZQ2eYZ
+iMz0j8YUVd95HepsZRZhJoOM4xAxGcpoLPReP2qAf1e/Cl48tDz5BNgMhmOKibWQ
+0zMQpFBkGAni8JMFNZrs8L2IpoMAoAun7PtLZyRJh1V838k8ZCpmHqBHq7CvZtKR
+Vtog5FUFeyAHvMz+1fhamFEsnRpV2nDrmnKyTOYWhfqOAjAbZjh3wDmYeSKyeb+k
+RkLh4zjbMAsQQ+wGd8I/1M83t+vS2tsMuGnu8mnQT55vZvFRk4BsxBdlI1AFpcCi
+JmlLdHB2GEmMyGJQ7i27/3YzUChlHqEMAoDUXGhOcZ2sD72vBfDblat8sy/TAgMB
+AAGjazBpMAwGA1UdEwEB/wQCMAAwFAYDVR0RBA0wC4IJZGFzaGJvYXJkMBMGA1Ud
+JQQMMAoGCCsGAQUFBwMBMA8GA1UdDwEB/wQFAwMHIAAwHQYDVR0OBBYEFLHAu1Py
+3W//cNrd/nnRh6U43EaYMA0GCSqGSIb3DQEBCwUAA4IBMQCi1cP55JzNPMJS4oJ7
+ifarmmEdXTn3WeY3Bnjyfe4veP7ZxomUkBNCRg6bWxT98XQPEkznVHYCLIroikkH
+ui5fA+pLD4cLSTnTDSQhlL/DU3K7XJI3zVGeM2d7MOLzMsczBzItAN4jDaaIP5PN
+JuSaJEvmY5vGa1xJZZMMc4+XIx5Hr3Zai04ysKIaB9mWzqd5b5h+yQRty06SH21w
+y2SJomXNSIeYaZ1kICPK42s6UT36Uuu6DaFhv49UFgYXt9wZ2tqtzsumK1sP9Z2l
+p2+EySCxK+M1HieATpSRQG/+jR7TsF+AJzCrreH83785rLi3wOW3Twde7AHJiqMN
+GWjmsNKnnx9xjXcGjbeemN2HZmqaNoaZOYIRf120tm8yQZck5uiUUqgT8+obQj6W
+/AGZ
+</ns1:X509Certificate>
+        </ns1:X509Data>
+      </ns1:KeyInfo>
+    </ns0:KeyDescriptor>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://authn.docker:8080/logout"/>
+    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://authn.docker:8080/saml2-acs" index="1"/>
+  </ns0:SPSSODescriptor>
+  <ns0:Organization>
+    <ns0:OrganizationName xml:lang="en">eduID</ns0:OrganizationName>
+    <ns0:OrganizationDisplayName xml:lang="en">eduID</ns0:OrganizationDisplayName>
+    <ns0:OrganizationURL xml:lang="en">http://www./</ns0:OrganizationURL>
+  </ns0:Organization>
+  <ns0:ContactPerson contactType="technical">
+    <ns0:Company>eduID</ns0:Company>
+    <ns0:GivenName>Sysadmin</ns0:GivenName>
+    <ns0:SurName/>
+    <ns0:EmailAddress>eduid-dev@SEGATE.SUNET.SE</ns0:EmailAddress>
+  </ns0:ContactPerson>
+</ns0:EntityDescriptor>
