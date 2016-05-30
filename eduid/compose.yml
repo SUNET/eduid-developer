@@ -83,9 +83,8 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/pyyaml:/opt/eduid/src/pyyaml:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/pyyaml"
+      - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
     depends_on:
       - mongodb
       - rabbitmq
@@ -139,9 +138,8 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/pysaml2/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
       - "ETCD_HOST=eduid_etcd_1.eduid_dev"
     depends_on:
       - redis
