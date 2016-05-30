@@ -22,7 +22,7 @@ services:
       - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
       - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-commmon/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou:/opt/eduid/src/eduid-actions"
+      - "PYTHONPATH=/opt/eduid/src/eduid-commmon/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou/src:/opt/eduid/src/eduid-actions"
     depends_on:
       - mongodb
 
@@ -117,7 +117,7 @@ services:
       # source volumes
       - ../sources/eduid-idproofing-letter:/opt/eduid/src/eduid-idproofing-letter:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-idproofing-letter"
+      - "PYTHONPATH=/opt/eduid/src/eduid-idproofing-letter/src"
       - "IDPROOFING_LETTER_SETTINGS=/opt/eduid/eduid-idproofing-letter/etc/dev.py"
     depends_on:
       - mongodb
@@ -163,7 +163,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-action.tou:/opt/eduid/src/eduid-action.tou:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action.tou"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action.tou/src"
     depends_on:
       - mongodb
       - redis
