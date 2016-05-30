@@ -8,7 +8,7 @@ services:
     #  - 5000
     networks:
       dev:
-        ipv4_address: 172.16.10.221
+        ipv4_address: 172.16.10.240
     volumes:
       - ../eduid-actions/etc:/opt/eduid/eduid-actions/etc:ro
       - ../eduid-actions/run:/opt/eduid/eduid-actions/run
@@ -18,10 +18,11 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-actions:/opt/eduid/src/eduid-actions:ro
       - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
       - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-commmon/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou"
+      - "PYTHONPATH=/opt/eduid/src/eduid-commmon/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou:/opt/eduid/src/eduid-actions"
     depends_on:
       - mongodb
 
