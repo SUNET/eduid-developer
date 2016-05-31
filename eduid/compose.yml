@@ -16,12 +16,13 @@ services:
       - ../eduid-actions/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-actions:/opt/eduid/src/eduid-actions:ro
       - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
       - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
     environment:
-        - "PYTHONPATH=/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou:/opt/eduid/src/eduid-actions"
+      - "PYTHONPATH=/opt/eduid/src/eduid-commmon/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou/src:/opt/eduid/src/eduid-actions"
     depends_on:
       - mongodb
 
@@ -34,13 +35,14 @@ services:
       - ../eduid-am/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-signup-amp:/opt/eduid/src/eduid-signup-amp:ro
       - ../sources/eduid-dashboard-amp:/opt/eduid/src/eduid-dashboard-amp:ro
       - ../sources/eduid-actions:/opt/eduid/src/eduid-actions:ro
       - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-actions:/opt/eduid/src/eduid_action.tou"
+    #environment:
+      #- "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-actions:/opt/eduid/src/eduid_action.tou"
     depends_on:
       - mongodb
       - rabbitmq
@@ -87,6 +89,7 @@ services:
       - mongodb
       - rabbitmq
       - redis
+      - idp
 
   html:
     image: docker.sunet.se/eduid/eduid-html
@@ -114,11 +117,33 @@ services:
       # source volumes
       - ../sources/eduid-idproofing-letter:/opt/eduid/src/eduid-idproofing-letter:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-idproofing-letter"
+      - "PYTHONPATH=/opt/eduid/src/eduid-idproofing-letter/src"
       - "IDPROOFING_LETTER_SETTINGS=/opt/eduid/eduid-idproofing-letter/etc/dev.py"
     depends_on:
       - mongodb
       - rabbitmq
+
+  authn:
+    image: docker.sunet.se/eduid/eduid-authn
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+        ipv4_address: 172.16.10.222
+    volumes:
+      - ../eduid-authn/etc:/opt/eduid/etc
+      - ../eduid-authn/run:/opt/eduid/run
+      - ../eduid-authn/log:/opt/eduid/log
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "ETCD_HOST=eduid_etcd_1.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
 
   idp:
     image: docker.sunet.se/eduid/eduid-idp
@@ -135,9 +160,10 @@ services:
       - ../sources/eduid-IdP:/opt/eduid/src/eduid-IdP:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-action.tou:/opt/eduid/src/eduid-action.tou:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid_action.tou"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action.tou/src"
     depends_on:
       - mongodb
       - redis
@@ -153,8 +179,10 @@ services:
       - ../eduid-lookup-mobile/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-lookup-mobile"
+      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-lookup-mobile"
     depends_on:
       - mongodb
       - rabbitmq
