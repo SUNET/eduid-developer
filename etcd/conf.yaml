@@ -7,7 +7,11 @@ eduid:
             SESSION_COOKIE_NAME: sessid
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
-            SESSION_COOKIE_DOMAIN: .docker
+            SESSION_COOKIE_DOMAIN: eduid.docker
+            SESSION_COOKIE_PATH: /
+            SESSION_COOKIE_HTTPONLY: False
+            SESSION_COOKIE_SECURE: False
+            PERMANENT_SESSION_LIFETIME: 3600
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
             PREFERRED_URL_SCHEME: http
@@ -22,7 +26,7 @@ eduid:
             TOKEN_SERVICE_URL: http://authn.docker:8080/login
         oidc_proofing:
             SECRET_KEY: supersecretkey
-            LOG_FILE: logs/oidc_proofing.log
+            LOG_FILE: /var/log/eduid/oidc_proofing.log
             LOG_LEVEL: DEBUG
             APISPEC_SPEC:
                 title: eduid-oidc-proofing
@@ -39,20 +43,17 @@ eduid:
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
             TESTING: no
-            SESSION_COOKIE_DOMAIN: authn.docker
-            SESSION_COOKIE_PATH: /
-            SESSION_COOKIE_HTTPONLY: False
-            SESSION_COOKIE_SECURE: False
-            PERMANENT_SESSION_LIFETIME: 3600
-            LOGGER_NAME: eduid_webapp.authn
-            SERVER_NAME: authn.docker:8080
+            LOG_FILE: /var/log/eduid/authn.log
+            LOG_LEVEL: DEBUG
             REDIS_PORT: 6379
             REDIS_DB: 0
-            required_loa:
+            REQUIRED_LOA:
                 personal: http://www.swamid.se/policy/assurance/al1
                 helpdesk: http://www.swamid.se/policy/assurance/al2
                 admin: http://www.swamid.se/policy/assurance/al3
         support:
-            SECRET_KEY: "123456"
+            SECRET_KEY: supersecretkey
+            LOG_FILE: /var/log/eduid/support.log
+            LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
 

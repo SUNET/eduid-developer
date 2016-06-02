@@ -139,11 +139,32 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
-      - "ETCD_HOST=eduid_etcd_1.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - redis
       - mongodb
+      - etcd
+
+  support:
+    image: docker.sunet.se/eduid/eduid-support
+    networks:
+      dev:
+        ipv4_address: 172.16.10.223
+    volumes:
+      - ../eduid-support/run:/opt/eduid/run
+      - ../eduid-support/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
 
   idp:
     image: docker.sunet.se/eduid/eduid-idp
@@ -295,15 +316,6 @@ services:
     depends_on:
       - mongodb
 
-  pypiserver:
-    image: docker.sunet.se/eduid/pypiserver
-    networks:
-      dev:
-    volumes:
-      - ../pypiserver/etc:/opt/eduid/pypiserver/etc:ro
-      - ../pypiserver/log:/var/log/eduid
-      - ../pypiserver/packages:/opt/eduid/pypiserver/packages
-
   rabbitmq:
     image: docker.sunet.se/eduid/rabbitmq
     networks:
@@ -333,7 +345,7 @@ services:
     environment:
       - "REGISTRATOR_ETCD=1"
       - "REGISTRATOR_DEBUG=0"
-      - "ETCD_HOST=eduid_etcd_1.eduid_dev"
+      - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - etcd
 

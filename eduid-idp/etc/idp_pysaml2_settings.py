@@ -6,7 +6,7 @@ from saml2.saml import NAME_FORMAT_URI
 from saml2.saml import NAMEID_FORMAT_TRANSIENT
 from saml2.saml import NAMEID_FORMAT_PERSISTENT
 
-BASE = 'http://idp.docker:8080'
+BASE = 'http://idp.eduid.docker:8080'
 
 CONFIG = {
     "entityid": "%s/idp.xml" % BASE,

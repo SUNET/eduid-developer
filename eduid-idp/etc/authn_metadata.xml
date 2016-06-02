@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="http://www.w3.org/2000/09/xmldsig#" entityID="http://authn.docker:8080/saml2/metadata/">
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="http://www.w3.org/2000/09/xmldsig#" entityID="http://authn.eduid.docker:8080/saml2/metadata/">
 
   <ns0:Extensions>
     <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
@@ -80,8 +80,8 @@ GWjmsNKnnx9xjXcGjbeemN2HZmqaNoaZOYIRf120tm8yQZck5uiUUqgT8+obQj6W
         </ns1:X509Data>
       </ns1:KeyInfo>
     </ns0:KeyDescriptor>
-    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://authn.docker:8080/logout"/>
-    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://authn.docker:8080/saml2-acs" index="1"/>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://authn.eduid.docker:8080/logout"/>
+    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://authn.eduid.docker:8080/saml2-acs" index="1"/>
   </ns0:SPSSODescriptor>
   <ns0:Organization>
     <ns0:OrganizationName xml:lang="en">eduID</ns0:OrganizationName>
