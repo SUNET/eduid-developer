@@ -139,7 +139,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - redis
