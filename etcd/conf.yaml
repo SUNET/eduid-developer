@@ -46,7 +46,7 @@ eduid:
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
             TESTING: no
-            LOG_FILE: /var/log/eduid/authn.log
+            LOG_FILE: /opt/eduid/log/authn.log
             LOG_LEVEL: DEBUG
             REQUIRED_LOA:
                 personal: http://www.swamid.se/policy/assurance/al1
