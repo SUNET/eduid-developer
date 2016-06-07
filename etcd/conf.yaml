@@ -7,7 +7,7 @@ eduid:
             SESSION_COOKIE_NAME: sessid
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
-            SESSION_COOKIE_DOMAIN: eduid.docker
+            SESSION_COOKIE_DOMAIN: .eduid.docker
             SESSION_COOKIE_PATH: /
             SESSION_COOKIE_HTTPONLY: False
             SESSION_COOKIE_SECURE: False
@@ -25,7 +25,7 @@ eduid:
             SAML2_LOGOUT_REDIRECT_URL: http://html.eduid.docker/
             SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
-            TOKEN_SERVICE_URL: http://authn.eduid.docker:8080/login
+            TOKEN_SERVICE_URL: http://authn.eduid.docker:8080/
         oidc_proofing:
             SECRET_KEY: supersecretkey
             LOG_FILE: /var/log/eduid/oidc_proofing.log
