@@ -3,23 +3,15 @@ eduid:
         common:
             # enable disable debug mode
             DEBUG: yes
-            # the name of the session cookie
-            SESSION_COOKIE_NAME: sessid
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
             SESSION_COOKIE_DOMAIN: .eduid.docker
-            SESSION_COOKIE_PATH: /
-            SESSION_COOKIE_HTTPONLY: False
-            SESSION_COOKIE_SECURE: False
-            PERMANENT_SESSION_LIFETIME: 3600
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
             PREFERRED_URL_SCHEME: http
             # Redis config
             REDIS_HOST: redis.eduid_dev
-            REDIS_PORT: 6379
-            REDIS_DB: 0
-            # SAML2 config
+            # SAML2 and SP config
             SAML2_LOGIN_REDIRECT_URL: /
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
             SAML2_LOGOUT_REDIRECT_URL: http://html.eduid.docker/
@@ -30,11 +22,6 @@ eduid:
             SECRET_KEY: supersecretkey
             LOG_FILE: /var/log/eduid/oidc_proofing.log
             LOG_LEVEL: DEBUG
-            APISPEC_SPEC:
-                title: eduid-oidc-proofing
-                version: v1
-                plugins:
-                    - apispec.ext.marshmallow
             CLIENT_REGISTRATION_INFO:
                 client_id: client1
                 client_secret: abcdef
@@ -48,13 +35,12 @@ eduid:
             TESTING: no
             LOG_FILE: /opt/eduid/log/authn.log
             LOG_LEVEL: DEBUG
-            REQUIRED_LOA:
-                personal: http://www.swamid.se/policy/assurance/al1
-                helpdesk: http://www.swamid.se/policy/assurance/al2
-                admin: http://www.swamid.se/policy/assurance/al3
         support:
             SECRET_KEY: supersecretkey
             LOG_FILE: /var/log/eduid/support.log
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
+            STATIC_URL: http://html.eduid.docker/static/
+            SUPPORT_PERSONNEL:
+              - tigaz-pojot
 
