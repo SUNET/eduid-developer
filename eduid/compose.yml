@@ -173,6 +173,8 @@ services:
     networks:
       dev:
         ipv4_address: 172.16.10.200
+        aliases:
+          - idp.eduid.docker
     volumes:
       - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
       - ../eduid-idp/run:/opt/eduid/eduid-idp/run
