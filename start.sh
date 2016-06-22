@@ -18,6 +18,7 @@ fi
     printf "172.16.10.254\tetcd.eduid_dev etcd.eduid.docker\n";
     printf "172.16.10.222\tauthn.eduid_dev authn.eduid.docker\n";
     printf "172.16.10.223\tsupport.eduid_dev support.eduid.docker\n";
+    printf "172.16.10.224\tletter-proofing.eduid_dev letter-proofing.eduid.docker\n";
 ) \
     | while read line; do
     if ! grep -q "^${line}$" /etc/hosts; then
