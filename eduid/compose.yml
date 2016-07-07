@@ -190,6 +190,29 @@ services:
       - mongodb
       - etcd
 
+  personal_data:
+    image: docker.sunet.se/eduid/eduid-personal-data
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+        ipv4_address: 172.16.10.225
+    volumes:
+      - ../eduid-authn/etc:/opt/eduid/etc
+      - ../eduid-authn/run:/opt/eduid/run
+      - ../eduid-authn/log:/opt/eduid/log
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+
   idp:
     image: docker.sunet.se/eduid/eduid-idp
     #expose:
