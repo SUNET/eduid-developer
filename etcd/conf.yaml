@@ -18,6 +18,9 @@ eduid:
             SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
             TOKEN_SERVICE_URL: http://authn.eduid.docker:8080/
+            AVAILABLE_LANGUAGES:
+                en: English
+                sv: Svenska
         authn:
             SERVER_NAME: authn.eduid.docker:8080
             SECRET_KEY: supersecretkey
