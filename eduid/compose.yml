@@ -198,15 +198,16 @@ services:
       dev:
         ipv4_address: 172.16.10.225
     volumes:
-      - ../eduid-authn/etc:/opt/eduid/etc
-      - ../eduid-authn/run:/opt/eduid/run
-      - ../eduid-authn/log:/opt/eduid/log
+      - ../eduid-personal/etc:/opt/eduid/etc
+      - ../eduid-personal/run:/opt/eduid/run
+      - ../eduid-personal/log:/opt/eduid/log
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - redis
