@@ -64,4 +64,16 @@ eduid:
             STATIC_URL: http://html.eduid.docker/static/
             SUPPORT_PERSONNEL:
               - tigaz-pojot
+        personal-data:
+            SECRET_KEY: supersecretkey
+            MONGO_URI: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard
+            LOG_FILE: /opt/eduid/log/personal-data.log
+            LOG_LEVEL: DEBUG
+            DEFAULT_CELERY_CONF:
+                BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+                CELERY_TASK_SERIALIZER: json
+                CELERY_RESULT_BACKEND: amqp
+                # Avoid broken connections across firewall by disabling pool
+                # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
+                BROKER_POOL_LIMIT: 0
 
