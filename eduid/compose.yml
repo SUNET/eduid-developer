@@ -101,9 +101,10 @@ services:
       dev:
         ipv4_address: 172.16.10.230
     volumes:
-      - ../eduid-html/log:/var/log/eduid
+      - ../eduid-html/log:/var/log
+      - ../eduid-html/etc:/etc/nginx/sites-enabled
       # source volumes
-      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
+      - ../sources/eduid-html:/opt/eduid/eduid-html:ro
 
   idproofing-letter:
     image: docker.sunet.se/eduid/eduid-idproofing-letter
