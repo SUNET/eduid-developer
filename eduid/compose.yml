@@ -97,6 +97,7 @@ services:
     image: docker.sunet.se/eduid/eduid-html
     expose:
       - 80
+    dns: 172.16.10.1
     networks:
       dev:
         ipv4_address: 172.16.10.230
@@ -195,6 +196,8 @@ services:
     image: docker.sunet.se/eduid/eduid-personal-data
     #expose:
     #  - 5000
+    dns: 172.16.10.1
+    hostname: personal_data.eduid_dev
     networks:
       dev:
         ipv4_address: 172.16.10.225
