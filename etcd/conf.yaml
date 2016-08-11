@@ -77,6 +77,14 @@ eduid:
                 # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
                 BROKER_POOL_LIMIT: 0
         jsconfig:
+            # this is configuration for the flask app serving the jsconfig microservice
             SECRET_KEY: supersecretkey
             LOG_FILE: /opt/eduid/log/jsconfig.log
             LOG_LEVEL: DEBUG
+        jsapps:
+            # this is the configuration for the js apps, that is sent by the jsconfig
+            # microservice to the js apps.
+            # Take care not to put any sensitive data here.
+            AVAILABLE_LANGUAGES:
+                - [en, English]
+                - [sv, Svenska]
