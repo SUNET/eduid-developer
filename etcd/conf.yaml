@@ -76,4 +76,7 @@ eduid:
                 # Avoid broken connections across firewall by disabling pool
                 # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
                 BROKER_POOL_LIMIT: 0
-
+        jsconfig:
+            SECRET_KEY: supersecretkey
+            LOG_FILE: /opt/eduid/log/jsconfig.log
+            LOG_LEVEL: DEBUG

@@ -218,6 +218,32 @@ services:
       - mongodb
       - etcd
 
+  jsconfig:
+    image: docker.sunet.se/eduid/eduid-jsconfig
+    #expose:
+    #  - 5000
+    dns: 172.16.10.1
+    hostname: jsconfig.eduid_dev
+    networks:
+      dev:
+        ipv4_address: 172.16.10.226
+    volumes:
+      - ../eduid-jsconfig/etc:/opt/eduid/etc
+      - ../eduid-jsconfig/run:/opt/eduid/run
+      - ../eduid-jsconfig/log:/opt/eduid/log
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+
   idp:
     image: docker.sunet.se/eduid/eduid-idp
     #expose:
