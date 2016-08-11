@@ -88,3 +88,4 @@ eduid:
             AVAILABLE_LANGUAGES:
                 - [en, English]
                 - [sv, Svenska]
+            PERSONAL_DATA_URL: /personal-data/user
