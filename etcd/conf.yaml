@@ -89,3 +89,4 @@ eduid:
                 - [en, English]
                 - [sv, Svenska]
             PERSONAL_DATA_URL: /personal-data/user
+            OIDC_PROOFING_URL: https://dashboard.dev.eduid.se/services/oidc-proofing
