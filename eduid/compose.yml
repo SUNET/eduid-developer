@@ -97,13 +97,15 @@ services:
     image: docker.sunet.se/eduid/eduid-html
     expose:
       - 80
+    dns: 172.16.10.1
     networks:
       dev:
         ipv4_address: 172.16.10.230
     volumes:
-      - ../eduid-html/log:/var/log/eduid
+      - ../eduid-html/log:/var/log
+      - ../eduid-html/etc:/etc/nginx/sites-enabled
       # source volumes
-      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
+      - ../sources/eduid-html:/opt/eduid/eduid-html:ro
 
   idproofing-letter:
     image: docker.sunet.se/eduid/eduid-idproofing-letter
@@ -184,6 +186,58 @@ services:
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
     environment:
       - "PYTHONPATH=/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+
+  personal_data:
+    image: docker.sunet.se/eduid/eduid-personal-data
+    #expose:
+    #  - 5000
+    dns: 172.16.10.1
+    hostname: personal_data.eduid_dev
+    networks:
+      dev:
+        ipv4_address: 172.16.10.225
+    volumes:
+      - ../eduid-personal/etc:/opt/eduid/etc
+      - ../eduid-personal/run:/opt/eduid/run
+      - ../eduid-personal/log:/opt/eduid/log
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+
+  jsconfig:
+    image: docker.sunet.se/eduid/eduid-jsconfig
+    #expose:
+    #  - 5000
+    dns: 172.16.10.1
+    hostname: jsconfig.eduid_dev
+    networks:
+      dev:
+        ipv4_address: 172.16.10.226
+    volumes:
+      - ../eduid-jsconfig/etc:/opt/eduid/etc
+      - ../eduid-jsconfig/run:/opt/eduid/run
+      - ../eduid-jsconfig/log:/opt/eduid/log
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - redis
