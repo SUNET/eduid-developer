@@ -204,9 +204,9 @@ services:
       dev:
         ipv4_address: 172.16.10.225
     volumes:
-      - ../eduid-personal/etc:/opt/eduid/etc
-      - ../eduid-personal/run:/opt/eduid/run
-      - ../eduid-personal/log:/opt/eduid/log
+      - ../eduid-personal-data/etc:/opt/eduid/etc
+      - ../eduid-personal-data/run:/opt/eduid/run
+      - ../eduid-personal-data/log:/opt/eduid/log
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro

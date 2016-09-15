@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import sys
@@ -31,14 +32,22 @@ def load_yaml(file_path):
         sys.exit(1)
 
 
-def init_etcd_client(host=None, port=None):
+def init_etcd_client(host=None, port=None, protocol=None, cert=None, certkey=None):
     if not host:
         host = os.environ.get('ETCD_HOST', '127.0.0.1')
     if not port:
         port = int(os.environ.get('ETCD_PORT', '2379'))
+    if not protocol:
+        protocol = os.environ.get('ETCD_PROTOCOL', 'http')
+    if not cert:
+        cert = os.environ.get('ETCD_CERT', '' )
+    if not certkey:
+        certkey = os.environ.get('ETCD_CERTKEY', '')
     if VERBOSE:
         print('Initializing etcd client {!s}:{!s}'.format(host, port))
-    return etcd.Client(host, port)
+    if cert and certkey:
+        return etcd.Client(host, port, protocol=protocol, cert=(cert, certkey))
+    return etcd.Client(host, port, protocol=protocol)
 
 
 def write_configuration(client, config, base_namespace_depth, base_ns='', depth=0):
@@ -122,7 +131,10 @@ def main():
     parser.add_argument('-c', '--configuration', help='Path to the yaml configuration file.', default='conf.yaml')
     parser.add_argument('-b', '--base-ns-depth', nargs='?', help='Base namespace depth', default=3, type=int)
     parser.add_argument('--host', nargs='?', help='etcd hostname')
-    parser.add_argument('--port', nargs='?', help='etcd port')
+    parser.add_argument('--port', nargs='?', type=int, help='etcd port')
+    parser.add_argument('--protocol', nargs='?', help='etcd protocol')
+    parser.add_argument('--cert', nargs='?', help='etcd cert')
+    parser.add_argument('--certkey', nargs='?', help='etcd cert key')
     parser.add_argument('-v', '--verbose', action='store_true', default=False)
     args = parser.parse_args()
 
@@ -135,7 +147,7 @@ def main():
         VERBOSE = True
 
     config_dict = load_yaml(args.configuration)
-    etcd_client = init_etcd_client(args.host, args.port)
+    etcd_client = init_etcd_client(args.host, args.port, args.protocol, args.cert, args.certkey)
     write_configuration(etcd_client, config_dict, args.base_ns_depth)
 
 
