@@ -27,6 +27,8 @@ eduid:
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
+            NO_AUTHN_URLS:
+                - ^/test$
         authn:
             SERVER_NAME: authn.eduid.docker:8080
             SECRET_KEY: supersecretkey
