@@ -59,7 +59,8 @@ eduid:
                 client_id: client1
                 client_secret: abcdef
             PROVIDER_CONFIGURATION_INFO:
-                issuer: http://localhost:5000
+                issuer: http://turq:13085/op/
+            AUTHORIZATION_RESPONSE_URI: http://oidc-proofing.eduid.docker:8080/authorization-response
             MONGO_URI: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         support:
@@ -90,4 +91,4 @@ eduid:
                 - [en, English]
                 - [sv, Svenska]
             PERSONAL_DATA_URL: /personal-data/user
-            OIDC_PROOFING_URL: https://dashboard.dev.eduid.se/services/oidc-proofing
+            OIDC_PROOFING_URL: http://turq.eduid_dev:13085/services/oidc-proofing/proofing
