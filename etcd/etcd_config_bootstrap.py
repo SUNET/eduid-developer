@@ -32,7 +32,7 @@ def load_yaml(file_path):
         sys.exit(1)
 
 
-def init_etcd_client(host=None, port=None, protocol=None, cert=None, certkey=None):
+def init_etcd_client(host=None, port=None, protocol=None, cert=None, certkey=None, ca_cert=None):
     if not host:
         host = os.environ.get('ETCD_HOST', '127.0.0.1')
     if not port:
@@ -40,21 +40,29 @@ def init_etcd_client(host=None, port=None, protocol=None, cert=None, certkey=Non
     if not protocol:
         protocol = os.environ.get('ETCD_PROTOCOL', 'http')
     if not cert:
-        cert = os.environ.get('ETCD_CERT', '' )
+        cert = os.environ.get('ETCD_CERT', '')
     if not certkey:
         certkey = os.environ.get('ETCD_CERTKEY', '')
+    if not ca_cert:
+        ca_cert = os.environ.get('ETCD_CACERT', '')
     if VERBOSE:
         print('Initializing etcd client {!s}:{!s}'.format(host, port))
     if cert and certkey:
-        return etcd.Client(host, port, protocol=protocol, cert=(cert, certkey))
+        print('Using cert {!s} and key {!s}'.format(cert, certkey))
+        if ca_cert:
+            print('Using ca cert {!s}'.format(ca_cert))
+            try:
+                ca_cert = open(ca_cert).read()
+            except IOError as e:
+                sys.stderr.writelines(str(e) + '\n')
+                sys.exit(1)
+        return etcd.Client(host, port, protocol=protocol, cert=(cert, certkey), ca_cert=ca_cert)
     return etcd.Client(host, port, protocol=protocol)
 
 
-def write_configuration(client, config, base_namespace_depth, base_ns='', depth=0):
+def prepare_configuration(config, base_namespace_depth, base_ns='', depth=0, ret_list=list()):
     """
-    :param client: etcd client
-    :type client: etcd.Client
-    :param config: Dictonary with config
+    :param config: Dictionary with config
     :type config: dict
     :param base_namespace_depth: How deep down the interesting key-value pairs start
     :type base_namespace_depth: int
@@ -62,6 +70,11 @@ def write_configuration(client, config, base_namespace_depth, base_ns='', depth=
     :type base_ns: str | unicode
     :param depth: Current depth in the dictionary
     :type depth: int
+    :param ret_list: To hold result during
+    :type ret_list: list
+
+    :return List with fq_key, value tuples
+    :rtype list
 
     Ex
 
@@ -98,7 +111,7 @@ def write_configuration(client, config, base_namespace_depth, base_ns='', depth=
     With base_namespace_depth set to 3 we know that the key-value pairs below common and oidc_proofing
     are the ones we want write to etcd.
 
-    This will result in the following key-value pairs being written to etcd:
+    This will result in the following key-value pairs being returned:
     /eduid/webapp/oidc_proofing/log_type -> '["rotating", "gelf"]'
     /eduid/webapp/oidc_proofing/mongo_uri -> 'mongodb://user:pw@mongodb.docker'
     /eduid/webapp/common/saml_config -> '{"xmlsec_binary": "/usr/bin/xmlsec1"}'
@@ -108,21 +121,47 @@ def write_configuration(client, config, base_namespace_depth, base_ns='', depth=
     for level in config.keys():
         if depth < base_namespace_depth:
             base_ns = '{!s}/{!s}'.format(base_ns, level)
-            write_configuration(client, config[level], base_namespace_depth, base_ns, depth)
+            prepare_configuration(config[level], base_namespace_depth, base_ns, depth, ret_list)
         else:
             ns = '{!s}/{!s}'.format(base_ns, level)
             for key, value in config[level].items():
                 fq_key = '{!s}/{!s}'.format(ns, key).lower()
                 json_value = json.dumps(value)
+                ret_list.append((fq_key, json_value))
+    return ret_list
 
-                try:
-                    client.write(fq_key, json_value)
-                except etcd.EtcdConnectionFailed as e:
-                    sys.stderr.writelines(str(e)+'\n')
-                    sys.exit(1)
 
-                if VERBOSE:
-                    print('{!s} -> {!s}'.format(fq_key, json_value))
+def remove_old_keys(client, config, depth):
+    """
+    :param client: etcd client
+    :type client: etcd.Client
+    :param config: List of fq_keys and json values
+    :type config: list
+    :param depth: How many levels of base namespace
+    :type depth: int
+    """
+    new_keys = [item[0] for item in config]
+    base_ns = '/'.join(new_keys[0].split('/')[:depth])
+
+    for item in client.read(base_ns, recursive=True).children:
+        if item.key not in new_keys:
+            client.delete(item.key, recursive=True)
+            if VERBOSE:
+                print('{!s} -> Removed'.format(item.key))
+
+
+def write_config(client, config):
+    """
+    :param client: etcd client
+    :type client: etcd.Client
+    :param config: List of fq_keys and json values
+    :type config: list
+    """
+
+    for fq_key, json_value in config:
+        client.write(fq_key, json_value)
+        if VERBOSE:
+            print('{!s} -> {!s}'.format(fq_key, json_value))
 
 
 def main():
@@ -135,6 +174,7 @@ def main():
     parser.add_argument('--protocol', nargs='?', help='etcd protocol')
     parser.add_argument('--cert', nargs='?', help='etcd cert')
     parser.add_argument('--certkey', nargs='?', help='etcd cert key')
+    parser.add_argument('--cacert', nargs='?', help='etcd ca cert')
     parser.add_argument('-v', '--verbose', action='store_true', default=False)
     args = parser.parse_args()
 
@@ -147,9 +187,15 @@ def main():
         VERBOSE = True
 
     config_dict = load_yaml(args.configuration)
-    etcd_client = init_etcd_client(args.host, args.port, args.protocol, args.cert, args.certkey)
-    write_configuration(etcd_client, config_dict, args.base_ns_depth)
+    etcd_client = init_etcd_client(args.host, args.port, args.protocol, args.cert, args.certkey, args.cacert)
+    config_list = prepare_configuration(config_dict, args.base_ns_depth)
 
+    try:
+        remove_old_keys(etcd_client, config_list, args.base_ns_depth)
+        write_config(etcd_client, config_list)
+    except etcd.EtcdConnectionFailed as e:
+        sys.stderr.writelines(str(e) + '\n')
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()
