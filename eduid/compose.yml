@@ -110,9 +110,6 @@ services:
   authn:
     image: docker.sunet.se/eduid/eduid-authn
     #expose:
-  authn:
-    image: docker.sunet.se/eduid/eduid-authn
-    #expose:
     #  - 5000
     networks:
       dev:
@@ -120,7 +117,7 @@ services:
     volumes:
       - ../eduid-authn/etc:/opt/eduid/etc
       - ../eduid-authn/run:/opt/eduid/run
-      - ../eduid-authn/log:/opt/eduid/log
+      - ../eduid-authn/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -162,7 +159,7 @@ services:
         ipv4_address: 172.16.10.224
     volumes:
       - ../eduid-letter-proofing/run:/opt/eduid/run
-      - ../eduid-letter-proofing/log:/opt/eduid/log
+      - ../eduid-letter-proofing/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -189,7 +186,7 @@ services:
     volumes:
       - ../eduid-personal-data/etc:/opt/eduid/etc
       - ../eduid-personal-data/run:/opt/eduid/run
-      - ../eduid-personal-data/log:/opt/eduid/log
+      - ../eduid-personal-data/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -215,7 +212,7 @@ services:
     volumes:
       - ../eduid-jsconfig/etc:/opt/eduid/etc
       - ../eduid-jsconfig/run:/opt/eduid/run
-      - ../eduid-jsconfig/log:/opt/eduid/log
+      - ../eduid-jsconfig/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
