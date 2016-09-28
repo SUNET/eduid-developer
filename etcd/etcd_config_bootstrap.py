@@ -48,14 +48,11 @@ def init_etcd_client(host=None, port=None, protocol=None, cert=None, certkey=Non
     if VERBOSE:
         print('Initializing etcd client {!s}:{!s}'.format(host, port))
     if cert and certkey:
-        print('Using cert {!s} and key {!s}'.format(cert, certkey))
+        if VERBOSE:
+            print('Using cert {!s} and key {!s}'.format(cert, certkey))
         if ca_cert:
-            print('Using ca cert {!s}'.format(ca_cert))
-            try:
-                ca_cert = open(ca_cert).read()
-            except IOError as e:
-                sys.stderr.writelines(str(e) + '\n')
-                sys.exit(1)
+            if VERBOSE:
+                print('Using ca cert {!s}'.format(ca_cert))
         return etcd.Client(host, port, protocol=protocol, cert=(cert, certkey), ca_cert=ca_cert)
     return etcd.Client(host, port, protocol=protocol)
 
