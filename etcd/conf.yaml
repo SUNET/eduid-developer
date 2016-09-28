@@ -34,7 +34,7 @@ eduid:
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
             LOGGER_NAME: authn
-            LOG_FILE: /opt/eduid/log/authn.log
+            LOG_FILE: /var/log/eduid/authn.log
             LOG_LEVEL: DEBUG
         letter_proofing:
             SECRET_KEY: supersecretkey
@@ -75,13 +75,13 @@ eduid:
         personal-data:
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard
-            LOG_FILE: /opt/eduid/log/personal-data.log
+            LOG_FILE: /var/log/eduid/personal-data.log
             LOG_LEVEL: DEBUG
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             SECRET_KEY: supersecretkey
-            LOG_FILE: /opt/eduid/log/jsconfig.log
+            LOG_FILE: /var/log/eduid/jsconfig.log
             LOG_LEVEL: DEBUG
         jsapps:
             # this is the configuration for the js apps, that is sent by the jsconfig
