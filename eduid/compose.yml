@@ -423,18 +423,18 @@ services:
       - ../redis/log:/var/log/redis
       - ../redis/data:/data
 
-  simplereg:
-    image: docker.sunet.se/eduid/simplereg
-    networks:
-      dev:
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - "REGISTRATOR_ETCD=1"
-      - "REGISTRATOR_DEBUG=0"
-      - "ETCD_HOST=etcd.eduid_dev"
-    depends_on:
-      - etcd
+    #  simplereg:
+    #image: docker.sunet.se/eduid/simplereg
+    #networks:
+    #  dev:
+    #volumes:
+    #  - /var/run/docker.sock:/var/run/docker.sock
+    #environment:
+    #  - "REGISTRATOR_ETCD=1"
+    # - "REGISTRATOR_DEBUG=0"
+    # - "ETCD_HOST=etcd.eduid_dev"
+    #depends_on:
+    #  - etcd
 
   turq:
     image: docker.sunet.se/eduid/turq
