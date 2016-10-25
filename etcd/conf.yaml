@@ -18,7 +18,7 @@ eduid:
             SAML2_LOGOUT_REDIRECT_URL: http://html.eduid.docker/
             SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
-            TOKEN_SERVICE_URL: http://dashboard.eduid.docker/services/authn
+            TOKEN_SERVICE_URL: http://dashboard.eduid.docker:8080/services/authn
             CELERY_CONFIG:
                 CELERY_RESULT_BACKEND: amqp
                 CELERY_TASK_SERIALIZER: json
