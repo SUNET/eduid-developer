@@ -11,17 +11,14 @@ fi
 (printf "172.16.10.200\tidp.eduid_dev idp.eduid.docker\n";
     printf "172.16.10.210\tsignup.eduid_dev signup.eduid.docker\n";
     printf "172.16.10.220\tdashboard.eduid_dev dashboard.eduid.docker\n";
+    printf "172.16.10.223\tsupport.eduid_dev support.eduid.docker\n";
     printf "172.16.10.230\thtml.eduid_dev html.eduid.docker\n";
     printf "172.16.10.240\tactions.eduid_dev actions.eduid.docker\n";
+    printf "172.16.10.250\tturq.eduid_dev turq.eduid.docker\n";
+    printf "172.16.10.251\trabbitmq.eduid_dev rabbitmq.eduid.docker\n";
     printf "172.16.10.252\tredis.eduid_dev redis.eduid.docker\n";
     printf "172.16.10.253\tmongodb.eduid_dev mongodb.eduid.docker\n";
     printf "172.16.10.254\tetcd.eduid_dev etcd.eduid.docker\n";
-    printf "172.16.10.222\tauthn.eduid_dev authn.eduid.docker\n";
-    printf "172.16.10.223\tsupport.eduid_dev support.eduid.docker\n";
-    printf "172.16.10.224\tletter-proofing.eduid_dev letter-proofing.eduid.docker\n";
-    printf "172.16.10.225\tpersonal_data.eduid_dev personal_data.eduid.docker\n";
-    printf "172.16.10.226\tjsconfig.eduid_dev jsconfig.eduid.docker\n";
-    printf "172.16.10.227\toidc-proofing.eduid_dev oidc-proofing.eduid.docker\n";
 ) \
     | while read line; do
     if ! grep -q "^${line}$" /etc/hosts; then

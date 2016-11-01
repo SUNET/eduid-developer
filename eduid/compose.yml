@@ -65,13 +65,49 @@ services:
     depends_on:
       - mongodb
 
-  dashboard:
-    image: docker.sunet.se/eduid/eduid-dashboard
-    #expose:
-    #  - 5000
+  html:
+    image: docker.sunet.se/eduid/eduid-html
+    expose:
+      - 80
+    dns: 172.16.10.1
+    networks:
+      dev:
+        ipv4_address: 172.16.10.230
+    volumes:
+      - ../eduid-html/log:/var/log
+      - ../eduid-html/etc:/etc/nginx/sites-enabled
+      # source volumes
+      - ../sources/eduid-html:/opt/eduid/eduid-html:ro
+
+  dashboard_haproxy:
+    image: 'docker.sunet.se/library/haproxy:1.6'
     networks:
       dev:
         ipv4_address: 172.16.10.220
+    volumes:
+     - ../dashboard-haproxy/etc/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+     - /dev/log:/dev/log
+    links:
+     - dashboard
+     - authn
+     - letter_proofing
+     - personal_data
+     - jsconfig
+     - oidc_proofing
+    depends_on:
+     - dashboard
+     - authn
+     - letter_proofing
+     - personal_data
+     - jsconfig
+     - oidc_proofing
+
+  dashboard:
+    image: docker.sunet.se/eduid/eduid-dashboard
+    networks:
+      dev:
+    expose:
+      - 8080
     volumes:
       - ../eduid-dashboard/etc:/opt/eduid/eduid-dashboard/etc:ro
       - ../eduid-dashboard/run:/opt/eduid/eduid-dashboard/run
@@ -93,27 +129,12 @@ services:
       - redis
       - idp
 
-  html:
-    image: docker.sunet.se/eduid/eduid-html
-    expose:
-      - 80
-    dns: 172.16.10.1
-    networks:
-      dev:
-        ipv4_address: 172.16.10.230
-    volumes:
-      - ../eduid-html/log:/var/log
-      - ../eduid-html/etc:/etc/nginx/sites-enabled
-      # source volumes
-      - ../sources/eduid-html:/opt/eduid/eduid-html:ro
-
   authn:
     image: docker.sunet.se/eduid/eduid-authn
-    #expose:
-    #  - 5000
     networks:
       dev:
-        ipv4_address: 172.16.10.222
+    expose:
+      - 8080
     volumes:
       - ../eduid-authn/etc:/opt/eduid/etc
       - ../eduid-authn/run:/opt/eduid/run
@@ -129,6 +150,99 @@ services:
       - redis
       - mongodb
       - etcd
+
+  letter_proofing:
+    image: docker.sunet.se/eduid/eduid-letter-proofing
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-letter-proofing/run:/opt/eduid/run
+      - ../eduid-letter-proofing/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - rabbitmq
+      - am
+      - redis
+      - mongodb
+      - etcd
+
+  personal_data:
+    image: docker.sunet.se/eduid/eduid-personal-data
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-personal-data/etc:/opt/eduid/etc
+      - ../eduid-personal-data/run:/opt/eduid/run
+      - ../eduid-personal-data/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+
+  jsconfig:
+    image: docker.sunet.se/eduid/eduid-jsconfig
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-jsconfig/etc:/opt/eduid/etc
+      - ../eduid-jsconfig/run:/opt/eduid/run
+      - ../eduid-jsconfig/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+
+  oidc_proofing:
+    image: docker.sunet.se/eduid/eduid-oidc-proofing
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-oidc-proofing/run:/opt/eduid/run
+      - ../eduid-oidc-proofing/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - etcd
+      - mongodb
+      - turq
+      - rabbitmq
+      - am
+      - redis
 
   support:
     image: docker.sunet.se/eduid/eduid-support
@@ -150,111 +264,8 @@ services:
       - mongodb
       - etcd
 
-  letter_proofing:
-    image: docker.sunet.se/eduid/eduid-letter-proofing
-    #expose:
-    #  - 5000
-    networks:
-      dev:
-        ipv4_address: 172.16.10.224
-    volumes:
-      - ../eduid-letter-proofing/run:/opt/eduid/run
-      - ../eduid-letter-proofing/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
-      - "ETCD_HOST=etcd.eduid_dev"
-    depends_on:
-      - rabbitmq
-      - am
-      - redis
-      - mongodb
-      - etcd
-
-  personal_data:
-    image: docker.sunet.se/eduid/eduid-personal-data
-    #expose:
-    #  - 5000
-    dns: 172.16.10.1
-    hostname: personal_data.eduid_dev
-    networks:
-      dev:
-        ipv4_address: 172.16.10.225
-    volumes:
-      - ../eduid-personal-data/etc:/opt/eduid/etc
-      - ../eduid-personal-data/run:/opt/eduid/run
-      - ../eduid-personal-data/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
-      - "ETCD_HOST=etcd.eduid_dev"
-    depends_on:
-      - redis
-      - mongodb
-      - etcd
-
-  jsconfig:
-    image: docker.sunet.se/eduid/eduid-jsconfig
-    #expose:
-    #  - 5000
-    dns: 172.16.10.1
-    hostname: jsconfig.eduid_dev
-    networks:
-      dev:
-        ipv4_address: 172.16.10.226
-    volumes:
-      - ../eduid-jsconfig/etc:/opt/eduid/etc
-      - ../eduid-jsconfig/run:/opt/eduid/run
-      - ../eduid-jsconfig/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
-      - "ETCD_HOST=etcd.eduid_dev"
-    depends_on:
-      - redis
-      - mongodb
-      - etcd
-
-  oidc_proofing:
-    image: docker.sunet.se/eduid/eduid-oidc-proofing
-    #expose:
-    #  - 5000
-    networks:
-      dev:
-        ipv4_address: 172.16.10.227
-    volumes:
-      - ../eduid-oidc-proofing/run:/opt/eduid/run
-      - ../eduid-oidc-proofing/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
-      - "ETCD_HOST=etcd.eduid_dev"
-    depends_on:
-      - etcd
-      - mongodb
-      - turq
-      - rabbitmq
-      - am
-      - redis
-
   idp:
     image: docker.sunet.se/eduid/eduid-idp
-    #expose:
-    #  - 5000
     networks:
       dev:
         ipv4_address: 172.16.10.200
@@ -329,8 +340,6 @@ services:
 
   signup:
     image: docker.sunet.se/eduid/eduid-signup
-    #expose:
-    #  - 5000
     networks:
       dev:
         ipv4_address: 172.16.10.210
@@ -407,6 +416,7 @@ services:
     image: docker.sunet.se/eduid/rabbitmq
     networks:
       dev:
+        ipv4_address: 172.16.10.251
     volumes:
       - ../rabbitmq/etc:/etc/rabbitmq:ro
       - ../rabbitmq/log:/var/log/rabbitmq
@@ -440,6 +450,7 @@ services:
     image: docker.sunet.se/eduid/turq
     networks:
       dev:
+        ipv4_address: 172.16.10.250
 
 networks:
   dev:

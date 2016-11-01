@@ -22,7 +22,16 @@ stuff "cd eduid-actions && tail -F log/eduid-actions.log"
 screen -t "eduid-authn-log"
 stuff "cd eduid-authn && tail -F log/*"
 
+screen -t "eduid-jsconfig-log"
+stuff "cd eduid-jsconfig && tail -F log/*"
+
 screen -t "eduid-support-log"
-stuff "cd eduid-support && tail -F log/support.log"
+stuff "cd eduid-support && tail -F log/*"
+
+screen -t "eduid-letter-proofing-log"
+stuff "cd eduid-letter-proofing && tail -F log/*"
+
+screen -t "eduid-oidc-proofing-log"
+stuff "cd eduid-oidc-proofing && tail -F log/*"
 
 screen -t "developer"

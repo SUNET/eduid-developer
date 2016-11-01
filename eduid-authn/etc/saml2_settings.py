@@ -8,7 +8,7 @@ from saml2 import attributemaps
 
 DEFAULT_ATTRIBUTEMAPS = path.dirname(attributemaps.__file__)
 
-BASE_URL = 'http://authn.eduid.docker:8080/'
+BASE_URL = 'http://dashboard.eduid.docker:8080/services/authn'
 SAML2DIR = path.dirname(__file__)
 
 SAML_CONFIG = {
@@ -16,7 +16,7 @@ SAML_CONFIG = {
     'xmlsec_binary': '/usr/bin/xmlsec1',
 
     # your entity id, usually your subdomain plus the url to the metadata view
-    'entityid': '%ssaml2-metadata' % BASE_URL,
+    'entityid': '%s/saml2-metadata' % BASE_URL,
 
     # directory with attribute mapping
     'attribute_map_dir': DEFAULT_ATTRIBUTEMAPS,
@@ -30,13 +30,13 @@ SAML_CONFIG = {
                 # url and binding to the assetion consumer service view
                 # do not change the binding or service name
                 'assertion_consumer_service': [
-                    ('%ssaml2-acs' % BASE_URL,
+                    ('%s/saml2-acs' % BASE_URL,
                      saml2.BINDING_HTTP_POST),
                 ],
                 # url and binding to the single logout service view
                 # do not change the binding or service name
                 'single_logout_service': [
-                    ('%slogout' % BASE_URL,
+                    ('%s/logout' % BASE_URL,
                      saml2.BINDING_HTTP_REDIRECT),
                 ],
             },

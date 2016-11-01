@@ -9,6 +9,7 @@ eduid:
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
             PREFERRED_URL_SCHEME: http
+            SERVER_NAME: dashboard.eduid.docker:8080
             # Redis config
             REDIS_HOST: redis.eduid_dev
             # SAML2 and SP config
@@ -17,7 +18,7 @@ eduid:
             SAML2_LOGOUT_REDIRECT_URL: http://html.eduid.docker/
             SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
-            TOKEN_SERVICE_URL: http://authn.eduid.docker:8080/
+            TOKEN_SERVICE_URL: http://dashboard.eduid.docker:8080/services/authn
             CELERY_CONFIG:
                 CELERY_RESULT_BACKEND: amqp
                 CELERY_TASK_SERIALIZER: json
@@ -27,17 +28,17 @@ eduid:
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
-            NO_AUTHN_URLS:
-                - ^/test$
         authn:
-            SERVER_NAME: authn.eduid.docker:8080
+            APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
             LOGGER_NAME: authn
             LOG_FILE: /var/log/eduid/authn.log
             LOG_LEVEL: DEBUG
         letter_proofing:
+            APPLICATION_ROOT: /services/letter-proofing
             SECRET_KEY: supersecretkey
+            LOGGER_NAME: letter_proofing
             LOG_FILE: /var/log/eduid/letter_proofing.log
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb.eduid_dev
@@ -51,6 +52,7 @@ eduid:
             EKOPOST_API_USER: ekopost_user
             EKOPOST_API_PW: ekopost_pw
         oidc_proofing:
+            APPLICATION_ROOT: /services/oidc-proofing
             SECRET_KEY: supersecretkey
             LOGGER_NAME: oidc_proofing
             LOG_FILE: /var/log/eduid/oidc_proofing.log
@@ -60,10 +62,10 @@ eduid:
                 client_secret: abcdef
             PROVIDER_CONFIGURATION_INFO:
                 issuer: http://turq:13085/op/
-            AUTHORIZATION_RESPONSE_URI: http://oidc-proofing.eduid.docker:8080/authorization-response
             MONGO_URI: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         support:
+            SERVER_NAME: support.eduid.docker:8080
             SECRET_KEY: supersecretkey
             LOGGER_NAME: support
             LOG_FILE: /var/log/eduid/support.log
@@ -73,6 +75,7 @@ eduid:
             SUPPORT_PERSONNEL:
               - tigaz-pojot
         personal-data:
+            APPLICATION_ROOT: /services/personal-data
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard
             LOG_FILE: /var/log/eduid/personal-data.log
@@ -80,6 +83,7 @@ eduid:
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
+            APPLICATION_ROOT: /services/jsconfig
             SECRET_KEY: supersecretkey
             LOG_FILE: /var/log/eduid/jsconfig.log
             LOG_LEVEL: DEBUG
@@ -91,4 +95,4 @@ eduid:
                 - [en, English]
                 - [sv, Svenska]
             PERSONAL_DATA_URL: /personal-data/user
-            OIDC_PROOFING_URL: http://turq.eduid_dev:13085/services/oidc-proofing/proofing
+            OIDC_PROOFING_URL: /services/oidc-proofing/proofing

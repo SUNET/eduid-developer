@@ -13,12 +13,8 @@ eduid-dockerfiles.
     # ./build rabbitmq
     # ./build mongodb
     # ./build turq
-    # ./build eduid-am
-    # ./build eduid-msg
-    # ./build eduid-dashboard
-    # ./build eduid-signup
-    # ./build eduid-idp
 
+The other containers should be built by ci.nordu.net and will be pulled when starting the environment.
 
 Name resolution
 ---------------
@@ -32,10 +28,10 @@ Linking is not the answer. When a named container restarts with a new IP the
     # apt-get install unbound
     # cat > /etc/unbound/unbound.conf.d/docker.conf << EOF
     server:
-        local-zone: docker. static
-        interface: 127.0.0.1
-        interface: 172.17.42.1
-        access-control: 172.17.0.0/16 allow
+        domain-insecure: docker.
+    forward-zone:
+        name: docker.
+        forward-addr: 172.17.0.1
     EOF
     # service unbound restart
 
@@ -43,68 +39,44 @@ Linking is not the answer. When a named container restarts with a new IP the
 Running
 -------
 
-Now, start some containers with the files in this repository. I would recommend
-starting all these in a 'screen'.
+Start all the containers with the start.sh file in this repository.
 
-    # (cd rabbitmq && ./run.sh) &
-    # (cd mongodb && ./run.sh) &
-    # ./update-dns
-    # (cd eduid-am && ./run.sh) &
-    # (cd eduid-msg && ./run.sh) &
-    # (cd eduid-lookup-mobile && ./run.sh) &
-    # (cd eduid-signup && ./run.sh) &
-    # (cd eduid-dashboard && ./run.sh) &
-    # (cd eduid-idp && ./run.sh) &
-    # (cd turq && ./run.sh) &
+    # ./start.sh
 
-and then, update local-data in your unbound resolver with the IPs of your
-newly started containers
+The first time it will ask you for sudo rights to be able to write in your /etc/hosts.
 
-    # ./update-dns
+etcd configuration
+------------------
 
+  The microservices and dashboard js uses etcd to get their configuration.
+
+  To update the configuration edit etcd/conf.yaml and run `python etcd/etcd_config_bootstrap.py --host etcd.eduid.docker`.
+
+Logging
+-------
+
+  To follow most logs you can use screen, run `screen -c screenrc`.
 
 Authentication
 --------------
 
 Turq (a mock HTTP server) is used to fake 'OK' responses to all calls to the
-VCCS authentication backend. The 'control-panel' for Turq is available at
-
-  http://turq.docker:13085/+turq/
-
+VCCS authentication backend.
 
 Services
 --------
 
-  http://signup.docker:8080/
-  http://dashboard.docker:8080/
+  http://signup.eduid.docker:8080/
+  http://dashboard.eduid.docker:8080/
+  http://html.eduid.docker/
+  http://support.eduid.docker:8080/
 
-  http://turq.docker:13085/+turq/
-  http://rabbitmq.docker:15672/   (login: admin/password)
+  http://turq.eduid.docker:13085/+turq/
+  http://rabbitmq.eduid.docker:15672/   (login: admin/password)
 
-Local PyPI server
------------------
-
-If packages needs to be tested locally then change setup.py to reflect
-the new version that is to be used, change setup.sh to point to
-pypiserver.docker instead of e.g. pypi.nordu.net, build and run pypiserver.
-
-    # (cd pypiserver && ./run.sh) &
-
-You need to update DNS settings in you local docker configuration.
-
-    # sudo vi /etc/default/docker
-
-add
-
-    DOCKER_OPTS="--dns 127.0.0.1"
-
-To add a package, go to the directory containing the project that
-you would like to add:
-
-    # python setup.py sdist
-
-Copy the package from the dist directory to the directory package
-under the pypiserver directory.
+  mongodb://mongodb.eduid.docker
+  redis://redis.eduid.docker
+  etcd://etcd.eduid.docker
 
 Live code reloads
 -----------------
