@@ -81,6 +81,13 @@ eduid:
             LOG_FILE: /var/log/eduid/personal-data.log
             LOG_LEVEL: DEBUG
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+        emails:
+            APPLICATION_ROOT: /services/emails
+            SECRET_KEY: supersecretkey
+            MONGO_URI: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard
+            LOG_FILE: /var/log/eduid/emails.log
+            LOG_LEVEL: DEBUG
+            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             APPLICATION_ROOT: /services/jsconfig
@@ -95,4 +102,5 @@ eduid:
                 - [en, English]
                 - [sv, Svenska]
             PERSONAL_DATA_URL: /personal-data/user
+            EMAILS_URL: /services/emails/email
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing

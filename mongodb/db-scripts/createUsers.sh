@@ -41,7 +41,7 @@ done
 #
 # User eduid_am, read
 #
-for db in eduid_signup eduid_dashboard eduid_api eduid_idproofing_letter eduid_oidc_proofing; do
+for db in eduid_signup eduid_dashboard eduid_api eduid_idproofing_letter eduid_idproofing_email eduid_oidc_proofing; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_am"}) == 0) {
          db.createUser( { user: "eduid_am", pwd: "eduid_am_pw", roles: ["read"] } );
@@ -53,7 +53,7 @@ done
 #
 # User eduid_dashboard, readWrite
 #
-for db in eduid_dashboard; do
+for db in eduid_dashboard eduid_idproofing_email; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_dashboard"}) == 0) {
          db.createUser( { user: "eduid_dashboard", pwd: "eduid_dashboard_pw", roles: ["readWrite"] } );
@@ -187,6 +187,17 @@ for db in eduid_am; do
 '
 done
 
+#
+# User eduid_idproofing_email, read
+#
+for db in eduid_am; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_idproofing_email"}) == 0) {
+         db.createUser( { user: "eduid_idproofing_email", pwd: "eduid_idproofing_email_pw", roles: ["read"] } );
+      }
+'
+done
+
 # User eduid_actions, read
 #
 for db in eduid_am; do
@@ -220,6 +231,17 @@ for db in eduid_idproofing_letter; do
 done
 
 #
+# User eduid_idproofing_email, readWrite
+#
+for db in eduid_idproofing_email; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_idproofing_email"}) == 0) {
+         db.createUser( { user: "eduid_idproofing_email", pwd: "eduid_idproofing_email_pw", roles: ["readWrite"] } );
+      }
+'
+done
+
+#
 # User eduid_oidc_proofing, readWrite
 #
 for db in eduid_oidc_proofing; do
@@ -244,7 +266,7 @@ done
 #
 # User eduid_support, read
 #
-for db in eduid_am eduid_signup eduid_dashboard eduid_oidc_proofing eduid_idproofing_letter eduid_api eduid_actions eduid_lookup_mobile eduid_tou eduid_idp eduid_idp_authninfo eduid_idp_pysaml2; do
+for db in eduid_am eduid_signup eduid_dashboard eduid_oidc_proofing eduid_idproofing_letter eduid_idproofing_email eduid_api eduid_actions eduid_lookup_mobile eduid_tou eduid_idp eduid_idp_authninfo eduid_idp_pysaml2; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_support"}) == 0) {
          db.createUser( { user: "eduid_support", pwd: "eduid_support_pw", roles: ["read"] } );
