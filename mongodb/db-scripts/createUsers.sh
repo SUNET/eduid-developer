@@ -74,6 +74,29 @@ done
 
 # -------------------------------------------------------------------------------------
 #
+# User eduid_emails, readWrite
+#
+for db in eduid_dashboard eduid_idproofing_email; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_emails"}) == 0) {
+         db.createUser( { user: "eduid_emails", pwd: "eduid_emails_pw", roles: ["readWrite"] } );
+      }
+'
+done
+
+#
+# User eduid_dashboard, read
+#
+for db in eduid_am eduid_idp_authninfo; do
+    mongo localhost/${db} --eval '
+      if (db.system.users.count({"user": "eduid_emails"}) == 0) {
+         db.createUser( { user: "eduid_emails", pwd: "eduid_emails_pw", roles: ["read"] } );
+      }
+'
+done
+
+# -------------------------------------------------------------------------------------
+#
 # User eduid_idp, readWrite
 #
 for db in eduid_idp eduid_idp_authninfo eduid_idp_pysaml2 eduid_actions; do
