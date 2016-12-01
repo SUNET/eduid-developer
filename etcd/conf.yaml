@@ -84,7 +84,7 @@ eduid:
         emails:
             APPLICATION_ROOT: /services/emails
             SECRET_KEY: supersecretkey
-            MONGO_URI: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard
+            MONGO_URI: mongodb://eduid_emails:eduid_emails_pw@mongodb.eduid_dev
             LOG_FILE: /var/log/eduid/emails.log
             LOG_LEVEL: DEBUG
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
@@ -101,6 +101,6 @@ eduid:
             AVAILABLE_LANGUAGES:
                 - [en, English]
                 - [sv, Svenska]
-            PERSONAL_DATA_URL: /personal-data/user
+            PERSONAL_DATA_URL: /services/personal-data/user
             EMAILS_URL: /services/emails/email
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
