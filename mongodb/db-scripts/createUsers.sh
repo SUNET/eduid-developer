@@ -41,7 +41,7 @@ done
 #
 # User eduid_am, read
 #
-for db in eduid_signup eduid_dashboard eduid_api eduid_idproofing_letter eduid_idproofing_email eduid_oidc_proofing; do
+for db in eduid_signup eduid_dashboard eduid_api eduid_idproofing_letter eduid_emails eduid_oidc_proofing; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_am"}) == 0) {
          db.createUser( { user: "eduid_am", pwd: "eduid_am_pw", roles: ["read"] } );
@@ -53,7 +53,7 @@ done
 #
 # User eduid_dashboard, readWrite
 #
-for db in eduid_dashboard eduid_idproofing_email; do
+for db in eduid_dashboard eduid_emails; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_dashboard"}) == 0) {
          db.createUser( { user: "eduid_dashboard", pwd: "eduid_dashboard_pw", roles: ["readWrite"] } );
@@ -76,7 +76,7 @@ done
 #
 # User eduid_emails, readWrite
 #
-for db in eduid_dashboard eduid_idproofing_email; do
+for db in eduid_dashboard; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_emails"}) == 0) {
          db.createUser( { user: "eduid_emails", pwd: "eduid_emails_pw", roles: ["readWrite"] } );
@@ -85,7 +85,7 @@ for db in eduid_dashboard eduid_idproofing_email; do
 done
 
 #
-# User eduid_dashboard, read
+# User eduid_emails, read
 #
 for db in eduid_am eduid_idp_authninfo; do
     mongo localhost/${db} --eval '
@@ -211,12 +211,12 @@ for db in eduid_am; do
 done
 
 #
-# User eduid_idproofing_email, read
+# User eduid_emails, read
 #
 for db in eduid_am; do
     mongo localhost/${db} --eval '
-      if (db.system.users.count({"user": "eduid_idproofing_email"}) == 0) {
-         db.createUser( { user: "eduid_idproofing_email", pwd: "eduid_idproofing_email_pw", roles: ["read"] } );
+      if (db.system.users.count({"user": "eduid_emails"}) == 0) {
+         db.createUser( { user: "eduid_emails", pwd: "eduid_emails_pw", roles: ["read"] } );
       }
 '
 done
@@ -254,12 +254,12 @@ for db in eduid_idproofing_letter; do
 done
 
 #
-# User eduid_idproofing_email, readWrite
+# User eduid_emails, readWrite
 #
-for db in eduid_idproofing_email; do
+for db in eduid_emails; do
     mongo localhost/${db} --eval '
-      if (db.system.users.count({"user": "eduid_idproofing_email"}) == 0) {
-         db.createUser( { user: "eduid_idproofing_email", pwd: "eduid_idproofing_email_pw", roles: ["readWrite"] } );
+      if (db.system.users.count({"user": "eduid_emails"}) == 0) {
+         db.createUser( { user: "eduid_emails", pwd: "eduid_emails_pw", roles: ["readWrite"] } );
       }
 '
 done
@@ -289,7 +289,7 @@ done
 #
 # User eduid_support, read
 #
-for db in eduid_am eduid_signup eduid_dashboard eduid_oidc_proofing eduid_idproofing_letter eduid_idproofing_email eduid_api eduid_actions eduid_lookup_mobile eduid_tou eduid_idp eduid_idp_authninfo eduid_idp_pysaml2; do
+for db in eduid_am eduid_signup eduid_dashboard eduid_oidc_proofing eduid_idproofing_letter eduid_emails eduid_api eduid_actions eduid_lookup_mobile eduid_tou eduid_idp eduid_idp_authninfo eduid_idp_pysaml2; do
     mongo localhost/${db} --eval '
       if (db.system.users.count({"user": "eduid_support"}) == 0) {
          db.createUser( { user: "eduid_support", pwd: "eduid_support_pw", roles: ["read"] } );
