@@ -28,6 +28,8 @@ eduid:
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
+            MAIL_DEFAULT_FROM: eduid@example.com
+
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
@@ -102,5 +104,5 @@ eduid:
                 - [en, English]
                 - [sv, Svenska]
             PERSONAL_DATA_URL: /services/personal-data/user
-            EMAILS_URL: /services/emails/email
+            EMAILS_URL: /services/emails/
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
