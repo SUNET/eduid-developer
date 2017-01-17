@@ -197,6 +197,23 @@ services:
       - mongodb
       - etcd
 
+  py11softhsm:
+    image: docker.sunet.se/eduid/py11softhsm
+    networks:
+      dev:
+    expose:
+      - 8000
+    volumes:
+      - ../py11softhsm/var:/var/lib/softhsm
+      - ../py11softhsm/log:/var/log/eduid
+      - /dev/log:/dev/log
+      - ../sources/pyeleven:/opt/eduid/src/pyeleven:ro
+      - ../py11softhsm/idp-public-snakeoil.key:/opt/eduid/idp-public-snakeoil.key:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/pyeleven/src"
+      - "ENABLE_PKCS11_SPY=anything"
+      - "p11softhsm_init_rsa_key=/opt/eduid/idp-public-snakeoil.key"
+
   jsconfig:
     image: docker.sunet.se/eduid/eduid-jsconfig
     networks:
@@ -265,7 +282,7 @@ services:
       - etcd
 
   idp:
-    image: docker.sunet.se/eduid/eduid-idp
+    image: docker.sunet.se/eduid/eduid-idp:local
     networks:
       dev:
         ipv4_address: 172.16.10.200
@@ -281,8 +298,10 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-action.tou:/opt/eduid/src/eduid-action.tou:ro
+      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+      - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action.tou/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action.tou/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
     depends_on:
       - mongodb
       - redis
@@ -451,6 +470,17 @@ services:
     networks:
       dev:
         ipv4_address: 172.16.10.250
+
+  pypiserver:
+    image: docker.sunet.se/eduid/pypiserver
+    networks:
+      dev:
+        ipv4_address: 172.16.10.150
+
+    volumes:
+      - ../pypiserver/etc:/opt/eduid/pypiserver/etc:ro
+      - ../pypiserver/log:/var/log/pypiserver
+      - ../pypiserver/packages:/opt/eduid/pypiserver/packages:ro
 
 networks:
   dev:
