@@ -282,7 +282,7 @@ services:
       - etcd
 
   idp:
-    image: docker.sunet.se/eduid/eduid-idp:local
+    image: docker.sunet.se/eduid/eduid-idp:latest
     networks:
       dev:
         ipv4_address: 172.16.10.200
