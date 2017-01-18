@@ -80,12 +80,12 @@ services:
       - ../sources/eduid-html:/opt/eduid/eduid-html:ro
 
   dashboard_haproxy:
-    image: 'docker.sunet.se/library/haproxy:1.6'
+    image: 'docker.sunet.se/library/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.220
     volumes:
-     - ../dashboard-haproxy/etc/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+     - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
      - /dev/log:/dev/log
     links:
      - dashboard
