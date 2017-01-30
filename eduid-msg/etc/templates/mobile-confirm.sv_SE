@@ -1,0 +1,5 @@
+{{ sitename }} måste bekräfta att {{ phonenumber }} tillhör dig.
+
+Gå till {{ sitelink }} och ange koden nedanför:
+
+{{ code }}
