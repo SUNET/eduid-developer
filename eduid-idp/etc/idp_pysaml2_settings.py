@@ -45,7 +45,10 @@ CONFIG = {
         },
     },
     "debug": 1,
-    "key_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.key",
+    # SAML signing is done using pyeleven (through pyXMLSecurity), but pysaml2
+    # requires a certificate to look at so we give it the snakeoil cert here.
+    #"key_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.key",
+    "key_file": "xmlsec+http://py11softhsm:8000/0/eduid",
     "cert_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem",
     "metadata": {
         "local": ["/opt/eduid/eduid-idp/etc/dashboard_metadata.xml",
@@ -70,7 +73,7 @@ CONFIG = {
         },
     ],
 
-    #"crypto_backend": "XMLSecurity",
+    "crypto_backend": "XMLSecurity",
 
     #"xmlsec_binary": "/bin/false",  # pysaml2 checks for this
     # This database holds the map between a subjects local identifier and
