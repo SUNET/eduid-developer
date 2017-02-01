@@ -178,6 +178,7 @@ services:
     image: docker.sunet.se/eduid/eduid-personal-data
     networks:
       dev:
+        ipv4_address: 172.16.10.224
     expose:
       - 8080
     volumes:
