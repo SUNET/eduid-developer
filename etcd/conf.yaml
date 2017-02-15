@@ -13,6 +13,8 @@ eduid:
             SERVER_NAME: dashboard.eduid.docker:8080
             # Redis config
             REDIS_HOST: redis.eduid_dev
+            REDIS_PORT: 6379
+            REDIS_DB: 0
             # SAML2 and SP config
             SAML2_LOGIN_REDIRECT_URL: /
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
@@ -91,6 +93,15 @@ eduid:
             LOG_FILE: /var/log/eduid/emails.log
             LOG_LEVEL: DEBUG
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+        phones:
+            APPLICATION_ROOT: /services/phones
+            SECRET_KEY: supersecretkey
+            MONGO_URI: mongodb://eduid_phones:eduid_phones_pw@mongodb.eduid_dev
+            LOG_FILE: /var/log/eduid/phones.log
+            LOG_LEVEL: DEBUG
+            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            PHONE_VERIFICATION_TIMEOUT: 24
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             APPLICATION_ROOT: /services/jsconfig
