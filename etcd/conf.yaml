@@ -31,7 +31,7 @@ eduid:
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
-            MAIL_DEFAULT_FROM: eduid@example.com
+            MAIL_DEFAULT_FROM: info@eduid.se
 
         authn:
             APPLICATION_ROOT: /services/authn
@@ -117,4 +117,5 @@ eduid:
                 - [sv, Svenska]
             PERSONAL_DATA_URL: /services/personal-data/user
             EMAILS_URL: /services/emails/
+            PHONES_URL: /services/phones/
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
