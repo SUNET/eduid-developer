@@ -117,5 +117,5 @@ eduid:
                 - [sv, Svenska]
             PERSONAL_DATA_URL: /services/personal-data/user
             EMAILS_URL: /services/emails/
-            PHONES_URL: /services/phones/
+            MOBILE_URL: /services/phones/
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
