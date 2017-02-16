@@ -34,7 +34,7 @@ def load_yaml(file_path):
 
 def init_etcd_client(host=None, port=None, protocol=None, cert=None, certkey=None, ca_cert=None):
     if not host:
-        host = os.environ.get('ETCD_HOST', '127.0.0.1')
+        host = os.environ.get('ETCD_HOST', '172.16.10.254')
     if not port:
         port = int(os.environ.get('ETCD_PORT', '2379'))
     if not protocol:

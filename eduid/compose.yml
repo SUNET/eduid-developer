@@ -144,7 +144,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - redis
@@ -178,6 +178,7 @@ services:
     image: docker.sunet.se/eduid/eduid-personal-data
     networks:
       dev:
+        ipv4_address: 172.16.10.224
     expose:
       - 8080
     volumes:
@@ -191,6 +192,31 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+
+  emails:
+    image: docker.sunet.se/eduid/eduid-emails
+    networks:
+      dev:
+        ipv4_address: 172.16.10.225
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-emails/etc:/opt/eduid/etc
+      - ../eduid-emails/run:/opt/eduid/run
+      - ../eduid-emails/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - redis
@@ -213,6 +239,32 @@ services:
       - "PYTHONPATH=/opt/eduid/src/pyeleven/src"
       - "ENABLE_PKCS11_SPY=anything"
       - "p11softhsm_init_rsa_key=/opt/eduid/idp-public-snakeoil.key"
+
+  phones:
+    image: docker.sunet.se/eduid/eduid-phones
+    networks:
+      dev:
+        ipv4_address: 172.16.10.226
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-phones/etc:/opt/eduid/etc
+      - ../eduid-phones/run:/opt/eduid/run
+      - ../eduid-phones/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+      - msg
 
   jsconfig:
     image: docker.sunet.se/eduid/eduid-jsconfig
