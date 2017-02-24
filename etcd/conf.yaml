@@ -6,7 +6,7 @@ eduid:
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
             SESSION_COOKIE_DOMAIN: .eduid.docker
-            SESSION_COOKIE_SECURE: no
+            SESSION_COOKIE_SECURE: 0
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
             PREFERRED_URL_SCHEME: http
@@ -31,7 +31,7 @@ eduid:
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
-            MAIL_DEFAULT_FROM: eduid@example.com
+            MAIL_DEFAULT_FROM: info@eduid.se
 
         authn:
             APPLICATION_ROOT: /services/authn
@@ -117,4 +117,5 @@ eduid:
                 - [sv, Svenska]
             PERSONAL_DATA_URL: /services/personal-data/user
             EMAILS_URL: /services/emails/
+            MOBILE_URL: /services/phones/
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
