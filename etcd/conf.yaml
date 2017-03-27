@@ -102,6 +102,13 @@ eduid:
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PHONE_VERIFICATION_TIMEOUT: 24
+        security:
+            APPLICATION_ROOT: /services/security
+            SECRET_KEY: supersecretkey
+            MONGO_URI: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
+            LOG_FILE: /var/log/eduid/security.log
+            LOG_LEVEL: DEBUG
+            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             APPLICATION_ROOT: /services/jsconfig
@@ -119,3 +126,5 @@ eduid:
             EMAILS_URL: /services/emails/
             MOBILE_URL: /services/phones/
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
+            SECURITY_URL: /services/security
+            TOKEN_SERVICE_URL: /services/authn
