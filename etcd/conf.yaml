@@ -122,6 +122,7 @@ eduid:
             AVAILABLE_LANGUAGES:
                 - [en, English]
                 - [sv, Svenska]
+            DASHBOARD_URL: /profile
             PERSONAL_DATA_URL: /services/personal-data/user
             EMAILS_URL: /services/emails/
             MOBILE_URL: /services/phones/
