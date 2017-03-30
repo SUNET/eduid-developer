@@ -129,3 +129,5 @@ eduid:
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
             SECURITY_URL: /services/security
             TOKEN_SERVICE_URL: /services/authn
+            PASSWORD_LENGTH: 12
+            PASSWORD_ENTROPY: 40
