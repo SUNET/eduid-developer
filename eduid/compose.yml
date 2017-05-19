@@ -464,6 +464,7 @@ services:
       - ../mongodb/data:/data
       - ../mongodb/etc:/opt/eduid/etc:ro
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
+      - ../mongodb/log:/var/log/mongodb
 
   oathaead:
     image: docker.sunet.se/eduid/eduid-api
