@@ -69,6 +69,7 @@ eduid:
                 issuer: http://turq:13085/op/
             MONGO_URI: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         support:
             SERVER_NAME: support.eduid.docker:8080
             SECRET_KEY: supersecretkey

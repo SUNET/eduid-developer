@@ -386,3 +386,13 @@ for db in eduid_am eduid_signup eduid_dashboard eduid_oidc_proofing eduid_idproo
       }
 '
 done
+
+#
+# Users with readWrite to log db
+#
+mongo localhost/eduid_logs --eval '
+  if (db.system.users.count({"user": "eduid_oidc_proofing"}) == 0) {
+     db.createUser( { user: "eduid_oidc_proofing", pwd: "eduid_oidc_proofing_pw", roles: ["readWrite"] } );
+  }
+'
+
