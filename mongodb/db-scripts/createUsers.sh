@@ -350,4 +350,9 @@ mongo localhost/eduid_logs --eval '
      db.createUser( { user: "eduid_oidc_proofing", pwd: "eduid_oidc_proofing_pw", roles: ["readWrite"] } );
   }
 '
+mongo localhost/eduid_logs --eval '
+  if (db.system.users.count({"user": "eduid_idproofing_letter"}) == 0) {
+     db.createUser( { user: "eduid_idproofing_letter", pwd: "eduid_idproofing_letter_pw", roles: ["readWrite"] } );
+  }
+'
 

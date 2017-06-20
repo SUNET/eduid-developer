@@ -120,3 +120,4 @@ eduid:
             EMAILS_URL: /services/emails/
             MOBILE_URL: /services/phones/
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
+            OIDC_PROOFING_FREJA_URL: /services/oidc-proofing/freja/proofing
