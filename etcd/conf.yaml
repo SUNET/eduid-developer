@@ -94,6 +94,7 @@ eduid:
             LOG_FILE: /var/log/eduid/emails.log
             LOG_LEVEL: DEBUG
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         phones:
             APPLICATION_ROOT: /services/phones
             SECRET_KEY: supersecretkey
@@ -110,6 +111,7 @@ eduid:
             LOG_FILE: /var/log/eduid/security.log
             LOG_LEVEL: DEBUG
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             VCCS_URL: 'http://turq:13085/'
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25

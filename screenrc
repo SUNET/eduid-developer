@@ -43,4 +43,7 @@ stuff "cd eduid-phones && tail -F log/*"
 screen -t "eduid-emails-log"
 stuff "cd eduid-emails && tail -F log/*"
 
+screen -t "eduid-security-log"
+stuff "cd eduid-security && tail -F log/*"
+
 screen -t "developer"
