@@ -41,10 +41,11 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-signup-amp:/opt/eduid/src/eduid-signup-amp:ro
       - ../sources/eduid-dashboard-amp:/opt/eduid/src/eduid-dashboard-amp:ro
+      - ../sources/eduid-proofing-amp:/opt/eduid/src/eduid-proofing-amp:ro
       - ../sources/eduid-actions:/opt/eduid/src/eduid-actions:ro
       - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
-    #environment:
-      #- "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-actions:/opt/eduid/src/eduid_action.tou"
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-proofing-amp:/opt/eduid/src/eduid-actions:/opt/eduid/src/eduid_action.tou"
     depends_on:
       - mongodb
       - rabbitmq
