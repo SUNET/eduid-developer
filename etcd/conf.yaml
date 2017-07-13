@@ -141,5 +141,6 @@ eduid:
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
             PROOFING_METHODS:
+                - letter
                 - oidc
                 - oidc_freja
