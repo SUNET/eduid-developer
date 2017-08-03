@@ -134,6 +134,7 @@ eduid:
             EMAILS_URL: /services/emails/
             MOBILE_URL: /services/phones/
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
+            LETTER_PROOFING_URL: /services/letter-proofing/
             SECURITY_URL: /services/security
             TOKEN_SERVICE_URL: /services/authn
             OIDC_PROOFING_FREJA_URL: /services/oidc-proofing/freja/proofing
@@ -141,5 +142,6 @@ eduid:
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
             PROOFING_METHODS:
+                - letter
                 - oidc
                 - oidc_freja
