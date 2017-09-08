@@ -40,6 +40,9 @@ eduid:
             LOGGER_NAME: authn
             LOG_FILE: /var/log/eduid/authn.log
             LOG_LEVEL: DEBUG
+            TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
+            TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
+            TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
         letter_proofing:
             APPLICATION_ROOT: /services/letter-proofing
             SECRET_KEY: supersecretkey
@@ -79,7 +82,7 @@ eduid:
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
             STATIC_URL: http://html.eduid.docker/static/
             SUPPORT_PERSONNEL:
-              - tigaz-pojot
+              - mojud-dosiv
         personal-data:
             APPLICATION_ROOT: /services/personal-data
             SECRET_KEY: supersecretkey
