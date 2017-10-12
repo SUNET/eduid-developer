@@ -15,8 +15,8 @@
 
 set -e
 
-VERSION=${VERSION-'1.7.0'}
-IMAGE=${IMAGE-"docker/compose:$VERSION"}
+DCVERSION=${DCVERSION-'1.15.0'}
+DCIMAGE=${DCIMAGE-"docker/compose:$DCVERSION"}
 
 
 # Setup options for connecting to docker host
@@ -67,4 +67,4 @@ if [ -t 0 ]; then
     DOCKER_RUN_OPTIONS="$DOCKER_RUN_OPTIONS -i"
 fi
 
-exec docker run --rm $DOCKER_RUN_OPTIONS $DOCKER_ADDR $COMPOSE_OPTIONS $VOLUMES -w "$(pwd)" $IMAGE "$@"
+exec docker run --rm $DOCKER_RUN_OPTIONS $DOCKER_ADDR $COMPOSE_OPTIONS $VOLUMES -w "$(pwd)" $DCIMAGE "$@"
