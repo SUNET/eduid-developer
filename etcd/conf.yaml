@@ -32,13 +32,14 @@ eduid:
                 en: English
                 sv: Svenska
             MAIL_DEFAULT_FROM: info@eduid.se
+            EDUID_SITE_URL: html.eduid.docker
+            EDUID_STATIC_URL: http://html.eduid.docker/static/
 
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
             LOGGER_NAME: authn
-            LOG_FILE: /var/log/eduid/authn.log
             LOG_LEVEL: DEBUG
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
             TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
@@ -47,7 +48,6 @@ eduid:
             APPLICATION_ROOT: /services/letter-proofing
             SECRET_KEY: supersecretkey
             LOGGER_NAME: letter_proofing
-            LOG_FILE: /var/log/eduid/letter_proofing.log
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb.eduid_dev
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
@@ -63,7 +63,6 @@ eduid:
             APPLICATION_ROOT: /services/oidc-proofing
             SECRET_KEY: supersecretkey
             LOGGER_NAME: oidc_proofing
-            LOG_FILE: /var/log/eduid/oidc_proofing.log
             LOG_LEVEL: DEBUG
             CLIENT_REGISTRATION_INFO:
                 client_id: client1
@@ -77,33 +76,32 @@ eduid:
             SERVER_NAME: support.eduid.docker:8080
             SECRET_KEY: supersecretkey
             LOGGER_NAME: support
-            LOG_FILE: /var/log/eduid/support.log
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
             STATIC_URL: http://html.eduid.docker/static/
             SUPPORT_PERSONNEL:
               - mojud-dosiv
-        personal-data:
+        personal_data:
             APPLICATION_ROOT: /services/personal-data
             SECRET_KEY: supersecretkey
-            MONGO_URI: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard
-            LOG_FILE: /var/log/eduid/personal-data.log
+            MONGO_URI: mongodb://eduid_personal_data:eduid_personal_data_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
+            LOGGER_NAME: personal_data
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         emails:
             APPLICATION_ROOT: /services/emails
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_emails:eduid_emails_pw@mongodb.eduid_dev
-            LOG_FILE: /var/log/eduid/emails.log
             LOG_LEVEL: DEBUG
+            LOGGER_NAME: emails
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         phones:
             APPLICATION_ROOT: /services/phones
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_phones:eduid_phones_pw@mongodb.eduid_dev
-            LOG_FILE: /var/log/eduid/phones.log
             LOG_LEVEL: DEBUG
+            LOGGER_NAME: phones
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PHONE_VERIFICATION_TIMEOUT: 24
@@ -111,8 +109,8 @@ eduid:
             APPLICATION_ROOT: /services/security
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
-            LOG_FILE: /var/log/eduid/security.log
             LOG_LEVEL: DEBUG
+            LOGGER_NAME: security
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             VCCS_URL: 'http://turq:13085/'
@@ -123,8 +121,8 @@ eduid:
             # this is configuration for the flask app serving the jsconfig microservice
             APPLICATION_ROOT: /services/jsconfig
             SECRET_KEY: supersecretkey
-            LOG_FILE: /var/log/eduid/jsconfig.log
             LOG_LEVEL: DEBUG
+            LOGGER_NAME: jsconfig
         jsapps:
             # this is the configuration for the js apps, that is sent by the jsconfig
             # microservice to the js apps.

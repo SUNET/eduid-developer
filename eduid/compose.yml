@@ -75,7 +75,7 @@ services:
       dev:
         ipv4_address: 172.16.10.230
     volumes:
-      - ../eduid-html/log:/var/log
+      - ../eduid-html/log:/var/log/nginx
       - ../eduid-html/etc:/etc/nginx/sites-enabled
       # source volumes
       - ../sources/eduid-html:/opt/eduid/eduid-html:ro
