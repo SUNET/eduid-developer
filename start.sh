@@ -36,5 +36,6 @@ fi
     fi
 done
 
-./bin/docker-compose -f eduid/compose.yml rm -f --all
+./bin/docker-compose -f eduid/compose.yml rm -s -f
 ./bin/docker-compose -f eduid/compose.yml up $*
+./bin/docker-compose -f eduid/compose.yml logs -tf

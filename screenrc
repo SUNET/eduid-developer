@@ -34,6 +34,9 @@ stuff "cd eduid-letter-proofing && tail -F log/*"
 screen -t "eduid-oidc-proofing-log"
 stuff "cd eduid-oidc-proofing && tail -F log/*"
 
+screen -t "eduid-lookup-mobile-proofing-log"
+stuff "cd eduid-lookup-mobile-proofing && tail -F log/*"
+
 screen -t "eduid-personal-data-log"
 stuff "cd eduid-personal-data && tail -F log/*"
 
