@@ -21,7 +21,7 @@ def create_users(client, databases):
 	    client[db_name].add_user(rw_user, '{}_pw'.format(rw_user), roles=[{'role':'readWrite', 'db': db_name}])
 	for ro_user in access_conf.get('read', list()):
 	    print('Added ro user: {}'.format(ro_user))
-	    client[db_name].add_user(rw_user, '{}_pw'.format(ro_user), roles=[{'role':'read', 'db': db_name}])
+	    client[db_name].add_user(ro_user, '{}_pw'.format(ro_user), roles=[{'role':'read', 'db': db_name}])
 	print('---')
 
 def init_collections(client, databases):
