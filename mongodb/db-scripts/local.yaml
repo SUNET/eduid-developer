@@ -22,6 +22,7 @@ mongo_databases:
         - 'eduid_signup'
         - 'eduid_idproofing_letter'
         - 'eduid_lookup_mobile_proofing'
+        - 'eduid_personal_data'
         - 'eduid_oidc_proofing'
         - 'eduid_emails'
         - 'eduid_phones'
