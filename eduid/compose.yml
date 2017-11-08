@@ -616,7 +616,7 @@ services:
       - ../pypiserver/packages:/opt/eduid/pypiserver/packages:ro
 
   rsyslog:
-    image: local/rsyslog
+    image: docker.sunet.se/eduid/rsyslog
     expose:
       - 514
     networks:
