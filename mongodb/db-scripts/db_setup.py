@@ -9,7 +9,7 @@ from pymongo import MongoClient
 ##
 ## Reads users and collections from a yaml file.
 ##
-## User passwords will be set to user_name_pw.
+## User passwords will be set to [username]_pw.
 ##
 
 def create_users(client, databases):
