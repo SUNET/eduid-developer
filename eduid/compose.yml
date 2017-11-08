@@ -79,7 +79,7 @@ services:
       dev:
         ipv4_address: 172.16.10.230
     volumes:
-      - ../eduid-html/log:/var/log
+      - ../eduid-html/log:/var/log/nginx
       - ../eduid-html/etc:/etc/nginx/sites-enabled
       # source volumes
       - ../sources/eduid-html:/opt/eduid/eduid-html:ro
@@ -99,6 +99,7 @@ services:
      - personal_data
      - jsconfig
      - oidc_proofing
+     - lookup_mobile_proofing
     depends_on:
      - dashboard
      - authn
@@ -106,7 +107,7 @@ services:
      - personal_data
      - jsconfig
      - oidc_proofing
-     - rsyslog
+     - lookup_mobile_proofing
 
   dashboard:
     image: docker.sunet.se/eduid/eduid-dashboard
@@ -359,6 +360,33 @@ services:
       - redis
       - rsyslog
 
+  lookup_mobile_proofing:
+    image: docker.sunet.se/eduid/eduid-lookup-mobile-proofing
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-lookup-mobile-proofing/run:/opt/eduid/run
+      - ../eduid-lookup-mobile-proofing/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+    depends_on:
+      - etcd
+      - mongodb
+      - turq
+      - rabbitmq
+      - am
+      - redis
+
+  support:
+    image: docker.sunet.se/eduid/eduid-support
+    networks:
   support:
     image: docker.sunet.se/eduid/eduid-support
     networks:

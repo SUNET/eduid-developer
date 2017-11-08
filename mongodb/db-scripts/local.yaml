@@ -1,0 +1,231 @@
+---
+mongo_databases:
+
+  admin:
+    collections: []
+    access:
+      backup:
+        - 'backup'
+      clusterMonitor:
+        - 'nagios'
+
+  eduid_am:
+    collections:
+      - 'attributes'
+    access:
+      readWrite:
+        - 'eduid_am'
+      read:
+        - 'eduid_idp'
+        - 'eduid_dashboard'
+        - 'eduid_actions'
+        - 'eduid_signup'
+        - 'eduid_idproofing_letter'
+        - 'eduid_lookup_mobile_proofing'
+        - 'eduid_oidc_proofing'
+        - 'eduid_emails'
+        - 'eduid_phones'
+        - 'eduid_authn'
+        - 'eduid_security'
+        - 'eduid_support'
+        - 'munin'
+
+  eduid_api:
+    collections:
+      - 'users'
+    access:
+      readWrite:
+        - 'eduid_api'
+        - 'eduid_oathaead'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_idp:
+    collections:
+      - 'authn_info'
+      - 'sso_sessions'
+    access:
+      readWrite:
+        - 'eduid_idp'
+      read:
+        - 'eduid_support'
+
+  eduid_idp_pysaml2:
+    collections:
+      - 'ident'
+      - 'session'
+    access:
+      readWrite:
+        - 'eduid_idp'
+        - 'eduid_support'  # XXX probably not needed
+
+  eduid_msg:
+    collections:
+      - 'navet_cache'
+      - 'recipient_cache'
+      - 'transaction_audit'
+    access:
+      readWrite:
+        - 'eduid_msg'
+
+  eduid_signup:
+    collections:
+      - 'registered'
+    access:
+      readWrite:
+        - 'eduid_signup'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_tou:
+    collections:
+      - 'consent'
+    access:
+      readWrite:
+        - 'eduid_signup'
+        - 'eduid_actions'
+      read:
+        - 'eduid_support'
+
+  eduid_dashboard:
+    collections:
+      - 'profiles'
+      - 'reset_passwords'
+      - 'verifications'
+      - 'wizards'
+    access:
+      readWrite:
+        - 'eduid_dashboard'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_idp_authninfo:
+    collections:
+      - 'authn_info'
+    access:
+      readWrite:
+        - 'eduid_idp'
+      read:
+        - 'eduid_dashboard'
+        - 'eduid_support'
+        - 'eduid_security'
+
+  eduid_lookup_mobile:
+    collections:
+      - 'transaction_audit'
+    access:
+      readWrite:
+        - 'eduid_lookup_mobile'
+      read:
+        - 'eduid_support'
+
+  eduid_actions:
+    collections:
+      - 'actions'
+    access:
+      readWrite:
+        - 'eduid_actions'
+        - 'eduid_idp'
+        - 'eduid_am'
+      read:
+        - 'eduid_support'
+
+  eduid_idproofing_letter:
+    collections:
+      - 'proofing_data'
+    access:
+      readWrite:
+        - 'eduid_idproofing_letter'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_oidc_proofing:
+    collections:
+      - 'profiles'
+      - 'proofing_data'
+      - 'proofs'
+    access:
+      readWrite:
+        - 'eduid_oidc_proofing'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_lookup_mobile_proofing:
+    collections:
+      - 'profiles'
+      - 'proofing_data'
+    access:
+      readWrite:
+        - 'eduid_lookup_mobile_proofing'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_emails:
+    collections:
+      - 'profiles'
+      - 'proofing_data'
+    access:
+      readWrite:
+        - 'eduid_emails'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_security:
+    collections:
+      - 'profiles'
+    access:
+      readWrite:
+        - 'eduid_security'
+      read:
+        - 'eduid_am'
+
+  eduid_personal_data:
+    collections:
+      - 'profiles'
+    access:
+      readWrite:
+        - 'eduid_personal_data'
+      read:
+        - 'eduid_am'
+
+  eduid_phones:
+    collections:
+      - 'profiles'
+      - 'proofing_data'
+    access:
+      readWrite:
+        - 'eduid_phones'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_logs:
+    collections:
+      - 'proofing_log'
+    access:
+      readWrite:
+        - 'eduid_oidc_proofing'
+        - 'eduid_idproofing_letter'
+        - 'eduid_lookup_mobile_proofing'
+      read:
+        - 'eduid_support'
+
+  seleg_op:
+    collections:
+      - 'access_tokens'
+      - 'authn_requests'
+      - 'authz_codes'
+      - 'clients'
+      - 'refresh_tokens'
+      - 'subject_identifiers'
+      - 'userinfo'
+    access:
+      readWrite:
+        - 'op'
