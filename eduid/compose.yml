@@ -229,7 +229,7 @@ services:
       - ../sources/flask-babel:/opt/eduid/src/flask-babel:ro
       - ../sources/babel:/opt/eduid/src/babel:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/flask-babel:/opt/eduid/src/babel"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/flask-babel:/opt/eduid/src/babel:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - redis
@@ -302,7 +302,7 @@ services:
       - ../sources/flask-babel:/opt/eduid/src/flask-babel:ro
       - ../sources/babel:/opt/eduid/src/babel:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/flask-babel:/opt/eduid/src/babel"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/flask-babel:/opt/eduid/src/babel:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - redis
