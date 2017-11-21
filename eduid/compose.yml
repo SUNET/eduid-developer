@@ -3,13 +3,15 @@ version: '2'
 services:
 
   actions:
-    image: docker.sunet.se/eduid/eduid-actions
+    image: docker.sunet.se/eduid/eduid-actions:staging
     #expose:
     #  - 5000
     networks:
       dev:
         ipv4_address: 172.16.10.240
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-actions/etc:/opt/eduid/eduid-actions/etc:ro
       - ../eduid-actions/run:/opt/eduid/eduid-actions/run
       - ../eduid-actions/scripts:/opt/eduid/eduid-actions/scripts:ro
@@ -31,10 +33,12 @@ services:
       - rsyslog
 
   am:
-    image: docker.sunet.se/eduid/eduid-am
+    image: docker.sunet.se/eduid/eduid-am:staging
     networks:
       dev:
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-am/etc:/opt/eduid/eduid-am/etc:ro
       - ../eduid-am/log:/var/log/eduid
       # source volumes
@@ -54,12 +58,14 @@ services:
       - rsyslog
 
   api:
-    image: docker.sunet.se/eduid/eduid-api
+    image: docker.sunet.se/eduid/eduid-api:staging
     #expose:
     #  - 5000
     networks:
       dev:
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-api/etc:/opt/eduid/eduid-api/etc:ro
       - ../eduid-api/log:/var/log/eduid
       # source volumes
@@ -71,7 +77,7 @@ services:
       - rsyslog
 
   html:
-    image: docker.sunet.se/eduid/eduid-html
+    image: docker.sunet.se/eduid/eduid-html:staging
     expose:
       - 80
     dns: 172.16.10.1
@@ -79,6 +85,8 @@ services:
       dev:
         ipv4_address: 172.16.10.230
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-html/log:/var/log/nginx
       #- ../eduid-html/etc:/etc/nginx/sites-enabled
       # source volumes
@@ -90,6 +98,8 @@ services:
       dev:
         ipv4_address: 172.16.10.220
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - /dev/log:/dev/log
     links:
@@ -110,12 +120,14 @@ services:
       - lookup_mobile_proofing
 
   dashboard:
-    image: docker.sunet.se/eduid/eduid-dashboard
+    image: docker.sunet.se/eduid/eduid-dashboard:staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-dashboard/etc:/opt/eduid/eduid-dashboard/etc:ro
       - ../eduid-dashboard/run:/opt/eduid/eduid-dashboard/run
       - ../eduid-dashboard/scripts:/opt/eduid/eduid-dashboard/scripts:ro
@@ -126,7 +138,6 @@ services:
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
       - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
@@ -138,12 +149,14 @@ services:
       - rsyslog
 
   authn:
-    image: docker.sunet.se/eduid/eduid-authn
+    image: docker.sunet.se/eduid/eduid-authn:staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-authn/etc:/opt/eduid/etc
       - ../eduid-authn/run:/opt/eduid/run
       - ../eduid-authn/log:/var/log/eduid
@@ -161,12 +174,14 @@ services:
       - rsyslog
 
   letter_proofing:
-    image: docker.sunet.se/eduid/eduid-letter-proofing
+    image: docker.sunet.se/eduid/eduid-letter-proofing:staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-letter-proofing/run:/opt/eduid/run
       - ../eduid-letter-proofing/log:/var/log/eduid
       # source volumes
@@ -185,7 +200,7 @@ services:
       - rsyslog
 
   idproofing-letter:
-    image: docker.sunet.se/eduid/eduid-idproofing-letter
+    image: docker.sunet.se/eduid/eduid-idproofing-letter:staging
     #expose:
     #  - 5000
     networks:
@@ -205,13 +220,15 @@ services:
       - rabbitmq
 
   personal_data:
-    image: docker.sunet.se/eduid/eduid-personal-data
+    image: docker.sunet.se/eduid/eduid-personal-data:staging
     networks:
       dev:
         ipv4_address: 172.16.10.224
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-personal-data/etc:/opt/eduid/etc
       - ../eduid-personal-data/run:/opt/eduid/run
       - ../eduid-personal-data/log:/var/log/eduid
@@ -230,13 +247,15 @@ services:
       - rsyslog
 
   emails:
-    image: docker.sunet.se/eduid/eduid-emails
+    image: docker.sunet.se/eduid/eduid-emails:staging
     networks:
       dev:
         ipv4_address: 172.16.10.225
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-emails/etc:/opt/eduid/etc
       - ../eduid-emails/run:/opt/eduid/run
       - ../eduid-emails/log:/var/log/eduid
@@ -274,13 +293,15 @@ services:
       - "p11softhsm_init_rsa_key=/opt/eduid/idp-public-snakeoil.key"
 
   security:
-    image: docker.sunet.se/eduid/eduid-security
+    image: docker.sunet.se/eduid/eduid-security:staging
     networks:
       dev:
         ipv4_address: 172.16.10.227
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-security/etc:/opt/eduid/etc
       - ../eduid-security/run:/opt/eduid/run
       - ../eduid-security/log:/var/log/eduid
@@ -303,13 +324,15 @@ services:
       - rsyslog
 
   phones:
-    image: docker.sunet.se/eduid/eduid-phones
+    image: docker.sunet.se/eduid/eduid-phones:staging
     networks:
       dev:
         ipv4_address: 172.16.10.226
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-phones/etc:/opt/eduid/etc
       - ../eduid-phones/run:/opt/eduid/run
       - ../eduid-phones/log:/var/log/eduid
@@ -332,12 +355,14 @@ services:
       - rsyslog
 
   jsconfig:
-    image: docker.sunet.se/eduid/eduid-jsconfig
+    image: docker.sunet.se/eduid/eduid-jsconfig:staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-jsconfig/etc:/opt/eduid/etc
       - ../eduid-jsconfig/run:/opt/eduid/run
       - ../eduid-jsconfig/log:/var/log/eduid
@@ -356,12 +381,14 @@ services:
       - rsyslog
 
   oidc_proofing:
-    image: docker.sunet.se/eduid/eduid-oidc-proofing
+    image: docker.sunet.se/eduid/eduid-oidc-proofing:staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-oidc-proofing/run:/opt/eduid/run
       - ../eduid-oidc-proofing/log:/var/log/eduid
       # source volumes
@@ -381,12 +408,14 @@ services:
       - rsyslog
 
   lookup_mobile_proofing:
-    image: docker.sunet.se/eduid/eduid-lookup-mobile-proofing
+    image: docker.sunet.se/eduid/eduid-lookup-mobile-proofing:staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-lookup-mobile-proofing/run:/opt/eduid/run
       - ../eduid-lookup-mobile-proofing/log:/var/log/eduid
       # source volumes
@@ -405,14 +434,13 @@ services:
       - redis
 
   support:
-    image: docker.sunet.se/eduid/eduid-support
-    networks:
-  support:
-    image: docker.sunet.se/eduid/eduid-support
+    image: docker.sunet.se/eduid/eduid-support:staging
     networks:
       dev:
         ipv4_address: 172.16.10.223
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-support/run:/opt/eduid/run
       - ../eduid-support/log:/var/log/eduid
       # source volumes
@@ -429,13 +457,15 @@ services:
       - rsyslog
 
   idp:
-    image: docker.sunet.se/eduid/eduid-idp:latest
+    image: docker.sunet.se/eduid/eduid-idp:staging
     networks:
       dev:
         ipv4_address: 172.16.10.200
         aliases:
           - idp.eduid.docker
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
       - ../eduid-idp/run:/opt/eduid/eduid-idp/run
       - ../eduid-idp/log:/var/log/eduid
@@ -456,10 +486,12 @@ services:
       - rsyslog
 
   lookup-mobile:
-    image: docker.sunet.se/eduid/eduid-lookup-mobile
+    image: docker.sunet.se/eduid/eduid-lookup-mobile:staging
     networks:
       dev:
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-lookup-mobile/etc:/opt/eduid/eduid-lookup-mobile/etc:ro
       - ../eduid-lookup-mobile/run:/opt/eduid/eduid-lookup-mobile/run
       - ../eduid-lookup-mobile/log:/var/log/eduid
@@ -490,10 +522,12 @@ services:
 #      - "mm_keystore_pw=barfoo"
 
   msg:
-    image: docker.sunet.se/eduid/eduid-msg
+    image: docker.sunet.se/eduid/eduid-msg:staging
     networks:
       dev:
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-msg/etc:/opt/eduid/eduid-msg/etc:ro
       - ../eduid-msg/run:/opt/eduid/eduid-msg/run
       - ../eduid-msg/log:/var/log/eduid
@@ -508,11 +542,13 @@ services:
       - rsyslog
 
   signup:
-    image: docker.sunet.se/eduid/eduid-signup
+    image: docker.sunet.se/eduid/eduid-signup:staging
     networks:
       dev:
         ipv4_address: 172.16.10.210
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-signup/etc:/opt/eduid/eduid-signup/etc:ro
       - ../eduid-signup/run:/opt/eduid/eduid-signup/run
       - ../eduid-signup/scripts:/opt/eduid/eduid-signup/scripts:ro
@@ -550,6 +586,8 @@ services:
       -initial-cluster-state new
       -data-dir /data
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../etcd/data:/data
 
   mongodb:
@@ -560,6 +598,8 @@ services:
       dev:
         ipv4_address: 172.16.10.253
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../mongodb/data:/data
       - ../mongodb/etc:/opt/eduid/etc:ro
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
@@ -570,6 +610,8 @@ services:
     networks:
       dev:
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../eduid-oathaead/etc:/opt/eduid/eduid-oathaead/etc:ro
       - ../eduid-oathaead/run:/opt/eduid/eduid-oathaead/run
       - ../eduid-oathaead/log:/var/log/eduid
@@ -601,6 +643,8 @@ services:
       dev:
         ipv4_address: 172.16.10.252
     volumes:
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
       - ../redis/etc:/etc/redis:ro
       - ../redis/log:/var/log/redis
       - ../redis/data:/data
@@ -623,17 +667,6 @@ services:
     networks:
       dev:
         ipv4_address: 172.16.10.250
-
-  pypiserver:
-    image: docker.sunet.se/eduid/pypiserver
-    networks:
-      dev:
-        ipv4_address: 172.16.10.150
-
-    volumes:
-      - ../pypiserver/etc:/opt/eduid/pypiserver/etc:ro
-      - ../pypiserver/log:/var/log/pypiserver
-      - ../pypiserver/packages:/opt/eduid/pypiserver/packages:ro
 
   rsyslog:
     image: docker.sunet.se/eduid/rsyslog
