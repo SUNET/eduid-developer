@@ -144,6 +144,7 @@ eduid:
             EMAILS_URL: /services/emails/
             MOBILE_URL: /services/phones/
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
+            LOOKUP_MOBILE_PROOFING_URL: /services/lookup-mobile-proofing/proofing
             LETTER_PROOFING_URL: /services/letter-proofing/
             SECURITY_URL: /services/security
             TOKEN_SERVICE_URL: /services/authn
@@ -153,5 +154,6 @@ eduid:
             CHPASS_TIMEOUT: 600
             PROOFING_METHODS:
                 - letter
+                - lookup_mobile
                 - oidc
                 - oidc_freja
