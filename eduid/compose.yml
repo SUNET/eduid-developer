@@ -82,7 +82,9 @@ services:
       - ../eduid-html/log:/var/log/nginx
       - ../eduid-html/etc:/etc/nginx/sites-enabled
       # source volumes
-      - ../sources/eduid-html:/opt/eduid/eduid-html:ro
+      - ../sources/eduid-html:/opt/eduid/eduid-html
+    environment:
+      - "ENTRY_POINT_URL=http://html.eduid.docker/static/build/index-bundle.dev.js"
 
   dashboard_haproxy:
     image: 'docker.sunet.se/library/haproxy:latest'
@@ -183,6 +185,26 @@ services:
       - mongodb
       - etcd
       - rsyslog
+
+  idproofing-letter:
+    image: docker.sunet.se/eduid/eduid-idproofing-letter:staging
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+    volumes:
+      - ../eduid-idproofing-letter/etc:/opt/eduid/eduid-idproofing-letter/etc:ro
+      - ../eduid-idproofing-letter/run:/opt/eduid/eduid-idproofing-letter/run
+      - ../eduid-idproofing-letter/scripts:/opt/eduid/eduid-idproofing-letter/scripts:ro
+      - ../eduid-idproofing-letter/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-idproofing-letter:/opt/eduid/src/eduid-idproofing-letter:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-idproofing-letter/src"
+      - "IDPROOFING_LETTER_SETTINGS=/opt/eduid/eduid-idproofing-letter/etc/dev.py"
+    depends_on:
+      - mongodb
+      - rabbitmq
 
   personal_data:
     image: docker.sunet.se/eduid/eduid-personal-data
@@ -384,9 +406,6 @@ services:
       - am
       - redis
 
-  support:
-    image: docker.sunet.se/eduid/eduid-support
-    networks:
   support:
     image: docker.sunet.se/eduid/eduid-support
     networks:
