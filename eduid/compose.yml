@@ -80,7 +80,7 @@ services:
         ipv4_address: 172.16.10.230
     volumes:
       - ../eduid-html/log:/var/log/nginx
-      - ../eduid-html/etc/html.conf:/etc/nginx/sites-available/html.conf
+      - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
       # source volumes
       - ../sources/eduid-html:/src/eduid/www/
       - ../sources/eduid-html/static:/src/eduid/static/
