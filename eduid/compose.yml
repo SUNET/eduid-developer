@@ -72,7 +72,6 @@ services:
 
   html:
     image: docker.sunet.se/eduid/eduid-html
-    #image: local/eduid-html
     expose:
       - 80
     dns: 172.16.10.1
