@@ -233,17 +233,17 @@ services:
       - etcd
       - rsyslog
 
-  emails:
-    image: docker.sunet.se/eduid/eduid-emails
+  email:
+    image: docker.sunet.se/eduid/eduid-email
     networks:
       dev:
         ipv4_address: 172.16.10.225
     expose:
       - 8080
     volumes:
-      - ../eduid-emails/etc:/opt/eduid/etc
-      - ../eduid-emails/run:/opt/eduid/run
-      - ../eduid-emails/log:/var/log/eduid
+      - ../eduid-email/etc:/opt/eduid/etc
+      - ../eduid-email/run:/opt/eduid/run
+      - ../eduid-email/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -306,17 +306,17 @@ services:
       - msg
       - rsyslog
 
-  phones:
-    image: docker.sunet.se/eduid/eduid-phones
+  phone:
+    image: docker.sunet.se/eduid/eduid-phone
     networks:
       dev:
         ipv4_address: 172.16.10.226
     expose:
       - 8080
     volumes:
-      - ../eduid-phones/etc:/opt/eduid/etc
-      - ../eduid-phones/run:/opt/eduid/run
-      - ../eduid-phones/log:/var/log/eduid
+      - ../eduid-phone/etc:/opt/eduid/etc
+      - ../eduid-phone/run:/opt/eduid/run
+      - ../eduid-phone/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro

@@ -24,8 +24,8 @@ mongo_databases:
         - 'eduid_lookup_mobile_proofing'
         - 'eduid_personal_data'
         - 'eduid_oidc_proofing'
-        - 'eduid_emails'
-        - 'eduid_phones'
+        - 'eduid_email'
+        - 'eduid_phone'
         - 'eduid_authn'
         - 'eduid_security'
         - 'eduid_support'
@@ -167,13 +167,13 @@ mongo_databases:
         - 'eduid_am'
         - 'eduid_support'
 
-  eduid_emails:
+  eduid_email:
     collections:
       - 'profiles'
       - 'proofing_data'
     access:
       readWrite:
-        - 'eduid_emails'
+        - 'eduid_email'
       read:
         - 'eduid_am'
         - 'eduid_support'
@@ -196,13 +196,13 @@ mongo_databases:
       read:
         - 'eduid_am'
 
-  eduid_phones:
+  eduid_phone:
     collections:
       - 'profiles'
       - 'proofing_data'
     access:
       readWrite:
-        - 'eduid_phones'
+        - 'eduid_phone'
       read:
         - 'eduid_am'
         - 'eduid_support'

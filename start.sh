@@ -13,8 +13,8 @@ fi
     printf "172.16.10.220\tdashboard.eduid_dev dashboard.eduid.docker\n";
     printf "172.16.10.223\tsupport.eduid_dev support.eduid.docker\n";
     printf "172.16.10.224\tpersonal-data.eduid_dev personal-data.eduid.docker\n";
-    printf "172.16.10.225\temails.eduid_dev emails.eduid.docker\n";
-    printf "172.16.10.226\tphones.eduid_dev phones.eduid.docker\n";
+    printf "172.16.10.225\temail.eduid_dev email.eduid.docker\n";
+    printf "172.16.10.226\tphone.eduid_dev phone.eduid.docker\n";
     printf "172.16.10.230\thtml.eduid_dev html.eduid.docker\n";
     printf "172.16.10.240\tactions.eduid_dev actions.eduid.docker\n";
     printf "172.16.10.250\tturq.eduid_dev turq.eduid.docker\n";
