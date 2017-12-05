@@ -5,12 +5,12 @@ eduid:
             DEBUG: yes
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
-            SESSION_COOKIE_DOMAIN: .eduid.docker
+            SESSION_COOKIE_DOMAIN: .eduid.local.emergya.info
             SESSION_COOKIE_SECURE: 0
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
             PREFERRED_URL_SCHEME: http
-            SERVER_NAME: dashboard.eduid.docker:8080
+            SERVER_NAME: dashboard.eduid.local.emergya.info
             # Redis config
             REDIS_HOST: redis.eduid_dev
             REDIS_PORT: 6379
@@ -18,10 +18,10 @@ eduid:
             # SAML2 and SP config
             SAML2_LOGIN_REDIRECT_URL: /
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
-            SAML2_LOGOUT_REDIRECT_URL: http://html.eduid.docker/
+            SAML2_LOGOUT_REDIRECT_URL: http://dashboard.eduid.local.emergya.info:8080/
             SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
-            TOKEN_SERVICE_URL: http://dashboard.eduid.docker:8080/services/authn
+            TOKEN_SERVICE_URL: http://dashboard.eduid.local.emergya.info:8080/services/authn
             CELERY_CONFIG:
                 CELERY_RESULT_BACKEND: amqp
                 CELERY_TASK_SERIALIZER: json
@@ -32,8 +32,8 @@ eduid:
                 en: English
                 sv: Svenska
             MAIL_DEFAULT_FROM: info@eduid.se
-            EDUID_SITE_URL: html.eduid.docker
-            EDUID_STATIC_URL: http://html.eduid.docker/static/
+            EDUID_SITE_URL: dashboard.eduid.local.emergya.info
+            EDUID_STATIC_URL: http://dashboard.eduid.local.emergya.info:8080/static/
 
         authn:
             APPLICATION_ROOT: /services/authn
@@ -42,8 +42,8 @@ eduid:
             LOGGER_NAME: authn
             LOG_LEVEL: DEBUG
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
-            TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
-            TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
+            TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.local.emergya.info:8080/
+            TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://dashboard.eduid.local.emergya.info:8080/
         letter_proofing:
             APPLICATION_ROOT: /services/letter-proofing
             SECRET_KEY: supersecretkey
@@ -82,12 +82,12 @@ eduid:
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             LOOKUP_MOBILE_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/lookup_mobile
         support:
-            SERVER_NAME: support.eduid.docker:8080
+            SERVER_NAME: support.eduid.local.emergya.info:8080
             SECRET_KEY: supersecretkey
             LOGGER_NAME: support
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
-            STATIC_URL: http://html.eduid.docker/static/
+            STATIC_URL: http://html.eduid.local.emergya.info/static/
             SUPPORT_PERSONNEL:
               - mojud-dosiv
         personal_data:
@@ -139,7 +139,7 @@ eduid:
             AVAILABLE_LANGUAGES:
                 - [en, English]
                 - [sv, Svenska]
-            DASHBOARD_URL: /profile/
+            DASHBOARD_URL: http://dashboard.eduid.local.emergya.info:8080/profile/
             PERSONAL_DATA_URL: /services/personal-data/
             EMAILS_URL: /services/emails/
             MOBILE_URL: /services/phones/
