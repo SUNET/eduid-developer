@@ -43,11 +43,11 @@ stuff "cd eduid-lookup-mobile-proofing && tail -F log/*"
 screen -t "eduid-personal-data-log"
 stuff "cd eduid-personal-data && tail -F log/*"
 
-screen -t "eduid-phones-log"
-stuff "cd eduid-phones && tail -F log/*"
+screen -t "eduid-phone-log"
+stuff "cd eduid-phone && tail -F log/*"
 
-screen -t "eduid-emails-log"
-stuff "cd eduid-emails && tail -F log/*"
+screen -t "eduid-email-log"
+stuff "cd eduid-email && tail -F log/*"
 
 screen -t "eduid-security-log"
 stuff "cd eduid-security && tail -F log/*"
