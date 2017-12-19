@@ -157,3 +157,4 @@ eduid:
                 - lookup_mobile
                 - oidc
                 - oidc_freja
+            DEFAULT_COUNTRY_CODE: 46
