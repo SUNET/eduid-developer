@@ -44,6 +44,7 @@ eduid:
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
             TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
             TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
+            SAFE_RELAY_DOMAIN: eduid.docker
         letter_proofing:
             APPLICATION_ROOT: /services/letter-proofing
             SECRET_KEY: supersecretkey
