@@ -43,7 +43,8 @@ eduid:
             LOG_LEVEL: DEBUG
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
             TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.local.emergya.info:8080/
-            TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://dashboard.eduid.local.emergya.info:8080/
+            TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
+            SAFE_RELAY_DOMAIN: eduid.local.emergya.info
         letter_proofing:
             APPLICATION_ROOT: /services/letter-proofing
             SECRET_KEY: supersecretkey
@@ -157,3 +158,4 @@ eduid:
                 - lookup_mobile
                 - oidc
                 - oidc_freja
+            DEFAULT_COUNTRY_CODE: 46
