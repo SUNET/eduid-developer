@@ -246,8 +246,8 @@ services:
       - etcd
       - rsyslog
 
-  emails:
-    image: docker.sunet.se/eduid/eduid-emails:staging
+  email:
+    image: docker.sunet.se/eduid/eduid-email:staging
     networks:
       dev:
         ipv4_address: 172.16.10.225
@@ -256,9 +256,9 @@ services:
     volumes:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
-      - ../eduid-emails/etc:/opt/eduid/etc
-      - ../eduid-emails/run:/opt/eduid/run
-      - ../eduid-emails/log:/var/log/eduid
+      - ../eduid-email/etc:/opt/eduid/etc
+      - ../eduid-email/run:/opt/eduid/run
+      - ../eduid-email/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -323,8 +323,8 @@ services:
       - msg
       - rsyslog
 
-  phones:
-    image: docker.sunet.se/eduid/eduid-phones:staging
+  phone:
+    image: docker.sunet.se/eduid/eduid-phone:staging
     networks:
       dev:
         ipv4_address: 172.16.10.226
@@ -333,9 +333,9 @@ services:
     volumes:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
-      - ../eduid-phones/etc:/opt/eduid/etc
-      - ../eduid-phones/run:/opt/eduid/run
-      - ../eduid-phones/log:/var/log/eduid
+      - ../eduid-phone/etc:/opt/eduid/etc
+      - ../eduid-phone/run:/opt/eduid/run
+      - ../eduid-phone/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro

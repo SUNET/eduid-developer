@@ -97,20 +97,20 @@ eduid:
             LOG_LEVEL: DEBUG
             LOGGER_NAME: personal_data
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-        emails:
-            APPLICATION_ROOT: /services/emails
+        email:
+            APPLICATION_ROOT: /services/email
             SECRET_KEY: supersecretkey
-            MONGO_URI: mongodb://eduid_emails:eduid_emails_pw@mongodb.eduid_dev
+            MONGO_URI: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
-            LOGGER_NAME: emails
+            LOGGER_NAME: email
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-        phones:
-            APPLICATION_ROOT: /services/phones
+        phone:
+            APPLICATION_ROOT: /services/phone
             SECRET_KEY: supersecretkey
-            MONGO_URI: mongodb://eduid_phones:eduid_phones_pw@mongodb.eduid_dev
+            MONGO_URI: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
-            LOGGER_NAME: phones
+            LOGGER_NAME: phone
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PHONE_VERIFICATION_TIMEOUT: 24
@@ -141,8 +141,8 @@ eduid:
                 - [sv, Svenska]
             DASHBOARD_URL: /profile
             PERSONAL_DATA_URL: /services/personal-data/
-            EMAILS_URL: /services/emails/
-            MOBILE_URL: /services/phones/
+            EMAILS_URL: /services/email/
+            MOBILE_URL: /services/phone/
             OIDC_PROOFING_URL: /services/oidc-proofing/proofing
             LETTER_PROOFING_URL: /services/letter-proofing/
             SECURITY_URL: /services/security
