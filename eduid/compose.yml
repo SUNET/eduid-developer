@@ -88,9 +88,13 @@ services:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
       - ../eduid-html/log:/var/log/nginx
-      #- ../eduid-html/etc:/etc/nginx/sites-enabled
+      - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
       # source volumes
-      #- ../sources/eduid-html:/opt/eduid/eduid-html:ro
+      - ../sources/eduid-html:/src/eduid/www/
+      - ../sources/eduid-html/static:/src/eduid/static/
+      - ../sources/eduid-html/react/build:/src/eduid/build/
+    environment:
+      - "ENTRY_POINT_URL=http://html.eduid.docker/static/build/index-bundle.dev.js"
 
   dashboard_haproxy:
     image: 'docker.sunet.se/library/haproxy:latest'

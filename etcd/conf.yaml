@@ -44,6 +44,7 @@ eduid:
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
             TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
             TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
+            SAFE_RELAY_DOMAIN: eduid.docker
         letter_proofing:
             APPLICATION_ROOT: /services/letter-proofing
             SECRET_KEY: supersecretkey
@@ -139,19 +140,22 @@ eduid:
             AVAILABLE_LANGUAGES:
                 - [en, English]
                 - [sv, Svenska]
-            DASHBOARD_URL: /profile
+            DASHBOARD_URL: /profile/
             PERSONAL_DATA_URL: /services/personal-data/
             EMAILS_URL: /services/email/
             MOBILE_URL: /services/phone/
-            OIDC_PROOFING_URL: /services/oidc-proofing/proofing
+            OIDC_PROOFING_URL: /services/oidc-proofing/proofing/
+            LOOKUP_MOBILE_PROOFING_URL: /services/lookup-mobile-proofing/proofing/
             LETTER_PROOFING_URL: /services/letter-proofing/
-            SECURITY_URL: /services/security
-            TOKEN_SERVICE_URL: /services/authn
-            OIDC_PROOFING_FREJA_URL: /services/oidc-proofing/freja/proofing
+            SECURITY_URL: /services/security/
+            TOKEN_SERVICE_URL: /services/authn/
+            OIDC_PROOFING_FREJA_URL: /services/oidc-proofing/freja/proofing/
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
             PROOFING_METHODS:
                 - letter
+                - lookup_mobile
                 - oidc
                 - oidc_freja
+            DEFAULT_COUNTRY_CODE: 46
