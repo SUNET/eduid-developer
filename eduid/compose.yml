@@ -24,6 +24,7 @@ services:
       - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-commmon/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou/src:/opt/eduid/src/eduid_action.mfa/src:/opt/eduid/src/eduid-actions"
+      - "HOSTNAME=actions"
     depends_on:
       - mongodb
       - rabbitmq
@@ -48,6 +49,7 @@ services:
       - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-proofing-amp:/opt/eduid/src/eduid-actions:/opt/eduid/src/eduid_action.tou"
+      - "HOSTNAME=am"
     depends_on:
       - mongodb
       - rabbitmq
@@ -66,6 +68,7 @@ services:
       - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
+      - "HOSTNAME=api"
     depends_on:
       - mongodb
       - rsyslog
@@ -87,6 +90,7 @@ services:
       - ../sources/eduid-html/react/build:/src/eduid/build/
     environment:
       - "ENTRY_POINT_URL=http://html.eduid.docker/static/build/index-bundle.dev.js"
+      - "HOSTNAME=html"
 
   dashboard_haproxy:
     image: 'docker.sunet.se/library/haproxy:latest'
@@ -134,6 +138,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "HOSTNAME=dashboard"
     depends_on:
       - mongodb
       - rabbitmq
@@ -158,6 +163,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=authn"
     depends_on:
       - redis
       - mongodb
@@ -180,6 +186,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=letter_proofing"
     depends_on:
       - rabbitmq
       - am
@@ -204,6 +211,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-idproofing-letter/src"
       - "IDPROOFING_LETTER_SETTINGS=/opt/eduid/eduid-idproofing-letter/etc/dev.py"
+      - "HOSTNAME=idproofing_letter"
     depends_on:
       - mongodb
       - rabbitmq
@@ -227,6 +235,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=personal_data"
     depends_on:
       - redis
       - mongodb
@@ -255,6 +264,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/flask-babel:/opt/eduid/src/babel:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=email"
     depends_on:
       - redis
       - mongodb
@@ -299,6 +309,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/flask-babel:/opt/eduid/src/babel:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=security"
     depends_on:
       - redis
       - mongodb
@@ -328,6 +339,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/flask-babel:/opt/eduid/src/babel:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=phone"
     depends_on:
       - redis
       - mongodb
@@ -353,6 +365,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=jsconfig"
     depends_on:
       - redis
       - mongodb
@@ -375,6 +388,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=oidc_proofing"
     depends_on:
       - etcd
       - mongodb
@@ -400,6 +414,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=lookup_mobile_proofing"
     depends_on:
       - etcd
       - mongodb
@@ -423,6 +438,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=support"
     depends_on:
       - redis
       - mongodb
@@ -450,6 +466,7 @@ services:
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action.tou/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
+      - "HOSTNAME=idp"
     depends_on:
       - mongodb
       - redis
@@ -470,6 +487,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-lookup-mobile"
+      - "HOSTNAME=lookup_mobile"
     depends_on:
       - mongodb
       - rabbitmq
@@ -503,6 +521,7 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-am"
+      - "HOSTNAME=msg"
     depends_on:
       - mongodb
       - rabbitmq
@@ -525,6 +544,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-signup:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "HOSTNAME=signup"
     depends_on:
       - mongodb
       - rabbitmq
