@@ -32,7 +32,7 @@ eduid:
                 en: English
                 sv: Svenska
             MAIL_DEFAULT_FROM: info@eduid.se
-            EDUID_SITE_URL: html.eduid.docker
+            EDUID_SITE_URL: http://html.eduid.docker
             EDUID_STATIC_URL: http://html.eduid.docker/static/
 
         authn:
