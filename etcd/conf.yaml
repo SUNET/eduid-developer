@@ -101,7 +101,7 @@ eduid:
             APPLICATION_ROOT: /services/email
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
-            MONGO_URI_OLD_DASHBOARD: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard
+            MONGO_URI_OLD_DASHBOARD: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard  # XXX remove when dumping old dashboard
             LOG_LEVEL: DEBUG
             LOGGER_NAME: email
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
@@ -111,7 +111,7 @@ eduid:
             APPLICATION_ROOT: /services/phone
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
-            MONGO_URI_OLD_DASHBOARD: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard
+            MONGO_URI_OLD_DASHBOARD: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard  # XXX remove when dumping old dashboard
             LOG_LEVEL: DEBUG
             LOGGER_NAME: phone
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
