@@ -32,7 +32,7 @@ eduid:
                 en: English
                 sv: Svenska
             MAIL_DEFAULT_FROM: info@eduid.se
-            EDUID_SITE_URL: dashboard.eduid.local.emergya.info
+            EDUID_SITE_URL: dashboard.eduid.local.emergya.info:8080/profile/
             EDUID_STATIC_URL: http://dashboard.eduid.local.emergya.info:8080/static/
 
         authn:
