@@ -99,8 +99,8 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_dashboard'
-        - 'eduid_email'
-        - 'eduid_phone'
+        - 'eduid_email'  # XXX remove when dumping old dashboard
+        - 'eduid_phone'  # XXX remove when dumping old dashboard
       read:
         - 'eduid_am'
         - 'eduid_support'
@@ -176,7 +176,7 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_email'
-        - 'eduid_dashboard'
+        - 'eduid_dashboard'  # XXX remove when dumping old dashboard
       read:
         - 'eduid_am'
         - 'eduid_support'
@@ -206,7 +206,7 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_phone'
-        - 'eduid_dashboard'
+        - 'eduid_dashboard'  # XXX remove when dumping old dashboard
       read:
         - 'eduid_am'
         - 'eduid_support'
