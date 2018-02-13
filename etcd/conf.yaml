@@ -34,7 +34,6 @@ eduid:
             MAIL_DEFAULT_FROM: info@eduid.se
             EDUID_SITE_URL: http://html.eduid.docker
             EDUID_STATIC_URL: http://html.eduid.docker/static/
-
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
@@ -102,14 +101,17 @@ eduid:
             APPLICATION_ROOT: /services/email
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
+            MONGO_URI_OLD_DASHBOARD: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard  # XXX remove when dumping old dashboard
             LOG_LEVEL: DEBUG
             LOGGER_NAME: email
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            EMAIL_VERIFICATION_TIMEOUT: 24
         phone:
             APPLICATION_ROOT: /services/phone
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
+            MONGO_URI_OLD_DASHBOARD: mongodb://eduid_dashboard:eduid_dashboard_pw@mongodb/eduid_dashboard  # XXX remove when dumping old dashboard
             LOG_LEVEL: DEBUG
             LOGGER_NAME: phone
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
