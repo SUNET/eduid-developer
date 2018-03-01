@@ -159,3 +159,4 @@ eduid:
                 - oidc
                 - oidc_freja
             DEFAULT_COUNTRY_CODE: 46
+            DEBUG: yes
