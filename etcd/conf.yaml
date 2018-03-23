@@ -128,6 +128,8 @@ eduid:
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
             U2F_APP_ID: https://dashboard.eduid.local.emergya.info
+            U2F_MAX_ALLOWED_TOKENS: 50
+            U2F_MAX_DESCRIPTION_LENGTH: 64
             U2F_FACETS:
                 - https://dashboard.eduid.local.emergya.info
                 - https://idp.eduid.local.emergya.info
