@@ -8,7 +8,7 @@ from saml2 import attributemaps
 
 DEFAULT_ATTRIBUTEMAPS = path.dirname(attributemaps.__file__)
 
-BASE_URL = 'http://dashboard.eduid.local.emergya.info:8080/services/authn'
+BASE_URL = 'https://dashboard.eduid.local.emergya.info/services/authn'
 SAML2DIR = path.dirname(__file__)
 
 SAML_CONFIG = {
@@ -54,12 +54,12 @@ SAML_CONFIG = {
                 # present in our metadata
 
                 # the keys of this dictionary are entity ids
-                'http://idp.eduid.local.emergya.info:8080/idp.xml': {
+                'https://idp.eduid.local.emergya.info/idp.xml': {
                     'single_sign_on_service': {
-                        saml2.BINDING_HTTP_REDIRECT: 'http://idp.eduid.local.emergya.info:8080/sso/redirect',
+                        saml2.BINDING_HTTP_REDIRECT: 'https://idp.eduid.local.emergya.info/sso/redirect',
                     },
                     'single_logout_service': {
-                        saml2.BINDING_HTTP_REDIRECT: 'http://idp.eduid.local.emergya.info:8080/slo/redirect',
+                        saml2.BINDING_HTTP_REDIRECT: 'https://idp.eduid.local.emergya.info/slo/redirect',
                     },
                 },
             },

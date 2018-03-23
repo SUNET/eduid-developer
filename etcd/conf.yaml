@@ -9,7 +9,7 @@ eduid:
             SESSION_COOKIE_SECURE: 0
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
-            PREFERRED_URL_SCHEME: http
+            PREFERRED_URL_SCHEME: https
             SERVER_NAME: dashboard.eduid.local.emergya.info
             # Redis config
             REDIS_HOST: redis.eduid_dev
@@ -18,10 +18,10 @@ eduid:
             # SAML2 and SP config
             SAML2_LOGIN_REDIRECT_URL: /
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
-            SAML2_LOGOUT_REDIRECT_URL: http://dashboard.eduid.local.emergya.info:8080/
+            SAML2_LOGOUT_REDIRECT_URL: https://emergya.info/
             SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
-            TOKEN_SERVICE_URL: http://dashboard.eduid.local.emergya.info:8080/services/authn
+            TOKEN_SERVICE_URL: https://dashboard.eduid.local.emergya.info/services/authn
             CELERY_CONFIG:
                 CELERY_RESULT_BACKEND: amqp
                 CELERY_TASK_SERIALIZER: json
@@ -32,9 +32,9 @@ eduid:
                 en: English
                 sv: Svenska
             MAIL_DEFAULT_FROM: info@eduid.se
-            EDUID_SITE_URL: http://dashboard.eduid.local.emergya.info:8080/profile/
-            EDUID_STATIC_URL: http://dashboard.eduid.local.emergya.info:8080/static/
-            DASHBOARD_URL: http://dashboard.eduid.local.emergya.info:8080/profile/
+            EDUID_SITE_URL: https://dashboard.eduid.local.emergya.info/profile/
+            EDUID_STATIC_URL: https://dashboard.eduid.local.emergya.info/static/
+            DASHBOARD_URL: https://dashboard.eduid.local.emergya.info/profile/
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
@@ -42,8 +42,8 @@ eduid:
             LOGGER_NAME: authn
             LOG_LEVEL: DEBUG
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
-            TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.local.emergya.info:8080/
-            TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
+            TOKEN_LOGIN_SUCCESS_REDIRECT_URL: https://dashboard.eduid.local.emergya.info/
+            TOKEN_LOGIN_FAILURE_REDIRECT_URL: https://html.eduid.docker/
             SAFE_RELAY_DOMAIN: eduid.local.emergya.info
         letter_proofing:
             APPLICATION_ROOT: /services/letter-proofing
@@ -88,7 +88,7 @@ eduid:
             LOGGER_NAME: support
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
-            STATIC_URL: http://html.eduid.local.emergya.info/static/
+            STATIC_URL: https://html.eduid.local.emergya.info/static/
             SUPPORT_PERSONNEL:
               - mojud-dosiv
         personal_data:
@@ -127,6 +127,10 @@ eduid:
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
+            U2F_APP_ID: https://dashboard.eduid.local.emergya.info
+            U2F_FACETS:
+                - https://dashboard.eduid.local.emergya.info
+                - https://idp.eduid.local.emergya.info
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             APPLICATION_ROOT: /services/jsconfig
@@ -140,7 +144,7 @@ eduid:
             AVAILABLE_LANGUAGES:
                 - [en, English]
                 - [sv, Svenska]
-            DASHBOARD_URL: http://dashboard.eduid.local.emergya.info:8080/profile/
+            DASHBOARD_URL: https://dashboard.eduid.local.emergya.info/profile/
             PERSONAL_DATA_URL: /services/personal-data/
             EMAILS_URL: /services/email/
             MOBILE_URL: /services/phone/

@@ -89,7 +89,7 @@ services:
       - ../sources/eduid-html/static:/src/eduid/static/
       - ../sources/eduid-html/react/build:/src/eduid/build/
     environment:
-      - "ENTRY_POINT_URL=http://dashboard.eduid.local.emergya.info:8080/static/build/index-bundle.dev.js"
+      - "ENTRY_POINT_URL=https://dashboard.eduid.local.emergya.info/static/build/index-bundle.dev.js"
       - "HOSTNAME=html"
 
   dashboard_haproxy:
