@@ -215,6 +215,8 @@ mongo_databases:
         - 'eduid_oidc_proofing'
         - 'eduid_idproofing_letter'
         - 'eduid_lookup_mobile_proofing'
+        - 'eduid_email'
+        - 'eduid_phone'
         - 'eduid_security'
       read:
         - 'eduid_support'
