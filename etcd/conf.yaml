@@ -35,6 +35,9 @@ eduid:
             EDUID_SITE_URL: http://html.eduid.docker
             EDUID_STATIC_URL: http://html.eduid.docker/static/
             DASHBOARD_URL: /profile/
+            NO_AUTHN_URLS:
+              - "^/status/healthy$"
+              - "^/status/sanity-check$"
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey

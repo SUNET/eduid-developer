@@ -29,6 +29,7 @@ mongo_databases:
         - 'eduid_authn'
         - 'eduid_security'
         - 'eduid_support'
+        - 'eduid_orcid'
         - 'munin'
 
   eduid_api:
@@ -156,6 +157,17 @@ mongo_databases:
         - 'eduid_am'
         - 'eduid_support'
 
+  eduid_orcid:
+    collections:
+      - 'profiles'
+      - 'proofing_data'
+    access:
+      readWrite:
+        - 'eduid_orcid'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
   eduid_lookup_mobile_proofing:
     collections:
       - 'profiles'
@@ -218,6 +230,7 @@ mongo_databases:
         - 'eduid_email'
         - 'eduid_phone'
         - 'eduid_security'
+        - 'eduid_orcid'
       read:
         - 'eduid_support'
 
