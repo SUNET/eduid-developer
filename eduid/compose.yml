@@ -88,6 +88,7 @@ services:
       - ../sources/eduid-html:/src/eduid/www/
       - ../sources/eduid-html/static:/src/eduid/static/
       - ../sources/eduid-html/react/build:/src/eduid/build/
+      - ../sources/eduid-front/build:/src/eduid/front-build/
     environment:
       - "ENTRY_POINT_URL=https://dashboard.eduid.local.emergya.info/static/build/index-bundle.dev.js"
       - "HOSTNAME=html"
@@ -535,27 +536,34 @@ services:
       - rsyslog
 
   signup:
-    image: docker.sunet.se/eduid/eduid-signup
+    image: docker.sunet.se/eduid/signup-new
     networks:
       dev:
         ipv4_address: 172.16.10.210
+    expose:
+      - 8080
     volumes:
-      - ../eduid-signup/etc:/opt/eduid/eduid-signup/etc:ro
-      - ../eduid-signup/run:/opt/eduid/eduid-signup/run
-      - ../eduid-signup/scripts:/opt/eduid/eduid-signup/scripts:ro
+      - ../eduid-signup/etc:/opt/eduid/etc
+      - ../eduid-signup/run:/opt/eduid/run
       - ../eduid-signup/log:/var/log/eduid
       # source volumes
-      - ../sources/eduid-signup:/opt/eduid/src/eduid-signup:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/flask-babel:/opt/eduid/src/flask-babel:ro
+      - ../sources/babel:/opt/eduid/src/babel:ro
+      - ../sources/proquint-0.1.0:/opt/eduid/src/proquint:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-signup:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/flask-babel:/opt/eduid/src/babel:/opt/eduid/src/proquint/src"
+      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=signup"
     depends_on:
-      - mongodb
-      - rabbitmq
       - redis
+      - mongodb
+      - etcd
+      - msg
       - rsyslog
 
   etcd:
