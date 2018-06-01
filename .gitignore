@@ -9,3 +9,4 @@ redis/data
 .*.swp
 .*.swo
 sources
+etcd/data/

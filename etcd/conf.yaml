@@ -36,6 +36,9 @@ eduid:
             EDUID_STATIC_URL: https://dashboard.eduid.local.emergya.info/static/
             DASHBOARD_URL: https://dashboard.eduid.local.emergya.info/profile/
             SIGNUP_URL: https://signup.eduid.local.emergya.info/
+            NO_AUTHN_URLS:
+              - "^/status/healthy$"
+              - "^/status/sanity-check$"
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
@@ -184,9 +187,14 @@ eduid:
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
             PROOFING_METHODS:
-                - letter
                 - lookup_mobile
-                - oidc
                 - oidc_freja
+                - oidc
+                - letter
             DEFAULT_COUNTRY_CODE: 46
             DEBUG: yes
+            STATIC_STUDENTS_URL: http://html.eduid.docker/
+            STATIC_TECHNICIANS_URL: http://html.eduid.docker/tekniker.html
+            STATIC_STAFF_URL: http://html.eduid.docker/personal.html
+            STATIC_FAQ_URL: http://html.eduid.docker/faq.html
+
