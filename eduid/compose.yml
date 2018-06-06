@@ -88,8 +88,11 @@ services:
       - ../sources/eduid-html:/src/eduid/www/
       - ../sources/eduid-html/static:/src/eduid/static/
       - ../sources/eduid-html/react/build:/src/eduid/build/
+      - ../sources/eduid-front/build:/src/eduid/signup-build/
+      - ../sources/eduid-front/public:/opt/eduid/signup/
     environment:
       - "ENTRY_POINT_URL=http://html.eduid.docker/static/build/index-bundle.dev.js"
+      - "SIGNUP_ENTRY_POINT_URL=http://html.eduid.docker/static/signup-build/index-bundle.dev.js"
       - "HOSTNAME=html"
 
   dashboard_haproxy:
@@ -101,6 +104,7 @@ services:
       - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - /dev/log:/dev/log
     links:
+      - html
       - dashboard
       - authn
       - letter_proofing
@@ -108,7 +112,9 @@ services:
       - jsconfig
       - oidc_proofing
       - lookup_mobile_proofing
+      - signup2
     depends_on:
+      - html
       - dashboard
       - authn
       - letter_proofing
@@ -116,6 +122,7 @@ services:
       - jsconfig
       - oidc_proofing
       - lookup_mobile_proofing
+      - signup2
 
   dashboard:
     image: docker.sunet.se/eduid/eduid-dashboard
@@ -183,8 +190,10 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src:/opt/eduid/eduid-am:/opt/eduid/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=letter_proofing"
     depends_on:
@@ -549,6 +558,35 @@ services:
       - mongodb
       - rabbitmq
       - redis
+      - rsyslog
+
+  signup2:
+    image: docker.sunet.se/eduid/eduid-signup2
+    networks:
+      dev:
+        ipv4_address: 172.16.10.211
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-signup2/etc:/opt/eduid/etc
+      - ../eduid-signup2/run:/opt/eduid/run
+      - ../eduid-signup2/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
+      - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=signup2"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+      - msg
+      - rabbitmq
       - rsyslog
 
   etcd:

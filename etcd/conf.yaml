@@ -35,6 +35,7 @@ eduid:
             EDUID_SITE_URL: http://html.eduid.docker
             EDUID_STATIC_URL: http://html.eduid.docker/static/
             DASHBOARD_URL: /profile/
+            SIGNUP_URL: /signup/
             NO_AUTHN_URLS:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
@@ -136,6 +137,28 @@ eduid:
             U2F_FACETS:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
+        signup:
+            DEVELOPMENT: DEBUG
+            APPLICATION_ROOT: /
+            SERVER_NAME: dashboard.eduid.docker
+            SECRET_KEY: supersecretkey
+            MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
+            LOG_LEVEL: DEBUG
+            LOGGER_NAME: signup2
+            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            PASSWORD_LENGTH: 10
+            VCCS_URL: 'http://turq:13085/'
+            TOU_VERSION: 2018-v1
+            AUTH_SHARED_SECRET: shared_secret_Eifool0ua0eiph7ooch0
+            AUTH_TOKEN_URL: https://dashboard.eduid.docker/services/authn/token-login
+            DEFAULT_FINISH_URL: https://www.eduid.se/
+            RECAPTCHA_PUBLIC_KEY: XXXX
+            RECAPTCHA_PRIVATE_KEY: XXXX
+            STUDENTS_LINK: https://www.eduid.se/index.html
+            TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
+            STAFF_LINK: https://www.eduid.se/personal.html
+            FAQ_LINK: https://www.eduid.se/faq.html
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             APPLICATION_ROOT: /services/jsconfig
