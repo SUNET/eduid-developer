@@ -139,8 +139,7 @@ eduid:
                 - https://idp.dev.eduid.se
         signup:
             DEVELOPMENT: DEBUG
-            APPLICATION_ROOT: /
-            SERVER_NAME: dashboard.eduid.docker
+            APPLICATION_ROOT: /services/signup
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG

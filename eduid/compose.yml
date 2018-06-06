@@ -580,7 +580,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
-      - "HOSTNAME=signup2"
+      - "HOSTNAME=signup"
     depends_on:
       - redis
       - mongodb
