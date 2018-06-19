@@ -35,6 +35,7 @@ eduid:
             EDUID_SITE_URL: http://html.eduid.docker
             EDUID_STATIC_URL: http://html.eduid.docker/static/
             DASHBOARD_URL: /profile/
+            RESET_PASSWD_URL: http://dashboard.eduid.docker:8080/services/security/reset-password
             SIGNUP_URL: /signup/
             NO_AUTHN_URLS:
               - "^/status/healthy$"
