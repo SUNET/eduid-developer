@@ -196,4 +196,5 @@ eduid:
             STATIC_TECHNICIANS_URL: http://html.eduid.docker/tekniker.html
             STATIC_STAFF_URL: http://html.eduid.docker/personal.html
             STATIC_FAQ_URL: http://html.eduid.docker/faq.html
-
+        actions:
+            TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
