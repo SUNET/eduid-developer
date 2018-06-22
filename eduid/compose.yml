@@ -251,6 +251,33 @@ services:
       - etcd
       - rsyslog
 
+  actions2:
+    image: docker.sunet.se/eduid/eduid-actions2
+    networks:
+      dev:
+        ipv4_address: 172.16.10.228
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-actions2/etc:/opt/eduid/etc
+      - ../eduid-actions2/run:/opt/eduid/run
+      - ../eduid-actions2/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid_action.tou/v2/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=actions"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+      - rsyslog
+
   email:
     image: docker.sunet.se/eduid/eduid-email
     networks:
