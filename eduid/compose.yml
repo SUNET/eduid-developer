@@ -272,11 +272,14 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid_action.tou/v2/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions"
+    links:
+      - signup2
     depends_on:
       - redis
       - mongodb
       - etcd
       - rsyslog
+      - signup2
 
   email:
     image: docker.sunet.se/eduid/eduid-email

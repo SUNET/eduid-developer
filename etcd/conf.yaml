@@ -201,7 +201,10 @@ eduid:
             STATIC_FAQ_URL: http://html.eduid.docker/faq.html
         actions:
             APPLICATION_ROOT: /services/actions
+            LOG_LEVEL: DEBUG
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             BUNDLES_URL: http://html.eduid.docker/static/front-build/
+            INTERNAL_SIGNUP_URL: http://signup2:8080/
+            CURRENT_TOU_VERSION: test-version
