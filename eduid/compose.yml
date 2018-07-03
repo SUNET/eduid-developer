@@ -1,5 +1,5 @@
 ---
-version: '2'
+version: '3'
 services:
 
   actions:
@@ -280,6 +280,8 @@ services:
       - etcd
       - rsyslog
       - signup2
+    extra_hosts:
+      - "dashboard.eduid.docker:172.16.10.220"
 
   email:
     image: docker.sunet.se/eduid/eduid-email
@@ -740,4 +742,3 @@ networks:
       driver: default
       config:
       - subnet: 172.16.10.0/24
-        gateway: 172.16.10.1

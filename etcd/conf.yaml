@@ -206,5 +206,5 @@ eduid:
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             BUNDLES_URL: http://html.eduid.docker/static/front-build/
-            INTERNAL_SIGNUP_URL: http://signup2:8080/
+            INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/
             CURRENT_TOU_VERSION: test-version
