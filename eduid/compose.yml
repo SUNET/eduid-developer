@@ -89,10 +89,9 @@ services:
       - ../sources/eduid-html/static:/src/eduid/static/
       - ../sources/eduid-html/react/build:/src/eduid/build/
       - ../sources/eduid-front/build:/src/eduid/front-build/
-      - ../sources/eduid-front/public:/opt/eduid/front/
     environment:
       - "ENTRY_POINT_URL=http://html.eduid.docker/static/build/index-bundle.dev.js"
-      - "SIGNUP_ENTRY_POINT_URL=http://html.eduid.docker/static/front-build/index-bundle.dev.js"
+      - "SIGNUP_ENTRY_POINT_URL=http://html.eduid.docker/static/front-build/signup-bundle.dev.js"
       - "HOSTNAME=html"
 
   dashboard_haproxy:
