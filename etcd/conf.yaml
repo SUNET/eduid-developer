@@ -5,6 +5,7 @@ eduid:
             DEBUG: yes
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
+            SESSION_COOKIE_NAME: sessid
             SESSION_COOKIE_DOMAIN: .eduid.docker
             SESSION_COOKIE_SECURE: 0
             # The URL scheme that should be used for URL generation if no URL scheme is
@@ -202,9 +203,11 @@ eduid:
         actions:
             APPLICATION_ROOT: /services/actions
             LOG_LEVEL: DEBUG
+            SECRET_KEY: supersecretkey
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             BUNDLES_URL: http://html.eduid.docker/static/front-build/
             INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/services/signup/
             CURRENT_TOU_VERSION: test-version
+            IDP_URL: http://idp.eduid.docker:8080/sso/redirect
