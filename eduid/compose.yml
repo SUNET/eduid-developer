@@ -45,10 +45,9 @@ services:
       - ../sources/eduid-signup-amp:/opt/eduid/src/eduid-signup-amp:ro
       - ../sources/eduid-dashboard-amp:/opt/eduid/src/eduid-dashboard-amp:ro
       - ../sources/eduid-proofing-amp:/opt/eduid/src/eduid-proofing-amp:ro
-      - ../sources/eduid-actions:/opt/eduid/src/eduid-actions:ro
-      - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
+      - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-proofing-amp:/opt/eduid/src/eduid-actions:/opt/eduid/src/eduid_action.tou"
+      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-proofing-amp:/opt/eduid/src/eduid-action/src"
       - "HOSTNAME=am"
     depends_on:
       - mongodb
@@ -266,9 +265,9 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
+      - ../sources/eduid_action.tou:/opt/eduid/src/eduid-action:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid_action.tou/v2/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-action/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions"
     links:
@@ -501,11 +500,11 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-action.tou:/opt/eduid/src/eduid-action.tou:ro
+      - ../sources/eduid-action.tou:/opt/eduid/src/eduid-action:ro
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action.tou/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
       - "HOSTNAME=idp"
     depends_on:
       - mongodb
