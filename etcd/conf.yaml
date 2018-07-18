@@ -43,7 +43,7 @@ eduid:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
             ACTION_PLUGINS:
-              - eduid_action.tou
+              - tou
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
