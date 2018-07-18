@@ -500,7 +500,7 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-action.tou:/opt/eduid/src/eduid-action:ro
+      - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
