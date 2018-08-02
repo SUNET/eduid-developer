@@ -168,9 +168,8 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/flask:/opt/eduid/src/flask:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src:/opt/eduid/src/flask"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=authn"
     depends_on:
