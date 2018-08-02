@@ -211,3 +211,7 @@ eduid:
             INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/services/signup/
             CURRENT_TOU_VERSION: test-version
             IDP_URL: http://idp.eduid.docker:8080/sso/redirect
+            U2F_APP_ID: https://dashboard.dev.eduid.se
+            U2F_VALID_FACETS:
+                - https://dashboard.dev.eduid.se
+                - https://idp.dev.eduid.se
