@@ -5,6 +5,7 @@ eduid:
             DEBUG: yes
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
+            SESSION_COOKIE_NAME: sessid
             SESSION_COOKIE_DOMAIN: .eduid.local.emergya.info
             SESSION_COOKIE_SECURE: 0
             # The URL scheme that should be used for URL generation if no URL scheme is
@@ -35,6 +36,8 @@ eduid:
             EDUID_SITE_URL: https://dashboard.eduid.local.emergya.info/profile/
             EDUID_STATIC_URL: https://dashboard.eduid.local.emergya.info/static/
             DASHBOARD_URL: https://dashboard.eduid.local.emergya.info/profile/
+            RESET_PASSWD_URL: https://dashboard.eduid.local.emergya.info/services/security/reset-password
+            # set absolute URL so it can be included in emails
             SIGNUP_URL: https://signup.eduid.local.emergya.info/
             NO_AUTHN_URLS:
               - "^/status/healthy$"
@@ -160,6 +163,29 @@ eduid:
                 - https://dashboard.eduid.local.emergya.info
                 - https://actions.eduid.local.emergya.info
                 - https://idp.eduid.local.emergya.info
+        signup:
+            DEVELOPMENT: DEBUG
+            APPLICATION_ROOT: /services/signup
+            SECRET_KEY: supersecretkey
+            MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
+            LOG_LEVEL: DEBUG
+            LOGGER_NAME: signup2
+            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            PASSWORD_LENGTH: 10
+            VCCS_URL: 'http://turq:13085/'
+            TOU_VERSION: 2018-v1
+            AUTH_SHARED_SECRET: shared_secret_Eifool0ua0eiph7ooch0
+            AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/token-login
+            DEFAULT_FINISH_URL: https://www.eduid.se/
+            # These keys are for dashboard.eduid.docker:8080
+            RECAPTCHA_PUBLIC_KEY: 6LcsnmAUAAAAAFxs43QItSN1FVD-Q-rmOgr2Rhmq
+            RECAPTCHA_PRIVATE_KEY: 6LcsnmAUAAAAAOS5OW_6yjYXBkpWuYx5Pfc9uHjX
+            STUDENTS_LINK: https://www.eduid.se/index.html
+            TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
+            STAFF_LINK: https://www.eduid.se/personal.html
+            FAQ_LINK: https://www.eduid.se/faq.html
+            CURRENT_TOU_VERSION: 'test-version'
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             APPLICATION_ROOT: /services/jsconfig
@@ -197,4 +223,14 @@ eduid:
             STATIC_TECHNICIANS_URL: http://html.eduid.docker/tekniker.html
             STATIC_STAFF_URL: http://html.eduid.docker/personal.html
             STATIC_FAQ_URL: http://html.eduid.docker/faq.html
-
+        actions:
+            APPLICATION_ROOT: /services/actions
+            LOG_LEVEL: DEBUG
+            SECRET_KEY: supersecretkey
+            TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
+            MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
+            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            BUNDLES_URL: http://html.eduid.docker/static/front-build/
+            INTERNAL_SIGNUP_URL: https://dashboard.eduid.local.emergya.info/services/signup/
+            CURRENT_TOU_VERSION: test-version
+            IDP_URL: https://idp.eduid.local.emergya.info/sso/redirect
