@@ -125,28 +125,28 @@ eduid:
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PHONE_VERIFICATION_TIMEOUT: 24
-        signup:
-            DEVELOPMENT: DEBUG
-            APPLICATION_ROOT: /
-            SERVER_NAME: signup.eduid.local.emergya.info
-            SECRET_KEY: supersecretkey
-            MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
-            LOG_LEVEL: DEBUG
-            LOGGER_NAME: signup
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-            PASSWORD_LENGTH: 10
-            VCCS_URL: 'http://turq:13085/'
-            TOU_VERSION: 2018-v1
-            AUTH_SHARED_SECRET: shared_secret_Eifool0ua0eiph7ooch0
-            AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/token-login
-            DEFAULT_FINISH_URL: https://www.eduid.se/
-            RECAPTCHA_PUBLIC_KEY: 6Ld2IUwUAAAAAD5saiXoQKgmUC9JhQLqcHZoemTh
-            RECAPTCHA_PRIVATE_KEY: 6Ld2IUwUAAAAADhexLdqbzgYvoBzH2zBA8IiEl16
-            STUDENTS_LINK: https://www.eduid.se/index.html
-            TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
-            STAFF_LINK: https://www.eduid.se/personal.html
-            FAQ_LINK: https://www.eduid.se/faq.html
+        #signup:
+            #DEVELOPMENT: DEBUG
+            #APPLICATION_ROOT: /
+            #SERVER_NAME: signup.eduid.local.emergya.info
+            #SECRET_KEY: supersecretkey
+            #MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
+            #LOG_LEVEL: DEBUG
+            #LOGGER_NAME: signup
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            #PASSWORD_LENGTH: 10
+            #VCCS_URL: 'http://turq:13085/'
+            #TOU_VERSION: 2018-v1
+            #AUTH_SHARED_SECRET: shared_secret_Eifool0ua0eiph7ooch0
+            #AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/token-login
+            #DEFAULT_FINISH_URL: https://www.eduid.se/
+            #RECAPTCHA_PUBLIC_KEY: 6Ld2IUwUAAAAAD5saiXoQKgmUC9JhQLqcHZoemTh
+            #RECAPTCHA_PRIVATE_KEY: 6Ld2IUwUAAAAADhexLdqbzgYvoBzH2zBA8IiEl16
+            #STUDENTS_LINK: https://www.eduid.se/index.html
+            #TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
+            #STAFF_LINK: https://www.eduid.se/personal.html
+            #FAQ_LINK: https://www.eduid.se/faq.html
         security:
             APPLICATION_ROOT: /services/security
             SECRET_KEY: supersecretkey
@@ -182,8 +182,11 @@ eduid:
             AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/token-login
             DEFAULT_FINISH_URL: https://www.eduid.se/
             # These keys are for dashboard.eduid.docker:8080
-            RECAPTCHA_PUBLIC_KEY: 6LcsnmAUAAAAAFxs43QItSN1FVD-Q-rmOgr2Rhmq
-            RECAPTCHA_PRIVATE_KEY: 6LcsnmAUAAAAAOS5OW_6yjYXBkpWuYx5Pfc9uHjX
+            #RECAPTCHA_PUBLIC_KEY: 6LcsnmAUAAAAAFxs43QItSN1FVD-Q-rmOgr2Rhmq
+            #RECAPTCHA_PRIVATE_KEY: 6LcsnmAUAAAAAOS5OW_6yjYXBkpWuYx5Pfc9uHjX
+            # these are for (dashboard|signup).eduid.local.emergya.info
+            RECAPTCHA_PUBLIC_KEY: 6Ld2IUwUAAAAAD5saiXoQKgmUC9JhQLqcHZoemTh
+            RECAPTCHA_PRIVATE_KEY: 6Ld2IUwUAAAAADhexLdqbzgYvoBzH2zBA8IiEl16
             STUDENTS_LINK: https://www.eduid.se/index.html
             TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
             STAFF_LINK: https://www.eduid.se/personal.html
@@ -233,8 +236,8 @@ eduid:
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            BUNDLES_URL: http://html.eduid.docker/static/front-build/
-            INTERNAL_SIGNUP_URL: https://dashboard.eduid.local.emergya.info/services/signup/
+            BUNDLES_URL: https://dashboard.eduid.local.emergya.info/static/front-build/
+            INTERNAL_SIGNUP_URL: http://signup2.eduid.docker:8080/services/signup/
             CURRENT_TOU_VERSION: test-version
             IDP_URL: https://idp.eduid.local.emergya.info/sso/redirect
             U2F_APP_ID: https://dashboard.eduid.local.emergya.info
