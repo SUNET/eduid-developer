@@ -240,7 +240,7 @@ eduid:
             INTERNAL_SIGNUP_URL: http://signup2.eduid.docker:8080/services/signup/
             CURRENT_TOU_VERSION: test-version
             IDP_URL: https://idp.eduid.local.emergya.info/sso/redirect
-            U2F_APP_ID: https://dashboard.eduid.local.emergya.info
+            U2F_APP_ID: https://eduid.local.emergya.info/u2f-app-id.json
             U2F_VALID_FACETS:
                 - https://dashboard.eduid.local.emergya.info
                 - https://idp.eduid.local.emergya.info
