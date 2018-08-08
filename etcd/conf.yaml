@@ -38,7 +38,7 @@ eduid:
             DASHBOARD_URL: /profile/
             RESET_PASSWD_URL: http://dashboard.eduid.docker:8080/services/security/reset-password
             # set absolute URL so it can be included in emails
-            SIGNUP_URL: http://dashboard.eduid.docker:8080/signup/
+            SIGNUP_URL: http://dashboard.eduid.docker:8080/signup2/
             NO_AUTHN_URLS:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
@@ -142,9 +142,9 @@ eduid:
             U2F_FACETS:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
-        signup:
+        signup2:
             DEVELOPMENT: DEBUG
-            APPLICATION_ROOT: /services/signup
+            APPLICATION_ROOT: /services/signup2
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
@@ -202,15 +202,15 @@ eduid:
             STATIC_TECHNICIANS_URL: http://html.eduid.docker/tekniker.html
             STATIC_STAFF_URL: http://html.eduid.docker/personal.html
             STATIC_FAQ_URL: http://html.eduid.docker/faq.html
-        actions:
-            APPLICATION_ROOT: /services/actions
+        actions2:
+            APPLICATION_ROOT: /services/actions2
             LOG_LEVEL: DEBUG
             SECRET_KEY: supersecretkey
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             BUNDLES_URL: http://html.eduid.docker/static/front-build/
-            INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/services/signup/
+            INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/services/signup2/
             CURRENT_TOU_VERSION: test-version
             IDP_URL: http://idp.eduid.docker:8080/sso/redirect
             U2F_APP_ID: https://dashboard.dev.eduid.se
