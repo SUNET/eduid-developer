@@ -620,8 +620,11 @@ services:
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/flask-babel:/opt/eduid/src/flask-babel:ro
+      - ../sources/babel:/opt/eduid/src/babel:ro
+      - ../sources/proquint-0.1.0:/opt/eduid/src/proquint-0.1.0:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/flask-babel:/opt/eduid/src/babel:/opt/eduid/src/proquint-0.1.0/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=signup"
     depends_on:
