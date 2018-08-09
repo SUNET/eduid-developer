@@ -586,7 +586,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-signup:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
-      - "HOSTNAME=signup"
+      - "HOSTNAME=signup.eduid.local.emergya.info"
     depends_on:
       - mongodb
       - rabbitmq

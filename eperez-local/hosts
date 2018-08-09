@@ -1,0 +1,42 @@
+#
+# /etc/hosts: static lookup table for host names
+#
+
+#<ip-address>	<hostname.domain.org>	<hostname>
+127.0.0.1	localhost.localdomain	localhost
+::1		localhost.localdomain	localhost
+127.0.0.1	eperez-ws.emergya.com   eperez-ws
+
+# End of file
+172.16.10.210	signup.eduid_dev signup.eduid.docker
+172.16.10.211	signup2.eduid_dev signup2.eduid.docker
+172.16.10.223	support.eduid_dev support.eduid.docker
+172.16.10.224	personal-data.eduid_dev personal-data.eduid.docker
+172.16.10.225	emails.eduid_dev emails.eduid.docker
+172.16.10.225	email.eduid_dev email.eduid.docker
+172.16.10.226	phones.eduid_dev phones.eduid.docker
+172.16.10.226	phone.eduid_dev phone.eduid.docker
+172.16.10.227	security.eduid_dev security.eduid.docker
+172.16.10.228	authn.eduid_dev authn.eduid.docker
+172.16.10.229	letter_proofing.eduid_dev letter_proofing.eduid.docker
+172.16.10.230	html.eduid_dev html.eduid.docker
+172.16.10.231	jsconfig.eduid_dev jsconfig.eduid.docker
+172.16.10.240	actions.eduid_dev actions.eduid.docker
+172.16.10.242	actions2.eduid_dev actions2.eduid.docker
+172.16.10.250	turq.eduid_dev turq.eduid.docker
+172.16.10.251	rabbitmq.eduid_dev rabbitmq.eduid.docker
+172.16.10.252	redis.eduid_dev redis.eduid.docker
+172.16.10.253	mongodb.eduid_dev mongodb.eduid.docker
+172.16.10.254	etcd.eduid_dev etcd.eduid.docker
+
+
+# comment both or comment below
+172.16.10.200	idp.eduid_dev idp.eduid.docker
+172.16.10.220	dashboard.eduid_dev dashboard.eduid.docker
+
+# 10.35.1.123    eperez.emergya.com dashboard.eduid.docker idp.eduid.docker
+#192.168.1.108    eperez.emergya.com dashboard.eduid.docker idp.eduid.docker
+
+10.35.1.123      eperez.emergya.com dashboard.eduid.local.emergya.info signup.eduid.local.emergya.info idp.eduid.local.emergya.info html.eduid.local.emergya.info actions.eduid.local.emergya.info eduid.local.emergya.info
+#192.168.1.108      eperez.emergya.com dashboard.eduid.local.emergya.info signup.eduid.local.emergya.info idp.eduid.local.emergya.info html.eduid.local.emergya.info actions.eduid.local.emergya.info eduid.local.emergya.info
+#
