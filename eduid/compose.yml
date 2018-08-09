@@ -2,34 +2,34 @@
 version: '3'
 services:
 
-#   actions:
-#     image: docker.sunet.se/eduid/eduid-actions
-#     #expose:
-#     #  - 5000
-#     networks:
-#       dev:
-#         ipv4_address: 172.16.10.240
-#     volumes:
-#       - ../eduid-actions/etc:/opt/eduid/eduid-actions/etc:ro
-#       - ../eduid-actions/run:/opt/eduid/eduid-actions/run
-#       - ../eduid-actions/scripts:/opt/eduid/eduid-actions/scripts:ro
-#       - ../eduid-actions/log:/var/log/eduid
-#       # source volumes
-#       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-#       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-#       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-#       - ../sources/eduid-actions:/opt/eduid/src/eduid-actions:ro
-#       - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
-#       - ../sources/eduid_action.mfa:/opt/eduid/src/eduid_action.mfa:ro
-#       - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
-#     environment:
-#       - "PYTHONPATH=/opt/eduid/src/eduid-commmon/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou/src:/opt/eduid/src/eduid_action.mfa/src:/opt/eduid/src/eduid-actions"
-#       - "HOSTNAME=actions"
-#     depends_on:
-#       - mongodb
-#       - rabbitmq
-#       - redis
-#       - rsyslog
+  actions:
+    image: docker.sunet.se/eduid/eduid-actions
+    #expose:
+    #  - 5000
+    networks:
+      dev:
+        ipv4_address: 172.16.10.240
+    volumes:
+      - ../eduid-actions/etc:/opt/eduid/eduid-actions/etc:ro
+      - ../eduid-actions/run:/opt/eduid/eduid-actions/run
+      - ../eduid-actions/scripts:/opt/eduid/eduid-actions/scripts:ro
+      - ../eduid-actions/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-actions:/opt/eduid/src/eduid-actions:ro
+      - ../sources/eduid_action.tou:/opt/eduid/src/eduid_action.tou:ro
+      - ../sources/eduid_action.mfa:/opt/eduid/src/eduid_action.mfa:ro
+      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-commmon/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_action.tou/src:/opt/eduid/src/eduid_action.mfa/src:/opt/eduid/src/eduid-actions"
+      - "HOSTNAME=actions"
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - redis
+      - rsyslog
 
   am:
     image: docker.sunet.se/eduid/eduid-am
@@ -257,7 +257,7 @@ services:
     image: docker.sunet.se/eduid/eduid-actions2
     networks:
       dev:
-        ipv4_address: 172.16.10.240
+        ipv4_address: 172.16.10.242
     expose:
       - 8080
     volumes:
@@ -270,8 +270,9 @@ services:
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
+      - ../sources/python-u2flib-server:/opt/eduid/src/python-u2flib-server:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-action/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-action/src:/opt/eduid/src/python-u2flib-server"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions2"
     links:
