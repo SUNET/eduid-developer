@@ -204,6 +204,7 @@ eduid:
             STATIC_FAQ_URL: http://html.eduid.docker/faq.html
         actions2:
             APPLICATION_ROOT: /services/actions2
+            ACTIONS_SERVICE_PREFIX: /services/actions2
             LOG_LEVEL: DEBUG
             SECRET_KEY: supersecretkey
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
@@ -213,3 +214,7 @@ eduid:
             INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/services/signup2/
             CURRENT_TOU_VERSION: test-version
             IDP_URL: http://idp.eduid.docker:8080/sso/redirect
+            U2F_APP_ID: https://dashboard.dev.eduid.se
+            U2F_VALID_FACETS:
+                - https://dashboard.dev.eduid.se
+                - https://idp.dev.eduid.se
