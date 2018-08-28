@@ -231,7 +231,6 @@ eduid:
             STATIC_FAQ_URL: http://html.eduid.docker/faq.html
         actions2:
             APPLICATION_ROOT: /services/actions2
-            ACTIONS_SERVICE_PREFIX: /services/actions2
             LOG_LEVEL: DEBUG
             SECRET_KEY: supersecretkey
             TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
