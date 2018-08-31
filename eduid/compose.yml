@@ -111,6 +111,7 @@ services:
       - oidc_proofing
       - lookup_mobile_proofing
       - signup2
+      - orcid
     depends_on:
       - html
       - dashboard
@@ -422,6 +423,34 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=oidc_proofing"
+    depends_on:
+      - etcd
+      - mongodb
+      - turq
+      - rabbitmq
+      - am
+      - redis
+      - rsyslog
+
+  orcid:
+    image: docker.sunet.se/eduid/eduid-orcid
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-orcid/etc:/opt/eduid/etc
+      - ../eduid-orcid/run:/opt/eduid/run
+      - ../eduid-orcid/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=orcid"
+      - "LOCAL_CFG_FILE=/opt/eduid/etc/oidc_client_creds.py"
     depends_on:
       - etcd
       - mongodb
