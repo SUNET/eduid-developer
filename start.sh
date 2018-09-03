@@ -17,9 +17,10 @@ fi
     printf "172.16.10.225\temail.eduid_dev email.eduid.docker\n";
     printf "172.16.10.226\tphone.eduid_dev phone.eduid.docker\n";
     printf "172.16.10.227\tsecurity.eduid_dev security.eduid.docker\n";
+    printf "172.16.10.228\tauthn.eduid_dev authn.eduid.docker\n";
     printf "172.16.10.230\thtml.eduid_dev html.eduid.docker\n";
     printf "172.16.10.240\tactions.eduid_dev actions.eduid.docker\n";
-    printf "172.16.10.228\tactions2.eduid_dev actions2.eduid.docker\n";
+    printf "172.16.10.242\tactions2.eduid_dev actions2.eduid.docker\n";
     printf "172.16.10.250\tturq.eduid_dev turq.eduid.docker\n";
     printf "172.16.10.251\trabbitmq.eduid_dev rabbitmq.eduid.docker\n";
     printf "172.16.10.252\tredis.eduid_dev redis.eduid.docker\n";
