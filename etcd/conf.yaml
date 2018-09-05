@@ -1,6 +1,7 @@
 eduid:
     webapp:
         common:
+            DEVEL_MODE: yes
             # enable disable debug mode
             DEBUG: yes
             # the domain for the session cookie. If this is not set, the cookie will

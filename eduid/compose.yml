@@ -448,6 +448,7 @@ services:
     image: docker.sunet.se/eduid/eduid-orcid
     networks:
       dev:
+        ipv4_address: 172.16.10.243
     expose:
       - 8080
     volumes:
