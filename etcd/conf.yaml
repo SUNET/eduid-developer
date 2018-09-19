@@ -46,6 +46,8 @@ eduid:
             ACTION_PLUGINS:
               - tou
               - mfa
+            # ENVIRONMENT=(dev|staging|pro)
+            ENVIRONMENT: dev
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
