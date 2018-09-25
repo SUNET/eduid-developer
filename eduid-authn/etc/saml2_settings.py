@@ -6,7 +6,7 @@ from os import path
 from saml2 import attributemaps
 
 
-DEFAULT_ATTRIBUTEMAPS = path.dirname(attributemaps.__file__)
+#DEFAULT_ATTRIBUTEMAPS = path.dirname(attributemaps.__file__)
 
 BASE_URL = 'http://dashboard.eduid.docker:8080/services/authn'
 SAML2DIR = path.dirname(__file__)
@@ -19,7 +19,8 @@ SAML_CONFIG = {
     'entityid': '%s/saml2-metadata' % BASE_URL,
 
     # directory with attribute mapping
-    'attribute_map_dir': DEFAULT_ATTRIBUTEMAPS,
+    #'attribute_map_dir': DEFAULT_ATTRIBUTEMAPS,
+    'attribute_map_dir': path.join(SAML2DIR, 'attributemaps'),
     'allow_unknown_attributes': True,
 
     # this block states what services we provide
