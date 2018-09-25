@@ -20,6 +20,7 @@ SAML_CONFIG = {
 
     # directory with attribute mapping
     'attribute_map_dir': DEFAULT_ATTRIBUTEMAPS,
+    'allow_unknown_attributes': True,
 
     # this block states what services we provide
     'service': {
