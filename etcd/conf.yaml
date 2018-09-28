@@ -213,7 +213,7 @@ eduid:
             TOKEN_SERVICE_URL: /services/authn/
             OIDC_PROOFING_FREJA_URL: /services/oidc-proofing/freja/proofing/
             ORCID_URL: /services/orcid/
-            EIDAS_URL: http://eidas1.eduid.docker:8080/
+            EIDAS_URL: http://eidas.eduid.docker:8080/
             TOKEN_VERIFY_IDP: http://dev.test.swedenconnect.se/idp
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25

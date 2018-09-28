@@ -148,7 +148,7 @@ services:
 
   eidas:
     image: docker.sunet.se/eduid/eduid-eidas
-    container_name: eidas1.eduid.docker
+    container_name: eidas.eduid.docker
     networks:
       dev:
         ipv4_address: 172.16.10.229

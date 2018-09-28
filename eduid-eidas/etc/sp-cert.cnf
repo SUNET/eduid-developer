@@ -12,5 +12,5 @@ prompt=no
 default_keyfile=eidas1-dev-sp-key.pem
 
 [dn]
-CN=eidas1.eduid.docker
+CN=eidas.eduid.docker
 
