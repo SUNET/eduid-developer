@@ -55,4 +55,7 @@ stuff "cd eduid-security && tail -F log/*"
 screen -t "eduid-orcid-log"
 stuff "cd eduid-orcid && tail -F log/*"
 
+screen -t "eduid-eidas-log"
+stuff "cd eduid-eidas && tail -F log/*"
+
 screen -t "developer"

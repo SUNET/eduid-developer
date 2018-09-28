@@ -103,7 +103,6 @@ services:
       - /dev/log:/dev/log
     links:
       - html
-      - dashboard
       - authn
       - letter_proofing
       - personal_data
@@ -114,7 +113,6 @@ services:
       - orcid
     depends_on:
       - html
-      - dashboard
       - authn
       - letter_proofing
       - personal_data
@@ -122,35 +120,7 @@ services:
       - oidc_proofing
       - lookup_mobile_proofing
       - signup2
-
-  dashboard:
-    image: docker.sunet.se/eduid/eduid-dashboard
-    networks:
-      dev:
-    expose:
-      - 8080
-    volumes:
-      - ../eduid-dashboard/etc:/opt/eduid/eduid-dashboard/etc:ro
-      - ../eduid-dashboard/run:/opt/eduid/eduid-dashboard/run
-      - ../eduid-dashboard/scripts:/opt/eduid/eduid-dashboard/scripts:ro
-      - ../eduid-dashboard/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-dashboard:/opt/eduid/src/eduid-dashboard:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
-      - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
-      - "HOSTNAME=dashboard"
-    depends_on:
-      - mongodb
-      - rabbitmq
-      - redis
-      - idp
-      - rsyslog
+      - orcid
 
   authn:
     image: docker.sunet.se/eduid/eduid-authn
@@ -171,6 +141,35 @@ services:
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=authn"
     depends_on:
+      - redis
+      - mongodb
+      - etcd
+      - rsyslog
+
+  eidas:
+    image: docker.sunet.se/eduid/eduid-eidas
+    container_name: eidas1.eduid.docker
+    networks:
+      dev:
+        ipv4_address: 172.16.10.229
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-eidas/etc:/opt/eduid/etc
+      - ../eduid-eidas/run:/opt/eduid/run
+      - ../eduid-eidas/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/pysaml2/src:/opt/eduid/eduid-webapp/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=eidas"
+    depends_on:
+      - rabbitmq
+      - am
       - redis
       - mongodb
       - etcd
@@ -202,27 +201,6 @@ services:
       - mongodb
       - etcd
       - rsyslog
-
-  idproofing-letter:
-    image: docker.sunet.se/eduid/eduid-idproofing-letter:staging
-    #expose:
-    #  - 5000
-    networks:
-      dev:
-    volumes:
-      - ../eduid-idproofing-letter/etc:/opt/eduid/eduid-idproofing-letter/etc:ro
-      - ../eduid-idproofing-letter/run:/opt/eduid/eduid-idproofing-letter/run
-      - ../eduid-idproofing-letter/scripts:/opt/eduid/eduid-idproofing-letter/scripts:ro
-      - ../eduid-idproofing-letter/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-idproofing-letter:/opt/eduid/src/eduid-idproofing-letter:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-idproofing-letter/src"
-      - "IDPROOFING_LETTER_SETTINGS=/opt/eduid/eduid-idproofing-letter/etc/dev.py"
-      - "HOSTNAME=idproofing_letter"
-    depends_on:
-      - mongodb
-      - rabbitmq
 
   personal_data:
     image: docker.sunet.se/eduid/eduid-personal-data
