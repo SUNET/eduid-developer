@@ -34,6 +34,17 @@ CONFIG = {
                     "entity_categories": ["swamid", "edugain"],
                     "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
                 },
+                "http://dashboard.eduid.docker:8080/services/authn/saml2-metadata": {
+                    # release the internal attribute eduidIdPCredentialsUsed, the eppn and nothing else to eduid-authn
+                    "attribute_restrictions": {
+                        "eduPersonPrincipalName": None,
+                        "eduidIdPCredentialsUsed": None,
+                    },
+                    "name_form": NAME_FORMAT_URI,
+                    "nameid_format": NAMEID_FORMAT_PERSISTENT,
+                    "entity_categories": [],
+                    "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
+                },
             },
             "subject_data": ("mongodb", "mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_pysaml2"),
             "session_storage": ("mongodb", "mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_pysaml2"),
