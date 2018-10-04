@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+from os import path
+
+from saml2 import attributemaps
 from saml2 import BINDING_HTTP_REDIRECT
 from saml2 import BINDING_HTTP_POST
 from saml2 import BINDING_SOAP
