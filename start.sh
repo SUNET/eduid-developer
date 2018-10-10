@@ -7,6 +7,7 @@ fi
 
 #
 # Set up entrys in /etc/hosts for the containers with externally accessible services
+# DON'T USE THE eduid_dev ONES, COOKIES ARE SCOPED FOR eduid.docker
 #
 (printf "172.16.10.200\tidp.eduid_dev idp.eduid.docker\n";
     printf "172.16.10.210\tsignup.eduid_dev signup.eduid.docker\n";

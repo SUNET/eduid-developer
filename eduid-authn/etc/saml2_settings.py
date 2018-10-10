@@ -20,7 +20,6 @@ SAML_CONFIG = {
 
     # directory with attribute mapping
     'attribute_map_dir': DEFAULT_ATTRIBUTEMAPS,
-    #'attribute_map_dir': path.join(SAML2DIR, 'attributemaps'),
     'allow_unknown_attributes': True,
 
     # this block states what services we provide
