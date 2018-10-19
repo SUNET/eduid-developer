@@ -224,7 +224,7 @@ eduid:
             APPLICATION_ROOT: /services/actions2
             LOG_LEVEL: DEBUG
             SECRET_KEY: supersecretkey
-            TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
+            TOKEN_LOGIN_SHARED_KEY: shared_secret_shared_secret_shar
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             BUNDLES_URL: http://html.eduid.docker/static/front-build/
