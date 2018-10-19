@@ -57,7 +57,7 @@ eduid:
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
             LOGGER_NAME: authn
             LOG_LEVEL: DEBUG
-            TOKEN_LOGIN_SHARED_KEY: shared_secret_shared_secret_shar
+            TOKEN_LOGIN_SHARED_KEY: shared_secret_shared_secret_sh4r
             TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
             TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
             SAFE_RELAY_DOMAIN: eduid.docker:8080
@@ -173,7 +173,7 @@ eduid:
             PASSWORD_LENGTH: 10
             VCCS_URL: 'http://turq:13085/'
             AUTH_TOKEN_URL: http://dashboard.eduid.docker:8080/services/authn/token-login
-            AUTH_SHARED_SECRET: shared_secret_shared_secret_shar
+            AUTH_SHARED_SECRET: shared_secret_shared_secret_sh4r
             DEFAULT_FINISH_URL: https://www.eduid.se/
             # These keys are for dashboard.eduid.docker:8080
             RECAPTCHA_PUBLIC_KEY: 6LcsnmAUAAAAAFxs43QItSN1FVD-Q-rmOgr2Rhmq
