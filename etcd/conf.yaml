@@ -47,13 +47,17 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             ENVIRONMENT: dev
+            TOU_VERSION: test-version
+            CURRENT_TOU_VERSION: test-version  # backwards compat
+            INTERNAL_ACTIONS_URL: https://dashboard.eduid.docker:8080/services/actions2/
+            INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/services/signup2/  # backwards compat
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
             LOGGER_NAME: authn
             LOG_LEVEL: DEBUG
-            TOKEN_LOGIN_SHARED_KEY: shared_secret_Eifool0ua0eiph7ooch0
+            TOKEN_LOGIN_SHARED_KEY: shared_secret_shared_secret_shar
             TOKEN_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
             TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
             SAFE_RELAY_DOMAIN: eduid.docker:8080
@@ -168,9 +172,8 @@ eduid:
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PASSWORD_LENGTH: 10
             VCCS_URL: 'http://turq:13085/'
-            TOU_VERSION: 2018-v1
-            AUTH_SHARED_SECRET: shared_secret_Eifool0ua0eiph7ooch0
             AUTH_TOKEN_URL: http://dashboard.eduid.docker:8080/services/authn/token-login
+            AUTH_SHARED_SECRET: shared_secret_shared_secret_shar
             DEFAULT_FINISH_URL: https://www.eduid.se/
             # These keys are for dashboard.eduid.docker:8080
             RECAPTCHA_PUBLIC_KEY: 6LcsnmAUAAAAAFxs43QItSN1FVD-Q-rmOgr2Rhmq
@@ -179,7 +182,6 @@ eduid:
             TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
             STAFF_LINK: https://www.eduid.se/personal.html
             FAQ_LINK: https://www.eduid.se/faq.html
-            CURRENT_TOU_VERSION: 'test-version'
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             APPLICATION_ROOT: /services/jsconfig
@@ -226,8 +228,6 @@ eduid:
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             BUNDLES_URL: http://html.eduid.docker/static/front-build/
-            INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/services/signup2/
-            CURRENT_TOU_VERSION: test-version
             IDP_URL: http://idp.eduid.docker:8080/sso/redirect
             U2F_APP_ID: https://dashboard.dev.eduid.se
             U2F_VALID_FACETS:
