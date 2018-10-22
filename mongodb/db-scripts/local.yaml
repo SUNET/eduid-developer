@@ -243,6 +243,7 @@ mongo_databases:
         - 'eduid_phone'
         - 'eduid_security'
         - 'eduid_orcid'
+        - 'eduid_eidas'
       read:
         - 'eduid_support'
 

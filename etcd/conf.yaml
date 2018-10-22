@@ -98,7 +98,7 @@ eduid:
             MONGO_URI: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         eidas:
-            SERVER_NAME: eidas1.eduid.docker:8080
+            SERVER_NAME: eidas.eduid.docker:8080
             APPLICATION_ROOT: /
             SECRET_KEY: supersecretkey
             LOGGER_NAME: eidas
