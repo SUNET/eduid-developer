@@ -50,8 +50,8 @@ eduid:
             ENVIRONMENT: dev
             TOU_VERSION: test-version
             CURRENT_TOU_VERSION: test-version  # backwards compat
-            INTERNAL_ACTIONS_URL: https://dashboard.eduid.docker:8080/services/actions2/
-            INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/services/signup2/  # backwards compat
+            INTERNAL_ACTIONS_URL: https://dashboard.eduid.local.emergya.info/services/actions2/
+            INTERNAL_SIGNUP_URL: https://dashboard.eduid.local.emergya.info/services/signup2/  # backwards compat
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
