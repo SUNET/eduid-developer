@@ -175,7 +175,7 @@ eduid:
             AUTH_TOKEN_URL: http://dashboard.eduid.docker:8080/services/authn/token-login
             AUTH_SHARED_SECRET: shared_secret_shared_secret_sh4r
             DEFAULT_FINISH_URL: https://www.eduid.se/
-            # These keys are for dashboard.eduid.docker:8080
+             # These keys are for signup.eduid.docker:8080
             RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
             RECAPTCHA_PRIVATE_KEY: 6Lf5rCETAAAAAAjQbw1-3j_U2xTZSrDYXlWjBQxt
             STUDENTS_LINK: https://www.eduid.se/index.html
