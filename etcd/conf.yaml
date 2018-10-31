@@ -7,12 +7,12 @@ eduid:
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
             SESSION_COOKIE_NAME: sessid
-            SESSION_COOKIE_DOMAIN: .EDUIDCONF_EDUID_HOST_PORT
+            SESSION_COOKIE_DOMAIN: .eduid.local.emergya.info
             SESSION_COOKIE_SECURE: 0
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
             PREFERRED_URL_SCHEME: https
-            SERVER_NAME: dashboard.EDUIDCONF_EDUID_HOST_PORT
+            SERVER_NAME: dashboard.eduid.local.emergya.info
             # Redis config
             REDIS_HOST: redis.eduid_dev
             REDIS_PORT: 6379
@@ -23,7 +23,7 @@ eduid:
             SAML2_LOGOUT_REDIRECT_URL: https://eduid.se/
             SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
-            TOKEN_SERVICE_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/services/authn
+            TOKEN_SERVICE_URL: https://dashboard.eduid.local.emergya.info/services/authn
             CELERY_CONFIG:
                 CELERY_RESULT_BACKEND: amqp
                 CELERY_TASK_SERIALIZER: json
@@ -34,12 +34,12 @@ eduid:
                 en: English
                 sv: Svenska
             MAIL_DEFAULT_FROM: info@eduid.se
-            EDUID_SITE_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/profile/
-            EDUID_STATIC_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/static/
-            DASHBOARD_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/profile/
-            RESET_PASSWD_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/services/security/reset-password
+            EDUID_SITE_URL: https://dashboard.eduid.local.emergya.info/profile/
+            EDUID_STATIC_URL: https://dashboard.eduid.local.emergya.info/static/
+            DASHBOARD_URL: https://dashboard.eduid.local.emergya.info/profile/
+            RESET_PASSWD_URL: https://dashboard.eduid.local.emergya.info/services/security/reset-password
             # set absolute URL so it can be included in emails
-            SIGNUP_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/signup2/
+            SIGNUP_URL: https://dashboard.eduid.local.emergya.info/signup2/
             NO_AUTHN_URLS:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
@@ -50,8 +50,8 @@ eduid:
             ENVIRONMENT: dev
             TOU_VERSION: test-version
             CURRENT_TOU_VERSION: test-version  # backwards compat
-            INTERNAL_ACTIONS_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/services/actions2/
-            INTERNAL_SIGNUP_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/services/signup2/  # backwards compat
+            INTERNAL_ACTIONS_URL: https://dashboard.eduid.local.emergya.info/services/actions2/
+            INTERNAL_SIGNUP_URL: https://dashboard.eduid.local.emergya.info/services/signup2/  # backwards compat
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
@@ -59,9 +59,9 @@ eduid:
             LOGGER_NAME: authn
             LOG_LEVEL: DEBUG
             TOKEN_LOGIN_SHARED_KEY: shared_secret_shared_secret_sh4r
-            TOKEN_LOGIN_SUCCESS_REDIRECT_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/profile/
+            TOKEN_LOGIN_SUCCESS_REDIRECT_URL: https://dashboard.eduid.local.emergya.info/profile/
             TOKEN_LOGIN_FAILURE_REDIRECT_URL: https://html.eduid.docker/
-            SAFE_RELAY_DOMAIN: EDUIDCONF_EDUID_HOST_PORT
+            SAFE_RELAY_DOMAIN: eduid.local.emergya.info
         letter_proofing:
             APPLICATION_ROOT: /services/letter-proofing
             SECRET_KEY: supersecretkey
@@ -112,12 +112,12 @@ eduid:
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             LOOKUP_MOBILE_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/lookup_mobile
         support:
-            SERVER_NAME: support.EDUIDCONF_EDUID_HOST_PORT:8080
+            SERVER_NAME: support.eduid.local.emergya.info:8080
             SECRET_KEY: supersecretkey
             LOGGER_NAME: support
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
-            STATIC_URL: https://html.EDUIDCONF_EDUID_HOST_PORT/static/
+            STATIC_URL: https://html.eduid.local.emergya.info/static/
             SUPPORT_PERSONNEL:
               - mojud-dosiv
         personal_data:
@@ -147,7 +147,7 @@ eduid:
         #signup:
             #DEVELOPMENT: DEBUG
             #APPLICATION_ROOT: /
-            #SERVER_NAME: signup.EDUIDCONF_EDUID_HOST_PORT
+            #SERVER_NAME: signup.eduid.local.emergya.info
             #SECRET_KEY: supersecretkey
             #MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
             #LOG_LEVEL: DEBUG
@@ -158,7 +158,7 @@ eduid:
             #VCCS_URL: 'http://turq:13085/'
             #TOU_VERSION: 2018-v1
             #AUTH_SHARED_SECRET: shared_secret_Eifool0ua0eiph7ooc
-            #AUTH_TOKEN_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/services/authn/token-login
+            #AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/token-login
             #DEFAULT_FINISH_URL: https://www.eduid.se/
             #RECAPTCHA_PUBLIC_KEY: 6Ld2IUwUAAAAAD5saiXoQKgmUC9JhQLqcHZoemTh
             #RECAPTCHA_PRIVATE_KEY: 6Ld2IUwUAAAAADhexLdqbzgYvoBzH2zBA8IiEl16
@@ -178,13 +178,13 @@ eduid:
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
-            U2F_APP_ID: https://EDUIDCONF_EDUID_HOST_PORT/u2f-app-id.json
+            U2F_APP_ID: https://eduid.local.emergya.info/u2f-app-id.json
             U2F_MAX_ALLOWED_TOKENS: 50
             U2F_MAX_DESCRIPTION_LENGTH: 64
             U2F_FACETS:
-                - https://dashboard.EDUIDCONF_EDUID_HOST_PORT
-                - https://actions.EDUIDCONF_EDUID_HOST_PORT
-                - https://idp.EDUIDCONF_EDUID_HOST_PORT
+                - https://dashboard.eduid.local.emergya.info
+                - https://actions.eduid.local.emergya.info
+                - https://idp.eduid.local.emergya.info
         signup2:
             DEVELOPMENT: DEBUG
             APPLICATION_ROOT: /services/signup2
@@ -196,13 +196,13 @@ eduid:
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PASSWORD_LENGTH: 10
             VCCS_URL: 'http://turq:13085/'
-            AUTH_TOKEN_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/services/authn/token-login
+            AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/token-login
             AUTH_SHARED_SECRET: shared_secret_shared_secret_sh4r
             DEFAULT_FINISH_URL: https://www.eduid.se/
             # These keys are for dashboard.eduid.docker:8080
             #RECAPTCHA_PUBLIC_KEY: 6LcsnmAUAAAAAFxs43QItSN1FVD-Q-rmOgr2Rhmq
             #RECAPTCHA_PRIVATE_KEY: 6LcsnmAUAAAAAOS5OW_6yjYXBkpWuYx5Pfc9uHjX
-            # these are for (dashboard|signup).EDUIDCONF_EDUID_HOST_PORT
+            # these are for (dashboard|signup).eduid.local.emergya.info
             RECAPTCHA_PUBLIC_KEY: 6Ld2IUwUAAAAAD5saiXoQKgmUC9JhQLqcHZoemTh
             RECAPTCHA_PRIVATE_KEY: 6Ld2IUwUAAAAADhexLdqbzgYvoBzH2zBA8IiEl16
             STUDENTS_LINK: https://www.eduid.se/index.html
@@ -222,7 +222,7 @@ eduid:
             AVAILABLE_LANGUAGES:
                 - [en, English]
                 - [sv, Svenska]
-            DASHBOARD_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/profile/
+            DASHBOARD_URL: https://dashboard.eduid.local.emergya.info/profile/
             PERSONAL_DATA_URL: /services/personal-data/
             EMAILS_URL: /services/email/
             MOBILE_URL: /services/phone/
@@ -254,9 +254,9 @@ eduid:
             TOKEN_LOGIN_SHARED_KEY: shared_secret_shared_secret_shar
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            BUNDLES_URL: https://dashboard.EDUIDCONF_EDUID_HOST_PORT/static/front-build/
-            IDP_URL: https://idp.EDUIDCONF_EDUID_HOST_PORT/sso/redirect
-            U2F_APP_ID: https://EDUIDCONF_EDUID_HOST_PORT/u2f-app-id.json
+            BUNDLES_URL: https://dashboard.eduid.local.emergya.info/static/front-build/
+            IDP_URL: https://idp.eduid.local.emergya.info/sso/redirect
+            U2F_APP_ID: https://eduid.local.emergya.info/u2f-app-id.json
             U2F_VALID_FACETS:
-                - https://dashboard.EDUIDCONF_EDUID_HOST_PORT
-                - https://idp.EDUIDCONF_EDUID_HOST_PORT
+                - https://dashboard.eduid.local.emergya.info
+                - https://idp.eduid.local.emergya.info

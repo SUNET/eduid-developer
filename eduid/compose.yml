@@ -89,8 +89,8 @@ services:
       - ../sources/eduid-html/react/build:/src/eduid/build/
       - ../sources/eduid-front/build:/src/eduid/front-build/
     environment:
-      - "ENTRY_POINT_URL=https://dashboard.EDUIDCONF_EDUID_HOST_PORT/static/build/index-bundle.dev.js"
-      - "SIGNUP_ENTRY_POINT_URL=https://dashboard.EDUIDCONF_EDUID_HOST_PORT/static/front-build/signup-bundle.dev.js"
+      - "ENTRY_POINT_URL=https://dashboard.eduid.local.emergya.info/static/build/index-bundle.dev.js"
+      - "SIGNUP_ENTRY_POINT_URL=https://dashboard.eduid.local.emergya.info/static/front-build/signup-bundle.dev.js"
       - "HOSTNAME=html"
 
   dashboard_haproxy:
@@ -498,7 +498,7 @@ services:
       dev:
         ipv4_address: 172.16.10.200
         aliases:
-          - idp.EDUIDCONF_EDUID_HOST_PORT
+          - idp.eduid.local.emergya.info
     volumes:
       - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
       - ../eduid-idp/run:/opt/eduid/eduid-idp/run
@@ -590,7 +590,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-signup:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
-      - "HOSTNAME=signup.EDUIDCONF_EDUID_HOST_PORT"
+      - "HOSTNAME=signup.eduid.local.emergya.info"
     depends_on:
       - mongodb
       - rabbitmq
