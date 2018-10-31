@@ -102,57 +102,25 @@ services:
         ipv4_address: 172.16.10.220
     volumes:
       - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../dashboard-haproxy/etc/200load_dashboard.http:/etc/haproxy/200load_dashboard.http:ro
       - /dev/log:/dev/log
     links:
       - html
-      - dashboard
       - authn
       - letter_proofing
       - personal_data
       - jsconfig
       - oidc_proofing
       - lookup_mobile_proofing
-      - signup2
       - orcid
     depends_on:
       - html
-      - dashboard
       - authn
       - letter_proofing
       - personal_data
       - jsconfig
       - oidc_proofing
       - lookup_mobile_proofing
-      - signup2
-
-  dashboard:
-    image: docker.sunet.se/eduid/eduid-dashboard
-    networks:
-      dev:
-    expose:
-      - 8080
-    volumes:
-      - ../eduid-dashboard/etc:/opt/eduid/eduid-dashboard/etc:ro
-      - ../eduid-dashboard/run:/opt/eduid/eduid-dashboard/run
-      - ../eduid-dashboard/scripts:/opt/eduid/eduid-dashboard/scripts:ro
-      - ../eduid-dashboard/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-dashboard:/opt/eduid/src/eduid-dashboard:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
-      - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
-      - "HOSTNAME=dashboard"
-    depends_on:
-      - mongodb
-      - rabbitmq
-      - redis
-      - idp
-      - rsyslog
 
   authn:
     image: docker.sunet.se/eduid/eduid-authn
