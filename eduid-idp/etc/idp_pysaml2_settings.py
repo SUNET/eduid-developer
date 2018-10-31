@@ -9,7 +9,7 @@ from saml2.saml import NAME_FORMAT_URI
 from saml2.saml import NAMEID_FORMAT_TRANSIENT
 from saml2.saml import NAMEID_FORMAT_PERSISTENT
 
-BASE = 'https://idp.eduid.local.emergya.info'
+BASE = 'https://idp.EDUIDCONF_EDUID_HOST_PORT'
 
 CONFIG = {
     "entityid": "%s/idp.xml" % BASE,
