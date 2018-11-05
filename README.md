@@ -66,10 +66,10 @@ VCCS authentication backend.
 Services
 --------
 
-  http://signup.EDUID_HOST_PORT/
-  http://dashboard.EDUID_HOST_PORT/
+  http://signup.eduid.docker:8080/
+  http://dashboard.eduid.docker:8080/
   http://html.eduid.docker/
-  http://support.EDUID_HOST_PORT/
+  http://support.eduid.docker:8080/
 
   http://turq.eduid.docker:13085/+turq/
   http://rabbitmq.eduid.docker:15672/   (login: admin/password)

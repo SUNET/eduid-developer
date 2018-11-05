@@ -199,7 +199,7 @@ eduid:
             AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/token-login
             AUTH_SHARED_SECRET: shared_secret_shared_secret_sh4r
             DEFAULT_FINISH_URL: https://www.eduid.se/
-            # These keys are for dashboard.EDUID_HOST_PORT
+            # These keys are for dashboard.eduid.docker:8080
             #RECAPTCHA_PUBLIC_KEY: 6LcsnmAUAAAAAFxs43QItSN1FVD-Q-rmOgr2Rhmq
             #RECAPTCHA_PRIVATE_KEY: 6LcsnmAUAAAAAOS5OW_6yjYXBkpWuYx5Pfc9uHjX
             # these are for (dashboard|signup).eduid.local.emergya.info
