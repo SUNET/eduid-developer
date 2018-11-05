@@ -231,6 +231,7 @@ mongo_databases:
         - 'eduid_phone'
         - 'eduid_security'
         - 'eduid_orcid'
+        - 'eduid_signup'
       read:
         - 'eduid_support'
 

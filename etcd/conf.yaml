@@ -38,7 +38,7 @@ eduid:
             DASHBOARD_URL: /profile/
             RESET_PASSWD_URL: http://dashboard.eduid.docker:8080/services/security/reset-password
             # set absolute URL so it can be included in emails
-            SIGNUP_URL: http://dashboard.eduid.docker:8080/signup2/
+            SIGNUP_URL: http://signup.eduid.docker:8080/register/
             NO_AUTHN_URLS:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
@@ -50,7 +50,7 @@ eduid:
             TOU_VERSION: test-version
             CURRENT_TOU_VERSION: test-version  # backwards compat
             INTERNAL_ACTIONS_URL: https://dashboard.eduid.docker:8080/services/actions2/
-            INTERNAL_SIGNUP_URL: http://dashboard.eduid.docker:8080/services/signup2/  # backwards compat
+            INTERNAL_SIGNUP_URL: http://signup.eduid.docker:8080/services/signup/  # backwards compat
         authn:
             APPLICATION_ROOT: /services/authn
             SECRET_KEY: supersecretkey
@@ -162,8 +162,8 @@ eduid:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
         signup2:
-            DEVELOPMENT: DEBUG
-            APPLICATION_ROOT: /services/signup2
+            SERVER_NAME: signup.eduid.docker:8080
+            APPLICATION_ROOT: /services/signup
             SECRET_KEY: supersecretkey
             MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
@@ -175,9 +175,9 @@ eduid:
             AUTH_TOKEN_URL: http://dashboard.eduid.docker:8080/services/authn/token-login
             AUTH_SHARED_SECRET: shared_secret_shared_secret_sh4r
             DEFAULT_FINISH_URL: https://www.eduid.se/
-            # These keys are for dashboard.eduid.docker:8080
-            RECAPTCHA_PUBLIC_KEY: 6LcsnmAUAAAAAFxs43QItSN1FVD-Q-rmOgr2Rhmq
-            RECAPTCHA_PRIVATE_KEY: 6LcsnmAUAAAAAOS5OW_6yjYXBkpWuYx5Pfc9uHjX
+             # These keys are for signup.eduid.docker:8080
+            RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
+            RECAPTCHA_PRIVATE_KEY: 6Lf5rCETAAAAAAjQbw1-3j_U2xTZSrDYXlWjBQxt
             STUDENTS_LINK: https://www.eduid.se/index.html
             TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
             STAFF_LINK: https://www.eduid.se/personal.html
