@@ -37,7 +37,7 @@ CONFIG = {
                     "entity_categories": ["swamid", "edugain"],
                     "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
                 },
-                "http://dashboard.eduid.docker:8080/services/authn/saml2-metadata": {
+                "http://dashboard.EDUID_HOST_PORT/services/authn/saml2-metadata": {
                     # release the internal attribute eduidIdPCredentialsUsed, the eppn and nothing else to eduid-authn
                     "attribute_restrictions": {
                         "eduPersonPrincipalName": None,
