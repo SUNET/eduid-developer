@@ -117,36 +117,30 @@ services:
       - jsconfig
       - oidc_proofing
       - lookup_mobile_proofing
-(??)      - signup2
-(??)
-(??)  dashboard:
-(??)    image: docker.sunet.se/eduid/eduid-dashboard
-(??)    networks:
-(??)      dev:
-(??)    expose:
-(??)      - 8080
-(??)    volumes:
-(??)      - ../eduid-dashboard/etc:/opt/eduid/eduid-dashboard/etc:ro
-(??)      - ../eduid-dashboard/run:/opt/eduid/eduid-dashboard/run
-(??)      - ../eduid-dashboard/scripts:/opt/eduid/eduid-dashboard/scripts:ro
-(??)      - ../eduid-dashboard/log:/var/log/eduid
-(??)      # source volumes
-(??)      - ../sources/eduid-dashboard:/opt/eduid/src/eduid-dashboard:ro
-(??)      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-(??)      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
-(??)      - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
-(??)      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-(??)      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
-(??)      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-(??)    environment:
-(??)      - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
-(??)      - "HOSTNAME=dashboard"
-(??)    depends_on:
-(??)      - mongodb
-(??)      - rabbitmq
-(??)      - redis
-(??)      - idp
-(??)      - rsyslog
+
+  authn:
+    image: docker.sunet.se/eduid/eduid-authn:latest
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-authn/etc:/opt/eduid/etc
+      - ../eduid-authn/run:/opt/eduid/run
+      - ../eduid-authn/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=authn"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+      - rsyslog
 
   eidas:
     image: docker.sunet.se/eduid/eduid-eidas:latest
