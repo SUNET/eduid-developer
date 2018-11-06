@@ -89,8 +89,6 @@ services:
       - ../sources/eduid-html/react/build:/src/eduid/build/
       - ../sources/eduid-front/build:/src/eduid/front-build/
     environment:
-      - "ENTRY_POINT_URL=http://html.eduid.docker/static/build/index-bundle.dev.js"
-      - "SIGNUP_ENTRY_POINT_URL=http://html.eduid.docker/static/front-build/signup-bundle.dev.js"
       - "HOSTNAME=html"
 
   dashboard_haproxy:
@@ -100,6 +98,7 @@ services:
         ipv4_address: 172.16.10.220
     volumes:
       - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../dashboard-haproxy/etc/200load_dashboard.http:/etc/haproxy/200load_dashboard.http:ro
       - /dev/log:/dev/log
     links:
       - html
@@ -109,7 +108,6 @@ services:
       - jsconfig
       - oidc_proofing
       - lookup_mobile_proofing
-      - signup2
       - orcid
     depends_on:
       - html
@@ -119,32 +117,36 @@ services:
       - jsconfig
       - oidc_proofing
       - lookup_mobile_proofing
-      - signup2
-      - orcid
-
-  authn:
-    image: docker.sunet.se/eduid/eduid-authn:latest
-    networks:
-      dev:
-    expose:
-      - 8080
-    volumes:
-      - ../eduid-authn/etc:/opt/eduid/etc
-      - ../eduid-authn/run:/opt/eduid/run
-      - ../eduid-authn/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
-      - "HOSTNAME=authn"
-    depends_on:
-      - redis
-      - mongodb
-      - etcd
-      - rsyslog
+(??)      - signup2
+(??)
+(??)  dashboard:
+(??)    image: docker.sunet.se/eduid/eduid-dashboard
+(??)    networks:
+(??)      dev:
+(??)    expose:
+(??)      - 8080
+(??)    volumes:
+(??)      - ../eduid-dashboard/etc:/opt/eduid/eduid-dashboard/etc:ro
+(??)      - ../eduid-dashboard/run:/opt/eduid/eduid-dashboard/run
+(??)      - ../eduid-dashboard/scripts:/opt/eduid/eduid-dashboard/scripts:ro
+(??)      - ../eduid-dashboard/log:/var/log/eduid
+(??)      # source volumes
+(??)      - ../sources/eduid-dashboard:/opt/eduid/src/eduid-dashboard:ro
+(??)      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+(??)      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+(??)      - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
+(??)      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+(??)      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
+(??)      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+(??)    environment:
+(??)      - "PYTHONPATH=/opt/eduid/src/eduid-dashboard:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
+(??)      - "HOSTNAME=dashboard"
+(??)    depends_on:
+(??)      - mongodb
+(??)      - rabbitmq
+(??)      - redis
+(??)      - idp
+(??)      - rsyslog
 
   eidas:
     image: docker.sunet.se/eduid/eduid-eidas:latest
@@ -250,14 +252,11 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-action/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions2"
-    links:
-      - signup2
     depends_on:
       - redis
       - mongodb
       - etcd
       - rsyslog
-      - signup2
     extra_hosts:
       - "dashboard.eduid.docker:172.16.10.220"
 
@@ -534,21 +533,6 @@ services:
       - rabbitmq
       - rsyslog
 
-#  mm-service:
-#    image: docker.sunet.se/eduid/eduid-mm-service
-#    networks:
-#      dev:
-#    volumes:
-#      - ../eduid-mm-service/etc:/opt/eduid/eduid-mm-service/etc:ro
-#      - ../eduid-mm-service/log:/var/log/eduid
-#      # source volumes
-#      - ../sources/eduid-mm-service:/opt/eduid/src/eduid-mm-service:ro
-#      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-#    environment:
-#      - "PYTHONPATH=/opt/eduid/src/eduid-mm-service:/opt/eduid/src/eduid-am"
-#      - "mm_truststore_pw=foobar"
-#      - "mm_keystore_pw=barfoo"
-
   msg:
     image: docker.sunet.se/eduid/eduid-msg:latest
     networks:
@@ -568,31 +552,20 @@ services:
       - rabbitmq
       - rsyslog
 
-  signup:
-    image: docker.sunet.se/eduid/eduid-signup:latest
+  signup_haproxy:
+    image: 'docker.sunet.se/library/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.210
     volumes:
-      - ../eduid-signup/etc:/opt/eduid/eduid-signup/etc:ro
-      - ../eduid-signup/run:/opt/eduid/eduid-signup/run
-      - ../eduid-signup/scripts:/opt/eduid/eduid-signup/scripts:ro
-      - ../eduid-signup/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-signup:/opt/eduid/src/eduid-signup:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-signup:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
-      - "HOSTNAME=signup"
+      - ../signup-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../signup-haproxy/etc/200load_signup.http:/etc/haproxy/200load_signup.http:ro
+      - /dev/log:/dev/log
     depends_on:
-      - mongodb
-      - rabbitmq
-      - redis
-      - rsyslog
+      - html
+      - signup
 
-  signup2:
+  signup:
     image: docker.sunet.se/eduid/eduid-signup2:latest
     networks:
       dev:
@@ -612,7 +585,7 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
-      - "HOSTNAME=signup2"
+      - "HOSTNAME=signup"
     depends_on:
       - redis
       - mongodb
@@ -692,39 +665,15 @@ services:
       dev:
         ipv4_address: 172.16.10.252
     volumes:
-      - ../redis/etc:/etc/redis:ro
+      - ../redis/etc:/etc/redis
       - ../redis/log:/var/log/redis
       - ../redis/data:/data
-
-    #  simplereg:
-    #image: docker.sunet.se/eduid/simplereg
-    #networks:
-    #  dev:
-    #volumes:
-    #  - /var/run/docker.sock:/var/run/docker.sock
-    #environment:
-    #  - "REGISTRATOR_ETCD=1"
-    # - "REGISTRATOR_DEBUG=0"
-    # - "ETCD_HOST=etcd.eduid_dev"
-    #depends_on:
-    #  - etcd
 
   turq:
     image: docker.sunet.se/eduid/turq
     networks:
       dev:
         ipv4_address: 172.16.10.250
-
-  pypiserver:
-    image: docker.sunet.se/eduid/pypiserver
-    networks:
-      dev:
-        ipv4_address: 172.16.10.150
-
-    volumes:
-      - ../pypiserver/etc:/opt/eduid/pypiserver/etc:ro
-      - ../pypiserver/log:/var/log/pypiserver
-      - ../pypiserver/packages:/opt/eduid/pypiserver/packages:ro
 
   rsyslog:
     image: docker.sunet.se/eduid/rsyslog
