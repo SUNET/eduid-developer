@@ -113,6 +113,9 @@ eduid:
             MONGO_URI: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            # SAML2 and SP config
+            SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
+            SAFE_RELAY_DOMAIN: eduid.docker:8080
         lookup_mobile_proofing:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/lookup-mobile-proofing
