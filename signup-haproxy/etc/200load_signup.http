@@ -17,6 +17,6 @@ Content-Type: text/html
      You need to enable JavaScript to run this app.
    </noscript>
    <div id="root" class="wrap container"></div>
-   <script type="text/javascript" src="http://html.eduid.docker/static/front-build/signup-bundle.dev.js"></script>
+   <script type="text/javascript" src="https://dashboard.eduid.local.emergya.info/static/front-build/signup-bundle.dev.js"></script>
  </body>
 </html>
