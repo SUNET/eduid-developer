@@ -229,7 +229,6 @@ services:
     image: docker.sunet.se/eduid/eduid-actions2:latest
     networks:
       dev:
-        ipv4_address: 172.16.10.228
     expose:
       - 8080
     volumes:
@@ -479,13 +478,25 @@ services:
       - etcd
       - rsyslog
 
-  idp:
-    image: docker.sunet.se/eduid/eduid-idp:latest
+  idp_haproxy:
+    image: 'docker.sunet.se/library/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.200
         aliases:
           - idp.eduid.docker
+    volumes:
+      - ../idp-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - /dev/log:/dev/log
+    depends_on:
+      - html
+      - idp
+      - actions2
+
+  idp:
+    image: docker.sunet.se/eduid/eduid-idp:latest
+    networks:
+      dev:
     volumes:
       - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
       - ../eduid-idp/run:/opt/eduid/eduid-idp/run
