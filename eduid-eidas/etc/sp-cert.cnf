@@ -1,0 +1,16 @@
+[req]
+RANDFILE=/dev/urandom
+default_bits=4096
+default_md=sha256
+encrypt_key=no
+distinguished_name=dn
+# PrintableStrings only
+string_mask=MASK:0002
+prompt=no
+
+# customize the "default_keyfile,", "CN" and "subjectAltName" lines below
+default_keyfile=eidas1-dev-sp-key.pem
+
+[dn]
+CN=eidas.eduid.docker
+

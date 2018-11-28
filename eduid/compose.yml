@@ -3,7 +3,7 @@ version: '3'
 services:
 
   actions:
-    image: docker.sunet.se/eduid/eduid-actions
+    image: docker.sunet.se/eduid/eduid-actions:latest
     #expose:
     #  - 5000
     networks:
@@ -32,7 +32,7 @@ services:
       - rsyslog
 
   am:
-    image: docker.sunet.se/eduid/eduid-am
+    image: docker.sunet.se/eduid/eduid-am:latest
     networks:
       dev:
     volumes:
@@ -55,7 +55,7 @@ services:
       - rsyslog
 
   api:
-    image: docker.sunet.se/eduid/eduid-api
+    image: docker.sunet.se/eduid/eduid-api:latest
     #expose:
     #  - 5000
     networks:
@@ -73,7 +73,7 @@ services:
       - rsyslog
 
   html:
-    image: docker.sunet.se/eduid/eduid-html
+    image: docker.sunet.se/eduid/eduid-html:latest
     expose:
       - 80
     dns: 172.16.10.1
@@ -121,7 +121,7 @@ services:
       - lookup_mobile_proofing
 
   authn:
-    image: docker.sunet.se/eduid/eduid-authn
+    image: docker.sunet.se/eduid/eduid-authn:latest
     networks:
       dev:
         ipv4_address: 172.16.10.228
@@ -151,8 +151,38 @@ services:
       - etcd
       - rsyslog
 
+  eidas:
+    image: docker.sunet.se/eduid/eduid-eidas:latest
+    container_name: eidas.eduid.docker
+    networks:
+      dev:
+        ipv4_address: 172.16.10.229
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-eidas/etc:/opt/eduid/etc
+      - ../eduid-eidas/run:/opt/eduid/run
+      - ../eduid-eidas/log:/var/log/eduid
+      - ../eduid-eidas/tmp_attributemaps:/tmp/attributemaps
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/pysaml2/src:/opt/eduid/eduid-webapp/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=eidas"
+    depends_on:
+      - rabbitmq
+      - am
+      - redis
+      - mongodb
+      - etcd
+      - rsyslog
+
   letter_proofing:
-    image: docker.sunet.se/eduid/eduid-letter-proofing
+    image: docker.sunet.se/eduid/eduid-letter-proofing:latest
     networks:
       dev:
         ipv4_address: 172.16.10.229
@@ -180,7 +210,7 @@ services:
       - rsyslog
 
   personal_data:
-    image: docker.sunet.se/eduid/eduid-personal-data
+    image: docker.sunet.se/eduid/eduid-personal-data:latest
     networks:
       dev:
         ipv4_address: 172.16.10.224
@@ -206,7 +236,7 @@ services:
       - rsyslog
 
   actions2:
-    image: docker.sunet.se/eduid/eduid-actions2
+    image: docker.sunet.se/eduid/eduid-actions2:latest
     networks:
       dev:
         ipv4_address: 172.16.10.242
@@ -236,7 +266,7 @@ services:
       - "dashboard.eduid.docker:172.16.10.220"
 
   email:
-    image: docker.sunet.se/eduid/eduid-email
+    image: docker.sunet.se/eduid/eduid-email:latest
     networks:
       dev:
         ipv4_address: 172.16.10.225
@@ -279,7 +309,7 @@ services:
       - "p11softhsm_init_rsa_key=/opt/eduid/idp-public-snakeoil.key"
 
   security:
-    image: docker.sunet.se/eduid/eduid-security
+    image: docker.sunet.se/eduid/eduid-security:latest
     networks:
       dev:
         ipv4_address: 172.16.10.227
@@ -310,7 +340,7 @@ services:
       - rsyslog
 
   phone:
-    image: docker.sunet.se/eduid/eduid-phone
+    image: docker.sunet.se/eduid/eduid-phone:latest
     networks:
       dev:
         ipv4_address: 172.16.10.226
@@ -338,7 +368,7 @@ services:
       - rsyslog
 
   jsconfig:
-    image: docker.sunet.se/eduid/eduid-jsconfig
+    image: docker.sunet.se/eduid/eduid-jsconfig:latest
     networks:
       dev:
         ipv4_address: 172.16.10.231
@@ -364,7 +394,7 @@ services:
       - rsyslog
 
   oidc_proofing:
-    image: docker.sunet.se/eduid/eduid-oidc-proofing
+    image: docker.sunet.se/eduid/eduid-oidc-proofing:latest
     networks:
       dev:
     expose:
@@ -390,7 +420,7 @@ services:
       - rsyslog
 
   orcid:
-    image: docker.sunet.se/eduid/eduid-orcid
+    image: docker.sunet.se/eduid/eduid-orcid:latest
     networks:
       dev:
         ipv4_address: 172.16.10.243
@@ -420,7 +450,7 @@ services:
       - rsyslog
 
   lookup_mobile_proofing:
-    image: docker.sunet.se/eduid/eduid-lookup-mobile-proofing
+    image: docker.sunet.se/eduid/eduid-lookup-mobile-proofing:latest
     networks:
       dev:
     expose:
@@ -445,7 +475,7 @@ services:
       - redis
 
   support:
-    image: docker.sunet.se/eduid/eduid-support
+    image: docker.sunet.se/eduid/eduid-support:latest
     networks:
       dev:
         ipv4_address: 172.16.10.223
@@ -466,13 +496,25 @@ services:
       - etcd
       - rsyslog
 
-  idp:
-    image: docker.sunet.se/eduid/eduid-idp:latest
+  idp_haproxy:
+    image: 'docker.sunet.se/library/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.200
         aliases:
           - idp.eduid.local.emergya.info
+    volumes:
+      - ../idp-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - /dev/log:/dev/log
+    depends_on:
+      - html
+      - idp
+      - actions2
+
+  idp:
+    image: docker.sunet.se/eduid/eduid-idp:latest
+    networks:
+      dev:
     volumes:
       - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
       - ../eduid-idp/run:/opt/eduid/eduid-idp/run
@@ -494,7 +536,7 @@ services:
       - rsyslog
 
   lookup-mobile:
-    image: docker.sunet.se/eduid/eduid-lookup-mobile
+    image: docker.sunet.se/eduid/eduid-lookup-mobile:latest
     networks:
       dev:
     volumes:
@@ -514,7 +556,7 @@ services:
       - rsyslog
 
   msg:
-    image: docker.sunet.se/eduid/eduid-msg
+    image: docker.sunet.se/eduid/eduid-msg:latest
     networks:
       dev:
     volumes:
@@ -546,7 +588,7 @@ services:
       - signup
 
   signup:
-    image: docker.sunet.se/eduid/eduid-signup2
+    image: docker.sunet.se/eduid/eduid-signup2:latest
     networks:
       dev:
         ipv4_address: 172.16.10.211
