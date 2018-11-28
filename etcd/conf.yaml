@@ -29,7 +29,7 @@ eduid:
             MAIL_DEFAULT_FROM: info@eduid.se
             EDUID_SITE_URL: http://html.eduid.docker
             EDUID_STATIC_URL: http://html.eduid.docker/static/
-            DASHBOARD_URL: /profile/
+            DASHBOARD_URL: http://dashboard.eduid.docker:8080/profile/
             RESET_PASSWD_URL: http://dashboard.eduid.docker:8080/services/security/reset-password
             # set absolute URL so it can be included in emails
             SIGNUP_URL: http://signup.eduid.docker:8080/register/
@@ -104,6 +104,18 @@ eduid:
                 issuer: https://sandbox.orcid.org
             MONGO_URI: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
             AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+        eidas:
+            SERVER_NAME: eidas.eduid.docker:8080
+            APPLICATION_ROOT: /
+            SECRET_KEY: supersecretkey
+            LOGGER_NAME: eidas
+            LOG_LEVEL: DEBUG
+            MONGO_URI: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
+            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            # SAML2 and SP config
+            SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
+            SAFE_RELAY_DOMAIN: eduid.docker:8080
         lookup_mobile_proofing:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/lookup-mobile-proofing
@@ -215,6 +227,8 @@ eduid:
             TOKEN_SERVICE_URL: /services/authn/
             OIDC_PROOFING_FREJA_URL: /services/oidc-proofing/freja/proofing/
             ORCID_URL: /services/orcid/
+            EIDAS_URL: http://eidas.eduid.docker:8080/
+            TOKEN_VERIFY_IDP: http://dev.test.swedenconnect.se/idp
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
