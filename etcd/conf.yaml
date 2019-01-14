@@ -260,10 +260,10 @@ eduid:
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
             PROOFING_METHODS:
-                - lookup_mobile
-                - oidc_freja
-                - oidc
                 - letter
+                - lookup_mobile
+                - oidc
+                - eidas
             DEFAULT_COUNTRY_CODE: 46
             DEBUG: yes
             STATIC_STUDENTS_URL: http://html.eduid.docker/
