@@ -19,11 +19,14 @@ eduid:
             SAML2_LOGOUT_REDIRECT_URL: https://eduid.se/
             TOKEN_SERVICE_URL: https://dashboard.eduid.local.emergya.info/services/authn
             CELERY_CONFIG:
-                CELERY_RESULT_BACKEND: amqp
-                CELERY_TASK_SERIALIZER: json
+                accept_content: ["application/json"]
+                broker_url: redis://redis:6379/1
+                result_backend: redis://redis:6379/1
+                #CELERY_RESULT_BACKEND: amqp
+                #CELERY_TASK_SERIALIZER: json
                 # Avoid broken connections across firewall by disabling pool
                 # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
-                BROKER_POOL_LIMIT: 0
+                #BROKER_POOL_LIMIT: 0
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
@@ -284,3 +287,17 @@ eduid:
             U2F_VALID_FACETS:
                 - https://dashboard.eduid.local.emergya.info
                 - https://idp.eduid.local.emergya.info
+
+    worker:
+        common:
+            CELERY:
+                accept_content: ["application/json"]
+                broker_url: redis://redis:6379/1
+                result_backend: redis://redis:6379/1
+                # Workaround for Celery 4.2.1 not issuing AMQP heartbeats
+                #broker_heartbeat: 0
+        am:
+            MONGO_URI: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
+            NEW_USER_DATE: '2001-01-01'
+            ACTION_PLUGINS:
+                - "tou"
