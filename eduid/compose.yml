@@ -49,10 +49,13 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-proofing-amp:/opt/eduid/src/eduid-action/src"
       - "HOSTNAME=am"
+      - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - mongodb
-      - rabbitmq
+      - redis
       - rsyslog
+      - etcd
+    command: bash /start.sh
 
   api:
     image: docker.sunet.se/eduid/eduid-api:latest
