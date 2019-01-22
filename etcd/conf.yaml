@@ -27,6 +27,7 @@ eduid:
                 # Avoid broken connections across firewall by disabling pool
                 # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
                 #BROKER_POOL_LIMIT: 0
+            AM_BROKER_URL: redis://redis:6379/1
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
@@ -72,7 +73,7 @@ eduid:
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb.eduid_dev
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             # Setting EKOPOST_DEBUG_PDF to a path means that the other EKOPOST settings will be ignored
             # and that the pdf only will be written to to the supplied path, not sent to the letter service.
             EKOPOST_DEBUG_PDF: /opt/eduid/run/debug_letter.pdf
@@ -92,7 +93,7 @@ eduid:
             PROVIDER_CONFIGURATION_INFO:
                 issuer: http://turq:13085/op/
             MONGO_URI: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         orcid:
             SERVER_NAME: dashboard.eduid.local.emergya.info
@@ -106,7 +107,7 @@ eduid:
             PROVIDER_CONFIGURATION_INFO:
                 issuer: https://sandbox.orcid.org
             MONGO_URI: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         eidas:
             SERVER_NAME: eidas.eduid.docker:8080
             APPLICATION_ROOT: /
@@ -114,7 +115,7 @@ eduid:
             LOGGER_NAME: eidas
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             # SAML2 and SP config
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
@@ -126,7 +127,7 @@ eduid:
             LOGGER_NAME: lookup_mobile_proofing
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_lookup_mobile_proofing:eduid_lookup_mobile_proofing_pw@mongodb.eduid_dev
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             LOOKUP_MOBILE_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/lookup_mobile
         support:
@@ -145,7 +146,7 @@ eduid:
             MONGO_URI: mongodb://eduid_personal_data:eduid_personal_data_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: personal_data
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         email:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/email
@@ -153,7 +154,7 @@ eduid:
             MONGO_URI: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: email
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         phone:
             SERVER_NAME: dashboard.eduid.local.emergya.info
@@ -162,7 +163,7 @@ eduid:
             MONGO_URI: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: phone
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PHONE_VERIFICATION_TIMEOUT: 24
         #signup:
@@ -194,7 +195,7 @@ eduid:
             MONGO_URI: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: security
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             VCCS_URL: 'http://turq:13085/'
             PASSWORD_LENGTH: 12
@@ -214,7 +215,7 @@ eduid:
             MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: signup2
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PASSWORD_LENGTH: 10
             VCCS_URL: 'http://turq:13085/'
@@ -280,10 +281,11 @@ eduid:
             SECRET_KEY: supersecretkey
             TOKEN_LOGIN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
-            AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
+            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             BUNDLES_URL: https://dashboard.eduid.local.emergya.info/static/front-build/
             IDP_URL: https://idp.eduid.local.emergya.info/sso/redirect
             U2F_APP_ID: https://eduid.local.emergya.info/u2f-app-id.json
+            U2F_APP_ID: https://dashboard.local.emergya.info
             U2F_VALID_FACETS:
                 - https://dashboard.eduid.local.emergya.info
                 - https://idp.eduid.local.emergya.info
