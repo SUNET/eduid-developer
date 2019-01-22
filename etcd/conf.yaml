@@ -27,6 +27,8 @@ eduid:
                 # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
                 #BROKER_POOL_LIMIT: 0
             AM_BROKER_URL: redis://redis:6379/1
+            MSG_BROKER_URL: redis://redis:6379/1
+            LOOKUP_MOBILE_BROKER_URL: redis://redis:6379/1
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
@@ -71,7 +73,7 @@ eduid:
             LOGGER_NAME: letter_proofing
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb.eduid_dev
-            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             # Setting EKOPOST_DEBUG_PDF to a path means that the other EKOPOST settings will be ignored
             # and that the pdf only will be written to to the supplied path, not sent to the letter service.
@@ -93,7 +95,7 @@ eduid:
                 issuer: http://turq:13085/op/
             MONGO_URI: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         orcid:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/orcid
@@ -115,7 +117,7 @@ eduid:
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             # SAML2 and SP config
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
             SAFE_RELAY_DOMAIN: eduid.docker:8080
@@ -127,8 +129,8 @@ eduid:
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_lookup_mobile_proofing:eduid_lookup_mobile_proofing_pw@mongodb.eduid_dev
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-            LOOKUP_MOBILE_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/lookup_mobile
+            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            #LOOKUP_MOBILE_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/lookup_mobile
         support:
             SERVER_NAME: support.eduid.docker:8080
             SECRET_KEY: supersecretkey
@@ -154,7 +156,7 @@ eduid:
             LOG_LEVEL: DEBUG
             LOGGER_NAME: email
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         phone:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/phone
@@ -163,7 +165,7 @@ eduid:
             LOG_LEVEL: DEBUG
             LOGGER_NAME: phone
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PHONE_VERIFICATION_TIMEOUT: 24
         security:
             SERVER_NAME: dashboard.eduid.docker:8080
@@ -173,7 +175,7 @@ eduid:
             LOG_LEVEL: DEBUG
             LOGGER_NAME: security
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             VCCS_URL: 'http://turq:13085/'
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25
@@ -192,7 +194,7 @@ eduid:
             LOG_LEVEL: DEBUG
             LOGGER_NAME: signup2
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
+            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PASSWORD_LENGTH: 10
             VCCS_URL: 'http://turq:13085/'
             TOU_URL: http://idp.eduid.docker:8080/services/actions2/get-tous/
@@ -275,3 +277,18 @@ eduid:
             NEW_USER_DATE: '2001-01-01'
             ACTION_PLUGINS:
                 - "tou"
+        msg:
+            MONGO_URI: mongodb://mongodb/eduid_msg
+            sms_sender: 'eduID'
+            template_dir: '/opt/eduid/eduid-msg/etc/templates'
+            devel_mode: true
+            audit: true
+            mail_host: 'localhost'
+            mail_port: 25
+            mail_starttls: false
+        lookup_mobile:
+            MONGO_URI: 'mongodb://eduid_lookup_mobile:eduid_lookup_mobile_pw@mongodb/eduid_lookup_mobile'
+            transaction_audit: true
+            devel_mode: true
+            TELEADRESS_CLIENT_USER: 'TEST'
+            TELEADRESS_CLIENT_PASSWORD: 'TEST'
