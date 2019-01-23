@@ -185,7 +185,7 @@ services:
     image: docker.sunet.se/eduid/eduid-letter-proofing:latest
     networks:
       dev:
-        ipv4_address: 172.16.10.229
+        ipv4_address: 172.16.10.232
     expose:
       - 8080
     volumes:
@@ -526,8 +526,9 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
+      - ../sources/babel:/opt/eduid/src/babel:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action/src:/opt/eduid/src/pyXMLSecurity/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action/src:/opt/eduid/src/pyXMLSecurity/src:/opt/eduid/src/babel"
       - "HOSTNAME=idp"
     depends_on:
       - mongodb
@@ -547,8 +548,12 @@ services:
       - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/python-etcd:/opt/eduid/src/python-etcd:ro
+      - ../sources/dnspython:/opt/eduid/src/dnspython:ro
+      - ../sources/pyyaml:/opt/eduid/src/pyyaml:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-lookup-mobile"
+      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-lookup-mobile:/opt/eduid/src/python-etcd/src:/opt/eduid/src/dnspython:/opt/eduid/src/pyyaml/lib3"
+      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=lookup_mobile"
     depends_on:
       - mongodb
@@ -564,10 +569,15 @@ services:
       - ../eduid-msg/run:/opt/eduid/eduid-msg/run
       - ../eduid-msg/log:/var/log/eduid
       # source volumes
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/python-etcd:/opt/eduid/src/python-etcd:ro
+      - ../sources/dnspython:/opt/eduid/src/dnspython:ro
+      - ../sources/pyyaml:/opt/eduid/src/pyyaml:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-am"
+      - "PYTHONPATH=/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/python-etcd/src:/opt/eduid/src/dnspython:/opt/eduid/src/pyyaml/lib3"
+      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=msg"
     depends_on:
       - mongodb
