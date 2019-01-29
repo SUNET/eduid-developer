@@ -19,16 +19,20 @@ eduid:
             TOKEN_SERVICE_URL: http://dashboard.eduid.docker:8080/services/authn
             CELERY_CONFIG:
                 accept_content: ["application/json"]
-                broker_url: redis://redis:6379/1
-                result_backend: redis://redis:6379/1
+                broker_url: redis://redis.eduid_dev:6379/1
+                result_backend: redis://redis.eduid_dev:6379/1
+                broker_transport_options:
+                    # backwards incompatible setting that the documentation says will be the default in the future
+                    fanout_prefix: true
                 #CELERY_RESULT_BACKEND: amqp
                 #CELERY_TASK_SERIALIZER: json
                 # Avoid broken connections across firewall by disabling pool
                 # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
                 #BROKER_POOL_LIMIT: 0
-            AM_BROKER_URL: redis://redis:6379/1
-            MSG_BROKER_URL: redis://redis:6379/1
-            LOOKUP_MOBILE_BROKER_URL: redis://redis:6379/1
+                task_routes:
+                  'eduid_am.*': {'queue': 'am'}
+                  'eduid_msg.*': {'queue': 'msg'}
+                  'eduid_letter_proofing.*': {'queue': 'letter_proofing'}
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
@@ -268,8 +272,10 @@ eduid:
         common:
             CELERY:
                 accept_content: ["application/json"]
-                broker_url: redis://redis:6379/1
-                result_backend: redis://redis:6379/1
+                broker_url: redis://redis.eduid_dev:6379/1
+                result_backend: redis://redis.eduid_dev:6379/1
+                broker_transport_options:
+                    fanout_patterns: true
                 # Workaround for Celery 4.2.1 not issuing AMQP heartbeats
                 #broker_heartbeat: 0
         am:
