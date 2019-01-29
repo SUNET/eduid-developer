@@ -720,6 +720,8 @@ services:
 networks:
   dev:
     driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-eduid
     ipam:
       driver: default
       config:
