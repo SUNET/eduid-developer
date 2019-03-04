@@ -267,7 +267,9 @@ eduid:
             U2F_VALID_FACETS:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
-
+            FIDO2_RP_ID: eduid.docker
+            EIDAS_URL: http://eidas.eduid.docker:8080/
+            MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
     worker:
         common:
             CELERY:
