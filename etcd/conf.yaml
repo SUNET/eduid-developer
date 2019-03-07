@@ -295,7 +295,9 @@ eduid:
             U2F_VALID_FACETS:
                 - https://dashboard.eduid.local.emergya.info
                 - https://idp.eduid.local.emergya.info
-
+            FIDO2_RP_ID: eduid.local.emergya.info
+            EIDAS_URL: http://eidas.eduid.local.emergya.info/
+            MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
     worker:
         common:
             CELERY:

@@ -2,32 +2,6 @@
 version: '3'
 services:
 
-  actions:
-    image: docker.sunet.se/eduid/eduid-actions:latest
-    #expose:
-    #  - 5000
-    networks:
-      dev:
-        ipv4_address: 172.16.10.240
-    volumes:
-      - ../eduid-actions/etc:/opt/eduid/eduid-actions/etc:ro
-      - ../eduid-actions/run:/opt/eduid/eduid-actions/run
-      - ../eduid-actions/scripts:/opt/eduid/eduid-actions/scripts:ro
-      - ../eduid-actions/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid-html:/opt/eduid/src/eduid-html:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-commmon/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-am"
-      - "HOSTNAME=actions"
-    depends_on:
-      - mongodb
-      - rabbitmq
-      - redis
-      - rsyslog
-
   am:
     image: docker.sunet.se/eduid/eduid-am:latest
     networks:
@@ -67,6 +41,7 @@ services:
       - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
+      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=api"
     depends_on:
       - mongodb
@@ -174,7 +149,6 @@ services:
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=eidas"
     depends_on:
-      - rabbitmq
       - am
       - redis
       - mongodb
@@ -202,7 +176,6 @@ services:
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=letter_proofing"
     depends_on:
-      - rabbitmq
       - am
       - redis
       - mongodb
@@ -414,7 +387,6 @@ services:
       - etcd
       - mongodb
       - turq
-      - rabbitmq
       - am
       - redis
       - rsyslog
@@ -444,7 +416,6 @@ services:
       - etcd
       - mongodb
       - turq
-      - rabbitmq
       - am
       - redis
       - rsyslog
@@ -470,7 +441,6 @@ services:
       - etcd
       - mongodb
       - turq
-      - rabbitmq
       - am
       - redis
 
@@ -557,7 +527,7 @@ services:
       - "HOSTNAME=lookup_mobile"
     depends_on:
       - mongodb
-      - rabbitmq
+      - redis
       - rsyslog
 
   msg:
@@ -581,7 +551,7 @@ services:
       - "HOSTNAME=msg"
     depends_on:
       - mongodb
-      - rabbitmq
+      - redis
       - rsyslog
 
   signup_haproxy:
@@ -625,7 +595,6 @@ services:
       - mongodb
       - etcd
       - msg
-      - rabbitmq
       - rsyslog
 
   etcd:
@@ -680,15 +649,6 @@ services:
 #       - "/dev/ttyACM0:/dev/ttyACM0"
 #     depends_on:
 #       - mongodb
-
-  rabbitmq:
-    image: docker.sunet.se/eduid/rabbitmq
-    networks:
-      dev:
-        ipv4_address: 172.16.10.251
-    volumes:
-      - ../rabbitmq/etc:/etc/rabbitmq:ro
-      - ../rabbitmq/log:/var/log/rabbitmq
 
   redis:
     image: docker.sunet.se/eduid/redis
