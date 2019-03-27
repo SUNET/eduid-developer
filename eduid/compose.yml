@@ -1,5 +1,5 @@
 ---
-version: '3'
+version: '3.4'
 services:
 
   am:
@@ -600,7 +600,7 @@ services:
       dev:
         ipv4_address: 172.16.10.253
     volumes:
-      - ../mongodb/data:/data
+      - mongodbdata:/data
       - ../mongodb/etc:/opt/eduid/etc:ro
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
       - ../mongodb/log:/var/log/mongodb
@@ -650,6 +650,10 @@ services:
       dev:
     volumes:
       - ../rsyslog/log:/var/log/eduid
+
+volumes:
+  mongodbdata:
+    name: mongodbdata
 
 networks:
   dev:

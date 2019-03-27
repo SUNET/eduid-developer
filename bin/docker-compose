@@ -15,7 +15,7 @@
 
 set -e
 
-DCVERSION=${DCVERSION-'1.15.0'}
+DCVERSION=${DCVERSION-'1.23.2'}
 DCIMAGE=${DCIMAGE-"docker/compose:$DCVERSION"}
 
 
