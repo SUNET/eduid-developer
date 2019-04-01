@@ -14,15 +14,15 @@ from pymongo import MongoClient
 
 def create_users(client, databases):
     for db_name, conf in databases.items():
-	print('Adding users for {}'.format(db_name))
-	access_conf = conf.get('access', dict())
-	for rw_user in access_conf.get('readWrite', list()):
-	    print('Added rw user: {}'.format(rw_user))
-	    client[db_name].add_user(rw_user, '{}_pw'.format(rw_user), roles=[{'role':'readWrite', 'db': db_name}])
-	for ro_user in access_conf.get('read', list()):
-	    print('Added ro user: {}'.format(ro_user))
-	    client[db_name].add_user(ro_user, '{}_pw'.format(ro_user), roles=[{'role':'read', 'db': db_name}])
-	print('---')
+        print('Adding users for {}'.format(db_name))
+        access_conf = conf.get('access', dict())
+        for rw_user in access_conf.get('readWrite', list()):
+            print('Added rw user: {}'.format(rw_user))
+            client[db_name].add_user(rw_user, '{}_pw'.format(rw_user), roles=[{'role':'readWrite', 'db': db_name}])
+        for ro_user in access_conf.get('read', list()):
+            print('Added ro user: {}'.format(ro_user))
+            client[db_name].add_user(ro_user, '{}_pw'.format(ro_user), roles=[{'role':'read', 'db': db_name}])
+        print('---')
 
 def init_collections(client, databases):
     for db_name, conf in databases.items():
@@ -31,20 +31,20 @@ def init_collections(client, databases):
         for collection in collections:	
             doc = client[db_name][collection].insert({'init': True})
             client[db_name][collection].remove(doc)
-	    print('Created {}'.format(collection))
+            print('Created {}'.format(collection))
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--file', help="YAML file (/opt/eduid/db-scripts/local.yaml)", type=str, default="/opt/eduid/db-scripts/local.yaml")
     parser.add_argument('-d', '--database', help="Mongo database adress (localhost)", type=str, default="localhost")
     args = parser.parse_args()
-    
+
     with open(args.file) as f:
-	data = yaml.load(f)
+        data = yaml.load(f)
 
     client = MongoClient(args.database)
     databases = data['mongo_databases']
-    
+
     create_users(client, databases)
     init_collections(client, databases)
 
