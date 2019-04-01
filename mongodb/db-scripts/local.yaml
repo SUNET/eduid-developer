@@ -244,6 +244,7 @@ mongo_databases:
         - 'eduid_security'
         - 'eduid_orcid'
         - 'eduid_signup'
+        - 'eduid_eidas'
       read:
         - 'eduid_support'
 
