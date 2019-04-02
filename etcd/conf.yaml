@@ -53,8 +53,8 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             ENVIRONMENT: dev
-            TOU_VERSION: 2017-v5
-            CURRENT_TOU_VERSION: 2017-v5  # backwards compat
+            TOU_VERSION: 2017-v6
+            CURRENT_TOU_VERSION: 2017-v6  # backwards compat
             FIDO2_RP_ID: eduid.local.emergya.info
         authn:
             SERVER_NAME: dashboard.eduid.local.emergya.info
@@ -260,9 +260,6 @@ eduid:
             STATIC_TECHNICIANS_URL: http://html.eduid.docker/tekniker.html
             STATIC_STAFF_URL: http://html.eduid.docker/personal.html
             STATIC_FAQ_URL: http://html.eduid.docker/faq.html
-+             BUNDLES_URL: https://dashboard.eduid.local.emergya.info/static/front-build/
-+             IDP_URL: https://idp.eduid.local.emergya.info/sso/redirect
-+             U2F_APP_ID: https://eduid.local.emergya.info/u2f-app-id.json
         actions2:
             SERVER_NAME: idp.eduid.local.emergya.info
             APPLICATION_ROOT: /services/actions2
