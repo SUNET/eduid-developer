@@ -145,6 +145,7 @@ eduid:
             STATIC_URL: https://html.eduid.local.emergya.info/static/
             SUPPORT_PERSONNEL:
               - mojud-dosiv
+              - sadug-katoh
         personal_data:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/personal-data
@@ -171,29 +172,7 @@ eduid:
             LOGGER_NAME: phone
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-            PHONE_VERIFICATION_TIMEOUT: 24
-        #signup:
-            #DEVELOPMENT: DEBUG
-            #APPLICATION_ROOT: /
-            #SERVER_NAME: signup.eduid.local.emergya.info
-            #SECRET_KEY: supersecretkey
-            #MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
-            #LOG_LEVEL: DEBUG
-            #LOGGER_NAME: signup
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-            #PASSWORD_LENGTH: 10
-            #VCCS_URL: 'http://turq:13085/'
-            #TOU_VERSION: 2018-v1
-            #AUTH_SHARED_SECRET: shared_secret_Eifool0ua0eiph7ooc
-            #AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/token-login
-            #DEFAULT_FINISH_URL: https://www.eduid.se/
-            #RECAPTCHA_PUBLIC_KEY: 6Ld2IUwUAAAAAD5saiXoQKgmUC9JhQLqcHZoemTh
-            #RECAPTCHA_PRIVATE_KEY: 6Ld2IUwUAAAAADhexLdqbzgYvoBzH2zBA8IiEl16
-            #STUDENTS_LINK: https://www.eduid.se/index.html
-            #TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
-            #STAFF_LINK: https://www.eduid.se/personal.html
-            #FAQ_LINK: https://www.eduid.se/faq.html
+            PHONE_VERIFICATION_TIMEOUT: 7200
         security:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/security
