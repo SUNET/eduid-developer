@@ -25,24 +25,24 @@ services:
       - etcd
     command: bash /start.sh
 
-  api:
-    image: docker.sunet.se/eduid/eduid-api:latest
-    #expose:
-    #  - 5000
-    networks:
-      dev:
-    volumes:
-      - ../eduid-api/etc:/opt/eduid/eduid-api/etc:ro
-      - ../eduid-api/log:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
-      - "ETCD_HOST=etcd.eduid_dev"
-      - "HOSTNAME=api"
-    depends_on:
-      - mongodb
-      - rsyslog
+#  api:
+#    image: docker.sunet.se/eduid/eduid-api:latest
+#    #expose:
+#    #  - 5000
+#    networks:
+#      dev:
+#    volumes:
+#      - ../eduid-api/etc:/opt/eduid/eduid-api/etc:ro
+#      - ../eduid-api/log:/var/log/eduid
+#      # source volumes
+#      # - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
+#    environment:
+#      # - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
+#      - "ETCD_HOST=etcd.eduid_dev"
+#      - "HOSTNAME=api"
+#    depends_on:
+#      - mongodb
+#      - rsyslog
 
   html:
     image: docker.sunet.se/eduid/eduid-html:latest
@@ -610,23 +610,24 @@ services:
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
       - ../mongodb/log:/var/log/mongodb
 
-#   oathaead:
-#     image: docker.sunet.se/eduid/eduid-api
-#     networks:
-#       dev:
-#     volumes:
-#       - ../eduid-oathaead/etc:/opt/eduid/eduid-oathaead/etc:ro
-#       - ../eduid-oathaead/run:/opt/eduid/eduid-oathaead/run
-#       - ../eduid-oathaead/log:/var/log/eduid
-#       # source volumes
-#       - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
-#     environment:
-#       - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
-#       - "eduid_name=eduid-oathaead"
-#     devices:
-#       - "/dev/ttyACM0:/dev/ttyACM0"
-#     depends_on:
-#       - mongodb
+#  oathaead:
+#    image: docker.sunet.se/eduid/eduid-api
+#    networks:
+#      dev:
+#    volumes:
+#      - ../eduid-oathaead/etc:/opt/eduid/eduid-oathaead/etc:ro
+#      - ../eduid-oathaead/run:/opt/eduid/eduid-oathaead/run
+#      - ../eduid-oathaead/log:/var/log/eduid
+#      # source volumes
+#      # - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
+#    environment:
+#      # - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
+#      - "eduid_name=eduid-oathaead"
+#    devices:
+#      - "/dev/ttyACM0:/dev/ttyACM0"
+#    depends_on:
+#      - mongodb
+#      - rsyslog
 
   redis:
     image: docker.sunet.se/eduid/redis
