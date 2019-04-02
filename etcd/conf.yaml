@@ -40,6 +40,7 @@ eduid:
             MAIL_DEFAULT_FROM: info@eduid.se
             EDUID_SITE_URL: https://dashboard.eduid.local.emergya.info/profile/
             EDUID_STATIC_URL: https://dashboard.eduid.local.emergya.info/static/
+            STATIC_URL: https://html.eduid.local.emergya.info/static/
             DASHBOARD_URL: https://dashboard.eduid.local.emergya.info/profile/
             RESET_PASSWD_URL: https://dashboard.eduid.local.emergya.info/services/security/reset-password
             # set absolute URL so it can be included in emails
@@ -52,8 +53,9 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             ENVIRONMENT: dev
-            TOU_VERSION: test-version
-            CURRENT_TOU_VERSION: test-version  # backwards compat
+            TOU_VERSION: 2017-v5
+            CURRENT_TOU_VERSION: 2017-v5  # backwards compat
+            FIDO2_RP_ID: eduid.local.emergya.info
         authn:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/authn
@@ -142,7 +144,6 @@ eduid:
             LOGGER_NAME: support
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
-            STATIC_URL: https://html.eduid.local.emergya.info/static/
             SUPPORT_PERSONNEL:
               - mojud-dosiv
               - sadug-katoh
@@ -259,6 +260,9 @@ eduid:
             STATIC_TECHNICIANS_URL: http://html.eduid.docker/tekniker.html
             STATIC_STAFF_URL: http://html.eduid.docker/personal.html
             STATIC_FAQ_URL: http://html.eduid.docker/faq.html
++             BUNDLES_URL: https://dashboard.eduid.local.emergya.info/static/front-build/
++             IDP_URL: https://idp.eduid.local.emergya.info/sso/redirect
++             U2F_APP_ID: https://eduid.local.emergya.info/u2f-app-id.json
         actions2:
             SERVER_NAME: idp.eduid.local.emergya.info
             APPLICATION_ROOT: /services/actions2
