@@ -16,9 +16,8 @@ services:
       - ../sources/eduid-signup-amp:/opt/eduid/src/eduid-signup-amp:ro
       - ../sources/eduid-dashboard-amp:/opt/eduid/src/eduid-dashboard-amp:ro
       - ../sources/eduid-proofing-amp:/opt/eduid/src/eduid-proofing-amp:ro
-      - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-proofing-amp:/opt/eduid/src/eduid-action/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-proofing-amp"
       - "HOSTNAME=am"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
@@ -136,7 +135,7 @@ services:
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/pysaml2/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/pysaml2/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=eidas"
     depends_on:
@@ -162,7 +161,7 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src:/opt/eduid/eduid-am:/opt/eduid/eduid_msg"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-am:/opt/eduid/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=letter_proofing"
     depends_on:
@@ -189,7 +188,7 @@ services:
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=personal_data"
     depends_on:
@@ -213,9 +212,8 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-action/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions2"
     depends_on:
@@ -244,7 +242,7 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=email"
     depends_on:
@@ -287,7 +285,7 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=security"
     depends_on:
@@ -315,7 +313,7 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=phone"
     depends_on:
@@ -341,7 +339,7 @@ services:
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=jsconfig"
     depends_on:
@@ -364,7 +362,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=oidc_proofing"
     depends_on:
@@ -390,7 +388,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=orcid"
       - "LOCAL_CFG_FILE=/opt/eduid/etc/oidc_client_creds.py"
@@ -416,7 +414,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=lookup_mobile_proofing"
     depends_on:
@@ -439,7 +437,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=support"
     depends_on:
@@ -476,11 +474,10 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
       - "HOSTNAME=idp"
     depends_on:
       - mongodb
@@ -560,7 +557,7 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=signup"
     depends_on:
