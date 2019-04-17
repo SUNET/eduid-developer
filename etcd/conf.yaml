@@ -65,8 +65,8 @@ eduid:
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
             SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
-            IMPLICIT_LOGIN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
-            IMPLICIT_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
+            SIGNUP_AUTHN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
+            SIGNUP_AUTHN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
             SAFE_RELAY_DOMAIN: eduid.docker:8080
         letter_proofing:
             SERVER_NAME: dashboard.eduid.docker:8080
@@ -201,7 +201,7 @@ eduid:
             PASSWORD_LENGTH: 10
             VCCS_URL: 'http://turq:13085/'
             TOU_URL: http://idp.eduid.docker:8080/services/actions2/get-tous/
-            IMPLICIT_LOGIN_URL: http://dashboard.eduid.docker:8080/services/authn/implicit-login
+            SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
             DEFAULT_FINISH_URL: https://www.eduid.se/
              # These keys are for signup.eduid.docker:8080
             RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
