@@ -71,6 +71,12 @@ eduid:
             SIGNUP_AUTHN_SUCCESS_REDIRECT_URL: https://dashboard.eduid.local.emergya.info/profile/
             SIGNUP_AUTHN_FAILURE_REDIRECT_URL: https://html.eduid.docker/
             SAFE_RELAY_DOMAIN: eduid.local.emergya.info
+            # XXX TRANSITION_TOKEN_LOGIN remove after transition
+            TOKEN_LOGIN_SHARED_KEY: shared_secret_shared_secret_sh4r
+            TOKEN_LOGIN_SUCCESS_REDIRECT_URL: https://dashboard.eduid.local.emergya.info/profile/
+            TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
+            SIGNUP_AND_AUTHN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
+            # XXX end TRANSITION_TOKEN_LOGIN remove after transition
         letter_proofing:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/letter-proofing
@@ -216,6 +222,12 @@ eduid:
             TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
             STAFF_LINK: https://www.eduid.se/personal.html
             FAQ_LINK: https://www.eduid.se/faq.html
+            # XXX TRANSITION_TOKEN_LOGIN remove after transition
+            # NOTE that AUTH_TOKEN_URL is legacy but has changed value - the
+            # endpoint is signup-authn
+            AUTH_TOKEN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
+            SIGNUP_AND_AUTHN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
+            # XXX end TRANSITION_TOKEN_LOGIN remove after transition
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             SERVER_NAME: dashboard.eduid.local.emergya.info
@@ -274,6 +286,9 @@ eduid:
             FIDO2_RP_ID: eduid.local.emergya.info
             EIDAS_URL: http://eidas.eduid.local.emergya.info/
             MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
+            # XXX TRANSITION_TOKEN_LOGIN remove after transition
+            TOKEN_LOGIN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
+            # XXX end TRANSITION_TOKEN_LOGIN remove after transition
     worker:
         common:
             CELERY:
