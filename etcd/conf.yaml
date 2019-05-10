@@ -72,7 +72,7 @@ eduid:
             SIGNUP_AUTHN_FAILURE_REDIRECT_URL: https://html.eduid.docker/
             SAFE_RELAY_DOMAIN: eduid.local.emergya.info
             # XXX TRANSITION_TOKEN_LOGIN remove after transition
-            TOKEN_LOGIN_SHARED_KEY: shared_secret_shared_secret_sh4r
+            TOKEN_LOGIN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
             TOKEN_LOGIN_SUCCESS_REDIRECT_URL: https://dashboard.eduid.local.emergya.info/profile/
             TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
             SIGNUP_AND_AUTHN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
@@ -225,7 +225,7 @@ eduid:
             # XXX TRANSITION_TOKEN_LOGIN remove after transition
             # NOTE that AUTH_TOKEN_URL is legacy but has changed value - the
             # endpoint is signup-authn
-            AUTH_TOKEN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
+            AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/signup-authn
             SIGNUP_AND_AUTHN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
             # XXX end TRANSITION_TOKEN_LOGIN remove after transition
         jsconfig:
