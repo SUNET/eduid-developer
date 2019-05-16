@@ -13,9 +13,8 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/amps/eduid-proofing-amp:/opt/eduid/src/eduid-proofing-amp:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-proofing-amp"
+      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src"
       - "HOSTNAME=am"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
@@ -56,9 +55,6 @@ services:
       - ../eduid-html/log:/var/log/nginx
       - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
       # source volumes
-      - ../sources/eduid-html:/src/eduid/www/
-      - ../sources/eduid-html/static:/src/eduid/static/
-      - ../sources/eduid-html/react/build:/src/eduid/build/
       - ../sources/eduid-front/build:/src/eduid/front-build/
     environment:
       - "HOSTNAME=html"
