@@ -55,6 +55,8 @@ services:
       - ../eduid-html/log:/var/log/nginx
       - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
       # source volumes
+      - ../sources/eduid-html:/src/eduid/www/
+      - ../sources/eduid-html/static:/src/eduid/static/
       - ../sources/eduid-front/build:/src/eduid/front-build/
     environment:
       - "HOSTNAME=html"
