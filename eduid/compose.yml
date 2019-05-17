@@ -61,7 +61,6 @@ services:
       # source volumes
       - ../sources/eduid-html:/src/eduid/www/
       - ../sources/eduid-html/static:/src/eduid/static/
-      - ../sources/eduid-html/react/build:/src/eduid/build/
       - ../sources/eduid-front/build:/src/eduid/front-build/
     environment:
       - "HOSTNAME=html"
