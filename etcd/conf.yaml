@@ -268,6 +268,47 @@ eduid:
             # XXX TRANSITION_TOKEN_LOGIN remove after transition
             TOKEN_LOGIN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
             # XXX end TRANSITION_TOKEN_LOGIN remove after transition
+        idp:
+            STATIC_DIR: /opt/eduid/eduid-idp/etc/static_files
+            PYSAML2_CONFIG: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
+            LISTEN_PORT: 8080
+            LOGDIR: /var/log/eduid
+            LOGFILE: /var/log/eduid/eduid_idp.log
+            MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/
+            USERDB_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_am
+            USERDB_MONGO_DATABASE: eduid_am
+            SSO_SESSION_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp
+            AUTHN_INFO_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_authninfo
+            RAVEN_DSN: https://foo:bar@sentry/2
+            CONTENT_PACKAGES: eduid_IdP_html:html/
+            PASSWORD_RESET_LINK: http://dashboard.eduid.docker:8080/services/security/reset-password
+            SIGNUP_LINK: http://signup.eduid.docker:8080/
+            DASHBOARD_LINK: http://dashboard.eduid.docker:8080/
+            STUDENT_LINK: http://html.eduid.docker/index.html
+            TECHNICIANS_LINK: http://html.eduid.docker/tekniker.html
+            STAFF_LINK: http://html.eduid.docker/personal.html
+            FAQ_LINK: http://html.eduid.docker/faq.html
+            PRIVACY_LINK: http://html.eduid.docker/privacy.html
+            # uri for the new actions microservice
+            ACTIONS_APP_URI: http://idp.eduid.docker:8080/services/actions2/
+            STATIC_LINK: http://html.eduid.docker/static
+            BASE_URL: http://idp.eduid.docker:8080/
+            DEFAULT_EPPN_SCOPE: local.eduid.se
+            LOGIN_STATE_TTL: 1
+            STATUS_TEST_USERNAMES: f-testuser1@spam.thulin.net
+            DEFAULT_SCOPED_AFFILIATION: affiliate@local.eduid.se
+            MAX_AUTHN_FAILURES_PER_MONTH: 50
+            MAX_AUHTN_FAILURES_PER_MONTH: 50   # misspelled in earlier versions
+            VCCS_URL: http://turq:13085/
+            INSECURE_COOKIES: true
+            HTTP_HEADERS: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
+            TOU_VERSION: 2016-v1
+            ACTION_PLUGINS:
+                - tou
+                - mfa
+            REDIS_HOST: redis.eduid_dev
+            SHARED_SESSION_COOKIE_NAME: sessid
+            SHARED_SESSION_SECRET_KEY: supersecretkey
     worker:
         common:
             CELERY:
