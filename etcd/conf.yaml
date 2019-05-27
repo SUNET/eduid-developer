@@ -284,7 +284,8 @@ eduid:
             SSO_SESSION_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp
             AUTHN_INFO_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_authninfo
             RAVEN_DSN: https://foo:bar@sentry/2
-            CONTENT_PACKAGES: eduid_IdP_html:html/
+            CONTENT_PACKAGES:
+                - [eduid_IdP_html, html/]
             PASSWORD_RESET_LINK: https://dashboard.eduid.local.emergya.info/services/security/reset-password
             SIGNUP_LINK: https://signup.eduid.local.emergya.info/
             DASHBOARD_LINK: https://dashboard.eduid.local.emergya.info/
@@ -296,7 +297,7 @@ eduid:
             # uri for the new actions microservice
             ACTIONS_APP_URI: https://idp.eduid.local.emergya.info/services/actions2/
             STATIC_LINK: https://dashboard.eduid.local.emergya.info/static
-            BASE_URL: http://idp.eduid.local.emergya.info/
+            BASE_URL: https://idp.eduid.local.emergya.info/
             DEFAULT_EPPN_SCOPE: local.eduid.se
             LOGIN_STATE_TTL: 1
             STATUS_TEST_USERNAMES: f-testuser1@spam.thulin.net
