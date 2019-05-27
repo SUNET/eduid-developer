@@ -280,7 +280,8 @@ eduid:
             SSO_SESSION_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp
             AUTHN_INFO_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_authninfo
             RAVEN_DSN: https://foo:bar@sentry/2
-            CONTENT_PACKAGES: eduid_IdP_html:html/
+            CONTENT_PACKAGES:
+                - [eduid_IdP_html, html/]
             PASSWORD_RESET_LINK: http://dashboard.eduid.docker:8080/services/security/reset-password
             SIGNUP_LINK: http://signup.eduid.docker:8080/
             DASHBOARD_LINK: http://dashboard.eduid.docker:8080/
