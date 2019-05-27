@@ -17,23 +17,6 @@ Content-Type: text/html
      You need to enable JavaScript to run this app.
    </noscript>
    <div id="root" class="wrap container"></div>
-       <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-       <script type="text/javascript">
-        (function(){
-
-            var serverid = Cookies.get('SERVERID') || 'default';
-            var prefix = 'https://dashboard.eduid.local.emergya.info/static/';
-
-            var bundles = {
-              default: 'front-build/dashboard-bundle.dev.js',
-              'a-fre-3': 'build/dashboard-bundle.dev.js',
-            };
-            var bundle = prefix + bundles[serverid];
-
-            var script = document.createElement('script');
-            script.setAttribute('src', bundle);
-            document.head.appendChild(script);
-        }());
-    </script>
+   <script type="text/javascript" src="http://html.eduid.docker/static/front-build/dashboard-bundle.dev.js"></script>
  </body>
 </html>
