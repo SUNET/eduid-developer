@@ -411,6 +411,7 @@ services:
     image: docker.sunet.se/eduid/eduid-lookup-mobile-proofing:latest
     networks:
       dev:
+        ipv4_address: 172.16.10.219
     expose:
       - 8080
     volumes:
