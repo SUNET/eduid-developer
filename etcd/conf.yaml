@@ -203,19 +203,17 @@ eduid:
             TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
             STAFF_LINK: https://www.eduid.se/personal.html
             FAQ_LINK: https://www.eduid.se/faq.html
-            # XXX TRANSITION_TOKEN_LOGIN remove after transition
-            # NOTE that AUTH_TOKEN_URL is legacy but has changed value - the
-            # endpoint is signup-authn
-            AUTH_TOKEN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
             SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
-            SIGNUP_AND_AUTHN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
-            # XXX end TRANSITION_TOKEN_LOGIN remove after transition
+            BUNDLE_PATH: front-build/signup-bundle.dev.js
+            BUNDLE_VERSION: dev
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/jsconfig
             LOG_LEVEL: DEBUG
             LOGGER_NAME: jsconfig
+            BUNDLE_PATH: front-build/dashboard-bundle.dev.js
+            BUNDLE_VERSION: dev
         jsapps:
             # this is the configuration for the js apps, that is sent by the jsconfig
             # microservice to the js apps.
@@ -256,7 +254,8 @@ eduid:
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            BUNDLES_URL: http://html.eduid.docker/static/front-build/
+            BUNDLES_PATH: /front-build/
+            BUNDLES_VERSION: iamaversion
             IDP_URL: http://idp.eduid.docker:8080/sso/redirect
             U2F_APP_ID: https://dashboard.dev.eduid.se
             U2F_VALID_FACETS:
@@ -265,9 +264,6 @@ eduid:
             FIDO2_RP_ID: eduid.docker
             EIDAS_URL: http://eidas.eduid.docker:8080/
             MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
-            # XXX TRANSITION_TOKEN_LOGIN remove after transition
-            TOKEN_LOGIN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
-            # XXX end TRANSITION_TOKEN_LOGIN remove after transition
     worker:
         common:
             CELERY:
