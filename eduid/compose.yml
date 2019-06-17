@@ -537,6 +537,7 @@ services:
       - /dev/log:/dev/log
     depends_on:
       - html
+      - jsconfig
       - signup
 
   signup:
