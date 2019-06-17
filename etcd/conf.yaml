@@ -24,8 +24,6 @@ eduid:
                 broker_transport_options:
                     # backwards incompatible setting that the documentation says will be the default in the future
                     fanout_prefix: true
-                #CELERY_RESULT_BACKEND: amqp
-                #CELERY_TASK_SERIALIZER: json
                 # Avoid broken connections across firewall by disabling pool
                 # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
                 #BROKER_POOL_LIMIT: 0
@@ -74,8 +72,6 @@ eduid:
             LOGGER_NAME: letter_proofing
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb.eduid_dev
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             # Setting EKOPOST_DEBUG_PDF to a path means that the other EKOPOST settings will be ignored
             # and that the pdf only will be written to to the supplied path, not sent to the letter service.
             EKOPOST_DEBUG_PDF: /opt/eduid/run/debug_letter.pdf
@@ -94,8 +90,6 @@ eduid:
             PROVIDER_CONFIGURATION_INFO:
                 issuer: http://turq:13085/op/
             MONGO_URI: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         orcid:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/orcid
@@ -107,15 +101,12 @@ eduid:
             PROVIDER_CONFIGURATION_INFO:
                 issuer: https://sandbox.orcid.org
             MONGO_URI: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         eidas:
             SERVER_NAME: eidas.eduid.docker:8080
             APPLICATION_ROOT: /
             LOGGER_NAME: eidas
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             # SAML2 and SP config
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
             SAFE_RELAY_DOMAIN: eduid.docker:8080
@@ -125,9 +116,6 @@ eduid:
             LOGGER_NAME: lookup_mobile_proofing
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_lookup_mobile_proofing:eduid_lookup_mobile_proofing_pw@mongodb.eduid_dev
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-            #LOOKUP_MOBILE_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/lookup_mobile
         support:
             SERVER_NAME: support.eduid.docker:8080
             LOGGER_NAME: support
@@ -143,23 +131,18 @@ eduid:
             MONGO_URI: mongodb://eduid_personal_data:eduid_personal_data_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: personal_data
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         email:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/email
             MONGO_URI: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: email
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         phone:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/phone
             MONGO_URI: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: phone
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PHONE_VERIFICATION_TIMEOUT: 7200
         security:
             SERVER_NAME: dashboard.eduid.docker:8080
@@ -167,8 +150,6 @@ eduid:
             MONGO_URI: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: security
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             VCCS_URL: 'http://turq:13085/'
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25
@@ -202,7 +183,6 @@ eduid:
             # Signup config
             SIGNUP_BUNDLE_PATH: front-build/signup-bundle.dev.js
             SIGNUP_BUNDLE_VERSION: dev
-            TOU_URL: http://idp.eduid.docker:8080/services/actions2/get-tous/
         jsapps:
             ### this is the configuration for the js apps, that is sent by the jsconfig
             ### microservice to the js apps.
@@ -241,6 +221,7 @@ eduid:
             DEFAULT_COUNTRY_CODE: 46
             # Signup config
             SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
+            TOU_URL: http://idp.eduid.docker:8080/services/actions2/get-tous/
             # This key is for signup.eduid.docker:8080
             RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
 
