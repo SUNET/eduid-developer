@@ -32,7 +32,7 @@ eduid:
                 task_routes:
                   'eduid_am.*': {'queue': 'am'}
                   'eduid_msg.*': {'queue': 'msg'}
-                  'eduid_letter_proofing.*': {'queue': 'letter_proofing'}
+                  'eduid_lookup_mobile.*': {'queue': 'lookup_mobile'}
             AVAILABLE_LANGUAGES:
                 en: English
                 sv: Svenska
