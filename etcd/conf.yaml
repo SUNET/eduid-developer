@@ -212,7 +212,7 @@ eduid:
             # XXX end TRANSITION_TOKEN_LOGIN remove after transition
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
-            SERVER_NAME: dashboard.eduid.docker:8080
+            SERVER_NAME: eduid.docker:8080
             APPLICATION_ROOT: /services/jsconfig
             LOG_LEVEL: DEBUG
             LOGGER_NAME: jsconfig
