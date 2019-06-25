@@ -168,9 +168,16 @@ eduid:
             LOGGER_NAME: signup2
             PASSWORD_LENGTH: 10
             VCCS_URL: 'http://turq:13085/'
+            TOU_URL: http://idp.eduid.docker:8080/services/actions2/get-tous/
+            SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
             DEFAULT_FINISH_URL: https://www.eduid.se/
-            # This key is for signup.eduid.docker:8080
+            # These keys are for signup.eduid.docker:8080
+            RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
             RECAPTCHA_PRIVATE_KEY: 6Lf5rCETAAAAAAjQbw1-3j_U2xTZSrDYXlWjBQxt
+            STUDENTS_LINK: https://www.eduid.se/index.html
+            TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
+            STAFF_LINK: https://www.eduid.se/personal.html
+            FAQ_LINK: https://www.eduid.se/faq.html
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             SERVER_NAME: eduid.docker:8080
