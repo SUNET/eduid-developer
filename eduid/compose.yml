@@ -72,7 +72,6 @@ services:
         ipv4_address: 172.16.10.220
     volumes:
       - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
-      - ../dashboard-haproxy/etc/200load_dashboard.http:/etc/haproxy/200load_dashboard.http:ro
       - /dev/log:/dev/log
     links:
       - html
@@ -535,10 +534,10 @@ services:
         ipv4_address: 172.16.10.210
     volumes:
       - ../signup-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
-      - ../signup-haproxy/etc/200load_signup.http:/etc/haproxy/200load_signup.http:ro
       - /dev/log:/dev/log
     depends_on:
       - html
+      - jsconfig
       - signup
 
   signup:
