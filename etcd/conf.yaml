@@ -25,8 +25,6 @@ eduid:
                 broker_transport_options:
                     # backwards incompatible setting that the documentation says will be the default in the future
                     fanout_prefix: true
-                #CELERY_RESULT_BACKEND: amqp
-                #CELERY_TASK_SERIALIZER: json
                 # Avoid broken connections across firewall by disabling pool
                 # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
                 #BROKER_POOL_LIMIT: 0
@@ -71,20 +69,12 @@ eduid:
             SIGNUP_AUTHN_SUCCESS_REDIRECT_URL: https://dashboard.eduid.local.emergya.info/profile/
             SIGNUP_AUTHN_FAILURE_REDIRECT_URL: https://html.eduid.docker/
             SAFE_RELAY_DOMAIN: eduid.local.emergya.info
-            # XXX TRANSITION_TOKEN_LOGIN remove after transition
-            TOKEN_LOGIN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
-            TOKEN_LOGIN_SUCCESS_REDIRECT_URL: https://dashboard.eduid.local.emergya.info/profile/
-            TOKEN_LOGIN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
-            SIGNUP_AND_AUTHN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
-            # XXX end TRANSITION_TOKEN_LOGIN remove after transition
         letter_proofing:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/letter-proofing
             LOGGER_NAME: letter_proofing
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb.eduid_dev
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
             # Setting EKOPOST_DEBUG_PDF to a path means that the other EKOPOST settings will be ignored
             # and that the pdf only will be written to to the supplied path, not sent to the letter service.
             EKOPOST_DEBUG_PDF: /opt/eduid/run/debug_letter.pdf
@@ -103,8 +93,6 @@ eduid:
             PROVIDER_CONFIGURATION_INFO:
                 issuer: http://turq:13085/op/
             MONGO_URI: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         orcid:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/orcid
@@ -116,15 +104,12 @@ eduid:
             PROVIDER_CONFIGURATION_INFO:
                 issuer: https://sandbox.orcid.org
             MONGO_URI: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         eidas:
             SERVER_NAME: eidas.eduid.docker:8080
             APPLICATION_ROOT: /
             LOGGER_NAME: eidas
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             # SAML2 and SP config
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
             SAFE_RELAY_DOMAIN: eduid.docker:8080
@@ -134,9 +119,6 @@ eduid:
             LOGGER_NAME: lookup_mobile_proofing
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_lookup_mobile_proofing:eduid_lookup_mobile_proofing_pw@mongodb.eduid_dev
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
-            #LOOKUP_MOBILE_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/lookup_mobile
         support:
             SERVER_NAME: support.eduid.local.emergya.info:8080
             LOGGER_NAME: support
@@ -151,23 +133,18 @@ eduid:
             MONGO_URI: mongodb://eduid_personal_data:eduid_personal_data_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: personal_data
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
         email:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/email
             MONGO_URI: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: email
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
         phone:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/phone
             MONGO_URI: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: phone
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             PHONE_VERIFICATION_TIMEOUT: 7200
         security:
             SERVER_NAME: dashboard.eduid.local.emergya.info
@@ -175,8 +152,6 @@ eduid:
             MONGO_URI: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: security
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            #MSG_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/msg
             VCCS_URL: 'http://turq:13085/'
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25
@@ -209,23 +184,29 @@ eduid:
             TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
             STAFF_LINK: https://www.eduid.se/personal.html
             FAQ_LINK: https://www.eduid.se/faq.html
-            # XXX TRANSITION_TOKEN_LOGIN remove after transition
-            # NOTE that AUTH_TOKEN_URL is legacy but has changed value - the
-            # endpoint is signup-authn
-            AUTH_TOKEN_URL: https://dashboard.eduid.local.emergya.info/services/authn/signup-authn
-            SIGNUP_AUTHN_URL: https://dashboard.eduid.local.emergya.info/services/authn/signup-authn
-            SIGNUP_AND_AUTHN_SHARED_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
-            # XXX end TRANSITION_TOKEN_LOGIN remove after transition
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/jsconfig
             LOG_LEVEL: DEBUG
             LOGGER_NAME: jsconfig
+            # Dashboard config
+            DASHBOARD_BUNDLE_PATH: front-build/dashboard-bundle.dev.js
+            DASHBOARD_BUNDLE_VERSION: dev
+            # Signup config
+            SIGNUP_BUNDLE_PATH: front-build/signup-bundle.dev.js
+            SIGNUP_BUNDLE_VERSION: dev
         jsapps:
-            # this is the configuration for the js apps, that is sent by the jsconfig
-            # microservice to the js apps.
-            # Take care not to put any sensitive data here.
+            ### this is the configuration for the js apps, that is sent by the jsconfig
+            ### microservice to the js apps.
+            ### Take care not to put any sensitive data here.
+            # Shared config
+            DEBUG: yes
+            STATIC_STUDENTS_URL: http://html.eduid.docker/
+            STATIC_TECHNICIANS_URL: http://html.eduid.docker/tekniker.html
+            STATIC_STAFF_URL: http://html.eduid.docker/personal.html
+            STATIC_FAQ_URL: http://html.eduid.docker/faq.html
+            # Dashboard config
             AVAILABLE_LANGUAGES:
                 - [en, English]
                 - [sv, Svenska]
@@ -251,21 +232,22 @@ eduid:
                 - oidc
                 - eidas
             DEFAULT_COUNTRY_CODE: 46
-            DEBUG: yes
-            STATIC_STUDENTS_URL: http://html.eduid.docker/
-            STATIC_TECHNICIANS_URL: http://html.eduid.docker/tekniker.html
-            STATIC_STAFF_URL: http://html.eduid.docker/personal.html
-            STATIC_FAQ_URL: http://html.eduid.docker/faq.html
+            # Signup config
+            SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
+            TOU_URL: http://idp.eduid.docker:8080/services/actions2/get-tous/
+            # This key is for signup.eduid.docker:8080
+            RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
+
         actions2:
             SERVER_NAME: idp.eduid.local.emergya.info
             APPLICATION_ROOT: /services/actions2
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            BUNDLES_URL: https://dashboard.eduid.local.emergya.info/static/front-build/
+            BUNDLES_PATH: /front-build/
             IDP_URL: https://idp.eduid.local.emergya.info/sso/redirect
+            BUNDLES_VERSION: iamaversion
             U2F_APP_ID: https://eduid.local.emergya.info/u2f-app-id.json
-            U2F_APP_ID: https://dashboard.local.emergya.info
             U2F_VALID_FACETS:
                 - https://dashboard.eduid.local.emergya.info
                 - https://idp.eduid.local.emergya.info
@@ -273,47 +255,47 @@ eduid:
             EIDAS_URL: http://eidas.eduid.local.emergya.info/
             MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
         idp:
-            STATIC_DIR: /opt/eduid/eduid-idp/etc/static_files
-            PYSAML2_CONFIG: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
-            LISTEN_PORT: 8080
-            LOGDIR: /var/log/eduid
-            LOGFILE: /var/log/eduid/eduid_idp.log
-            MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/
-            USERDB_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_am
-            USERDB_MONGO_DATABASE: eduid_am
-            SSO_SESSION_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp
-            AUTHN_INFO_MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_authninfo
-            RAVEN_DSN: https://foo:bar@sentry/2
-            CONTENT_PACKAGES:
+            static_dir: /opt/eduid/eduid-idp/etc/static_files
+            pysaml2_config: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
+            listen_port: 8080
+            logdir: /var/log/eduid
+            logfile: /var/log/eduid/eduid_idp.log
+            mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb/
+            userdb_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_am
+            userdb_mongo_database: eduid_am
+            sso_session_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp
+            authn_info_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_authninfo
+            raven_dsn: https://foo:bar@sentry/2
+            content_packages:
                 - [eduid_IdP_html, html/]
-            PASSWORD_RESET_LINK: https://dashboard.eduid.local.emergya.info/services/security/reset-password
-            SIGNUP_LINK: https://signup.eduid.local.emergya.info/
-            DASHBOARD_LINK: https://dashboard.eduid.local.emergya.info/
-            STUDENT_LINK: http://html.eduid.docker/index.html
-            TECHNICIANS_LINK: http://html.eduid.docker/tekniker.html
-            STAFF_LINK: http://html.eduid.docker/personal.html
-            FAQ_LINK: http://html.eduid.docker/faq.html
-            PRIVACY_LINK: http://html.eduid.docker/privacy.html
+            password_reset_link: https://dashboard.eduid.local.emergya.info/services/security/reset-password
+            signup_link: https://signup.eduid.local.emergya.info/
+            dashboard_link: https://dashboard.eduid.local.emergya.info/
+            student_link: http://html.eduid.docker/index.html
+            technicians_link: http://html.eduid.docker/tekniker.html
+            staff_link: http://html.eduid.docker/personal.html
+            faq_link: http://html.eduid.docker/faq.html
+            privacy_link: http://html.eduid.docker/privacy.html
             # uri for the new actions microservice
-            ACTIONS_APP_URI: https://idp.eduid.local.emergya.info/services/actions2/
-            STATIC_LINK: https://dashboard.eduid.local.emergya.info/static
-            BASE_URL: https://idp.eduid.local.emergya.info/
-            DEFAULT_EPPN_SCOPE: local.eduid.se
-            LOGIN_STATE_TTL: 1
-            STATUS_TEST_USERNAMES: f-testuser1@spam.thulin.net
-            DEFAULT_SCOPED_AFFILIATION: affiliate@local.eduid.se
-            MAX_AUTHN_FAILURES_PER_MONTH: 50
-            MAX_AUHTN_FAILURES_PER_MONTH: 50   # misspelled in earlier versions
-            VCCS_URL: http://turq:13085/
-            INSECURE_COOKIES: true
-            HTTP_HEADERS: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
-            TOU_VERSION: 2016-v1
-            ACTION_PLUGINS:
+            actions_app_uri: https://idp.eduid.local.emergya.info/services/actions2/
+            static_link: https://dashboard.eduid.local.emergya.info/static
+            base_url: https://idp.eduid.local.emergya.info/
+            default_eppn_scope: local.eduid.se
+            login_state_ttl: 1
+            status_test_usernames: f-testuser1@spam.thulin.net
+            default_scoped_affiliation: affiliate@local.eduid.se
+            max_authn_failures_per_month: 50
+            max_auhtn_failures_per_month: 50   # misspelled in earlier versions
+            vccs_url: http://turq:13085/
+            insecure_cookies: true
+            http_headers: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
+            tou_version: 2016-v1
+            action_plugins:
                 - tou
                 - mfa
-            REDIS_HOST: redis.eduid_dev
-            SHARED_SESSION_COOKIE_NAME: sessid
-            SHARED_SESSION_SECRET_KEY: supersecretkey
+            redis_host: redis.eduid_dev
+            shared_session_cookie_name: sessid
+            shared_session_secret_key: supersecretkey
     worker:
         common:
             CELERY:
