@@ -54,7 +54,7 @@ eduid:
             TOU_VERSION: 2017-v6
             CURRENT_TOU_VERSION: 2017-v6  # backwards compat
             FIDO2_RP_ID: eduid.local.emergya.info
-            SECRET_KEY: supersecretkey
+            SECRET_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
         authn:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/authn
@@ -105,14 +105,14 @@ eduid:
                 issuer: https://sandbox.orcid.org
             MONGO_URI: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
         eidas:
-            SERVER_NAME: eidas.eduid.docker:8080
+            SERVER_NAME: eidas.eduid.local.emergya.info
             APPLICATION_ROOT: /
             LOGGER_NAME: eidas
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
             # SAML2 and SP config
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
-            SAFE_RELAY_DOMAIN: eduid.docker:8080
+            SAFE_RELAY_DOMAIN: eduid.local.emergya.info
         lookup_mobile_proofing:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/lookup-mobile-proofing
@@ -120,7 +120,7 @@ eduid:
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_lookup_mobile_proofing:eduid_lookup_mobile_proofing_pw@mongodb.eduid_dev
         support:
-            SERVER_NAME: support.eduid.local.emergya.info:8080
+            SERVER_NAME: support.eduid.local.emergya.info
             LOGGER_NAME: support
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
@@ -173,7 +173,7 @@ eduid:
             VCCS_URL: 'http://turq:13085/'
             TOU_URL: https://idp.eduid.local.emergya.info/services/actions2/get-tous/
             SIGNUP_AUTHN_URL: https://dashboard.eduid.local.emergya.info/services/authn/signup-authn
-            DEFAULT_FINISH_URL: https://www.eduid.se/
+            DEFAULT_FINISH_URL: https://dashboard.eduid.local.emergya.info/profile/
             # These keys are for signup.eduid.docker:8080
             #RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
             #RECAPTCHA_PRIVATE_KEY: 6Lf5rCETAAAAAAjQbw1-3j_U2xTZSrDYXlWjBQxt
@@ -186,7 +186,7 @@ eduid:
             FAQ_LINK: https://www.eduid.se/faq.html
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
-            SERVER_NAME: dashboard.eduid.local.emergya.info
+            SERVER_NAME: eduid.local.emergya.info
             APPLICATION_ROOT: /services/jsconfig
             LOG_LEVEL: DEBUG
             LOGGER_NAME: jsconfig
@@ -221,7 +221,7 @@ eduid:
             TOKEN_SERVICE_URL: /services/authn/
             OIDC_PROOFING_FREJA_URL: /services/oidc-proofing/freja/proofing/
             ORCID_URL: /services/orcid/
-            EIDAS_URL: http://eidas.eduid.docker:8080/
+            EIDAS_URL: https://eidas.eduid.local.emergya.info
             TOKEN_VERIFY_IDP: http://dev.test.swedenconnect.se/idp
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25
@@ -233,10 +233,12 @@ eduid:
                 - eidas
             DEFAULT_COUNTRY_CODE: 46
             # Signup config
-            SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
-            TOU_URL: http://idp.eduid.docker:8080/services/actions2/get-tous/
+            SIGNUP_AUTHN_URL: https://dashboard.eduid.local.emergya.info/services/authn/signup-authn
+            TOU_URL: https://idp.eduid.local.emergya.info/services/actions2/get-tous/
             # This key is for signup.eduid.docker:8080
-            RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
+            # RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
+            # This key is for signup.eduid.local.emergya.info
+            RECAPTCHA_PUBLIC_KEY: 6Ld2IUwUAAAAAD5saiXoQKgmUC9JhQLqcHZoemTh
 
         actions2:
             SERVER_NAME: idp.eduid.local.emergya.info
@@ -252,7 +254,7 @@ eduid:
                 - https://dashboard.eduid.local.emergya.info
                 - https://idp.eduid.local.emergya.info
             FIDO2_RP_ID: eduid.local.emergya.info
-            EIDAS_URL: http://eidas.eduid.local.emergya.info/
+            EIDAS_URL: https://eidas.eduid.local.emergya.info/
             MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
         idp:
             static_dir: /opt/eduid/eduid-idp/etc/static_files
@@ -260,11 +262,11 @@ eduid:
             listen_port: 8080
             logdir: /var/log/eduid
             logfile: /var/log/eduid/eduid_idp.log
-            mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb/
-            userdb_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_am
+            mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/
+            userdb_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_am
             userdb_mongo_database: eduid_am
-            sso_session_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp
-            authn_info_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_authninfo
+            sso_session_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_idp
+            authn_info_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_idp_authninfo
             raven_dsn: https://foo:bar@sentry/2
             content_packages:
                 - [eduid_IdP_html, html/]
@@ -295,7 +297,7 @@ eduid:
                 - mfa
             redis_host: redis.eduid_dev
             shared_session_cookie_name: sessid
-            shared_session_secret_key: supersecretkey
+            shared_session_secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
     worker:
         common:
             CELERY:
@@ -307,12 +309,12 @@ eduid:
                 # Workaround for Celery 4.2.1 not issuing AMQP heartbeats
                 #broker_heartbeat: 0
         am:
-            MONGO_URI: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
+            MONGO_URI: mongodb://eduid_am:eduid_am_pw@mongodb.eduid_dev/eduid_am
             NEW_USER_DATE: '2001-01-01'
             ACTION_PLUGINS:
                 - "tou"
         msg:
-            MONGO_URI: mongodb://mongodb/eduid_msg
+            MONGO_URI: mongodb://mongodb.eduid_dev/eduid_msg
             sms_sender: 'eduID'
             template_dir: '/opt/eduid/eduid-msg/etc/templates'
             devel_mode: true
@@ -321,7 +323,7 @@ eduid:
             mail_port: 25
             mail_starttls: false
         lookup_mobile:
-            MONGO_URI: 'mongodb://eduid_lookup_mobile:eduid_lookup_mobile_pw@mongodb/eduid_lookup_mobile'
+            MONGO_URI: 'mongodb://eduid_lookup_mobile:eduid_lookup_mobile_pw@mongodb.eduid_dev/eduid_lookup_mobile'
             transaction_audit: true
             DEVEL_MODE: true
             TELEADRESS_CLIENT_USER: 'TEST'

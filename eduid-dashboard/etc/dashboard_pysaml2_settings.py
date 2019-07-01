@@ -54,7 +54,7 @@ SAML_CONFIG = {
                 # present in our metadata
 
                 # the keys of this dictionary are entity ids
-                'http://idp.eduid.local.emergya.info:8080/idp.xml': {
+                'http://idp.eduid.local.emergya.info/idp.xml': {
                     'single_sign_on_service': {
                         saml2.BINDING_HTTP_REDIRECT: 'https://idp.eduid.local.emergya.info/sso/redirect',
                     },
