@@ -3,22 +3,22 @@ eduid:
         common:
             DEVEL_MODE: yes
             # enable disable debug mode
-            DEBUG: yes
+            debug: yes
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
-            SESSION_COOKIE_NAME: sessid
-            SESSION_COOKIE_DOMAIN: .eduid.local.emergya.info
-            SESSION_COOKIE_SECURE: 0
+            session_cookie_name: sessid
+            session_cookie_domain: .eduid.local.emergya.info
+            session_cookie_secure: 0
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
-            PREFERRED_URL_SCHEME: https
+            preferred_url_scheme: https
             # Redis config
-            REDIS_HOST: redis.eduid_dev
-            REDIS_PORT: 6379
-            REDIS_DB: 0
-            SAML2_LOGOUT_REDIRECT_URL: https://eduid.se/
-            TOKEN_SERVICE_URL: https://dashboard.eduid.local.emergya.info/services/authn
-            CELERY_CONFIG:
+            redis_host: redis.eduid_dev
+            redis_port: 6379
+            redis_db: 0
+            saml2_logout_redirect_url: http://html.eduid.docker/
+            token_service_url: https://dashboard.eduid.local.emergya.info/services/authn
+            celery_config:
                 accept_content: ["application/json"]
                 broker_url: redis://redis.eduid_dev:6379/1
                 result_backend: redis://redis.eduid_dev:6379/1
@@ -32,29 +32,29 @@ eduid:
                   'eduid_am.*': {'queue': 'am'}
                   'eduid_msg.*': {'queue': 'msg'}
                   'eduid_lookup_mobile.*': {'queue': 'lookup_mobile'}
-            AVAILABLE_LANGUAGES:
+            available_languages:
                 en: English
                 sv: Svenska
-            MAIL_DEFAULT_FROM: info@eduid.se
-            EDUID_SITE_URL: https://dashboard.eduid.local.emergya.info/profile/
-            EDUID_STATIC_URL: https://dashboard.eduid.local.emergya.info/static/
-            STATIC_URL: https://html.eduid.local.emergya.info/static/
-            DASHBOARD_URL: https://dashboard.eduid.local.emergya.info/profile/
-            RESET_PASSWD_URL: https://dashboard.eduid.local.emergya.info/services/security/reset-password
+            mail_default_from: info@eduid.se
+            eduid_site_url: https://dashboard.eduid.local.emergya.info/profile/
+            eduid_static_url: https://dashboard.eduid.local.emergya.info/static/
+            static_url: https://html.eduid.local.emergya.info/static/
+            dashboard_url: https://dashboard.eduid.local.emergya.info/profile/
+            reset_passwd_url: https://dashboard.eduid.local.emergya.info/services/security/reset-password
             # set absolute URL so it can be included in emails
-            SIGNUP_URL: https://dashboard.eduid.local.emergya.info/register/
-            NO_AUTHN_URLS:
+            signup_url: https://dashboard.eduid.local.emergya.info/register/
+            no_authn_urls:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
-            ACTION_PLUGINS:
+            action_plugins:
               - tou
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
-            ENVIRONMENT: dev
-            TOU_VERSION: 2017-v6
-            CURRENT_TOU_VERSION: 2017-v6  # backwards compat
-            FIDO2_RP_ID: eduid.local.emergya.info
-            SECRET_KEY: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
+            environment: dev
+            tou_version: 2017-v6
+            current_tou_version: 2017-v6  # backwards compat
+            fido2_rp_id: eduid.local.emergya.info
+            secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
         authn:
             SERVER_NAME: dashboard.eduid.local.emergya.info
             APPLICATION_ROOT: /services/authn
@@ -291,11 +291,6 @@ eduid:
             vccs_url: http://turq:13085/
             insecure_cookies: true
             http_headers: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
-            tou_version: 2016-v1
-            action_plugins:
-                - tou
-                - mfa
-            redis_host: redis.eduid_dev
             shared_session_cookie_name: sessid
             shared_session_secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
     worker:
