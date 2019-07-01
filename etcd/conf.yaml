@@ -2,22 +2,22 @@ eduid:
     webapp:
         common:
             # enable disable debug mode
-            DEBUG: yes
+            debug: yes
             # the domain for the session cookie. If this is not set, the cookie will
             # be valid for all subdomains of SERVER_NAME.
-            SESSION_COOKIE_NAME: sessid
-            SESSION_COOKIE_DOMAIN: .eduid.docker
-            SESSION_COOKIE_SECURE: 0
+            session_cookie_name: sessid
+            session_cookie_domain: .eduid.docker
+            session_cookie_secure: 0
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
-            PREFERRED_URL_SCHEME: http
+            preferred_url_scheme: http
             # Redis config
-            REDIS_HOST: redis.eduid_dev
-            REDIS_PORT: 6379
-            REDIS_DB: 0
-            SAML2_LOGOUT_REDIRECT_URL: http://html.eduid.docker/
-            TOKEN_SERVICE_URL: http://dashboard.eduid.docker:8080/services/authn
-            CELERY_CONFIG:
+            redis_host: redis.eduid_dev
+            redis_port: 6379
+            redis_db: 0
+            saml2_logout_redirect_url: http://html.eduid.docker/
+            token_service_url: http://dashboard.eduid.docker:8080/services/authn
+            celery_config:
                 accept_content: ["application/json"]
                 broker_url: redis://redis.eduid_dev:6379/1
                 result_backend: redis://redis.eduid_dev:6379/1
@@ -31,27 +31,27 @@ eduid:
                   'eduid_am.*': {'queue': 'am'}
                   'eduid_msg.*': {'queue': 'msg'}
                   'eduid_lookup_mobile.*': {'queue': 'lookup_mobile'}
-            AVAILABLE_LANGUAGES:
+            available_languages:
                 en: English
                 sv: Svenska
-            MAIL_DEFAULT_FROM: info@eduid.se
-            EDUID_SITE_URL: http://html.eduid.docker
-            EDUID_STATIC_URL: http://html.eduid.docker/static/
-            DASHBOARD_URL: http://dashboard.eduid.docker:8080/profile/
-            RESET_PASSWD_URL: http://dashboard.eduid.docker:8080/services/security/reset-password
+            mail_default_from: info@eduid.se
+            eduid_site_url: http://html.eduid.docker
+            eduid_static_url: http://html.eduid.docker/static/
+            dashboard_url: http://dashboard.eduid.docker:8080/profile/
+            reset_passwd_url: http://dashboard.eduid.docker:8080/services/security/reset-password
             # set absolute URL so it can be included in emails
-            SIGNUP_URL: http://signup.eduid.docker:8080/register/
-            NO_AUTHN_URLS:
+            signup_url: http://signup.eduid.docker:8080/register/
+            no_authn_urls:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
-            ACTION_PLUGINS:
+            action_plugins:
               - tou
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
-            ENVIRONMENT: dev
-            TOU_VERSION: test-version
-            CURRENT_TOU_VERSION: test-version  # backwards compat
-            SECRET_KEY: supersecretkey
+            environment: dev
+            tou_version: test-version
+            current_tou_version: test-version  # backwards compat
+            secret_key: supersecretkey
         authn:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/authn
@@ -248,6 +248,43 @@ eduid:
             FIDO2_RP_ID: eduid.docker
             EIDAS_URL: http://eidas.eduid.docker:8080/
             MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
+        idp:
+            static_dir: /opt/eduid/eduid-idp/etc/static_files
+            pysaml2_config: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
+            listen_port: 8080
+            logdir: /var/log/eduid
+            logfile: /var/log/eduid/eduid_idp.log
+            mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/
+            userdb_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_am
+            userdb_mongo_database: eduid_am
+            sso_session_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_idp
+            authn_info_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_idp_authninfo
+            raven_dsn: https://foo:bar@sentry/2
+            content_packages:
+                - [eduid_IdP_html, html/]
+            password_reset_link: https://dashboard.eduid.local.emergya.info/services/security/reset-password
+            signup_link: https://signup.eduid.local.emergya.info/
+            dashboard_link: https://dashboard.eduid.local.emergya.info/
+            student_link: http://html.eduid.docker/index.html
+            technicians_link: http://html.eduid.docker/tekniker.html
+            staff_link: http://html.eduid.docker/personal.html
+            faq_link: http://html.eduid.docker/faq.html
+            privacy_link: http://html.eduid.docker/privacy.html
+            # uri for the new actions microservice
+            actions_app_uri: https://idp.eduid.local.emergya.info/services/actions2/
+            static_link: https://dashboard.eduid.local.emergya.info/static
+            base_url: https://idp.eduid.local.emergya.info/
+            default_eppn_scope: local.eduid.se
+            login_state_ttl: 1
+            status_test_usernames: f-testuser1@spam.thulin.net
+            default_scoped_affiliation: affiliate@local.eduid.se
+            max_authn_failures_per_month: 50
+            max_auhtn_failures_per_month: 50   # misspelled in earlier versions
+            vccs_url: http://turq:13085/
+            insecure_cookies: true
+            http_headers: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
+            shared_session_cookie_name: sessid
+            shared_session_secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
     worker:
         common:
             CELERY:
