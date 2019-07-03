@@ -249,8 +249,8 @@ eduid:
             EIDAS_URL: http://eidas.eduid.docker:8080/
             MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
         idp:
-            # this enviroment is a cherrypy thing, that can have as                
-            # value(staging|production|embedded|test_suite)     
+            # this enviroment is a cherrypy thing, that can have as
+            # value(staging|production|embedded|test_suite)
             environment: staging
             static_dir: /opt/eduid/eduid-idp/etc/static_files
             pysaml2_config: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
