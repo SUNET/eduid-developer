@@ -257,6 +257,9 @@ eduid:
             EIDAS_URL: https://eidas.eduid.local.emergya.info/
             MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
         idp:
+            # this enviroment is a cherrypy thing, that can have as
+            # value(staging|production|embedded|test_suite)
+            environment: staging
             static_dir: /opt/eduid/eduid-idp/etc/static_files
             pysaml2_config: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
             listen_port: 8080
@@ -270,18 +273,18 @@ eduid:
             raven_dsn: https://foo:bar@sentry/2
             content_packages:
                 - [eduid_IdP_html, html/]
-            password_reset_link: https://dashboard.eduid.local.emergya.info/services/security/reset-password
-            signup_link: https://signup.eduid.local.emergya.info/
-            dashboard_link: https://dashboard.eduid.local.emergya.info/
+            password_reset_link: https://dashboard.eduid.docker:8080/services/security/reset-password
+            signup_link: https://signup.eduid.docker:8080/
+            dashboard_link: https://dashboard.eduid.docker:8080/
             student_link: http://html.eduid.docker/index.html
             technicians_link: http://html.eduid.docker/tekniker.html
             staff_link: http://html.eduid.docker/personal.html
             faq_link: http://html.eduid.docker/faq.html
             privacy_link: http://html.eduid.docker/privacy.html
             # uri for the new actions microservice
-            actions_app_uri: https://idp.eduid.local.emergya.info/services/actions2/
-            static_link: https://dashboard.eduid.local.emergya.info/static
-            base_url: https://idp.eduid.local.emergya.info/
+            actions_app_uri: https://idp.eduid.docker:8080/services/actions2/
+            static_link: https://dashboard.eduid.docker:8080/static
+            base_url: https://idp.eduid.docker:8080/
             default_eppn_scope: local.eduid.se
             login_state_ttl: 1
             status_test_usernames: f-testuser1@spam.thulin.net

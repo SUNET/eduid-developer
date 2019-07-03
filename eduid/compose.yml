@@ -490,6 +490,7 @@ services:
       - redis
       - turq
       - rsyslog
+      - etcd
 
   lookup-mobile:
     image: docker.sunet.se/eduid/eduid-lookup-mobile:latest
