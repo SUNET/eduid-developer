@@ -266,17 +266,17 @@ eduid:
             content_packages:
                 - [eduid_IdP_html, html/]
             password_reset_link: https://dashboard.eduid.docker:8080/services/security/reset-password
-            signup_link: https://signup.eduid.docker:8080/
-            dashboard_link: https://dashboard.eduid.docker:8080/
+            signup_link: http://signup.eduid.docker:8080/
+            dashboard_link: http://dashboard.eduid.docker:8080/
             student_link: http://html.eduid.docker/index.html
             technicians_link: http://html.eduid.docker/tekniker.html
             staff_link: http://html.eduid.docker/personal.html
             faq_link: http://html.eduid.docker/faq.html
             privacy_link: http://html.eduid.docker/privacy.html
             # uri for the new actions microservice
-            actions_app_uri: https://idp.eduid.docker:8080/services/actions2/
-            static_link: https://dashboard.eduid.docker:8080/static
-            base_url: https://idp.eduid.docker:8080/
+            actions_app_uri: http://idp.eduid.docker:8080/services/actions2/
+            static_link: http://html.eduid.docker/static
+            base_url: http://idp.eduid.docker:8080/
             default_eppn_scope: local.eduid.se
             login_state_ttl: 1
             status_test_usernames: f-testuser1@spam.thulin.net
@@ -287,7 +287,7 @@ eduid:
             insecure_cookies: true
             http_headers: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
             shared_session_cookie_name: sessid
-            shared_session_secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
+            shared_session_secret_key: supersecretkey
     worker:
         common:
             CELERY:
