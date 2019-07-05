@@ -273,8 +273,8 @@ eduid:
             raven_dsn: https://foo:bar@sentry/2
             content_packages:
                 - [eduid_IdP_html, html/]
-            password_reset_link: https://dashboard.eduid.docker:8080/services/security/reset-password
-            signup_link: http://signup.eduid.docker:8080/
+            password_reset_link: https://dashboard.eduid.local.emergya.info/services/security/reset-password
+            signup_link: https://signup.eduid.local.emergya.info/
             dashboard_link: http://dashboard.eduid.docker:8080/
             student_link: http://html.eduid.docker/index.html
             technicians_link: http://html.eduid.docker/tekniker.html
@@ -282,9 +282,9 @@ eduid:
             faq_link: http://html.eduid.docker/faq.html
             privacy_link: http://html.eduid.docker/privacy.html
             # uri for the new actions microservice
-            actions_app_uri: http://idp.eduid.docker:8080/services/actions2/
-            static_link: http://html.eduid.docker/static
-            base_url: http://idp.eduid.docker:8080/
+            actions_app_uri: https://idp.eduid.local.emergya.info/services/actions2/
+            static_link: https://dashboard.eduid.local.emergya.info/static
+            base_url: https://idp.eduid.local.emergya.info/
             default_eppn_scope: local.eduid.se
             login_state_ttl: 1
             status_test_usernames: f-testuser1@spam.thulin.net
