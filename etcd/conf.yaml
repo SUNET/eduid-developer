@@ -265,7 +265,7 @@ eduid:
             raven_dsn: https://foo:bar@sentry/2
             content_packages:
                 - [eduid_IdP_html, html/]
-            password_reset_link: https://dashboard.eduid.docker:8080/services/security/reset-password
+            password_reset_link: http://dashboard.eduid.docker:8080/services/security/reset-password
             signup_link: http://signup.eduid.docker:8080/
             dashboard_link: http://dashboard.eduid.docker:8080/
             student_link: http://html.eduid.docker/index.html
