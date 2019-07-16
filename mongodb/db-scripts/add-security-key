@@ -1,0 +1,72 @@
+#!/opt/eduid/bin/python
+#
+# Add a security key to a user for development
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/add-security-key
+#
+
+import sys
+
+from datetime import datetime
+
+from eduid_userdb import User
+from eduid_userdb.credentials import FidoCredential, Webauthn, U2F, webauthn_from_dict, u2f_from_dict
+from eduid_userdb.admin import RawDb
+
+
+def main(dry_run, eppn, cred_type):
+    db = RawDb(myname='add-security-key')
+
+    count = 0
+
+    for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
+        user = User(raw_user.doc)
+        print(user)
+
+        security_keys_count = len(user.credentials.filter(FidoCredential).to_list())
+        if cred_type == 'webauthn':
+            data = {
+                'created_ts': datetime.now(tz=None),
+                'keyhandle': f'keyhandle_{security_keys_count + 1}',
+                'app_id': 'dev_app_id',
+                'description': f'Dev key {security_keys_count + 1}'
+            }
+            cred = webauthn_from_dict(data)
+        elif cred_type == 'u2f':
+            data = {
+                'created_ts': datetime.now(tz=None),
+                'keyhandle': f'keyhandle_{security_keys_count + 1}',
+                'version': 'Dev version',
+                'public_key': 'a_public_key',
+                'app_id': 'dev_app_id',
+                'description': f'Dev key {security_keys_count + 1}'
+            }
+            cred = u2f_from_dict(data)
+
+        print(cred)
+        user.credentials.add(cred)
+
+        raw_user.doc = user.to_dict(old_userdb_format = False)
+        db.save_with_backup(raw_user, dry_run=dry_run)
+        count += 1
+
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    args = sys.argv[1:]
+    if not args:
+        print('Syntax: add-security-key [--force] eppn webauthn|u2f')
+        sys.exit(1)
+    dry_run = True
+    if args[0] == '--force':
+        dry_run = False
+        args = args[1:]
+    eppn, cred_type = args
+    print('Dry run: {}'.format(dry_run))
+    if main(dry_run, eppn, cred_type):
+        sys.exit(0)
+
+    sys.exit(1)

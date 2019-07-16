@@ -1,0 +1,51 @@
+#!/opt/eduid/bin/python
+#
+# Add a security key to a user for development
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/remove-security-keys
+#
+
+import sys
+
+from eduid_userdb import User
+from eduid_userdb.credentials import FidoCredential
+from eduid_userdb.admin import RawDb
+
+
+def main(dry_run, eppn):
+    db = RawDb(myname='remove-security-keys')
+
+    count = 0
+
+    for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
+        user = User(raw_user.doc)
+        print(user)
+        security_keys = user.credentials.filter(FidoCredential).to_list()
+        print(f'Will remove: {security_keys}')
+        for cred in security_keys:
+            user.credentials.remove(cred.key)
+
+        raw_user.doc = user.to_dict(old_userdb_format = False)
+        db.save_with_backup(raw_user, dry_run=dry_run)
+        count += 1
+
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    args = sys.argv[1:]
+    if not args:
+        print('Syntax: remove-security-keys [--force] eppn')
+        sys.exit(1)
+    dry_run = True
+    if args[0] == '--force':
+        dry_run = False
+        args = args[1:]
+    eppn, = args
+    print('Dry run: {}'.format(dry_run))
+    if main(dry_run, eppn):
+        sys.exit(0)
+
+    sys.exit(1)

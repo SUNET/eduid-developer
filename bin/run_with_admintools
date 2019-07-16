@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# Run something, typically a script in /opt/eduid/db-scripts/ in an
+# eduid-admintools docker container.
+#
+# Created by Puppet.
+#
+
+if [ ! -f eduid/compose.yml ]; then
+    echo "Run $0 from the eduid-developer top level directory"
+    exit 1
+fi
+
+# Only allocate tty if we detect one
+if [ -t 1 ]; then
+    DOCKER_RUN_OPTIONS="-t"
+fi
+if [ -t 0 ]; then
+    DOCKER_RUN_OPTIONS="$DOCKER_RUN_OPTIONS -i"
+fi
+
+docker run --rm ${DOCKER_RUN_OPTIONS} \
+       --net eduid_dev \
+       -e MONGODB_HOST=eduid_mongodb_1 \
+       -v ${PWD}/mongodb/db-scripts:/opt/eduid/db-scripts:ro \
+       -v ${PWD}/raw_db_changes:/root/raw_db_changes \
+       docker.sunet.se/eduid/eduid-admintools \
+       $*
