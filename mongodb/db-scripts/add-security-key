@@ -28,20 +28,25 @@ def main(dry_run, eppn, cred_type):
         security_keys_count = len(user.credentials.filter(FidoCredential).to_list())
         if cred_type == 'webauthn':
             data = {
-                'created_ts': datetime.now(tz=None),
                 'keyhandle': f'keyhandle_{security_keys_count + 1}',
+                'credential_data': 'AAAAAAAAAAAAAAAAAAAAAABA_Pgd5uXWJjGhIXLqBbVMh88HL8NWJltysfIL7aGGflm9XAo2ijXe5hQIh5lH08J9hXTvaw9GB6Ri-NJ9fdKw-KUBAgMmIAEhWCDhan6Ud4k3o3h8ip6lVuEzBZQyCDlruFTchUTbDfjlniJYIMYLOPNlL8FkJX_rSBAugk-r1AWr3JlzojHQhxEqH0K6',
                 'app_id': 'dev_app_id',
-                'description': f'Dev key {security_keys_count + 1}'
+                'attest_obj': 'an_attest_obj',
+                'description': f'Dev key {security_keys_count + 1}',
+                'created_by': 'add-security-key',
+                'created_ts': datetime.now(tz=None)
             }
             cred = webauthn_from_dict(data)
         elif cred_type == 'u2f':
             data = {
-                'created_ts': datetime.now(tz=None),
-                'keyhandle': f'keyhandle_{security_keys_count + 1}',
                 'version': 'Dev version',
+                'keyhandle': f'keyhandle_{security_keys_count + 1}',
                 'public_key': 'a_public_key',
                 'app_id': 'dev_app_id',
-                'description': f'Dev key {security_keys_count + 1}'
+                'attest_cert': 'an_attest_cert',
+                'description': f'Dev key {security_keys_count + 1}',
+                'created_by': 'add-security-key',
+                'created_ts': datetime.now(tz=None)
             }
             cred = u2f_from_dict(data)
 
