@@ -65,6 +65,7 @@ eduid:
             SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
             SIGNUP_AUTHN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
             SIGNUP_AUTHN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
+            UNSOLICITED_RESPONSE_REDIRECT_URL: http://dashboard.eduid.docker:8080
             SAFE_RELAY_DOMAIN: eduid.docker:8080
         letter_proofing:
             SERVER_NAME: dashboard.eduid.docker:8080
@@ -101,6 +102,7 @@ eduid:
             PROVIDER_CONFIGURATION_INFO:
                 issuer: https://sandbox.orcid.org
             MONGO_URI: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
+            ORCID_VERIFY_REDIRECT_URL: /profile/accountlinking
         eidas:
             SERVER_NAME: eidas.eduid.docker:8080
             APPLICATION_ROOT: /
@@ -110,6 +112,8 @@ eduid:
             # SAML2 and SP config
             SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
             SAFE_RELAY_DOMAIN: eduid.docker:8080
+            TOKEN_VERIFY_REDIRECT_URL: http://dashboard.eduid.docker:8080/profile/security
+            NIN_VERIFY_REDIRECT_URL: http://dashboard.eduid.docker:8080/profile/nins
         lookup_mobile_proofing:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/lookup-mobile-proofing
@@ -137,6 +141,7 @@ eduid:
             MONGO_URI: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             LOG_LEVEL: DEBUG
             LOGGER_NAME: email
+            EMAIL_VERIFY_REDIRECT_URL: /profile/emails
         phone:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/phone
