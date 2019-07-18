@@ -1,16 +1,15 @@
 #!/opt/eduid/bin/python
 #
-# Remove all security keys from a user for development
+# Remove all ToUs from a user for development
 #
 # Run as:
 #
-#   run_with_admintools /opt/eduid/db-scripts/remove-security-keys
+#   run_with_admintools /opt/eduid/db-scripts/remove-tous
 #
 
 import sys
-
+from bson.objectid import ObjectId
 from eduid_userdb import User
-from eduid_userdb.credentials import FidoCredential
 from eduid_userdb.admin import RawDb
 
 
@@ -22,10 +21,10 @@ def main(dry_run, eppn):
     for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
         user = User(raw_user.doc)
         print(user)
-        security_keys = user.credentials.filter(FidoCredential).to_list()
-        print(f'Will remove: {security_keys}')
-        for cred in security_keys:
-            user.credentials.remove(cred.key)
+        tous = user.tou.to_list()
+        print(f'Will remove: {tous}')
+        for tou in tous:
+            user.tou.remove(tou.version)
 
         raw_user.doc = user.to_dict(old_userdb_format = False)
         db.save_with_backup(raw_user, dry_run=dry_run)
@@ -37,7 +36,7 @@ def main(dry_run, eppn):
 if __name__ == '__main__':
     args = sys.argv[1:]
     if not args:
-        print('Syntax: remove-security-keys [--force] eppn')
+        print('Syntax: remove-tous [--force] eppn')
         sys.exit(1)
     dry_run = True
     if args[0] == '--force':

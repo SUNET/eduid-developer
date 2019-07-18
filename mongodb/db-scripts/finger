@@ -8,6 +8,7 @@ import datetime
 import bson
 
 from eduid_userdb.admin import get_client
+from eduid_userdb.credentials import CredentialList
 
 def print_subinfo(key, value):
     attrs = {'mailAliases': 'email',
@@ -48,13 +49,15 @@ def print_value(key, value):
 
 def print_credential(key, value, aux_collections):
     key_text = "{!s:>25}".format('{!s} (list)'.format(key))
-    for this in value:
+    credentials = CredentialList(value)
+    for this in credentials.to_list():
         metadata = []
         authn_info = aux_collections['authn_info']['coll']
-        for last_used in authn_info.find({aux_collections['authn_info']['key']: this['credential_id']}):
+        cred_dict = this.to_dict()
+        for last_used in authn_info.find({aux_collections['authn_info']['key']: this.key}):
             if 'success_ts' in last_used:
-                this['last_used'] = last_used['success_ts'].isoformat()
-        for key, val in sorted(this.items()):
+                cred_dict['last_used'] = last_used['success_ts'].isoformat()
+        for key, val in sorted(cred_dict.items()):
             val_str = str(val)
             if key not in['id', 'last_used']:
                 if len(val_str) > 16:

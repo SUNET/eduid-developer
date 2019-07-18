@@ -49,8 +49,8 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             environment: dev
-            tou_version: test-version
-            current_tou_version: test-version  # backwards compat
+            #tou_version: test-version
+            tou_version: 2016-v1
             secret_key: supersecretkey
         authn:
             SERVER_NAME: dashboard.eduid.docker:8080
@@ -293,6 +293,7 @@ eduid:
             http_headers: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
             shared_session_cookie_name: sessid
             shared_session_secret_key: supersecretkey
+            tou_reaccept_interval: 604800  # 1 week
     worker:
         common:
             CELERY:
