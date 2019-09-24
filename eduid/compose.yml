@@ -520,13 +520,15 @@ services:
       # source volumes
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-am"
+      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-am"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=msg"
     depends_on:
       - mongodb
       - redis
+      - etcd
       - rsyslog
 
   signup_haproxy:

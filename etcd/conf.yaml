@@ -1,6 +1,7 @@
 eduid:
     webapp:
         common:
+            devel_mode: yes
             # enable disable debug mode
             debug: yes
             # the domain for the session cookie. If this is not set, the cookie will
@@ -37,6 +38,7 @@ eduid:
             mail_default_from: info@eduid.se
             eduid_site_url: http://html.eduid.docker
             eduid_static_url: http://html.eduid.docker/static/
+            static_url: http://html.eduid.docker/static/
             dashboard_url: http://dashboard.eduid.docker:8080/profile/
             reset_passwd_url: http://dashboard.eduid.docker:8080/services/security/reset-password
             # set absolute URL so it can be included in emails
@@ -49,9 +51,12 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             environment: dev
+            tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
             #tou_version: test-version
             tou_version: 2016-v1
             secret_key: supersecretkey
+            fido2_rp_id: eduid.docker
+            u2f_app_id: https://dashboard.dev.eduid.se
         authn:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/authn
@@ -125,7 +130,6 @@ eduid:
             LOGGER_NAME: support
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
-            STATIC_URL: http://html.eduid.docker/static/
             SUPPORT_PERSONNEL:
               - mojud-dosiv
               - sadug-katoh
@@ -311,6 +315,7 @@ eduid:
                 - "tou"
         msg:
             MONGO_URI: mongodb://mongodb/eduid_msg
+            mongo_dbname: eduid_msg
             sms_sender: 'eduID'
             template_dir: '/opt/eduid/eduid-msg/etc/templates'
             devel_mode: true

@@ -140,17 +140,22 @@ def remove_old_keys(client, config, depth):
     :param depth: How many levels of base namespace
     :type depth: int
     """
+    processed = {}
     new_keys = [item[0] for item in config]
-    base_ns = '/'.join(new_keys[0].split('/')[:depth])
-
-    try:
-        for item in client.read(base_ns, recursive=True).children:
-            if item.key not in new_keys:
-                client.delete(item.key, recursive=True)
-                if VERBOSE:
-                    print('{!s} -> Removed'.format(item.key))
-    except etcd.EtcdKeyNotFound:
-        pass
+    for this in new_keys:
+        base_ns = '/'.join(this.split('/')[:depth])
+        # base_ns will be /eduid/webapp, /eduid/worker and any other namespaces used in the future
+        if base_ns in processed:
+            continue
+        processed[base_ns] = True
+        try:
+            for item in client.read(base_ns, recursive=True).children:
+                if item.key not in new_keys:
+                    client.delete(item.key, recursive=True)
+                    if VERBOSE:
+                        print('{!s} -> Removed'.format(item.key))
+        except etcd.EtcdKeyNotFound:
+            pass  # base_ns is missing, nothing to remove
 
 
 def write_config(client, config):
