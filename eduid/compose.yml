@@ -472,6 +472,8 @@ services:
     image: docker.sunet.se/eduid/eduid-idp:latest
     networks:
       dev:
+    healthcheck:
+      disable: true
     volumes:
       - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
       - ../eduid-idp/run:/opt/eduid/eduid-idp/run
@@ -481,10 +483,12 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/python-web-pdb:/opt/eduid/src/python-web-pdb:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/python-web-pdb"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=idp"
+      - "PYTHONBREAKPOINT=web_pdb.set_trace"
     depends_on:
       - mongodb
       - redis
