@@ -1,6 +1,7 @@
 eduid:
     webapp:
         common:
+            devel_mode: yes
             # enable disable debug mode
             debug: yes
             # the domain for the session cookie. If this is not set, the cookie will
@@ -37,6 +38,7 @@ eduid:
             mail_default_from: info@eduid.se
             eduid_site_url: http://html.eduid.docker
             eduid_static_url: http://html.eduid.docker/static/
+            static_url: http://html.eduid.docker/static/
             dashboard_url: http://dashboard.eduid.docker:8080/profile/
             reset_passwd_url: http://dashboard.eduid.docker:8080/services/security/reset-password
             # set absolute URL so it can be included in emails
@@ -49,9 +51,12 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             environment: dev
+            tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
             tou_version: test-version
             current_tou_version: test-version  # backwards compat
             secret_key: supersecretkey
+            fido2_rp_id: eduid.docker
+            u2f_app_id: https://dashboard.dev.eduid.se
         authn:
             SERVER_NAME: dashboard.eduid.docker:8080
             APPLICATION_ROOT: /services/authn
@@ -125,7 +130,6 @@ eduid:
             LOGGER_NAME: support
             LOG_LEVEL: DEBUG
             MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
-            STATIC_URL: http://html.eduid.docker/static/
             SUPPORT_PERSONNEL:
               - mojud-dosiv
               - sadug-katoh
@@ -159,7 +163,6 @@ eduid:
             PASSWORD_LENGTH: 12
             PASSWORD_ENTROPY: 25
             CHPASS_TIMEOUT: 600
-            U2F_APP_ID: https://dashboard.dev.eduid.se
             U2F_MAX_ALLOWED_TOKENS: 50
             U2F_MAX_DESCRIPTION_LENGTH: 64
             U2F_FACETS:
@@ -173,7 +176,6 @@ eduid:
             LOGGER_NAME: signup2
             PASSWORD_LENGTH: 10
             VCCS_URL: 'http://turq:13085/'
-            TOU_URL: http://idp.eduid.docker:8080/services/actions2/get-tous/
             SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
             DEFAULT_FINISH_URL: https://www.eduid.se/
             # These keys are for signup.eduid.docker:8080
@@ -233,7 +235,6 @@ eduid:
             DEFAULT_COUNTRY_CODE: 46
             # Signup config
             SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
-            TOU_URL: http://idp.eduid.docker:8080/services/actions2/get-tous/
             # This key is for signup.eduid.docker:8080
             RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
 
@@ -246,11 +247,9 @@ eduid:
             BUNDLES_PATH: /front-build/
             BUNDLES_VERSION: iamaversion
             IDP_URL: http://idp.eduid.docker:8080/sso/redirect
-            U2F_APP_ID: https://dashboard.dev.eduid.se
             U2F_VALID_FACETS:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
-            FIDO2_RP_ID: eduid.docker
             EIDAS_URL: http://eidas.eduid.docker:8080/
             MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
         idp:
@@ -310,6 +309,7 @@ eduid:
                 - "tou"
         msg:
             MONGO_URI: mongodb://mongodb/eduid_msg
+            mongo_dbname: eduid_msg
             sms_sender: 'eduID'
             template_dir: '/opt/eduid/eduid-msg/etc/templates'
             devel_mode: true
