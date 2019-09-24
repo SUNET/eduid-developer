@@ -1,7 +1,7 @@
 eduid:
     webapp:
         common:
-            DEVEL_MODE: yes
+            devel_mode: yes
             # enable disable debug mode
             debug: yes
             # the domain for the session cookie. If this is not set, the cookie will
@@ -190,6 +190,7 @@ eduid:
             APPLICATION_ROOT: /services/jsconfig
             LOG_LEVEL: DEBUG
             LOGGER_NAME: jsconfig
+            TOU_URL: https://idp.eduid.local.emergya.info/services/actions2/get-tous/
             # Dashboard config
             DASHBOARD_BUNDLE_PATH: front-build/dashboard-bundle.dev.js
             DASHBOARD_BUNDLE_VERSION: dev
@@ -295,7 +296,7 @@ eduid:
             insecure_cookies: true
             http_headers: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
             shared_session_cookie_name: sessid
-            shared_session_secret_key: supersecretkey
+            shared_session_secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
     worker:
         common:
             CELERY:
@@ -313,6 +314,7 @@ eduid:
                 - "tou"
         msg:
             MONGO_URI: mongodb://mongodb.eduid_dev/eduid_msg
+            mongo_dbname: eduid_msg
             sms_sender: 'eduID'
             template_dir: '/opt/eduid/eduid-msg/etc/templates'
             devel_mode: true
