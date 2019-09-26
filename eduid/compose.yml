@@ -573,7 +573,7 @@ services:
       - rsyslog
 
   etcd:
-    image: docker.sunet.se/library/etcd:v2.2.5
+    image: docker.sunet.se/library/etcd:v3.3.12
     expose:
       - 2379
       - 2380
