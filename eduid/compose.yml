@@ -589,6 +589,7 @@ services:
       dev:
         ipv4_address: 172.16.10.254
     command: >-
+      etcd
       -name etcd
       -advertise-client-urls http://172.16.10.254:2379,http://172.16.10.254:4001
       -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
