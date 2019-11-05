@@ -58,200 +58,200 @@ eduid:
             fido2_rp_id: eduid.docker
             u2f_app_id: https://dashboard.dev.eduid.se
         authn:
-            SERVER_NAME: dashboard.eduid.docker:8080
-            APPLICATION_ROOT: /services/authn
-            MONGO_URI: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
-            LOGGER_NAME: authn
-            LOG_LEVEL: DEBUG
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/authn
+            mongo_uri: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
+            logger_name: authn
+            log_level: DEBUG
             # SAML2 and SP config
-            SAML2_LOGIN_REDIRECT_URL: /
-            SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
-            SAML2_USER_MAIN_ATTRIBUTE: eduPersonPrincipalName
-            SAML2_STRIP_SAML_USER_SUFFIX: "@local.eduid.se"
-            SIGNUP_AUTHN_SUCCESS_REDIRECT_URL: http://dashboard.eduid.docker:8080
-            SIGNUP_AUTHN_FAILURE_REDIRECT_URL: http://html.eduid.docker/
-            UNSOLICITED_RESPONSE_REDIRECT_URL: http://dashboard.eduid.docker:8080
-            SAFE_RELAY_DOMAIN: eduid.docker:8080
+            saml2_login_redirect_url: /
+            saml2_settings_module: /opt/eduid/etc/saml2_settings.py
+            saml2_user_main_attribute: eduPersonPrincipalName
+            saml2_strip_saml_user_suffix: "@local.eduid.se"
+            signup_authn_success_redirect_url: http://dashboard.eduid.docker:8080
+            signup_authn_failure_redirect_url: http://html.eduid.docker/
+            unsolicited_response_redirect_url: http://dashboard.eduid.docker:8080
+            safe_relay_domain: eduid.docker:8080
         letter_proofing:
-            SERVER_NAME: dashboard.eduid.docker:8080
-            APPLICATION_ROOT: /services/letter-proofing
-            LOGGER_NAME: letter_proofing
-            LOG_LEVEL: DEBUG
-            MONGO_URI: mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb.eduid_dev
-            # Setting EKOPOST_DEBUG_PDF to a path means that the other EKOPOST settings will be ignored
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/letter-proofing
+            logger_name: letter_proofing
+            log_level: DEBUG
+            mongo_uri: mongodb://eduid_idproofing_letter:eduid_idproofing_letter_pw@mongodb.eduid_dev
+            # Setting ekopost_debug_pdf to a path means that the other EKOPOST settings will be ignored
             # and that the pdf only will be written to to the supplied path, not sent to the letter service.
-            EKOPOST_DEBUG_PDF: /opt/eduid/run/debug_letter.pdf
-            EKOPOST_API_URI: https://api.ekopost.se
-            EKOPOST_API_VERIFY_SSL: yes
-            EKOPOST_API_USER: ekopost_user
-            EKOPOST_API_PW: ekopost_pw
+            ekopost_debug_pdf: /opt/eduid/run/debug_letter.pdf
+            ekopost_api_uri: https://api.ekopost.se
+            ekopost_api_verify_ssl: yes
+            ekopost_api_user: ekopost_user
+            ekopost_api_pw: ekopost_pw
         oidc_proofing:
-            SERVER_NAME: dashboard.eduid.docker:8080
-            APPLICATION_ROOT: /services/oidc-proofing
-            LOGGER_NAME: oidc_proofing
-            LOG_LEVEL: DEBUG
-            CLIENT_REGISTRATION_INFO:
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/oidc-proofing
+            logger_name: oidc_proofing
+            log_level: DEBUG
+            client_registration_info:
                 client_id: client1
                 client_secret: abcdef
-            PROVIDER_CONFIGURATION_INFO:
+            provider_configuration_info:
                 issuer: http://turq:13085/op/
-            MONGO_URI: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
+            mongo_uri: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
         orcid:
-            SERVER_NAME: dashboard.eduid.docker:8080
-            APPLICATION_ROOT: /services/orcid
-            LOGGER_NAME: orcid
-            LOG_LEVEL: DEBUG
-            CLIENT_REGISTRATION_INFO:
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/orcid
+            logger_name: orcid
+            log_level: DEBUG
+            client_registration_info:
                 client_id: client1
                 client_secret: abcdef
-            PROVIDER_CONFIGURATION_INFO:
+            provider_configuration_info:
                 issuer: https://sandbox.orcid.org
-            MONGO_URI: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
-            ORCID_VERIFY_REDIRECT_URL: /profile/accountlinking
+            mongo_uri: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
+            orcid_verify_redirect_url: /profile/accountlinking
         eidas:
-            SERVER_NAME: eidas.eduid.docker:8080
-            APPLICATION_ROOT: /
-            LOGGER_NAME: eidas
-            LOG_LEVEL: DEBUG
-            MONGO_URI: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
+            server_name: eidas.eduid.docker:8080
+            application_root: /
+            logger_name: eidas
+            log_level: DEBUG
+            mongo_uri: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
             # SAML2 and SP config
-            SAML2_SETTINGS_MODULE: /opt/eduid/etc/saml2_settings.py
-            SAFE_RELAY_DOMAIN: eduid.docker:8080
-            TOKEN_VERIFY_REDIRECT_URL: http://dashboard.eduid.docker:8080/profile/security
-            NIN_VERIFY_REDIRECT_URL: http://dashboard.eduid.docker:8080/profile/nins
+            saml2_settings_module: /opt/eduid/etc/saml2_settings.py
+            safe_relay_domain: eduid.docker:8080
+            token_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/security
+            nin_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/nins
         lookup_mobile_proofing:
-            SERVER_NAME: dashboard.eduid.docker:8080
-            APPLICATION_ROOT: /services/lookup-mobile-proofing
-            LOGGER_NAME: lookup_mobile_proofing
-            LOG_LEVEL: DEBUG
-            MONGO_URI: mongodb://eduid_lookup_mobile_proofing:eduid_lookup_mobile_proofing_pw@mongodb.eduid_dev
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/lookup-mobile-proofing
+            logger_name: lookup_mobile_proofing
+            log_level: DEBUG
+            mongo_uri: mongodb://eduid_lookup_mobile_proofing:eduid_lookup_mobile_proofing_pw@mongodb.eduid_dev
         support:
-            SERVER_NAME: support.eduid.docker:8080
-            LOGGER_NAME: support
-            LOG_LEVEL: DEBUG
-            MONGO_URI: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
-            SUPPORT_PERSONNEL:
+            server_name: support.eduid.docker:8080
+            logger_name: support
+            log_level: DEBUG
+            mongo_uri: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
+            support_personnel:
               - mojud-dosiv
               - sadug-katoh
         personal_data:
-            SERVER_NAME: dashboard.eduid.docker:8080
-            APPLICATION_ROOT: /services/personal-data
-            MONGO_URI: mongodb://eduid_personal_data:eduid_personal_data_pw@mongodb.eduid_dev
-            LOG_LEVEL: DEBUG
-            LOGGER_NAME: personal_data
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/personal-data
+            mongo_uri: mongodb://eduid_personal_data:eduid_personal_data_pw@mongodb.eduid_dev
+            log_level: DEBUG
+            logger_name: personal_data
         email:
-            SERVER_NAME: dashboard.eduid.docker:8080
-            APPLICATION_ROOT: /services/email
-            MONGO_URI: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
-            LOG_LEVEL: DEBUG
-            LOGGER_NAME: email
-            EMAIL_VERIFY_REDIRECT_URL: /profile/emails
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/email
+            mongo_uri: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
+            log_level: DEBUG
+            logger_name: email
+            email_verify_redirect_url: /profile/emails
         phone:
-            SERVER_NAME: dashboard.eduid.docker:8080
-            APPLICATION_ROOT: /services/phone
-            MONGO_URI: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
-            LOG_LEVEL: DEBUG
-            LOGGER_NAME: phone
-            PHONE_VERIFICATION_TIMEOUT: 7200
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/phone
+            mongo_uri: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
+            log_level: DEBUG
+            logger_name: phone
+            phone_verification_timeout: 7200
         security:
-            SERVER_NAME: dashboard.eduid.docker:8080
-            APPLICATION_ROOT: /services/security
-            MONGO_URI: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
-            LOG_LEVEL: DEBUG
-            LOGGER_NAME: security
-            VCCS_URL: 'http://turq:13085/'
-            PASSWORD_LENGTH: 12
-            PASSWORD_ENTROPY: 25
-            CHPASS_TIMEOUT: 600
-            U2F_MAX_ALLOWED_TOKENS: 50
-            U2F_MAX_DESCRIPTION_LENGTH: 64
-            U2F_FACETS:
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/security
+            mongo_uri: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
+            log_level: DEBUG
+            logger_name: security
+            vccs_url: 'http://turq:13085/'
+            password_length: 12
+            password_entropy: 25
+            chpass_timeout: 600
+            u2f_max_allowed_tokens: 50
+            u2f_max_description_length: 64
+            u2f_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
         signup2:
-            SERVER_NAME: signup.eduid.docker:8080
-            APPLICATION_ROOT: /services/signup
-            MONGO_URI: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
-            LOG_LEVEL: DEBUG
-            LOGGER_NAME: signup2
-            PASSWORD_LENGTH: 10
-            VCCS_URL: 'http://turq:13085/'
-            SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
-            DEFAULT_FINISH_URL: https://www.eduid.se/
+            server_name: signup.eduid.docker:8080
+            application_root: /services/signup
+            mongo_uri: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
+            log_level: DEBUG
+            logger_name: signup2
+            password_length: 10
+            vccs_url: 'http://turq:13085/'
+            signup_authn_url: http://dashboard.eduid.docker:8080/services/authn/signup-authn
+            default_finish_url: https://www.eduid.se/
             # These keys are for signup.eduid.docker:8080
-            RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
-            RECAPTCHA_PRIVATE_KEY: 6Lf5rCETAAAAAAjQbw1-3j_U2xTZSrDYXlWjBQxt
-            STUDENTS_LINK: https://www.eduid.se/index.html
-            TECHNICIANS_LINK: https://www.eduid.se/tekniker.html
-            STAFF_LINK: https://www.eduid.se/personal.html
-            FAQ_LINK: https://www.eduid.se/faq.html
+            recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
+            recaptcha_private_key: 6Lf5rCETAAAAAAjQbw1-3j_U2xTZSrDYXlWjBQxt
+            students_link: https://www.eduid.se/index.html
+            technicians_link: https://www.eduid.se/tekniker.html
+            staff_link: https://www.eduid.se/personal.html
+            faq_link: https://www.eduid.se/faq.html
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
-            SERVER_NAME: eduid.docker:8080
-            APPLICATION_ROOT: /services/jsconfig
-            LOG_LEVEL: DEBUG
-            LOGGER_NAME: jsconfig
+            server_name: eduid.docker:8080
+            application_root: /services/jsconfig
+            log_level: DEBUG
+            logger_name: jsconfig
             # Dashboard config
-            DASHBOARD_BUNDLE_PATH: front-build/dashboard-bundle.dev.js
-            DASHBOARD_BUNDLE_VERSION: dev
+            dashboard_bundle_path: front-build/dashboard-bundle.dev.js
+            dashboard_bundle_version: dev
             # Signup config
-            SIGNUP_BUNDLE_PATH: front-build/signup-bundle.dev.js
-            SIGNUP_BUNDLE_VERSION: dev
+            signup_bundle_path: front-build/signup-bundle.dev.js
+            signup_bundle_version: dev
         jsapps:
             ### this is the configuration for the js apps, that is sent by the jsconfig
             ### microservice to the js apps.
             ### Take care not to put any sensitive data here.
             # Shared config
-            DEBUG: yes
-            STATIC_STUDENTS_URL: http://html.eduid.docker/
-            STATIC_TECHNICIANS_URL: http://html.eduid.docker/tekniker.html
-            STATIC_STAFF_URL: http://html.eduid.docker/personal.html
-            STATIC_FAQ_URL: http://html.eduid.docker/faq.html
+            debug: yes
+            static_students_url: http://html.eduid.docker/
+            static_technicians_url: http://html.eduid.docker/tekniker.html
+            static_staff_url: http://html.eduid.docker/personal.html
+            static_faq_url: http://html.eduid.docker/faq.html
             # Dashboard config
-            AVAILABLE_LANGUAGES:
+            available_languages:
                 - [en, English]
                 - [sv, Svenska]
-            DASHBOARD_URL: /profile/
-            PERSONAL_DATA_URL: /services/personal-data/
-            EMAILS_URL: /services/email/
-            MOBILE_URL: /services/phone/
-            OIDC_PROOFING_URL: /services/oidc-proofing/proofing/
-            LOOKUP_MOBILE_PROOFING_URL: /services/lookup-mobile-proofing/proofing/
-            LETTER_PROOFING_URL: /services/letter-proofing/
-            SECURITY_URL: /services/security/
-            TOKEN_SERVICE_URL: /services/authn/
-            OIDC_PROOFING_FREJA_URL: /services/oidc-proofing/freja/proofing/
-            ORCID_URL: /services/orcid/
-            EIDAS_URL: http://eidas.eduid.docker:8080/
-            TOKEN_VERIFY_IDP: http://dev.test.swedenconnect.se/idp
-            PASSWORD_LENGTH: 12
-            PASSWORD_ENTROPY: 25
-            CHPASS_TIMEOUT: 600
-            PROOFING_METHODS:
+            dashboard_url: /profile/
+            personal_data_url: /services/personal-data/
+            emails_url: /services/email/
+            mobile_url: /services/phone/
+            oidc_proofing_url: /services/oidc-proofing/proofing/
+            lookup_mobile_proofing_url: /services/lookup-mobile-proofing/proofing/
+            letter_proofing_url: /services/letter-proofing/
+            security_url: /services/security/
+            token_service_url: /services/authn/
+            oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
+            orcid_url: /services/orcid/
+            eidas_url: http://eidas.eduid.docker:8080/
+            token_verify_idp: http://dev.test.swedenconnect.se/idp
+            password_length: 12
+            password_entropy: 25
+            chpass_timeout: 600
+            proofing_methods:
                 - letter
                 - lookup_mobile
                 - oidc
                 - eidas
-            DEFAULT_COUNTRY_CODE: 46
+            default_country_code: 46
             # Signup config
-            SIGNUP_AUTHN_URL: http://dashboard.eduid.docker:8080/services/authn/signup-authn
+            signup_authn_url: http://dashboard.eduid.docker:8080/services/authn/signup-authn
             # This key is for signup.eduid.docker:8080
-            RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
+            recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
 
         actions2:
-            SERVER_NAME: idp.eduid.docker:8080
-            APPLICATION_ROOT: /services/actions2
-            LOG_LEVEL: DEBUG
-            MONGO_URI: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
-            #AM_BROKER_URL: amqp://eduid:eduid_pw@rabbitmq/am
-            BUNDLES_PATH: /front-build/
-            BUNDLES_VERSION: iamaversion
-            IDP_URL: http://idp.eduid.docker:8080/sso/redirect
-            U2F_VALID_FACETS:
+            server_name: idp.eduid.docker:8080
+            application_root: /services/actions2
+            log_level: DEBUG
+            mongo_uri: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
+            #am_broker_url: amqp://eduid:eduid_pw@rabbitmq/am
+            bundles_path: /front-build/
+            bundles_version: iamaversion
+            idp_url: http://idp.eduid.docker:8080/sso/redirect
+            u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
-            EIDAS_URL: http://eidas.eduid.docker:8080/
-            MFA_AUTHN_IDP: http://dev.test.swedenconnect.se/idp
+            eidas_url: http://eidas.eduid.docker:8080/
+            mfa_authn_idp: http://dev.test.swedenconnect.se/idp
         idp:
             # this enviroment is a cherrypy thing, that can have as
             # value(staging|production|embedded|test_suite)
@@ -294,7 +294,7 @@ eduid:
             shared_session_secret_key: supersecretkey
     worker:
         common:
-            CELERY:
+            celery:
                 accept_content: ["application/json"]
                 broker_url: redis://redis.eduid_dev:6379/1
                 result_backend: redis://redis.eduid_dev:6379/1
@@ -303,12 +303,12 @@ eduid:
                 # Workaround for Celery 4.2.1 not issuing AMQP heartbeats
                 #broker_heartbeat: 0
         am:
-            MONGO_URI: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
-            NEW_USER_DATE: '2001-01-01'
-            ACTION_PLUGINS:
+            mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
+            new_user_date: '2001-01-01'
+            action_plugins:
                 - "tou"
         msg:
-            MONGO_URI: mongodb://mongodb/eduid_msg
+            mongo_uri: mongodb://mongodb/eduid_msg
             mongo_dbname: eduid_msg
             sms_sender: 'eduID'
             template_dir: '/opt/eduid/eduid-msg/etc/templates'
@@ -318,8 +318,8 @@ eduid:
             mail_port: 25
             mail_starttls: false
         lookup_mobile:
-            MONGO_URI: 'mongodb://eduid_lookup_mobile:eduid_lookup_mobile_pw@mongodb/eduid_lookup_mobile'
+            mongo_uri: 'mongodb://eduid_lookup_mobile:eduid_lookup_mobile_pw@mongodb/eduid_lookup_mobile'
             transaction_audit: true
-            DEVEL_MODE: true
-            TELEADRESS_CLIENT_USER: 'TEST'
-            TELEADRESS_CLIENT_PASSWORD: 'TEST'
+            devel_mode: true
+            teleadress_client_user: 'TEST'
+            teleadress_client_password: 'TEST'
