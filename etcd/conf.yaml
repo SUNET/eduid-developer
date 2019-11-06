@@ -203,9 +203,6 @@ eduid:
             ### Take care not to put any sensitive data here.
             # Shared config
             debug: yes
-            static_students_url: http://html.eduid.docker/
-            static_technicians_url: http://html.eduid.docker/tekniker.html
-            static_staff_url: http://html.eduid.docker/personal.html
             static_faq_url: http://html.eduid.docker/faq.html
             # Dashboard config
             available_languages:
