@@ -298,6 +298,12 @@ eduid:
             http_headers: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
             shared_session_cookie_name: sessid
             shared_session_secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
+        reset_password:
+            server_name: login.eduid.local.emergy.info
+            mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev
+            application_root: /services/reset-password
+            log_level: DEBUG
+            logger_name: reset_password
     worker:
         common:
             celery:
