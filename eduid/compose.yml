@@ -572,6 +572,18 @@ services:
       - msg
       - rsyslog
 
+  login_haproxy:
+    image: 'docker.sunet.se/library/haproxy:latest'
+    networks:
+      dev:
+        ipv4_address: 172.16.10.212
+    volumes:
+      - ../login-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - /dev/log:/dev/log
+    depends_on:
+      - html
+      - jsconfig
+
   etcd:
     image: docker.sunet.se/library/etcd:v3.3.12
     expose:
