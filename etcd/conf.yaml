@@ -251,7 +251,6 @@ eduid:
             mongo_uri: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
             #am_broker_url: amqp://eduid:eduid_pw@rabbitmq/am
             bundles_path: /front-build/
-            idp_url: https://idp.eduid.local.emergya.info/sso/redirect
             bundles_version: iamaversion
             idp_url: https://idp.eduid.local.emergya.info/sso/redirect
             u2f_valid_facets:
