@@ -213,6 +213,7 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
     environment:
+      - "EDUID_APP_DEBUG=true"
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src:/opt/eduid/src/eduid-action/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions2"
@@ -458,11 +459,39 @@ services:
       - /dev/log:/dev/log
     depends_on:
       - html
-      - idp
+      - saml_idp
+      - login
       - actions2
 
-  idp:
-    image: docker.sunet.se/eduid/eduid-idp:latest
+#  idp:
+#    image: docker.sunet.se/eduid/eduid-idp:latest
+#    networks:
+#      dev:
+#    volumes:
+#      - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
+#      - ../eduid-idp/run:/opt/eduid/eduid-idp/run
+#      - ../eduid-idp/log:/var/log/eduid
+#      # source volumes
+#      - ../sources/eduid-IdP:/opt/eduid/src/eduid-IdP:ro
+#      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+#      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+#      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+#      - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
+#      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+#      - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
+#    environment:
+#      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
+#      - "ETCD_HOST=etcd.eduid_dev"
+#      - "HOSTNAME=idp"
+#    depends_on:
+#      - mongodb
+#      - redis
+#      - turq
+#      - rsyslog
+#      - etcd
+
+  saml_idp:
+    image: docker.sunet.se/eduid/eduid-saml-idp:latest
     networks:
       dev:
     volumes:
@@ -470,7 +499,7 @@ services:
       - ../eduid-idp/run:/opt/eduid/eduid-idp/run
       - ../eduid-idp/log:/var/log/eduid
       # source volumes
-      - ../sources/eduid-IdP:/opt/eduid/src/eduid-IdP:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -478,7 +507,8 @@ services:
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
+      - "EDUID_APP_DEBUG=true"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-action/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=idp"
     depends_on:
@@ -487,6 +517,31 @@ services:
       - turq
       - rsyslog
       - etcd
+
+  login:
+    image: docker.sunet.se/eduid/eduid-login:latest
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-login/run:/opt/eduid/run
+      - ../eduid-login/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+    environment:
+      - "EDUID_APP_DEBUG=true"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=login"
+    depends_on:
+      - etcd
+      - mongodb
+      - turq
+      - am
+      - redis
 
   lookup-mobile:
     image: docker.sunet.se/eduid/eduid-lookup-mobile:latest

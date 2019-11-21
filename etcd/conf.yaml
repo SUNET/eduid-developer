@@ -51,7 +51,6 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             environment: dev
-            tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
             #tou_version: test-version
             tou_version: 2016-v1
             secret_key: supersecretkey
@@ -292,6 +291,91 @@ eduid:
             shared_session_cookie_name: sessid
             shared_session_secret_key: supersecretkey
             tou_reaccept_interval: 604800  # 1 week
+        login:
+            server_name: idp.eduid.docker:8080
+            application_root: /services/login
+            log_level: DEBUG
+            MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev
+            actions_app_uri: http://idp.eduid.docker:8080/services/actions2/
+            vccs_url: http://turq:13085/
+        saml_idp:
+            SERVER_NAME: idp.eduid.docker:8080
+            APPLICATION_ROOT: /
+            LOG_LEVEL: DEBUG
+            MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev
+            login_uri: http://idp.eduid.docker:8080/services/login/
+            # pysaml2 config below this
+            pysaml2_config:
+              attribute_map_dir: /opt/eduid/eduid-idp/etc/attributemaps
+              cert_file: /opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem
+              contact_person:
+                - contact_type: technical
+                  email_address: eduid-dev@SEGATE.SUNET.SE
+                  given_name: eduID
+                  sur_name: developers
+                - contact_type: support
+                  email_address: support@eduid.se
+                  given_name: Support
+              crypto_backend: XMLSecurity
+              debug: 1
+              description: eduID LOCAL TEST identity provider
+              entityid: http://idp.eduid.docker:8080/idp.xml
+              key_file: xmlsec+http://py11softhsm:8000/py11softhsm/py11softhsm
+              logger:
+                loglevel: debug
+                rotating:
+                  backupCount: 5
+                  filename: /var/log/eduid/pysaml2.log
+                  maxBytes: 500000
+              metadata:
+                local:
+                  - /opt/eduid/eduid-idp/etc/dashboard_metadata.xml
+                  - /opt/eduid/eduid-idp/etc/authn_metadata.xml
+              organization:
+                display_name: eduID LOCAL TEST
+                name: eduID LOCAL TEST
+                url: http://www./
+              service:
+                idp:
+                  endpoints:
+                    single_logout_service:
+                      - ["http://idp.eduid.docker:8080/slo/soap", "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"]
+                      - ["http://idp.eduid.docker:8080/slo/post", "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"]
+                      - ["http://idp.eduid.docker:8080/slo/redirect", "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"]
+                    single_sign_on_service:
+                      - ["http://idp.eduid.docker:8080/sso/redirect", "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"]
+                      - ["http://idp.eduid.docker:8080/sso/post", "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"]
+              name: eduID LOCAL TEST IdP
+              name_id_format:
+                - urn:oasis:names:tc:SAML:2.0:nameid-format:transient
+                - urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+              policy:
+                default:
+                  attribute_restrictions: null
+                  entity_categories:
+                    - swamid
+                    - edugain
+                  fail_on_missing_requested: false
+                  lifetime:
+                    minutes: 5
+                  name_form: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
+                  nameid_format: urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+                http://dashboard.eduid.docker:8080/services/authn/saml2-metadata:
+                  attribute_restrictions:
+                    eduPersonPrincipalName: null
+                    eduidIdPCredentialsUsed: null
+                  entity_categories: []
+                  fail_on_missing_requested: false
+                  name_form: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
+                  nameid_format: urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+              scope:
+                - local.eduid.se
+              session_storage:
+                - mongodb
+                - mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_pysaml2
+              subject_data:
+                - mongodb
+                - mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_pysaml2
     worker:
         common:
             celery:
