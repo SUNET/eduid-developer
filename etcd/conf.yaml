@@ -194,6 +194,8 @@ eduid:
             # Dashboard config
             dashboard_bundle_path: front-build/dashboard-bundle.dev.js
             dashboard_bundle_version: dev
+            dashboard_bundle_feature_cookie: beta-opt-in
+            dashboard_bundle_feature_version: beta
             # Signup config
             signup_bundle_path: front-build/signup-bundle.dev.js
             signup_bundle_version: dev
