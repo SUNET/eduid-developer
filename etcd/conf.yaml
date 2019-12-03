@@ -299,15 +299,16 @@ eduid:
             actions_app_uri: http://idp.eduid.docker:8080/services/actions2/
             vccs_url: http://turq:13085/
         saml_idp:
-            SERVER_NAME: idp.eduid.docker:8080
-            APPLICATION_ROOT: /
-            LOG_LEVEL: DEBUG
-            MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev
-            login_uri: http://idp.eduid.docker:8080/services/login/
+            server_name: idp.eduid.docker:8080
+            application_root: /
+            log_level: DEBUG
+            mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev
+            login_service_uri: http://idp.eduid.docker:8080/services/login/
+            default_eppn_scope: local.eduid.se
             # pysaml2 config below this
             pysaml2_config:
-              attribute_map_dir: /opt/eduid/eduid-idp/etc/attributemaps
-              cert_file: /opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem
+              attribute_map_dir: /opt/eduid/eduid-saml-idp/etc/attributemaps
+              cert_file: /opt/eduid/eduid-saml-idp/etc/idp-public-snakeoil.pem
               contact_person:
                 - contact_type: technical
                   email_address: eduid-dev@SEGATE.SUNET.SE
@@ -329,8 +330,7 @@ eduid:
                   maxBytes: 500000
               metadata:
                 local:
-                  - /opt/eduid/eduid-idp/etc/dashboard_metadata.xml
-                  - /opt/eduid/eduid-idp/etc/authn_metadata.xml
+                  - /opt/eduid/eduid-saml-idp/etc/authn_metadata.xml
               organization:
                 display_name: eduID LOCAL TEST
                 name: eduID LOCAL TEST

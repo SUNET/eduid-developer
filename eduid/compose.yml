@@ -495,9 +495,9 @@ services:
     networks:
       dev:
     volumes:
-      - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
-      - ../eduid-idp/run:/opt/eduid/eduid-idp/run
-      - ../eduid-idp/log:/var/log/eduid
+      - ../eduid-saml-idp/etc:/opt/eduid/eduid-saml-idp/etc:ro
+      - ../eduid-saml-idp/run:/opt/eduid/eduid-saml-idp/run
+      - ../eduid-saml-idp/log:/var/log/eduid
       # source volumes
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
