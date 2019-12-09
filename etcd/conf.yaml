@@ -194,11 +194,15 @@ eduid:
             # Dashboard config
             dashboard_bundle_path: front-build/dashboard-bundle.dev.js
             dashboard_bundle_version: dev
-            dashboard_bundle_feature_cookie: beta-opt-in
-            dashboard_bundle_feature_version: beta
+            dashboard_bundle_feature_cookie: bundle-version
+            dashboard_bundle_feature_version:
+              beta: beta1
             # Signup config
             signup_bundle_path: front-build/signup-bundle.dev.js
             signup_bundle_version: dev
+            signup_bundle_feature_cookie: bundle-version
+            signup_bundle_feature_version:
+              beta: beta1
             tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
         jsapps:
             ### this is the configuration for the js apps, that is sent by the jsconfig
@@ -247,6 +251,9 @@ eduid:
             #am_broker_url: amqp://eduid:eduid_pw@rabbitmq/am
             bundles_path: /front-build/
             bundles_version: iamaversion
+            bundles_feature_cookie: bundle-version
+            bundles_feature_version:
+              beta: beta1
             idp_url: http://idp.eduid.docker:8080/sso/redirect
             u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
