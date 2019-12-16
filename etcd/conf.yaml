@@ -301,6 +301,12 @@ eduid:
             shared_session_cookie_name: sessid
             shared_session_secret_key: supersecretkey
             tou_reaccept_interval: 604800  # 1 week
+        reset_password:
+            server_name: login.eduid.docker:8080
+            mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev
+            application_root: /services/reset-password
+            log_level: DEBUG
+            logger_name: reset_password
     worker:
         common:
             celery:
