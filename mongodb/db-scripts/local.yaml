@@ -209,6 +209,15 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_security'
+      read:
+        - 'eduid_am'
+
+  eduid_reset_password:
+    collections:
+      - 'profiles'
+      - 'password_reset_data'
+    access:
+      readWrite:
         - 'eduid_reset_password'
       read:
         - 'eduid_am'
@@ -244,6 +253,7 @@ mongo_databases:
         - 'eduid_email'
         - 'eduid_phone'
         - 'eduid_security'
+        - 'eduid_reset_password'
         - 'eduid_orcid'
         - 'eduid_signup'
         - 'eduid_eidas'
