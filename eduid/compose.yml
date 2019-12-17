@@ -47,14 +47,46 @@ services:
       - mongodb
       - rsyslog
 
+  html_haproxy:
+    image: 'docker.sunet.se/library/haproxy:latest'
+    networks:
+      dev:
+        ipv4_address: 172.16.10.230
+        aliases:
+          - html.eduid.docker
+    volumes:
+      - ../html-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - /dev/log:/dev/log
+    depends_on:
+      - html
+      - feature_html
+
   html:
+    image: docker.sunet.se/eduid/eduid-html-stable:latest
+    expose:
+      - 80
+    dns: 172.16.10.1
+    networks:
+      dev:
+        ipv4_address: 172.16.10.231
+    volumes:
+      - ../eduid-html/log:/var/log/nginx
+      #- ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
+      # source volumes
+      #- ../sources/eduid-html:/src/eduid/www/
+      #- ../sources/eduid-html/static:/src/eduid/static/
+      #- ../sources/eduid-front/build:/src/eduid/front-build/
+    environment:
+      - "HOSTNAME=html"
+
+  feature_html:
     image: docker.sunet.se/eduid/eduid-html:latest
     expose:
       - 80
     dns: 172.16.10.1
     networks:
       dev:
-        ipv4_address: 172.16.10.230
+        ipv4_address: 172.16.10.232
     volumes:
       - ../eduid-html/log:/var/log/nginx
       - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
@@ -63,7 +95,7 @@ services:
       - ../sources/eduid-html/static:/src/eduid/static/
       - ../sources/eduid-front/build:/src/eduid/front-build/
     environment:
-      - "HOSTNAME=html"
+      - "HOSTNAME=feature-html"
 
   dashboard_haproxy:
     image: 'docker.sunet.se/library/haproxy:latest'
@@ -638,6 +670,35 @@ services:
     depends_on:
       - html
       - jsconfig
+      - reset_password
+
+  reset_password:
+    image: docker.sunet.se/eduid/eduid-reset-password:latest
+    networks:
+      dev:
+        ipv4_address: 172.16.10.213
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-reset-password/etc:/opt/eduid/etc
+      - ../eduid-reset-password/run:/opt/eduid/run
+      - ../eduid-reset-password/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg"
+      - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=reset_password"
+    depends_on:
+      - redis
+      - mongodb
+      - etcd
+      - msg
+      - rsyslog
 
   etcd:
     image: docker.sunet.se/library/etcd:v3.3.12

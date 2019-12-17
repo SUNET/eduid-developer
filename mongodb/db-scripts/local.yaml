@@ -33,6 +33,7 @@ mongo_databases:
         - 'eduid_support'
         - 'eduid_orcid'
         - 'eduid_eidas'
+        - 'eduid_reset_password'
         - 'munin'
 
   eduid_api:
@@ -224,6 +225,16 @@ mongo_databases:
       read:
         - 'eduid_am'
 
+  eduid_reset_password:
+    collections:
+      - 'profiles'
+      - 'password_reset_data'
+    access:
+      readWrite:
+        - 'eduid_reset_password'
+      read:
+        - 'eduid_am'
+
   eduid_personal_data:
     collections:
       - 'profiles'
@@ -255,6 +266,7 @@ mongo_databases:
         - 'eduid_email'
         - 'eduid_phone'
         - 'eduid_security'
+        - 'eduid_reset_password'
         - 'eduid_orcid'
         - 'eduid_signup'
         - 'eduid_eidas'
