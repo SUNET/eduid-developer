@@ -295,14 +295,14 @@ eduid:
             server_name: idp.eduid.docker:8080
             application_root: /services/login
             log_level: DEBUG
-            MONGO_URI: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev
+            MONGO_URI: mongodb://eduid_login:eduid_login_pw@mongodb.eduid_dev
             actions_app_uri: http://idp.eduid.docker:8080/services/actions2/
             vccs_url: http://turq:13085/
         saml_idp:
             server_name: idp.eduid.docker:8080
             application_root: /
             log_level: DEBUG
-            mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev
+            mongo_uri: mongodb://eduid_saml_idp:eduid_saml_idp_pw@mongodb.eduid_dev
             login_service_uri: http://idp.eduid.docker:8080/services/login/
             default_eppn_scope: local.eduid.se
             # pysaml2 config below this
@@ -372,10 +372,10 @@ eduid:
                 - local.eduid.se
               session_storage:
                 - mongodb
-                - mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_pysaml2
+                - mongodb://eduid_saml_idp:eduid_saml_idp_pw@mongodb/eduid_idp_pysaml2
               subject_data:
                 - mongodb
-                - mongodb://eduid_idp:eduid_idp_pw@mongodb/eduid_idp_pysaml2
+                - mongodb://eduid_saml_idp:eduid_saml_idp_pw@mongodb/eduid_idp_pysaml2
     worker:
         common:
             celery:

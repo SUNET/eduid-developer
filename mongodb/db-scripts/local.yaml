@@ -17,6 +17,8 @@ mongo_databases:
         - 'eduid_am'
       read:
         - 'eduid_idp'
+        - 'eduid_saml_idp'
+        - 'eduid_login'
         - 'eduid_dashboard'
         - 'eduid_actions'
         - 'eduid_signup'
@@ -54,6 +56,15 @@ mongo_databases:
       read:
         - 'eduid_support'
 
+  eduid_login:
+    collections:
+      - 'sso_sessions'
+    access:
+      readWrite:
+        - 'eduid_login'
+      read:
+        - 'eduid_support'
+
   eduid_idp_pysaml2:
     collections:
       - 'ident'
@@ -61,7 +72,7 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_idp'
-        - 'eduid_support'  # XXX probably not needed
+        - 'eduid_saml_idp'
 
   eduid_msg:
     collections:
@@ -111,6 +122,7 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_idp'
+        - 'eduid_saml_idp'
       read:
         - 'eduid_dashboard'
         - 'eduid_support'
@@ -132,6 +144,7 @@ mongo_databases:
       readWrite:
         - 'eduid_actions'
         - 'eduid_idp'
+        - 'eduid_saml_idp'
         - 'eduid_am'
       read:
         - 'eduid_support'
