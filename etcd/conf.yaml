@@ -227,8 +227,8 @@ eduid:
             oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
             orcid_url: /services/orcid/
             eidas_url: https://eidas.eduid.local.emergya.info
-            # reset_passwd_url: https://login.eduid.local.emergya.info/services/reset-password/chpass/
-            reset_passwd_url: /services/security/
+            # password_service_url: https.//login.eduid.local.emergya.info/services/reset-password/chpass/
+            password_service_url: /services/security/
             token_verify_idp: http://dev.test.swedenconnect.se/idp
             password_length: 12
             password_entropy: 25
