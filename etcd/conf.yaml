@@ -299,7 +299,7 @@ eduid:
             shared_session_cookie_name: sessid
             shared_session_secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
         reset_password:
-            server_name: login.eduid.local.emergy.info
+            server_name: login.eduid.local.emergya.info
             mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev
             application_root: /services/reset-password
             log_level: DEBUG
