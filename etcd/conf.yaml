@@ -117,8 +117,8 @@ eduid:
             # SAML2 and SP config
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             safe_relay_domain: eduid.docker:8080
-            token_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/settings/advanced-settings
-            nin_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/
+            token_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/security
+            nin_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/nins
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker:8080
             application_root: /services/lookup-mobile-proofing
@@ -145,7 +145,7 @@ eduid:
             mongo_uri: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: email
-            email_verify_redirect_url: /profile/settings/personaldata
+            email_verify_redirect_url: /profile/emails
         phone:
             server_name: dashboard.eduid.docker:8080
             application_root: /services/phone
@@ -203,7 +203,11 @@ eduid:
             signup_bundle_feature_cookie: bundle-version
             signup_bundle_feature_version:
               beta: beta1
-            tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
+        (??)login_bundle_path: front-build/login-bundle.dev.js
+            login_bundle_version: dev
+            login_bundle_feature_cookie: bundle-version
+            login_bundle_feature_version:
+              beta: beta1
         jsapps:
             ### this is the configuration for the js apps, that is sent by the jsconfig
             ### microservice to the js apps.
