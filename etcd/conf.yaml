@@ -203,7 +203,7 @@ eduid:
             signup_bundle_feature_cookie: bundle-version
             signup_bundle_feature_version:
               beta: beta1
-        (??)login_bundle_path: front-build/login-bundle.dev.js
+            login_bundle_path: front-build/login-bundle.dev.js
             login_bundle_version: dev
             login_bundle_feature_cookie: bundle-version
             login_bundle_feature_version:
