@@ -201,6 +201,9 @@ eduid:
             # Signup config
             signup_bundle_path: front-build/signup-bundle.dev.js
             signup_bundle_version: dev
+            # Login config
+            login_bundle_path: front-build/login-bundle.dev.js
+            login_bundle_version: dev
         jsapps:
             ### this is the configuration for the js apps, that is sent by the jsconfig
             ### microservice to the js apps.
