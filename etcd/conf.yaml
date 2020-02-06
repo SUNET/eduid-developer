@@ -52,7 +52,6 @@ eduid:
             # ENVIRONMENT=(dev|staging|pro)
             environment: dev
             tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
-            #tou_version: test-version
             tou_version: 2016-v1
             secret_key: supersecretkey
             fido2_rp_id: eduid.docker
@@ -203,6 +202,7 @@ eduid:
             signup_bundle_feature_cookie: bundle-version
             signup_bundle_feature_version:
               beta: beta1
+            # Login config
             login_bundle_path: front-build/login-bundle.dev.js
             login_bundle_version: dev
             login_bundle_feature_cookie: bundle-version
