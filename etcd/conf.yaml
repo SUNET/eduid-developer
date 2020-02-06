@@ -51,7 +51,6 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             environment: dev
-            #tou_version: test-version
             tou_version: 2016-v1
             secret_key: supersecretkey
             fido2_rp_id: eduid.docker
@@ -116,8 +115,8 @@ eduid:
             # SAML2 and SP config
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             safe_relay_domain: eduid.docker:8080
-            token_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/settings/advanced-settings
-            nin_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/
+            token_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/security
+            nin_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/nins
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker:8080
             application_root: /services/lookup-mobile-proofing
@@ -144,7 +143,7 @@ eduid:
             mongo_uri: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: email
-            email_verify_redirect_url: /profile/settings/personaldata
+            email_verify_redirect_url: /profile/emails
         phone:
             server_name: dashboard.eduid.docker:8080
             application_root: /services/phone
@@ -203,6 +202,12 @@ eduid:
             signup_bundle_feature_version:
               beta: beta1
             tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
+            # Login config
+            login_bundle_path: front-build/login-bundle.dev.js
+            login_bundle_version: dev
+            login_bundle_feature_cookie: bundle-version
+            login_bundle_feature_version:
+              beta: beta1
         jsapps:
             ### this is the configuration for the js apps, that is sent by the jsconfig
             ### microservice to the js apps.
@@ -226,6 +231,7 @@ eduid:
             oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
             orcid_url: /services/orcid/
             eidas_url: http://eidas.eduid.docker:8080/
+            password_service_url: http://login.eduid.docker:8080/services/reset-password/
             token_verify_idp: http://dev.test.swedenconnect.se/idp
             password_length: 12
             password_entropy: 25
@@ -313,6 +319,17 @@ eduid:
             application_root: /services/reset-password
             log_level: DEBUG
             logger_name: reset_password
+            app_name: reset_password
+            email_code_timeout: 7200
+            phone_code_timeout: 600
+            password_entropy: 25
+            password_length: 12
+            password_salt_length: 32
+            password_hash_length: 32
+            password_generation_rounds: 32
+            phone_verification_timeout: 24
+            chpass_timeout: 600
+            vccs_url: http://turq:13085/
         saml_idp:
             server_name: idp.eduid.docker:8080
             application_root: /
