@@ -29,6 +29,7 @@ mongo_databases:
         - 'eduid_personal_data'
         - 'eduid_phone'
         - 'eduid_reset_password'
+        - 'eduid_scimapi'
         - 'eduid_security'
         - 'eduid_signup'
         - 'eduid_support'
