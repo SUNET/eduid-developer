@@ -31,5 +31,6 @@ $sudo docker run --rm=true \
     -v $PWD/etc:/opt/eduid/etc \
     -v $PWD/db-scripts:/opt/eduid/db-scripts \
     $DOCKERARGS \
+    -p 27017:27017 \
     -i -t \
     docker.sunet.se/eduid/${name}
