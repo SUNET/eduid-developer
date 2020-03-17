@@ -10,4 +10,4 @@ up:
 update_etcd:
 	(cd etcd; python etcd_config_bootstrap.py --host etcd.eduid.docker)
 
-.PHONY: start stop update_etcd
+.PHONY: start stop up update_etcd
