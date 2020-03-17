@@ -741,10 +741,14 @@ services:
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-scimapi"
+      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-scimapi/src"
       - "HOSTNAME=scimapi"
+      - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - mongodb
+      - etcd
+    working_dir: "/opt/eduid/src/eduid-scimapi/src"
+    command: /opt/eduid/env/bin/gunicorn --bind=0.0.0.0:8000 --reload --reload-engine poll --capture-output eduid_scimapi.app:api
 
 
 volumes:

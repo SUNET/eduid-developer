@@ -1,4 +1,9 @@
 eduid:
+    api:
+        common:
+          debug: true
+        scimapi:
+          mongo_uri: 'mongodb://eduid_scimapi:eduid_scimapi_pw@mongodb.eduid_dev'
     webapp:
         common:
             devel_mode: yes

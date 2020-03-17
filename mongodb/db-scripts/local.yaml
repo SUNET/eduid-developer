@@ -33,6 +33,7 @@ mongo_databases:
         - 'eduid_security'
         - 'eduid_signup'
         - 'eduid_support'
+        - 'eduid_scimapi'
         - 'munin'
 
   eduid_api:
@@ -241,6 +242,15 @@ mongo_databases:
         - 'eduid_phone'
       read:
         - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_scimapi:
+    collections:
+      - 'profiles'
+    access:
+      readWrite:
+        - 'eduid_scimapi'
+      read:
         - 'eduid_support'
 
   eduid_logs:
