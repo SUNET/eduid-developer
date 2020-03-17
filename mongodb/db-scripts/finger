@@ -6,8 +6,9 @@
 import sys
 import datetime
 import bson
-import pymongo
-from pymongo import MongoClient, ReadPreference
+
+from eduid_userdb.admin import get_client
+from eduid_userdb.credentials import CredentialList
 
 def print_subinfo(key, value):
     attrs = {'mailAliases': 'email',
@@ -38,8 +39,8 @@ def print_datecount(key, value):
 
 
 def print_value(key, value):
-    if isinstance(value, basestring):
-        print("  {!s:>25}: {!s}".format(key, value.encode('utf-8')))
+    if isinstance(value, str):
+        print("  {!s:>25}: {!s}".format(key, value))
     elif isinstance(value, datetime.datetime):
         print("  {!s:>25}: {!s}".format(key, value.isoformat()))
     else:
@@ -48,13 +49,15 @@ def print_value(key, value):
 
 def print_credential(key, value, aux_collections):
     key_text = "{!s:>25}".format('{!s} (list)'.format(key))
-    for this in value:
+    credentials = CredentialList(value)
+    for this in credentials.to_list():
         metadata = []
         authn_info = aux_collections['authn_info']['coll']
-        for last_used in authn_info.find({aux_collections['authn_info']['key']: this['id']}):
+        cred_dict = this.to_dict()
+        for last_used in authn_info.find({aux_collections['authn_info']['key']: this.key}):
             if 'success_ts' in last_used:
-                this['last_used'] = last_used['success_ts'].isoformat()
-        for key, val in sorted(this.items()):
+                cred_dict['last_used'] = last_used['success_ts'].isoformat()
+        for key, val in sorted(cred_dict.items()):
             val_str = str(val)
             if key not in['id', 'last_used']:
                 if len(val_str) > 16:
@@ -91,7 +94,8 @@ def show_user(user, aux_collections):
 
 
 def main(search_for):
-    client = MongoClient('mongodb://mongodb.docker:27017/', read_preference=ReadPreference.SECONDARY)
+    #client = MongoClient('mongodb://mongodb.docker:27017/', read_preference=ReadPreference.SECONDARY)
+    client = get_client()
 
     coll = client['eduid_am']['attributes']
 
@@ -134,7 +138,7 @@ def main(search_for):
             if user['_id'] in seen:
                 continue
             if separator:
-                print separator
+                print(separator)
             separator = '-' * 79
             seen[user['_id']] = 1
             count += 1

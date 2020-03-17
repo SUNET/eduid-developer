@@ -1,0 +1,50 @@
+#!/opt/eduid/bin/python
+#
+# Remove all ToUs from a user for development
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/remove-tous
+#
+
+import sys
+from bson.objectid import ObjectId
+from eduid_userdb import User
+from eduid_userdb.admin import RawDb
+
+
+def main(dry_run, eppn):
+    db = RawDb(myname='remove-security-keys')
+
+    count = 0
+
+    for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
+        user = User(raw_user.doc)
+        print(user)
+        tous = user.tou.to_list()
+        print(f'Will remove: {tous}')
+        for tou in tous:
+            user.tou.remove(tou.version)
+
+        raw_user.doc = user.to_dict(old_userdb_format = False)
+        db.save_with_backup(raw_user, dry_run=dry_run)
+        count += 1
+
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    args = sys.argv[1:]
+    if not args:
+        print('Syntax: remove-tous [--force] eppn')
+        sys.exit(1)
+    dry_run = True
+    if args[0] == '--force':
+        dry_run = False
+        args = args[1:]
+    eppn, = args
+    print('Dry run: {}'.format(dry_run))
+    if main(dry_run, eppn):
+        sys.exit(0)
+
+    sys.exit(1)

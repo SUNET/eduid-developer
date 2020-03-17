@@ -50,7 +50,7 @@ etcd configuration
 
   The microservices and dashboard js uses etcd to get their configuration.
 
-  To update the configuration edit etcd/conf.yaml and run `python etcd/etcd_config_bootstrap.py --host etcd.eduid.docker`.
+  To update the configuration edit etcd/conf.yaml and run `make update_etcd`.
 
 Logging
 -------

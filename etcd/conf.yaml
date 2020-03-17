@@ -57,6 +57,11 @@ eduid:
             fido2_rp_id: eduid.local.emergya.info
             u2f_app_id: https://eduid.local.emergya.info/u2f-app-id.json
             secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
+            tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
+            tou_version: 2016-v1
+            secret_key: supersecretkey
+            fido2_rp_id: eduid.docker
+            u2f_app_id: https://dashboard.dev.eduid.se
         authn:
             server_name: dashboard.eduid.local.emergya.info
             application_root: /services/authn
@@ -198,12 +203,21 @@ eduid:
             # Dashboard config
             dashboard_bundle_path: front-build/dashboard-bundle.dev.js
             dashboard_bundle_version: dev
+            dashboard_bundle_feature_cookie: bundle-version
+            dashboard_bundle_feature_version:
+              beta: beta1
             # Signup config
             signup_bundle_path: front-build/signup-bundle.dev.js
             signup_bundle_version: dev
+            signup_bundle_feature_cookie: bundle-version
+            signup_bundle_feature_version:
+              beta: beta1
             # Login config
             login_bundle_path: front-build/login-bundle.dev.js
             login_bundle_version: dev
+            login_bundle_feature_cookie: bundle-version
+            login_bundle_feature_version:
+              beta: beta1
         jsapps:
             ### this is the configuration for the js apps, that is sent by the jsconfig
             ### microservice to the js apps.
@@ -247,7 +261,8 @@ eduid:
             # This key is for signup.eduid.docker:8080
             # RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
             # This key is for signup.eduid.local.emergya.info
-            recaptcha_public_key: 6Ld2IUwUAAAAAD5saiXoQKgmUC9JhQLqcHZoemTh
+            recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
+            reset_passwd_url: http://dashboard.eduid.docker:8080/services/security/reset-password
 
         actions2:
             server_name: idp.eduid.local.emergya.info
@@ -257,6 +272,9 @@ eduid:
             #am_broker_url: amqp://eduid:eduid_pw@rabbitmq/am
             bundles_path: /front-build/
             bundles_version: iamaversion
+            bundles_feature_cookie: bundle-version
+            bundles_feature_version:
+              beta: beta1
             idp_url: https://idp.eduid.local.emergya.info/sso/redirect
             u2f_valid_facets:
                 - https://dashboard.eduid.local.emergya.info
@@ -303,6 +321,7 @@ eduid:
             http_headers: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
             shared_session_cookie_name: sessid
             shared_session_secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
+            tou_reaccept_interval: 604800  # 1 week
         reset_password:
             server_name: login.eduid.local.emergya.info
             mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev
