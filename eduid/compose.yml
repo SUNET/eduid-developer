@@ -681,6 +681,21 @@ services:
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
       - ../mongodb/log:/var/log/mongodb
 
+  neo4jdb:
+    image: neo4j:enterprise
+    expose:
+      - 7474
+      - 7687
+    networks:
+      dev:
+        ipv4_address: 172.16.10.236
+    volumes:
+      - neo4jdbdata:/data
+      - ../neo4jdb/log:/logs
+    environment:
+      - "NEO4J_AUTH=neo4j/docker"
+      - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
+
   oathaead:
     image: docker.sunet.se/eduid/eduid-api
     networks:
@@ -735,25 +750,31 @@ services:
         ipv4_address: 172.16.10.235
         aliases:
           - html.eduid.docker
+    expose:
+      - 8000
     volumes:
       # source volumes
       - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-groupdb:/opt/eduid/src/eduid-groupdb:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-scimapi/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-groupdb/src:/opt/eduid/src/eduid-scimapi/src"
       - "HOSTNAME=scimapi"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
       - mongodb
       - etcd
+      - neo4jdb
     working_dir: "/opt/eduid/src/eduid-scimapi/src"
-    command: /opt/eduid/env/bin/gunicorn --bind=0.0.0.0:8000 --reload --reload-engine poll --capture-output eduid_scimapi.app:api
+    command: /opt/eduid/env/bin/gunicorn --bind=0.0.0.0:8000 --reload --reload-engine poll --capture-output eduid_scimapi.run:api
 
 
 volumes:
   mongodbdata:
     name: mongodbdata
+  neo4jdbdata:
+    name: neo4jdbdata
 
 networks:
   dev:
