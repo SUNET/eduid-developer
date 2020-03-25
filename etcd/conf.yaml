@@ -71,9 +71,8 @@ eduid:
             fido2_rp_id: eduid.local.emergya.info
             u2f_app_id: https://eduid.local.emergya.info/u2f-app-id.json
             secret_key: dGVzdCBrZXkgICAgICAgICAgICAgICAgICAgICAgICA=
-            tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
+            tou_url: https://idp.eduid.local.emergya.info/services/actions2/get-tous/
             tou_version: 2016-v1
-            secret_key: supersecretkey
             fido2_rp_id: eduid.docker
             u2f_app_id: https://dashboard.dev.eduid.se
         authn:
@@ -178,6 +177,7 @@ eduid:
             mongo_uri: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: security
+            saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             vccs_url: 'http://turq:13085/'
             password_length: 12
             password_entropy: 25
@@ -275,8 +275,8 @@ eduid:
             # This key is for signup.eduid.docker:8080
             # RECAPTCHA_PUBLIC_KEY: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
             # This key is for signup.eduid.local.emergya.info
-            recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
-            reset_passwd_url: http://dashboard.eduid.docker:8080/services/security/reset-password
+            recaptcha_public_key: 6Ld2IUwUAAAAAD5saiXoQKgmUC9JhQLqcHZoemTh
+            reset_passwd_url: https://dashboard.eduid.local.emergya.info/services/security/reset-password
 
         actions2:
             server_name: idp.eduid.local.emergya.info
