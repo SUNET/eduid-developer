@@ -71,11 +71,11 @@ services:
         ipv4_address: 172.16.10.231
     volumes:
       - ../eduid-html/log:/var/log/nginx
-      #- ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
+      - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
       # source volumes
-      #- ../sources/eduid-html:/src/eduid/www/
-      #- ../sources/eduid-html/static:/src/eduid/static/
-      #- ../sources/eduid-front/build:/src/eduid/front-build/
+      - ../sources/eduid-html:/src/eduid/www/
+      - ../sources/eduid-html/static:/src/eduid/static/
+      - ../sources/eduid-front/build:/src/eduid/front-build/
     environment:
       - "HOSTNAME=html"
 
