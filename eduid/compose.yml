@@ -62,7 +62,7 @@ services:
       - feature_html
 
   html:
-    image: docker.sunet.se/eduid/eduid-html-stable:latest
+    image: docker.sunet.se/eduid/eduid-html:latest
     expose:
       - 80
     dns: 172.16.10.1
