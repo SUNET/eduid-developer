@@ -8,8 +8,8 @@ eduid:
             environment: 'dev'
         scimapi:
             mongo_uri: 'mongodb://eduid_scimapi:eduid_scimapi_pw@mongodb.eduid_dev'
-            server_name: 'scimapi.eduid.docker'
-            application_root: '/scim/test/'
+            server_name: 'scimapi.eduid.docker:8000'
+            application_root: '/'
             neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
             neo4j_config:
                 encrypted: false
