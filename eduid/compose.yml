@@ -745,6 +745,7 @@ services:
 
   scimapi:
     image: docker.sunet.se/eduid/eduid-scimapi:latest
+    restart: on-failure
     networks:
       dev:
         ipv4_address: 172.16.10.235
