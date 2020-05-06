@@ -18,6 +18,7 @@ from eduid_userdb.admin import RawDb
 
 def main(dry_run, eppn, cred_type):
     db = RawDb(myname='add-security-key')
+    print('Running add-security-key')
 
     count = 0
 
@@ -73,5 +74,5 @@ if __name__ == '__main__':
     print('Dry run: {}'.format(dry_run))
     if main(dry_run, eppn, cred_type):
         sys.exit(0)
-
+    print('No user with eppn {} found'.format(eppn))
     sys.exit(1)
