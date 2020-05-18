@@ -34,6 +34,7 @@ mongo_databases:
         - 'eduid_signup'
         - 'eduid_support'
         - 'eduid_scimapi'
+        - 'eduid_group_management'
         - 'munin'
 
   eduid_api:
@@ -250,6 +251,7 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_scimapi'
+        - 'eduid_group_management'
       read:
         - 'eduid_support'
 

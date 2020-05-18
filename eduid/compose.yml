@@ -478,6 +478,33 @@ services:
       - etcd
       - rsyslog
 
+  group_management:
+    image: docker.sunet.se/eduid/eduid-group-management:latest
+    restart: on-failure
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-group-management/etc:/opt/eduid/etc
+      - ../eduid-group-management/run:/opt/eduid/run
+      - ../eduid-group-management/log:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi:ro
+      - ../sources/eduid-groupdb:/opt/eduid/src/eduid-groupdb:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-groupdb/src"
+      - "ETCD_HOST=etcd.eduid_dev"
+      - "HOSTNAME=group_management"
+    depends_on:
+      - etcd
+      - mongodb
+      - redis
+      - rsyslog
+
   idp_haproxy:
     image: 'docker.sunet.se/library/haproxy:latest'
     networks:

@@ -166,6 +166,15 @@ eduid:
             log_level: DEBUG
             logger_name: phone
             phone_verification_timeout: 7200
+        group_management:
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/group-management
+            mongo_uri: mongodb://eduid_group_management:eduid_group_management_pw@mongodb.eduid_dev
+            neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
+            neo4j_config:
+                encrypted: false
+            log_level: DEBUG
+            logger_name: group_management
         security:
             server_name: dashboard.eduid.docker:8080
             application_root: /services/security
