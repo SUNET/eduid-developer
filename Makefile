@@ -1,6 +1,9 @@
 start:
 	./start.sh
 
+vagrant_start:
+	vagrant up
+
 stop:
 	./stop.sh
 

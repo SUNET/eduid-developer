@@ -5,35 +5,14 @@ Setting up a development environment on your own machine
 Building
 --------
 
-Build docker containers using the Dockerfiles in the repository
+All containers should be built by ci.nordu.net and will be pulled when starting the environment.
+
+If you need to build docker containers use the Dockerfiles in the repository
 eduid-dockerfiles.
 
     # git clone git@github.com:SUNET/eduid-dockerfiles.git
     # cd eduid-dockerfiles
     # ./build rabbitmq
-    # ./build mongodb
-    # ./build turq
-
-The other containers should be built by ci.nordu.net and will be pulled when starting the environment.
-
-Name resolution
----------------
-
-Set up unbound on your own machine, to facilitiate resolving docker-container
-A from container B.
-
-Linking is not the answer. When a named container restarts with a new IP the
-'links' (aka. /etc/hosts entrys) in other containers are not updated.
-
-    # apt-get install unbound
-    # cat > /etc/unbound/unbound.conf.d/docker.conf << EOF
-    server:
-        domain-insecure: docker.
-    forward-zone:
-        name: docker.
-        forward-addr: 172.17.0.1
-    EOF
-    # service unbound restart
 
 
 Running
@@ -41,7 +20,16 @@ Running
 
 Start all the containers with the start.sh file in this repository.
 
-    # ./start.sh
+Linux Docker environment:
+
+    # make start
+
+Other OS Vagrant environment:
+
+    # make vagrant_start
+    # vagrant ssh
+    # cd /opt/eduid-developer
+    # make start
 
 The first time it will ask you for sudo rights to be able to write in your /etc/hosts.
 
@@ -55,7 +43,7 @@ etcd configuration
 Logging
 -------
 
-  To follow most logs you can use screen, run `screen -c screenrc`.
+    TODO
 
 Authentication
 --------------
@@ -96,5 +84,21 @@ Signup
 ------
 
 The confirmation code will be available in the log file
-eduid-developer/eduid-signup/log/eduid-signup.log (the whole confirmation
+TODO (the whole confirmation
 e-mail will be logged instead of sent using SMTP).
+
+
+Local Docker vs Vagrant
+-----------------------
+
+If you want to run both you need to reset your networking before switching.
+
+Docker:
+
+    # docker networking rm eduid_dev
+
+Vagrant (Virtualbox):
+
+    # vboxmanage hostonlyif remove TODO
+
+You can also open Virtualbox and go to File -> Host Network Manager and remove the network 172.16.10.0/24.
