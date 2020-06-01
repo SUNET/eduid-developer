@@ -28,6 +28,12 @@ The first time it will ask you for sudo rights to be able to write in your /etc/
 
 ##### Other OS Vagrant environment:
 
+Install Vagrant and Virtualbox. Complete the Vagrant Getting started guide until you see that "vagrant up" works.
+
+https://www.virtualbox.org/
+https://www.vagrantup.com/intro/getting-started/up
+
+
 Create a file name __vagrant.yml__ in the repository root.
 
     # local_paths:
