@@ -36,8 +36,6 @@ Vagrant.configure(2) do |config|
 
   # Networking
   config.vm.network "private_network", ip: "172.16.10.10"
-  #config.vm.network "private_network", ip: "172.16.10.10",
-  #  virtualbox__intnet: "br-eduid"
 
   # Sync folder
   config.vm.synced_folder eduid_front_path, '/opt/src/eduid-front/'

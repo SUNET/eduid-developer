@@ -7,6 +7,9 @@ vagrant_start:
 stop:
 	./stop.sh
 
+vagrant_stop:
+	vagrant halt
+
 up:
 	./bin/docker-compose -f eduid/compose.yml up -d
 
