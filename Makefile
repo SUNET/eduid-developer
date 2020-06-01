@@ -2,7 +2,7 @@ start:
 	./start.sh
 
 vagrant_start:
-	vagrant up
+	./start.sh --vagrant
 
 stop:
 	./stop.sh
@@ -16,4 +16,4 @@ pull:
 update_etcd:
 	(cd etcd; python etcd_config_bootstrap.py --host etcd.eduid.docker)
 
-.PHONY: start stop up update_etcd
+.PHONY: start vagrant_start stop up pull update_etcd

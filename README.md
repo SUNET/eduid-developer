@@ -18,20 +18,28 @@ eduid-dockerfiles.
 Running
 -------
 
-Start all the containers with the start.sh file in this repository.
+Start all the containers with the Makefile in this repository.
 
-Linux Docker environment:
+The first time it will ask you for sudo rights to be able to write in your /etc/hosts.
+
+##### Linux Docker environment:
 
     # make start
 
-Other OS Vagrant environment:
+##### Other OS Vagrant environment:
+
+Create a file name __vagrant.yml__ in the repository root.
+
+    # local_paths:
+    #   eduid_front: '/path/to/eduid-front'
+    #   eduid_html: '/path/to/eduid-html'
+
+Then run:
 
     # make vagrant_start
-    # vagrant ssh
     # cd /opt/eduid-developer
     # make start
 
-The first time it will ask you for sudo rights to be able to write in your /etc/hosts.
 
 etcd configuration
 ------------------
@@ -43,7 +51,12 @@ etcd configuration
 Logging
 -------
 
-    TODO
+All logs from webapps are kept in a shared data volume called eduidlogdata.
+
+For a quick tail -F run, ex:
+
+    # ./bin/qtf signup
+
 
 Authentication
 --------------
@@ -93,12 +106,10 @@ Local Docker vs Vagrant
 
 If you want to run both you need to reset your networking before switching.
 
-Docker:
+###### Docker:
 
     # docker networking rm eduid_dev
 
-Vagrant (Virtualbox):
+###### Vagrant (Virtualbox):
 
-    # vboxmanage hostonlyif remove TODO
-
-You can also open Virtualbox and go to File -> Host Network Manager and remove the network 172.16.10.0/24.
+Open Virtualbox and go to File -> Host Network Manager and remove the network 172.16.10.0/24.
