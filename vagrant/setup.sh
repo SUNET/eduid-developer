@@ -6,9 +6,8 @@ set -x
 export DEBIAN_FRONTEND noninteractive
 
 # Install packages
-#/bin/sed -i s/archive.ubuntu.com/se.archive.ubuntu.com/g /etc/apt/sources.list
+/bin/sed -i s/archive.ubuntu.com/se.archive.ubuntu.com/g /etc/apt/sources.list
 apt-get update -y
-#apt full-upgrade -y
 apt-get install -y git \
   apt-transport-https \
   build-essential \
@@ -31,14 +30,14 @@ apt-get install -y docker-ce \
 apt-get clean
 
 # Networking
-ip addr del 172.16.10.10/24 dev eth1
+ip addr del 172.16.10.10/24 dev enp0s8
 docker network create \
     --driver bridge \
     --subnet=172.16.10.0/24 \
     --gateway=172.16.10.10 \
     --opt "com.docker.network.bridge.name"="br-eduid" \
     eduid_dev
-brctl addif br-eduid eth1
+brctl addif br-eduid enp0s8
 
 # Setup environment
 usermod -aG docker vagrant

@@ -492,7 +492,7 @@ services:
       - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi:ro
       - ../sources/eduid-groupdb:/opt/eduid/src/eduid-groupdb:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-groupdb/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-groupdb/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=group_management"
     depends_on:

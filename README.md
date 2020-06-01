@@ -36,9 +36,9 @@ https://www.vagrantup.com/intro/getting-started/up
 
 Create a file name __vagrant.yml__ in the repository root.
 
-    # local_paths:
-    #   eduid_front: '/path/to/eduid-front'
-    #   eduid_html: '/path/to/eduid-html'
+    local_paths:
+      eduid_front: '/path/to/eduid-front'
+      eduid_html: '/path/to/eduid-html'
 
 Then run:
 
@@ -62,6 +62,10 @@ All logs from webapps are kept in a shared data volume called eduidlogdata.
 For a quick tail -F run, ex:
 
     # ./bin/qtf signup
+
+To get a shell with mounted log files:
+
+    # make show_logs
 
 
 Authentication

@@ -5,7 +5,7 @@
 require 'yaml'
 
 # Box / OS
-VAGRANT_BOX = 'hashicorp/bionic64'
+VAGRANT_BOX = 'ubuntu/bionic64'
 VM_NAME = 'eduid-dev-vagrant'
 
 
@@ -44,5 +44,6 @@ Vagrant.configure(2) do |config|
 
   #Setup VM
   config.vm.provision :shell, path: "vagrant/setup.sh"
+  config.vm.provision :shell, path: "vagrant/maintenance.sh", run: 'always'
 
 end
