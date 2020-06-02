@@ -8,7 +8,7 @@ services:
       dev:
     volumes:
       - ../eduid-am/etc:/opt/eduid/eduid-am/etc:ro
-      - ../eduid-am/log:/var/log/eduid
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -36,7 +36,7 @@ services:
       dev:
     volumes:
       - ../eduid-api/etc:/opt/eduid/eduid-api/etc:ro
-      - ../eduid-api/log:/var/log/eduid
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
     environment:
@@ -70,12 +70,11 @@ services:
       dev:
         ipv4_address: 172.16.10.231
     volumes:
-      - ../eduid-html/log:/var/log/nginx
-      - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
+      - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf:ro
       # source volumes
-      - ../sources/eduid-html:/src/eduid/www/
-      - ../sources/eduid-html/static:/src/eduid/static/
-      - ../sources/eduid-front/build:/src/eduid/front-build/
+      - ../sources/eduid-html:/src/eduid/www:ro
+      - ../sources/eduid-html/static:/src/eduid/static:ro
+      - ../sources/eduid-front/build:/src/eduid/front-build:ro
     environment:
       - "HOSTNAME=html"
 
@@ -88,12 +87,11 @@ services:
       dev:
         ipv4_address: 172.16.10.232
     volumes:
-      - ../eduid-html/log:/var/log/nginx
-      - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf
+      - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf:ro
       # source volumes
-      - ../sources/eduid-html:/src/eduid/www/
-      - ../sources/eduid-html/static:/src/eduid/static/
-      - ../sources/eduid-front/build:/src/eduid/front-build/
+      - ../sources/eduid-html:/src/eduid/www:ro
+      - ../sources/eduid-html/static:/src/eduid/static:ro
+      - ../sources/eduid-front/build:/src/eduid/front-build:ro
     environment:
       - "HOSTNAME=feature-html"
 
@@ -130,9 +128,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-authn/etc:/opt/eduid/etc
-      - ../eduid-authn/run:/opt/eduid/run
-      - ../eduid-authn/log:/var/log/eduid
+      - ../eduid-authn/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -156,10 +154,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-eidas/etc:/opt/eduid/etc
-      - ../eduid-eidas/run:/opt/eduid/run
-      - ../eduid-eidas/log:/var/log/eduid
-      - ../eduid-eidas/tmp_attributemaps:/tmp/attributemaps
+      - ../eduid-eidas/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -183,8 +180,8 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-letter-proofing/run:/opt/eduid/run
-      - ../eduid-letter-proofing/log:/var/log/eduid
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -210,9 +207,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-personal-data/etc:/opt/eduid/etc
-      - ../eduid-personal-data/run:/opt/eduid/run
-      - ../eduid-personal-data/log:/var/log/eduid
+      - ../eduid-personal-data/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -235,9 +232,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-actions2/etc:/opt/eduid/etc
-      - ../eduid-actions2/run:/opt/eduid/run
-      - ../eduid-actions2/log:/var/log/eduid
+      - ../eduid-actions2/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -264,9 +261,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-email/etc:/opt/eduid/etc
-      - ../eduid-email/run:/opt/eduid/run
-      - ../eduid-email/log:/var/log/eduid
+      - ../eduid-email/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -289,8 +286,7 @@ services:
     expose:
       - 8000
     volumes:
-      - ../py11softhsm/var:/var/lib/softhsm
-      - ../py11softhsm/log:/var/log/eduid
+      - softhsmdata:/var/lib/softhsm
       - /dev/log:/dev/log
       - ../sources/pyeleven:/opt/eduid/src/pyeleven:ro
       - ../py11softhsm/idp-public-snakeoil.key:/opt/eduid/idp-public-snakeoil.key:ro
@@ -307,9 +303,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-security/etc:/opt/eduid/etc
-      - ../eduid-security/run:/opt/eduid/run
-      - ../eduid-security/log:/var/log/eduid
+      - ../eduid-security/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -335,9 +331,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-phone/etc:/opt/eduid/etc
-      - ../eduid-phone/run:/opt/eduid/run
-      - ../eduid-phone/log:/var/log/eduid
+      - ../eduid-phone/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -362,9 +358,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-jsconfig/etc:/opt/eduid/etc
-      - ../eduid-jsconfig/run:/opt/eduid/run
-      - ../eduid-jsconfig/log:/var/log/eduid
+      - ../eduid-jsconfig/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -387,8 +383,8 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-oidc-proofing/run:/opt/eduid/run
-      - ../eduid-oidc-proofing/log:/var/log/eduid
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -412,9 +408,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-orcid/etc:/opt/eduid/etc
-      - ../eduid-orcid/run:/opt/eduid/run
-      - ../eduid-orcid/log:/var/log/eduid
+      - ../eduid-orcid/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -439,8 +435,8 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-lookup-mobile-proofing/run:/opt/eduid/run
-      - ../eduid-lookup-mobile-proofing/log:/var/log/eduid
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -462,8 +458,8 @@ services:
       dev:
         ipv4_address: 172.16.10.223
     volumes:
-      - ../eduid-support/run:/opt/eduid/run
-      - ../eduid-support/log:/var/log/eduid
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -487,8 +483,8 @@ services:
       - 8080
     volumes:
       - ../eduid-group-management/etc:/opt/eduid/etc
-      - ../eduid-group-management/run:/opt/eduid/run
-      - ../eduid-group-management/log:/var/log/eduid
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -496,7 +492,7 @@ services:
       - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi:ro
       - ../sources/eduid-groupdb:/opt/eduid/src/eduid-groupdb:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-groupdb/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-groupdb/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=group_management"
     depends_on:
@@ -526,8 +522,8 @@ services:
       dev:
     volumes:
       - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
-      - ../eduid-idp/run:/opt/eduid/eduid-idp/run
-      - ../eduid-idp/log:/var/log/eduid
+      - appdata:/opt/eduid/eduid-idp/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-IdP:/opt/eduid/src/eduid-IdP:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
@@ -553,8 +549,8 @@ services:
       dev:
     volumes:
       - ../eduid-lookup-mobile/etc:/opt/eduid/eduid-lookup-mobile/etc:ro
-      - ../eduid-lookup-mobile/run:/opt/eduid/eduid-lookup-mobile/run
-      - ../eduid-lookup-mobile/log:/var/log/eduid
+      - appdata:/opt/eduid/eduid-lookup-mobile/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
@@ -574,8 +570,8 @@ services:
       dev:
     volumes:
       - ../eduid-msg/etc:/opt/eduid/eduid-msg/etc:ro
-      - ../eduid-msg/run:/opt/eduid/eduid-msg/run
-      - ../eduid-msg/log:/var/log/eduid
+      - appdata:/opt/eduid/eduid-msg/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
@@ -612,8 +608,8 @@ services:
       - 8080
     volumes:
       - ../eduid-signup2/etc:/opt/eduid/etc
-      - ../eduid-signup2/run:/opt/eduid/run
-      - ../eduid-signup2/log:/var/log/eduid
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -652,9 +648,9 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-reset-password/etc:/opt/eduid/etc
-      - ../eduid-reset-password/run:/opt/eduid/run
-      - ../eduid-reset-password/log:/var/log/eduid
+      - ../eduid-reset-password/etc:/opt/eduid/etc:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
@@ -693,7 +689,7 @@ services:
       -initial-cluster-state new
       -data-dir /data
     volumes:
-      - ../etcd/data:/data
+      - etcddata:/data
 
   mongodb:
     image: docker.sunet.se/eduid/mongodb
@@ -706,7 +702,6 @@ services:
       - mongodbdata:/data
       - ../mongodb/etc:/opt/eduid/etc:ro
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
-      - ../mongodb/log:/var/log/mongodb
 
   neo4jdb:
     image: neo4j:enterprise
@@ -718,7 +713,6 @@ services:
         ipv4_address: 172.16.10.236
     volumes:
       - neo4jdbdata:/data
-      - ../neo4jdb/log:/logs
     environment:
       - "NEO4J_AUTH=neo4j/docker"
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
@@ -729,8 +723,8 @@ services:
       dev:
     volumes:
       - ../eduid-oathaead/etc:/opt/eduid/eduid-oathaead/etc:ro
-      - ../eduid-oathaead/run:/opt/eduid/eduid-oathaead/run
-      - ../eduid-oathaead/log:/var/log/eduid
+      - appdata:/opt/eduid/eduid-oathaead/run
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
     environment:
@@ -751,8 +745,7 @@ services:
         ipv4_address: 172.16.10.252
     volumes:
       - ../redis/etc:/etc/redis
-      - ../redis/log:/var/log/redis
-      - ../redis/data:/data
+      - redisdata:/data
 
   turq:
     image: docker.sunet.se/eduid/turq
@@ -767,7 +760,7 @@ services:
     networks:
       dev:
     volumes:
-      - ../rsyslog/log:/var/log/eduid
+      - rsyslogdata:/var/log/eduid
 
 
   scimapi:
@@ -776,13 +769,11 @@ services:
     networks:
       dev:
         ipv4_address: 172.16.10.235
-        aliases:
-          - html.eduid.docker
     expose:
       - 8000
     volumes:
       # source volumes
-      - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi:ro
+      - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-groupdb:/opt/eduid/src/eduid-groupdb:ro
@@ -794,7 +785,7 @@ services:
       - mongodb
       - etcd
       - neo4jdb
-    working_dir: "/opt/eduid/src/eduid-scimapi/src"
+    #working_dir: "/opt/eduid/src/eduid-scimapi/src"
     command: /opt/eduid/env/bin/gunicorn --bind=0.0.0.0:8000 --reload --reload-engine poll --capture-output eduid_scimapi.run:api
 
 
@@ -803,6 +794,20 @@ volumes:
     name: mongodbdata
   neo4jdbdata:
     name: neo4jdbdata
+  redisdata:
+    name: redisdata
+  etcddata:
+    name: etcddata
+  softhsmdata:
+    name: softhsmdata
+  appdata:
+    name: appdata
+  eduidlogdata:
+    name: eduidlogdata
+  rsyslogdata:
+    name: rsyslogdata
+
+
 
 networks:
   dev:

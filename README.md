@@ -5,45 +5,67 @@ Setting up a development environment on your own machine
 Building
 --------
 
-Build docker containers using the Dockerfiles in the repository
+All containers should be built by ci.sunet.se and will be pulled when starting the environment.
+
+If you need to build docker containers use the Dockerfiles in the repository
 eduid-dockerfiles.
 
-    # git clone git@github.com:SUNET/eduid-dockerfiles.git
-    # cd eduid-dockerfiles
-    # ./build rabbitmq
-    # ./build mongodb
-    # ./build turq
-
-The other containers should be built by ci.nordu.net and will be pulled when starting the environment.
-
-Name resolution
----------------
-
-Set up unbound on your own machine, to facilitiate resolving docker-container
-A from container B.
-
-Linking is not the answer. When a named container restarts with a new IP the
-'links' (aka. /etc/hosts entrys) in other containers are not updated.
-
-    # apt-get install unbound
-    # cat > /etc/unbound/unbound.conf.d/docker.conf << EOF
-    server:
-        domain-insecure: docker.
-    forward-zone:
-        name: docker.
-        forward-addr: 172.17.0.1
-    EOF
-    # service unbound restart
+    $ git clone git@github.com:SUNET/eduid-dockerfiles.git
+    $ cd eduid-dockerfiles
+    $ ./build eduid-email
 
 
 Running
 -------
 
-Start all the containers with the start.sh file in this repository.
+Start all the containers with the Makefile in this repository.
 
-    # ./start.sh
+The first time it will ask you for sudo rights to be able to write in your /etc/hosts. You also need to write the configuration to etcd before anything can start, see etcd configuration below.
 
-The first time it will ask you for sudo rights to be able to write in your /etc/hosts.
+##### Linux Docker environment:
+
+    $ make start
+
+##### Other OS Vagrant environment:
+
+Install Vagrant and Virtualbox. Complete the Vagrant Getting started guide until you see that "vagrant up" works.
+
+https://www.virtualbox.org/
+https://www.vagrantup.com/intro/getting-started/up
+
+
+Create a file name __vagrant.yml__ in the repository root containing the following yaml:
+
+    local_paths:
+      eduid_front: '/path/to/eduid-front'
+      eduid_html: '/path/to/eduid-html'
+    vm:
+      cpus: 2
+      memory: 4096
+      disksize: '20GB'
+
+Then run:
+
+    $ make vagrant_run  (only needed once per session)
+    $ make vagrant_start
+
+To connect to the vagrant vm:
+
+    $ make vagrant_ssh
+
+
+Stopping
+--------
+
+##### Linux Docker environment
+
+    $ make stop
+
+
+##### Other OS Vagrant environment
+
+    $ make vagrant_halt
+
 
 etcd configuration
 ------------------
@@ -55,7 +77,21 @@ etcd configuration
 Logging
 -------
 
-  To follow most logs you can use screen, run `screen -c screenrc`.
+All logs from webapps are kept in a shared data volume called eduidlogdata.
+
+For a quick tail -F run, ex:
+
+    $ ./bin/tailf signup
+
+To get a shell with mounted log files:
+
+##### Linux Docker environment
+
+    $ make show_logs
+
+##### Other OS Vagrant environment
+
+    $ make vagrant_show_logs
 
 Authentication
 --------------
@@ -96,5 +132,42 @@ Signup
 ------
 
 The confirmation code will be available in the log file
-eduid-developer/eduid-signup/log/eduid-signup.log (the whole confirmation
+TODO (the whole confirmation
 e-mail will be logged instead of sent using SMTP).
+
+
+Local Docker vs Vagrant
+-----------------------
+
+If you want to run both you need to reset your networking before switching.
+
+###### Docker:
+
+    $ docker networking rm eduid_dev
+
+###### Vagrant (Virtualbox):
+
+Open Virtualbox and go to File -> Host Network Manager and remove the network 172.16.10.0/24.
+
+Makefile recipes
+-----------------
+Recipes that starts with "vagrant\_" should be run from the host OS when using vagrant.
+
+    $ make vagrant_run          # Start vagrant vm
+    $ make start                # Starts all containers using docker-compose
+    $ make vagrant_start        # See above
+    $ make vagrant_ssh          # Starts a shell in the vagrant vm
+    $ make stop                 # Stops all containers using docker-compose
+    $ make vagrant_stop         # See above
+    $ make vagrant_halt         # Stops all containers and shuts the vagrant vm down
+    $ make up                   # Tries to start all non-running containers
+    $ make vagrant_up           # See above
+    $ make update_etcd          # Runs the configuration import script for etcd
+    $ make vagrant_update_etcd  # See above
+    $ make pull                 # Pull all images using docker-compose
+    $ vagrant_pull              # See above
+    $ make show_logs            # Starts a shell in a container with the log data volume mounted
+                                # Log files can be found in /var/log/eduid
+    $ make vagrant_show_logs    # See above
+    $ make vagrant_destroy      # Halts and removes the vagrant vm
+
