@@ -148,3 +148,26 @@ If you want to run both you need to reset your networking before switching.
 ###### Vagrant (Virtualbox):
 
 Open Virtualbox and go to File -> Host Network Manager and remove the network 172.16.10.0/24.
+
+Makefile recipes
+-----------------
+Recipes that starts with "vagrant\_" should be run from the host OS when using vagrant.
+
+    $ make vagrant_run          # Start vagrant vm
+    $ make start                # Starts all containers using docker-compose
+    $ make vagrant_start        # See above
+    $ make vagrant_ssh          # Starts a shell in the vagrant vm
+    $ make stop                 # Stops all containers using docker-compose
+    $ make vagrant_stop         # See above
+    $ make vagrant_halt         # Stops all containers and shuts the vagrant vm down
+    $ make up                   # Tries to start all non-running containers
+    $ make vagrant_up           # See above
+    $ make update_etcd          # Runs the configuration import script for etcd
+    $ make vagrant_update_etcd  # See above
+    $ make pull                 # Pull all images using docker-compose
+    $ vagrant_pull              # See above
+    $ make show_logs            # Starts a shell in a container with the log data volume mounted
+                                # Log files can be found in /var/log/eduid
+    $ make vagrant_show_logs    # See above
+    $ make vagrant_destroy      # Halts and removes the vagrant vm
+

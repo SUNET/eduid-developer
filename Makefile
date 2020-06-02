@@ -46,4 +46,7 @@ show_logs:
 vagrant_show_logs:
 	(echo "Logs are in /var/log/eduid/"; vagrant ssh -c "docker run -it --init --rm -v eduidlogdata:/var/log/eduid docker.sunet.se/eduid/eduid-webapp bash")
 
-.PHONY: vagrant_run start vagrant_start vagrant_ssh stop vagrant_stop vagrant_halt up vagrant_up pull vagrant_pull update_etcd vagrant_update_etcd
+vagrant_destroy:
+	vagrant destroy
+
+.PHONY: vagrant_run start vagrant_start vagrant_ssh stop vagrant_stop vagrant_halt up vagrant_up pull vagrant_pull update_etcd vagrant_update_etcd vagrant_destroy
