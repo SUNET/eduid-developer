@@ -10,9 +10,9 @@ All containers should be built by ci.sunet.se and will be pulled when starting t
 If you need to build docker containers use the Dockerfiles in the repository
 eduid-dockerfiles.
 
-    # git clone git@github.com:SUNET/eduid-dockerfiles.git
-    # cd eduid-dockerfiles
-    # ./build rabbitmq
+    $ git clone git@github.com:SUNET/eduid-dockerfiles.git
+    $ cd eduid-dockerfiles
+    $ ./build rabbitmq
 
 
 Running
@@ -24,7 +24,7 @@ The first time it will ask you for sudo rights to be able to write in your /etc/
 
 ##### Linux Docker environment:
 
-    # make start
+    $ make start
 
 ##### Other OS Vagrant environment:
 
@@ -42,9 +42,9 @@ Create a file name __vagrant.yml__ in the repository root.
 
 Then run:
 
-    # make vagrant_start
-    # cd /opt/eduid-developer
-    # make start
+    $ make vagrant_start
+    $ cd /opt/eduid-developer
+    $ make start
 
 
 Stopping
@@ -52,12 +52,12 @@ Stopping
 
 ##### Linux Docker environment
 
-    # make stop
+    $ make stop
 
 
 ##### Other OS Vagrant environment:
 
-    # make vagrant_stop
+    $ make vagrant_stop
 
 
 etcd configuration
@@ -74,11 +74,11 @@ All logs from webapps are kept in a shared data volume called eduidlogdata.
 
 For a quick tail -F run, ex:
 
-    # ./bin/qtf signup
+    $ ./bin/qtf signup
 
 To get a shell with mounted log files:
 
-    # make show_logs
+    $ make show_logs
 
 
 Authentication
@@ -131,7 +131,7 @@ If you want to run both you need to reset your networking before switching.
 
 ###### Docker:
 
-    # docker networking rm eduid_dev
+    $ docker networking rm eduid_dev
 
 ###### Vagrant (Virtualbox):
 
