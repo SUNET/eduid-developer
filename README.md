@@ -34,11 +34,15 @@ https://www.virtualbox.org/
 https://www.vagrantup.com/intro/getting-started/up
 
 
-Create a file name __vagrant.yml__ in the repository root.
+Create a file name __vagrant.yml__ in the repository root containing the following yaml:
 
     local_paths:
       eduid_front: '/path/to/eduid-front'
       eduid_html: '/path/to/eduid-html'
+    vm:
+      cpus: 2
+      memory: 4096
+      disksize: '20GB'
 
 Then run:
 

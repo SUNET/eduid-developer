@@ -12,6 +12,9 @@ VM_NAME = 'eduid-dev-vagrant'
 settings = YAML.load_file 'vagrant.yml'
 eduid_front_path = settings['local_paths']['eduid_front']
 eduid_html_path = settings['local_paths']['eduid_html']
+vm_cpus = settings['vm']['cpus']
+vm_memory = settings['vm']['memory']
+vm_disksize = settings['vm']['disksize']
 
 
 Vagrant.configure(2) do |config|
@@ -38,8 +41,8 @@ Vagrant.configure(2) do |config|
   # Set VM name in Virtualbox
   config.vm.provider "virtualbox" do |v|
     v.name = VM_NAME
-    v.memory = 4096
-    v.cpus = 2
+    v.cpus = vm_cpus
+    v.memory = vm_memory
     # Change the network adapter type and promiscuous mode
     v.customize ['modifyvm', :id, '--nictype1', 'Am79C973']
     v.customize ['modifyvm', :id, '--nicpromisc1', 'allow-all']
@@ -48,7 +51,7 @@ Vagrant.configure(2) do |config|
   end
 
   # Disk size
-  config.disksize.size = "20GB"
+  config.disksize.size = vm_disksize
 
   # Networking
   config.vm.network "private_network", ip: "172.16.10.10"
