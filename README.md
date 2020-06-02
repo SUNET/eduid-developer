@@ -60,7 +60,7 @@ Stopping
 
 ##### Other OS Vagrant environment:
 
-    $ make vagrant_stop
+    $ make vagrant_down
 
 
 etcd configuration
