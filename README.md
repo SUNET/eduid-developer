@@ -42,7 +42,7 @@ Create a file name __vagrant.yml__ in the repository root.
 
 Then run:
 
-    $ make vagrant_up  (only needed once per session)
+    $ make vagrant_run  (only needed once per session)
     $ make vagrant_start
 
 To connect to the vagrant vm:
@@ -58,9 +58,9 @@ Stopping
     $ make stop
 
 
-##### Other OS Vagrant environment:
+##### Other OS Vagrant environment
 
-    $ make vagrant_down
+    $ make vagrant_halt
 
 
 etcd configuration
@@ -81,8 +81,13 @@ For a quick tail -F run, ex:
 
 To get a shell with mounted log files:
 
+##### Linux Docker environment
+
     $ make show_logs
 
+##### Other OS Vagrant environment
+
+    $ make vagrant_show_logs
 
 Authentication
 --------------
