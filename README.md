@@ -20,7 +20,7 @@ Running
 
 Start all the containers with the Makefile in this repository.
 
-The first time it will ask you for sudo rights to be able to write in your /etc/hosts.
+The first time it will ask you for sudo rights to be able to write in your /etc/hosts. You also need to write the configuration to etcd before anything can start, see etcd configuration below.
 
 ##### Linux Docker environment:
 
@@ -45,6 +45,19 @@ Then run:
     # make vagrant_start
     # cd /opt/eduid-developer
     # make start
+
+
+Stopping
+--------
+
+##### Linux Docker environment
+
+    # make stop
+
+
+##### Other OS Vagrant environment:
+
+    # make vagrant_stop
 
 
 etcd configuration
