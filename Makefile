@@ -1,14 +1,20 @@
 start:
 	./start.sh
 
+vagrant_up:
+	vagrant up
+
 vagrant_start:
 	./start.sh --vagrant
+
+vagrant_ssh:
+	vagrant ssh
 
 stop:
 	./stop.sh
 
 vagrant_stop:
-	vagrant halt
+	(vagrant ssh -c "cd /opt/eduid-developer; make stop"; vagrant halt)
 
 up:
 	./bin/docker-compose -f eduid/compose.yml up -d

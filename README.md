@@ -12,7 +12,7 @@ eduid-dockerfiles.
 
     $ git clone git@github.com:SUNET/eduid-dockerfiles.git
     $ cd eduid-dockerfiles
-    $ ./build rabbitmq
+    $ ./build eduid-email
 
 
 Running
@@ -42,9 +42,12 @@ Create a file name __vagrant.yml__ in the repository root.
 
 Then run:
 
+    $ make vagrant_up  (only needed once per session)
     $ make vagrant_start
-    $ cd /opt/eduid-developer
-    $ make start
+
+To connect to the vagrant vm:
+
+    $ make vagrant_ssh
 
 
 Stopping
@@ -74,7 +77,7 @@ All logs from webapps are kept in a shared data volume called eduidlogdata.
 
 For a quick tail -F run, ex:
 
-    $ ./bin/qtf signup
+    $ ./bin/tailf signup
 
 To get a shell with mounted log files:
 
