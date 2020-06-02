@@ -16,6 +16,19 @@ eduid_html_path = settings['local_paths']['eduid_html']
 
 Vagrant.configure(2) do |config|
 
+    required_plugins = %w( vagrant-vbguest vagrant-disksize )
+    _retry = false
+    required_plugins.each do |plugin|
+       unless Vagrant.has_plugin? plugin
+         system "vagrant plugin install #{plugin}"
+      _retry=true
+    end
+  end
+
+  if (_retry)
+      exec "vagrant " + ARGV.join(' ')
+   end
+
   # Vagrant box from Hashicorp
   config.vm.box = VAGRANT_BOX
 
@@ -33,6 +46,9 @@ Vagrant.configure(2) do |config|
     v.customize ['modifyvm', :id, '--nictype2', 'Am79C973']
     v.customize ['modifyvm', :id, '--nicpromisc2', 'allow-all']
   end
+
+  # Disk size
+  config.disksize.size = "20GB"
 
   # Networking
   config.vm.network "private_network", ip: "172.16.10.10"

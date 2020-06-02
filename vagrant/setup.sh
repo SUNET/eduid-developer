@@ -29,19 +29,7 @@ apt-get install -y docker-ce \
   containerd.io
 apt-get clean
 
-# Networking
-ip addr del 172.16.10.10/24 dev enp0s8
-docker network create \
-    --driver bridge \
-    --subnet=172.16.10.0/24 \
-    --gateway=172.16.10.10 \
-    --opt "com.docker.network.bridge.name"="br-eduid" \
-    eduid_dev
-brctl addif br-eduid enp0s8
-
 # Setup environment
 usermod -aG docker vagrant
 pip install pyyaml python-etcd
-ln -svf /opt/src/eduid-front /opt/eduid-developer/sources/
-ln -svf /opt/src/eduid-html /opt/eduid-developer/sources/
 
