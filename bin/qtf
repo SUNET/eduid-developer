@@ -1,3 +1,0 @@
-#! /bin/bash
-
-/usr/bin/docker run -it --rm --init -v eduidlogdata:/var/log/eduid docker.sunet.se/eduid/eduid-webapp bash -c "tail -F /var/log/eduid/*${1}*"
