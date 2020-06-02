@@ -5,7 +5,7 @@ Setting up a development environment on your own machine
 Building
 --------
 
-All containers should be built by ci.nordu.net and will be pulled when starting the environment.
+All containers should be built by ci.sunet.se and will be pulled when starting the environment.
 
 If you need to build docker containers use the Dockerfiles in the repository
 eduid-dockerfiles.
