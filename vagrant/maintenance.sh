@@ -11,10 +11,6 @@ apt full-upgrade -y
 apt-get autoremove -y
 apt-get clean
 
-# Link to sources if missing
-ln -svf /opt/src/eduid-front /opt/eduid-developer/sources/
-ln -svf /opt/src/eduid-html /opt/eduid-developer/sources/
-
 # Docker maintenance
 docker system prune -f
 
@@ -27,3 +23,7 @@ docker network create \
     --opt "com.docker.network.bridge.name"="br-eduid" \
     eduid_dev
 brctl addif br-eduid enp0s8
+
+# Link to sources if missing
+ln -svf /opt/src/eduid-front /opt/eduid-developer/sources/
+ln -svf /opt/src/eduid-html /opt/eduid-developer/sources/
