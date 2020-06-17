@@ -14,3 +14,4 @@ etcd/data/
 py11softhsm/var/
 raw_db_changes
 vagrant.yml
+.vagrant/
