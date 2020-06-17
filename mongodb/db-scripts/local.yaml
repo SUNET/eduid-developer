@@ -255,6 +255,15 @@ mongo_databases:
       read:
         - 'eduid_support'
 
+  eduid_group_management:
+    collections:
+      - 'group_invite_data'
+    access:
+      readWrite:
+        - 'eduid_group_management'
+      read:
+        - 'eduid_support'
+
   eduid_logs:
     collections:
       - 'proofing_log'
