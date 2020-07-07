@@ -490,9 +490,9 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi:ro
-      - ../sources/eduid-groupdb:/opt/eduid/src/eduid-groupdb:ro
+      - ../sources/eduid-graphdb:/opt/eduid/src/eduid-graphdb:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-groupdb/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=group_management"
     depends_on:
@@ -776,9 +776,9 @@ services:
       - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-groupdb:/opt/eduid/src/eduid-groupdb:ro
+      - ../sources/eduid-graphdb:/opt/eduid/src/eduid-graphdb:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-groupdb/src:/opt/eduid/src/eduid-scimapi/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/src/eduid-scimapi/src"
       - "HOSTNAME=scimapi"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
