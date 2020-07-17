@@ -1,0 +1,70 @@
+---
+attributes:
+  displayname:
+    saml:
+    - displayName
+    adfs:
+    - displayName
+  commonname:
+    saml:
+    - cn
+    adfs:
+    - displayName
+  givenname:
+    saml:
+    - givenName
+    adfs:
+    - givenName
+  surname:
+    saml:
+    - sn
+    adfs:
+    - sn
+  mail:
+    saml:
+    - mail
+    adfs:
+    - mail
+  edupersonprincipalname:
+    saml:
+    - eduPersonPrincipalName
+    adfs:
+    - eduPersonPrincipalName
+  edupersonscopedaffiliation:
+    saml:
+    - eduPersonScopedAffiliation
+    adfs:
+    - eduPersonScopedAffiliation
+  noredupersonnin:
+    saml:
+    - norEduPersonNIN
+    adfs:
+    - norEduPersonNIN
+  edupersonentitlement:
+    saml:
+    - eduPersonEntitlement
+    adfs:
+    - eduPersonEntitlement
+  schachomeorganization:
+    saml:
+    - schacHomeOrganization
+  schachomeorganizationtype:
+    saml:
+    - schacHomeOrganizationType
+  organizationname:
+    saml:
+    - ou
+  noreduorgacronym:
+    saml:
+    - norEduOrgAcronym
+  countryname:
+    saml:
+    - c
+  friendlycountryname:
+    saml:
+    - co
+  edupersontargetedid:
+    saml:
+    - eduPersonTargetedID
+user_id_to_attr: edupersontargetedid
+

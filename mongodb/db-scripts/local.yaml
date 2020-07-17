@@ -254,6 +254,7 @@ mongo_databases:
         - 'eduid_group_management'
       read:
         - 'eduid_support'
+        - 'eduid_idpproxy'
 
   eduid_group_management:
     collections:

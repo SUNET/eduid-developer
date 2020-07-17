@@ -1,0 +1,9 @@
+---
+module: eduid_satosa_plugins.scimapi.scim_attributes.ScimAttributes
+plugin: ScimAttributes
+name: ScimAttributes
+config:
+  mongo_uri: "mongodb://eduid_idpproxy:eduid_idpproxy_pw@mongodb.eduid_dev"
+  idp_to_data_owner:
+    http://idp.eduid.docker/idp.xml: eduid.se
+

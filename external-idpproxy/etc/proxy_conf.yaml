@@ -1,0 +1,45 @@
+---
+BASE: http://external-idpproxy.eduid.docker:8000
+INTERNAL_ATTRIBUTES: "/opt/satosa/etc/internal_attributes.yaml"
+COOKIE_STATE_NAME: "SATOSA_STATE"
+CONTEXT_STATE_DELETE: yes
+STATE_ENCRYPTION_KEY: "dev encryption key"
+USER_ID_HASH_SALT: "user id hash salt"
+cookies_samesite_compat:
+  - ["SATOSA_STATE", "SATOSA_STATE_LEGACY"]
+BACKEND_MODULES:
+  - "/opt/satosa/etc/plugins/saml2_backend.yaml"
+FRONTEND_MODULES:
+  - "/opt/satosa/etc/plugins/saml2_frontend.yaml"
+MICRO_SERVICES:
+  - "/opt/satosa/etc/plugins/scim_attributes.yaml"
+CUSTOM_PLUGIN_MODULE_PATHS:
+  - plugins
+LOGGING:
+  version: 1
+  formatters:
+    default:
+      format: "%(asctime)s [%(process)d] [%(levelname)s] %(message)s"
+  handlers:
+    console:
+      class: logging.StreamHandler
+      level: DEBUG
+      formatter: default
+      stream: ext://sys.stdout
+  loggers:
+    satosa:
+      level: DEBUG
+      handlers:
+      - console
+    saml2:
+      level: DEBUG
+      handlers:
+      - console
+    uppercase:
+      level: DEBUG
+      handlers:
+      - console
+    scim_attributes:
+      level: DEBUG
+      handlers:
+      - console

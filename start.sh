@@ -34,6 +34,10 @@ done
     printf "172.16.10.230\thtml.eduid_dev html.eduid.docker\n";
     printf "172.16.10.235\tscimapi.eduid_dev scimapi.eduid.docker\n";
     printf "172.16.10.236\tneo4jdb.eduid_dev neo4jdb.eduid.docker\n";
+    printf "172.16.10.31\texternal-idpproxy.eduid_dev external-idpproxy.eduid.docker\n";
+    printf "172.16.10.32\teduid-idpproxy.eduid_dev eduid-idpproxy.eduid.docker\n";
+    printf "172.16.10.41\tidp-external1.eduid_dev idp.external1.docker\n";
+    printf "172.16.10.51\tsp-external0.eduid_dev sp.external0.docker\n";
     printf "172.16.10.240\tactions.eduid_dev actions.eduid.docker\n";
     printf "172.16.10.242\tactions2.eduid_dev actions2.eduid.docker\n";
     printf "172.16.10.250\tturq.eduid_dev turq.eduid.docker\n";

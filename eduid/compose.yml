@@ -28,24 +28,24 @@ services:
       - etcd
     command: bash /start.sh
 
-  api:
-    image: docker.sunet.se/eduid/eduid-api:latest
-    #expose:
-    #  - 5000
-    networks:
-      dev:
-    volumes:
-      - ../eduid-api/etc:/opt/eduid/eduid-api/etc:ro
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
-      - "ETCD_HOST=etcd.eduid_dev"
-      - "HOSTNAME=api"
-    depends_on:
-      - mongodb
-      - rsyslog
+#  api:
+#    image: docker.sunet.se/eduid/eduid-api:latest
+#    #expose:
+#    #  - 5000
+#    networks:
+#      dev:
+#    volumes:
+#      - ../eduid-api/etc:/opt/eduid/eduid-api/etc:ro
+#      - eduidlogdata:/var/log/eduid
+#      # source volumes
+#      - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
+#    environment:
+#      - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
+#      - "ETCD_HOST=etcd.eduid_dev"
+#      - "HOSTNAME=api"
+#    depends_on:
+#      - mongodb
+#      - rsyslog
 
   html_haproxy:
     image: 'docker.sunet.se/library/haproxy:latest'
@@ -543,7 +543,7 @@ services:
       - rsyslog
       - etcd
 
-  lookup-mobile:
+  lookup_mobile:
     image: docker.sunet.se/eduid/eduid-lookup-mobile:latest
     networks:
       dev:
@@ -704,7 +704,7 @@ services:
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
 
   neo4jdb:
-    image: neo4j:4.0-enterprise
+    image: neo4j:4.1-enterprise
     expose:
       - 7474
       - 7687
@@ -716,25 +716,28 @@ services:
     environment:
       - "NEO4J_AUTH=neo4j/docker"
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
+     #- "NEO4J_dbms_connector_https_advertised__address=0.0.0.0:7473"
+      - "NEO4J_dbms_connector_http_advertised__address=0.0.0.0:7474"
+      - "NEO4J_dbms_connector_bolt_advertised__address=0.0.0.0:7687"
 
-  oathaead:
-    image: docker.sunet.se/eduid/eduid-api
-    networks:
-      dev:
-    volumes:
-      - ../eduid-oathaead/etc:/opt/eduid/eduid-oathaead/etc:ro
-      - appdata:/opt/eduid/eduid-oathaead/run
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
-    environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
-      - "eduid_name=eduid-oathaead"
-    devices:
-      - "/dev/ttyACM0:/dev/ttyACM0"
-    depends_on:
-      - mongodb
-      - rsyslog
+#  oathaead:
+#    image: docker.sunet.se/eduid/eduid-api
+#    networks:
+#      dev:
+#    volumes:
+#      - ../eduid-oathaead/etc:/opt/eduid/eduid-oathaead/etc:ro
+#      - appdata:/opt/eduid/eduid-oathaead/run
+#      - eduidlogdata:/var/log/eduid
+#      # source volumes
+#      - ../sources/eduid-api:/opt/eduid/src/eduid-api:ro
+#    environment:
+#      - "PYTHONPATH=/opt/eduid/src/eduid-api/src"
+#      - "eduid_name=eduid-oathaead"
+#    devices:
+#      - "/dev/ttyACM0:/dev/ttyACM0"
+#    depends_on:
+#      - mongodb
+#      - rsyslog
 
   redis:
     image: docker.sunet.se/eduid/redis
@@ -788,6 +791,74 @@ services:
     #working_dir: "/opt/eduid/src/eduid-scimapi/src"
     command: /opt/eduid/env/bin/gunicorn --bind=0.0.0.0:8000 --reload --reload-engine poll --capture-output eduid_scimapi.run:api
 
+  external_idpproxy:
+    container_name: external-idpproxy.eduid.docker
+    image: docker.sunet.se/eduid/satosa-scim:latest
+    expose:
+     - 8000
+    networks:
+      dev:
+        ipv4_address: 172.16.10.31
+    volumes:
+      - ../external-idpproxy/etc:/opt/satosa/etc
+      - ../sp-external0/etc/sp.xml:/opt/satosa/etc/metadata/sp.xml:ro
+      - ../idp-external1/etc/idp.xml:/opt/satosa/etc/metadata/idp.xml:ro
+      # source volumes
+      #- ../sources/eduid-satosa:/sources/satosa:ro
+      #- ../sources/eduid-scimapi:/sources/eduid-scimapi:ro
+    environment:
+      - "DATA_DIR=/opt/satosa/etc"
+      - "METADATA_DIR=/opt/satosa/etc/metadata"
+      #- "PYTHONPATH=/sources/satosa/src:/sources/eduid-scimapi/src"
+
+  eduid_idpproxy:
+    container_name: eduid-idpproxy.eduid.docker
+    image: docker.sunet.se/eduid/satosa-scim:latest
+    expose:
+     - 8000
+    networks:
+      dev:
+        ipv4_address: 172.16.10.32
+    volumes:
+      - ../eduid-idpproxy/etc:/opt/satosa/etc
+      - ../sp-external0/etc/sp.xml:/opt/satosa/etc/metadata/sp.xml:ro
+      - ../eduid-idp/etc/idp_metadata.xml:/opt/satosa/etc/metadata/idp.xml:ro
+      # source volumes
+      #- ../sources/eduid-satosa:/sources/satosa:ro
+      #- ../sources/eduid-scimapi:/sources/eduid-scimapi:ro
+    environment:
+      - "DATA_DIR=/opt/satosa/etc"
+      - "METADATA_DIR=/opt/satosa/etc/metadata"
+      #- "PYTHONPATH=/sources/satosa/src:/sources/eduid-scimapi/src"
+
+  idp_external1:
+    container_name: idp.external1.docker
+    image: docker.sunet.se/sunet/docker-pysaml2-idp
+    expose:
+      - 8080
+    networks:
+      dev:
+        ipv4_address: 172.16.10.41
+    volumes:
+    volumes:
+      - ../idp-external1/etc/:/opt/pysaml2-idp/etc/
+      - ../external-idpproxy/etc/metadata/backend.xml:/opt/pysaml2-idp/etc/backend.xml:ro
+    environment:
+      - "DATA_DIR=/opt/pysaml2-idp/etc/"
+
+  sp_external0:
+    container_name: sp.external0.docker
+    image: docker.sunet.se/sunet/docker-pysaml2-sp
+    expose:
+      - 8080
+    networks:
+      dev:
+        ipv4_address: 172.16.10.51
+    volumes:
+      - ../sp-external0/etc/:/opt/pysaml2-sp/etc/
+      - ../external-idpproxy/etc/metadata/frontend.xml:/opt/pysaml2-sp/etc/frontend.xml:ro
+    environment:
+      - "DATA_DIR=/opt/pysaml2-sp/etc/"
 
 volumes:
   mongodbdata:

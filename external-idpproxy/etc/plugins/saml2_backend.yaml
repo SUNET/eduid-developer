@@ -1,0 +1,71 @@
+---
+module: satosa.backends.saml2.SAMLBackend
+name: Saml2SP
+plugin: BackendModulePlugin
+config:
+  mirror_force_authn: no
+  memorize_idp: no
+  use_memorized_idp_when_force_authn: no
+  sp_config:
+    organization:
+      display_name: eduID Proxy SP
+      name: eduID Proxy SP
+      url: http://html.eduid.docker
+    contact_person:
+    - contact_type: technical
+      email_address: feedback@eduid.se
+      given_name: Technical
+    - contact_type: support
+      email_address: feedback@eduid.se
+      given_name: Support
+    key_file: "/opt/satosa/etc/metadata.key"
+    cert_file: "/opt/satosa/etc/metadata.crt"
+    encryption_keypairs:
+    - key_file: "/opt/satosa/etc/metadata.key"
+      cert_file: "/opt/satosa/etc/metadata.crt"
+    allow_unknown_attributes: true
+    metadata:
+      local:
+      - "/opt/satosa/etc/metadata/idp.xml"
+    entityid: <base_url>/<name>/proxy_saml2_backend.xml
+    service:
+      sp:
+        ui_info:
+          display_name:
+            - lang: en
+              text: "SP Display Name"
+          description:
+            - lang: en
+              text: "SP Description"
+          information_url:
+            - lang: en
+              text: "http://sp.information.url/"
+          privacy_statement_url:
+            - lang: en
+              text: "http://sp.privacy.url/"
+          keywords:
+            - lang: se
+              text: ["Satosa", "SP-SE"]
+            - lang: en
+              text: ["Satosa", "SP-EN"]
+          logo:
+            text: "http://html.eduid.docker/static/img/ds-eduID-logo-black320x120px.png"
+            width: "320"
+            height: "120"
+        authn_requests_signed: true
+        want_response_signed: true
+        allow_unsolicited: true
+        endpoints:
+          assertion_consumer_service:
+          - - "<base_url>/<name>/acs/post"
+            - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+          - - "<base_url>/<name>/acs/redirect"
+            - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
+          discovery_response:
+          - - "<base_url>/<name>/disco"
+            - urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol
+        name_id_format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
+        name_id_format_allow_create: true
+  #disco_srv: https://ds-test.swamid.se/role/idp.ds
+  publish_metadata: "<base_url>/<name>/metadata"
+
