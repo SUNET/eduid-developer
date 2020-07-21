@@ -143,6 +143,7 @@ eduid:
             logger_name: support
             log_level: DEBUG
             mongo_uri: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
+            token_service_url_logout: http://dashboard.eduid.docker:8080/services/authn/logout
             support_personnel:
               - mojud-dosiv
               - sadug-katoh
