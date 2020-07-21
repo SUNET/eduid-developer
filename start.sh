@@ -5,6 +5,16 @@ if [ ! -f eduid/compose.yml ]; then
     exit 1
 fi
 
+while [ "$1" != "" ]; do
+    case $1 in
+        --vagrant )             vagrant=true
+                                ;;
+        -h | --help )           echo "usage: start.sh [--vagrant]"
+                                exit
+    esac
+    shift
+done
+
 #
 # Set up entrys in /etc/hosts for the containers with externally accessible services
 # DON'T USE THE eduid_dev ONES, COOKIES ARE SCOPED FOR eduid.docker
@@ -22,6 +32,8 @@ fi
     printf "172.16.10.228\tauthn.eduid_dev authn.eduid.docker\n";
     printf "172.16.10.229\teidas.eduid.docker\n"
     printf "172.16.10.230\thtml.eduid_dev html.eduid.docker\n";
+    printf "172.16.10.235\tscimapi.eduid_dev scimapi.eduid.docker\n";
+    printf "172.16.10.236\tneo4jdb.eduid_dev neo4jdb.eduid.docker\n";
     printf "172.16.10.240\tactions.eduid_dev actions.eduid.docker\n";
     printf "172.16.10.242\tactions2.eduid_dev actions2.eduid.docker\n";
     printf "172.16.10.250\tturq.eduid_dev turq.eduid.docker\n";
@@ -43,6 +55,10 @@ fi
     fi
 done
 
-./bin/docker-compose -f eduid/compose.yml rm -s -f
-./bin/docker-compose -f eduid/compose.yml up $*
-./bin/docker-compose -f eduid/compose.yml logs -tf
+if [ "$vagrant" = true ]; then
+    vagrant ssh -c "cd /opt/eduid-developer; make start"
+else
+    ./bin/docker-compose -f eduid/compose.yml rm -s -f
+    ./bin/docker-compose -f eduid/compose.yml up $*
+    ./bin/docker-compose -f eduid/compose.yml logs -tf
+fi

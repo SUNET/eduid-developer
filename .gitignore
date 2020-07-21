@@ -9,5 +9,9 @@ redis/data
 .*.swp
 .*.swo
 sources
+eduid-orcid/etc/oidc_client_creds.py
 etcd/data/
 py11softhsm/var/
+raw_db_changes
+vagrant.yml
+.vagrant/

@@ -16,24 +16,27 @@ mongo_databases:
       readWrite:
         - 'eduid_am'
       read:
+        - 'eduid_actions'
+        - 'eduid_authn'
+        - 'eduid_dashboard'
+        - 'eduid_eidas'
+        - 'eduid_email'
         - 'eduid_idp'
         - 'eduid_saml_idp'
         - 'eduid_login'
-        - 'eduid_dashboard'
-        - 'eduid_actions'
-        - 'eduid_signup'
         - 'eduid_idproofing_letter'
         - 'eduid_lookup_mobile_proofing'
-        - 'eduid_personal_data'
         - 'eduid_oidc_proofing'
-        - 'eduid_email'
-        - 'eduid_phone'
-        - 'eduid_authn'
-        - 'eduid_security'
-        - 'eduid_support'
         - 'eduid_orcid'
-        - 'eduid_eidas'
+        - 'eduid_personal_data'
+        - 'eduid_phone'
         - 'eduid_reset_password'
+        - 'eduid_scimapi'
+        - 'eduid_security'
+        - 'eduid_signup'
+        - 'eduid_support'
+        - 'eduid_scimapi'
+        - 'eduid_group_management'
         - 'munin'
 
   eduid_api:
@@ -253,6 +256,25 @@ mongo_databases:
         - 'eduid_phone'
       read:
         - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_scimapi:
+    collections:
+      - 'profiles'
+    access:
+      readWrite:
+        - 'eduid_scimapi'
+        - 'eduid_group_management'
+      read:
+        - 'eduid_support'
+
+  eduid_group_management:
+    collections:
+      - 'group_invite_data'
+    access:
+      readWrite:
+        - 'eduid_group_management'
+      read:
         - 'eduid_support'
 
   eduid_logs:

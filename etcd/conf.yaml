@@ -1,4 +1,18 @@
 eduid:
+    api:
+        common:
+            debug: true
+            schema: 'http'
+            log_level: 'DEBUG'
+            log_format: '%(asctime)s | %(levelname)s | %(name)s | %(module)s | %(message)s'
+            environment: 'dev'
+        scimapi:
+            mongo_uri: 'mongodb://eduid_scimapi:eduid_scimapi_pw@mongodb.eduid_dev'
+            server_name: 'scimapi.eduid.docker:8000'
+            application_root: '/'
+            neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
+            neo4j_config:
+                encrypted: false
     webapp:
         common:
             devel_mode: yes
@@ -51,6 +65,7 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             environment: dev
+            tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
             tou_version: 2016-v1
             secret_key: supersecretkey
             fido2_rp_id: eduid.docker
@@ -128,6 +143,7 @@ eduid:
             logger_name: support
             log_level: DEBUG
             mongo_uri: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
+            token_service_url_logout: http://dashboard.eduid.docker:8080/services/authn/logout
             support_personnel:
               - mojud-dosiv
               - sadug-katoh
@@ -151,6 +167,15 @@ eduid:
             log_level: DEBUG
             logger_name: phone
             phone_verification_timeout: 7200
+        group_management:
+            server_name: dashboard.eduid.docker:8080
+            application_root: /services/group-management
+            mongo_uri: mongodb://eduid_group_management:eduid_group_management_pw@mongodb.eduid_dev
+            neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
+            neo4j_config:
+                encrypted: false
+            log_level: DEBUG
+            logger_name: group_management
         security:
             server_name: dashboard.eduid.docker:8080
             application_root: /services/security
@@ -201,7 +226,6 @@ eduid:
             signup_bundle_feature_cookie: bundle-version
             signup_bundle_feature_version:
               beta: beta1
-            tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
             # Login config
             login_bundle_path: front-build/login-bundle.dev.js
             login_bundle_version: dev
@@ -219,7 +243,7 @@ eduid:
             available_languages:
                 - [en, English]
                 - [sv, Svenska]
-            dashboard_url: /profile/
+            dashboard_url: http://dashboard.eduid.docker:8080/profile/
             personal_data_url: /services/personal-data/
             emails_url: /services/email/
             mobile_url: /services/phone/
@@ -231,7 +255,8 @@ eduid:
             oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
             orcid_url: /services/orcid/
             eidas_url: http://eidas.eduid.docker:8080/
-            password_service_url: http://login.eduid.docker:8080/services/reset-password/
+            #password_service_url: http://login.eduid.docker:8080/services/reset-password/
+            password_service_url: /services/security/
             token_verify_idp: http://dev.test.swedenconnect.se/idp
             password_length: 12
             password_entropy: 25
@@ -439,3 +464,4 @@ eduid:
             devel_mode: true
             teleadress_client_user: 'TEST'
             teleadress_client_password: 'TEST'
+
