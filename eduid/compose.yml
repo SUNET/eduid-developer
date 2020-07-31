@@ -722,7 +722,7 @@ services:
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
 
   neo4jdb:
-    image: neo4j:4.1-enterprise
+    image: neo4j:4.0-enterprise
     expose:
       - 7474
       - 7687
