@@ -56,6 +56,7 @@ services:
           - html.eduid.docker
     volumes:
       - ../html-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/html.pem:/etc/ssl/html.pem:ro
       - /dev/log:/dev/log
     depends_on:
       - html
@@ -102,6 +103,7 @@ services:
         ipv4_address: 172.16.10.220
     volumes:
       - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/dashboard.pem:/etc/ssl/dashboard.pem
       - /dev/log:/dev/log
     links:
       - html
@@ -145,12 +147,24 @@ services:
       - etcd
       - rsyslog
 
-  eidas:
-    image: docker.sunet.se/eduid/eduid-eidas:latest
-    container_name: eidas.eduid.docker
+  eidas_haproxy:
+    image: 'docker.sunet.se/library/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.229
+        aliases:
+          - eidas.eduid.docker
+    volumes:
+      - ../eidas-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/eidas.pem:/etc/ssl/eidas.pem:ro
+      - /dev/log:/dev/log
+    depends_on:
+      - eidas
+
+  eidas:
+    image: docker.sunet.se/eduid/eduid-eidas:latest
+    networks:
+      dev:
     expose:
       - 8080
     volumes:
@@ -359,6 +373,7 @@ services:
       - 8080
     volumes:
       - ../eduid-jsconfig/etc:/opt/eduid/etc:ro
+      - ../pki/rootCA.crt:/etc/ssl/rootCA.crt:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
@@ -367,6 +382,7 @@ services:
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
     environment:
+      - "REQUESTS_CA_BUNDLE=/etc/ssl/rootCA.crt"
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=jsconfig"
@@ -510,6 +526,7 @@ services:
           - idp.eduid.docker
     volumes:
       - ../idp-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/idp.pem:/etc/ssl/idp.pem:ro
       - /dev/log:/dev/log
     depends_on:
       - html
@@ -593,6 +610,7 @@ services:
         ipv4_address: 172.16.10.210
     volumes:
       - ../signup-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/signup.pem:/etc/ssl/signup.pem:ro
       - /dev/log:/dev/log
     depends_on:
       - html
@@ -704,7 +722,7 @@ services:
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
 
   neo4jdb:
-    image: neo4j:4.0-enterprise
+    image: neo4j:4.1-enterprise
     expose:
       - 7474
       - 7687

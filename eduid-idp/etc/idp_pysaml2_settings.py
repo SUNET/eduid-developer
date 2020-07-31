@@ -9,7 +9,7 @@ from saml2.saml import NAME_FORMAT_URI
 from saml2.saml import NAMEID_FORMAT_TRANSIENT
 from saml2.saml import NAMEID_FORMAT_PERSISTENT
 
-BASE = 'http://idp.eduid.docker:8080'
+BASE = 'https://idp.eduid.docker'
 
 CONFIG = {
     "entityid": "%s/idp.xml" % BASE,
@@ -37,7 +37,7 @@ CONFIG = {
                     "entity_categories": ["swamid", "edugain"],
                     "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
                 },
-                "http://dashboard.eduid.docker:8080/services/authn/saml2-metadata": {
+                "https://dashboard.eduid.docker/services/authn/saml2-metadata": {
                     # release the internal attribute eduidIdPCredentialsUsed, the eppn and nothing else to eduid-authn
                     "attribute_restrictions": {
                         "eduPersonPrincipalName": None,
@@ -65,9 +65,7 @@ CONFIG = {
     "key_file": "xmlsec+http://py11softhsm:8000/py11softhsm/py11softhsm",
     "cert_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem",
     "metadata": {
-        "local": ["/opt/eduid/eduid-idp/etc/dashboard_metadata.xml",
-                  "/opt/eduid/eduid-idp/etc/authn_metadata.xml",
-                  ],
+        "local": ["/opt/eduid/eduid-idp/etc/authn_metadata.xml"],
     },
     "organization": {
         "display_name": "eduID LOCAL TEST",

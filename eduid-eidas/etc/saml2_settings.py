@@ -8,7 +8,7 @@ from saml2 import attributemaps
 
 DEFAULT_ATTRIBUTEMAPS = path.dirname(attributemaps.__file__)
 
-BASE_URL = 'http://eidas.eduid.docker:8080'
+BASE_URL = 'https://eidas.eduid.docker'
 SAML2DIR = path.dirname(__file__)
 
 SAML_CONFIG = {
@@ -110,7 +110,7 @@ SAML_CONFIG = {
     'organization': {
         'name': [('eduID Dev', 'en')],
         'display_name': [('eduID Dev', 'en')],
-        'url': [('http://www.dev.eduid.se/', 'en')],
+        'url': [('https://www.dev.eduid.se/', 'en')],
     },
 }
 

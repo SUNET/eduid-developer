@@ -102,17 +102,17 @@ VCCS authentication backend.
 Services
 --------
 
-  http://signup.eduid.docker:8080/
-  http://dashboard.eduid.docker:8080/
-  http://html.eduid.docker/
-  http://support.eduid.docker:8080/
+  https://signup.eduid.docker/
+  https://dashboard.eduid.docker/
+  https://html.eduid.docker/
+  https://support.eduid.docker/
 
   http://turq.eduid.docker:13085/+turq/
-  http://rabbitmq.eduid.docker:15672/   (login: admin/password)
 
   mongodb://mongodb.eduid.docker
   redis://redis.eduid.docker
   etcd://etcd.eduid.docker
+  neo4j://neo4jdb.eduid.docker
 
 Live code reloads
 -----------------

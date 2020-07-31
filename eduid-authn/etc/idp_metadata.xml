@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="urn:mace:shibboleth:metadata:1.0" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" entityID="http://idp.eduid.docker:8080/idp.xml">
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="urn:mace:shibboleth:metadata:1.0" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" entityID="https://idp.eduid.docker/idp.xml">
   <ns0:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
     <ns0:Extensions>
       <ns1:Scope regexp="false">local.eduid.se</ns1:Scope>
@@ -58,13 +58,13 @@ jx3X6rm4QeeNnHM8z9hLRrwmezWUpaCjLOmvw4lNSePbcwGPmjQe2g3JYhnlx5aO
         </ns2:X509Data>
       </ns2:KeyInfo>
     </ns0:KeyDescriptor>
-    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://idp.eduid.docker:8080/slo/soap"/>
-    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://idp.eduid.docker:8080/slo/post"/>
-    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://idp.eduid.docker:8080/slo/redirect"/>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://idp.eduid.docker/slo/soap"/>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp.eduid.docker/slo/post"/>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.eduid.docker/slo/redirect"/>
     <ns0:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</ns0:NameIDFormat>
     <ns0:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</ns0:NameIDFormat>
-    <ns0:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://idp.eduid.docker:8080/sso/redirect"/>
-    <ns0:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://idp.eduid.docker:8080/sso/post"/>
+    <ns0:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.eduid.docker/sso/redirect"/>
+    <ns0:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp.eduid.docker/sso/post"/>
   </ns0:IDPSSODescriptor>
   <ns0:Organization>
     <ns0:OrganizationName xml:lang="en">eduID LOCAL TEST</ns0:OrganizationName>

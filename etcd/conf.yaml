@@ -22,16 +22,17 @@ eduid:
             # be valid for all subdomains of SERVER_NAME.
             session_cookie_name: sessid
             session_cookie_domain: .eduid.docker
-            session_cookie_secure: 0
+            session_cookie_secure: yes
+            session_cookie_samesite: None
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
-            preferred_url_scheme: http
+            preferred_url_scheme: https
             # Redis config
             redis_host: redis.eduid_dev
             redis_port: 6379
             redis_db: 0
-            saml2_logout_redirect_url: http://html.eduid.docker/
-            token_service_url: http://dashboard.eduid.docker:8080/services/authn
+            saml2_logout_redirect_url: https://html.eduid.docker/
+            token_service_url: https://dashboard.eduid.docker/services/authn
             celery_config:
                 accept_content: ["application/json"]
                 broker_url: redis://redis.eduid_dev:6379/1
@@ -50,13 +51,13 @@ eduid:
                 en: English
                 sv: Svenska
             mail_default_from: info@eduid.se
-            eduid_site_url: http://html.eduid.docker
-            eduid_static_url: http://html.eduid.docker/static/
-            static_url: http://html.eduid.docker/static/
-            dashboard_url: http://dashboard.eduid.docker:8080/profile/
-            reset_passwd_url: http://dashboard.eduid.docker:8080/services/security/reset-password
+            eduid_site_url: https://html.eduid.docker
+            eduid_static_url: https://html.eduid.docker/static/
+            static_url: https://html.eduid.docker/static/
+            dashboard_url: https://dashboard.eduid.docker/profile/
+            reset_passwd_url: https://dashboard.eduid.docker/services/security/reset-password
             # set absolute URL so it can be included in emails
-            signup_url: http://signup.eduid.docker:8080/register/
+            signup_url: https://signup.eduid.docker/register/
             no_authn_urls:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
@@ -65,13 +66,13 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             environment: dev
-            tou_url: http://idp.eduid.docker:8080/services/actions2/get-tous/
+            tou_url: https://idp.eduid.docker/services/actions2/get-tous/
             tou_version: 2016-v1
             secret_key: supersecretkey
             fido2_rp_id: eduid.docker
             u2f_app_id: https://dashboard.dev.eduid.se
         authn:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/authn
             mongo_uri: mongodb://eduid_authn:eduid_authn_pw@mongodb.eduid_dev
             logger_name: authn
@@ -81,12 +82,12 @@ eduid:
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             saml2_user_main_attribute: eduPersonPrincipalName
             saml2_strip_saml_user_suffix: "@local.eduid.se"
-            signup_authn_success_redirect_url: http://dashboard.eduid.docker:8080
-            signup_authn_failure_redirect_url: http://html.eduid.docker/
-            unsolicited_response_redirect_url: http://dashboard.eduid.docker:8080
-            safe_relay_domain: eduid.docker:8080
+            signup_authn_success_redirect_url: https://dashboard.eduid.docker
+            signup_authn_failure_redirect_url: https://html.eduid.docker/
+            unsolicited_response_redirect_url: https://dashboard.eduid.docker
+            safe_relay_domain: eduid.docker
         letter_proofing:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/letter-proofing
             logger_name: letter_proofing
             log_level: DEBUG
@@ -99,7 +100,7 @@ eduid:
             ekopost_api_user: ekopost_user
             ekopost_api_pw: ekopost_pw
         oidc_proofing:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/oidc-proofing
             logger_name: oidc_proofing
             log_level: DEBUG
@@ -110,7 +111,7 @@ eduid:
                 issuer: http://turq:13085/op/
             mongo_uri: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
         orcid:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/orcid
             logger_name: orcid
             log_level: DEBUG
@@ -122,53 +123,53 @@ eduid:
             mongo_uri: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
             orcid_verify_redirect_url: /profile/accountlinking
         eidas:
-            server_name: eidas.eduid.docker:8080
+            server_name: eidas.eduid.docker
             application_root: /
             logger_name: eidas
             log_level: DEBUG
             mongo_uri: mongodb://eduid_eidas:eduid_eidas_pw@mongodb.eduid_dev
             # SAML2 and SP config
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
-            safe_relay_domain: eduid.docker:8080
-            token_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/security
-            nin_verify_redirect_url: http://dashboard.eduid.docker:8080/profile/nins
+            safe_relay_domain: eduid.docker
+            token_verify_redirect_url: https://dashboard.eduid.docker/profile/security
+            nin_verify_redirect_url: https://dashboard.eduid.docker/profile/nins
         lookup_mobile_proofing:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/lookup-mobile-proofing
             logger_name: lookup_mobile_proofing
             log_level: DEBUG
             mongo_uri: mongodb://eduid_lookup_mobile_proofing:eduid_lookup_mobile_proofing_pw@mongodb.eduid_dev
         support:
-            server_name: support.eduid.docker:8080
+            server_name: support.eduid.docker
             logger_name: support
             log_level: DEBUG
             mongo_uri: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
-            token_service_url_logout: http://dashboard.eduid.docker:8080/services/authn/logout
+            token_service_url_logout: https://dashboard.eduid.docker/services/authn/logout
             support_personnel:
               - mojud-dosiv
               - sadug-katoh
         personal_data:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/personal-data
             mongo_uri: mongodb://eduid_personal_data:eduid_personal_data_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: personal_data
         email:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/email
             mongo_uri: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: email
             email_verify_redirect_url: /profile/emails
         phone:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/phone
             mongo_uri: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: phone
             phone_verification_timeout: 7200
         group_management:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/group-management
             mongo_uri: mongodb://eduid_group_management:eduid_group_management_pw@mongodb.eduid_dev
             neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
@@ -177,7 +178,7 @@ eduid:
             log_level: DEBUG
             logger_name: group_management
         security:
-            server_name: dashboard.eduid.docker:8080
+            server_name: dashboard.eduid.docker
             application_root: /services/security
             mongo_uri: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
             log_level: DEBUG
@@ -192,16 +193,16 @@ eduid:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
         signup2:
-            server_name: signup.eduid.docker:8080
+            server_name: signup.eduid.docker
             application_root: /services/signup
             mongo_uri: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: signup2
             password_length: 10
             vccs_url: 'http://turq:13085/'
-            signup_authn_url: http://dashboard.eduid.docker:8080/services/authn/signup-authn
+            signup_authn_url: https://dashboard.eduid.docker/services/authn/signup-authn
             default_finish_url: https://www.eduid.se/
-            # These keys are for signup.eduid.docker:8080
+            # These keys are for signup.eduid.docker
             recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
             recaptcha_private_key: 6Lf5rCETAAAAAAjQbw1-3j_U2xTZSrDYXlWjBQxt
             students_link: https://www.eduid.se/index.html
@@ -210,7 +211,7 @@ eduid:
             faq_link: https://www.eduid.se/faq.html
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
-            server_name: eduid.docker:8080
+            server_name: eduid.docker
             application_root: /services/jsconfig
             log_level: DEBUG
             logger_name: jsconfig
@@ -238,12 +239,12 @@ eduid:
             ### Take care not to put any sensitive data here.
             # Shared config
             debug: yes
-            static_faq_url: http://html.eduid.docker/faq.html
+            static_faq_url: https://html.eduid.docker/faq.html
             # Dashboard config
             available_languages:
                 - [en, English]
                 - [sv, Svenska]
-            dashboard_url: http://dashboard.eduid.docker:8080/profile/
+            dashboard_url: https://dashboard.eduid.docker/profile/
             personal_data_url: /services/personal-data/
             emails_url: /services/email/
             mobile_url: /services/phone/
@@ -254,8 +255,8 @@ eduid:
             token_service_url: /services/authn/
             oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
             orcid_url: /services/orcid/
-            eidas_url: http://eidas.eduid.docker:8080/
-            #password_service_url: http://login.eduid.docker:8080/services/reset-password/
+            eidas_url: https://eidas.eduid.docker/
+            #password_service_url: https://login.eduid.docker/services/reset-password/
             password_service_url: /services/security/
             token_verify_idp: http://dev.test.swedenconnect.se/idp
             password_length: 12
@@ -268,13 +269,13 @@ eduid:
                 - eidas
             default_country_code: 46
             # Signup config
-            signup_authn_url: http://dashboard.eduid.docker:8080/services/authn/signup-authn
-            # This key is for signup.eduid.docker:8080
+            signup_authn_url: https://dashboard.eduid.docker/services/authn/signup-authn
+            # This key is for signup.eduid.docker
             recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
-            reset_passwd_url: http://dashboard.eduid.docker:8080/services/security/reset-password
+            reset_passwd_url: https://dashboard.eduid.docker/services/security/reset-password
 
         actions2:
-            server_name: idp.eduid.docker:8080
+            server_name: idp.eduid.docker
             application_root: /services/actions2
             log_level: DEBUG
             mongo_uri: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
@@ -284,11 +285,11 @@ eduid:
             bundles_feature_cookie: bundle-version
             bundles_feature_version:
               beta: beta1
-            idp_url: http://idp.eduid.docker:8080/sso/redirect
+            idp_url: https://idp.eduid.docker/sso/redirect
             u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
-            eidas_url: http://eidas.eduid.docker:8080/
+            eidas_url: https://eidas.eduid.docker/
             mfa_authn_idp: http://dev.test.swedenconnect.se/idp
         idp:
             # this enviroment is a cherrypy thing, that can have as
@@ -307,18 +308,18 @@ eduid:
             raven_dsn: https://foo:bar@sentry/2
             content_packages:
                 - [eduid_IdP_html, html/]
-            password_reset_link: http://dashboard.eduid.docker:8080/services/security/reset-password
-            signup_link: http://signup.eduid.docker:8080/
-            dashboard_link: http://dashboard.eduid.docker:8080/
-            student_link: http://html.eduid.docker/index.html
-            technicians_link: http://html.eduid.docker/tekniker.html
-            staff_link: http://html.eduid.docker/personal.html
-            faq_link: http://html.eduid.docker/faq.html
-            privacy_link: http://html.eduid.docker/privacy.html
+            password_reset_link: https://dashboard.eduid.docker/services/security/reset-password
+            signup_link: https://signup.eduid.docker/
+            dashboard_link: https://dashboard.eduid.docker/
+            student_link: https://html.eduid.docker/index.html
+            technicians_link: https://html.eduid.docker/tekniker.html
+            staff_link: https://html.eduid.docker/personal.html
+            faq_link: https://html.eduid.docker/faq.html
+            privacy_link: https://html.eduid.docker/privacy.html
             # uri for the new actions microservice
-            actions_app_uri: http://idp.eduid.docker:8080/services/actions2/
-            static_link: http://html.eduid.docker/static
-            base_url: http://idp.eduid.docker:8080/
+            actions_app_uri: https://idp.eduid.docker/services/actions2/
+            static_link: https://html.eduid.docker/static
+            base_url: https://idp.eduid.docker/
             default_eppn_scope: local.eduid.se
             login_state_ttl: 1
             status_test_usernames: f-testuser1@spam.thulin.net
@@ -332,7 +333,7 @@ eduid:
             shared_session_secret_key: supersecretkey
             tou_reaccept_interval: 604800  # 1 week
         reset_password:
-            server_name: login.eduid.docker:8080
+            server_name: login.eduid.docker
             mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev
             application_root: /services/reset-password
             log_level: DEBUG
