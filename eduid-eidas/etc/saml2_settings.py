@@ -88,6 +88,9 @@ SAML_CONFIG = {
     # set to 1 to output debugging information
     'debug': 1,
 
+    # accept a time difference of 1 min
+    'accepted_time_diff': 60,
+
     # certificate
     'key_file': '/opt/eduid/etc/eidas1-dev-sp-key.pem',  # private part
     'cert_file': '/opt/eduid/etc/eidas1-dev-sp-cert.pem',  # public part

@@ -143,7 +143,7 @@ If you want to run both you need to reset your networking before switching.
 
 ###### Docker:
 
-    $ docker networking rm eduid_dev
+    $ docker network rm eduid_dev
 
 ###### Vagrant (Virtualbox):
 

@@ -27,3 +27,6 @@ brctl addif br-eduid enp0s8
 # Link to sources if missing
 ln -svf /opt/src/eduid-front /opt/eduid-developer/sources/
 ln -svf /opt/src/eduid-html /opt/eduid-developer/sources/
+
+# Create tls keys and certificats
+cd /opt/eduid-developer/pki/ && /opt/eduid-developer/pki/create_pki.sh
