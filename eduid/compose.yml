@@ -97,7 +97,7 @@ services:
       - "HOSTNAME=feature-html"
 
   dashboard_haproxy:
-    image: 'docker.sunet.se/library/haproxy:latest'
+    image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.220
@@ -148,7 +148,7 @@ services:
       - rsyslog
 
   eidas_haproxy:
-    image: 'docker.sunet.se/library/haproxy:latest'
+    image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.229
@@ -518,7 +518,7 @@ services:
       - rsyslog
 
   idp_haproxy:
-    image: 'docker.sunet.se/library/haproxy:latest'
+    image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.200
@@ -604,7 +604,7 @@ services:
       - rsyslog
 
   signup_haproxy:
-    image: 'docker.sunet.se/library/haproxy:latest'
+    image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.210
@@ -646,7 +646,7 @@ services:
       - rsyslog
 
   login_haproxy:
-    image: 'docker.sunet.se/library/haproxy:latest'
+    image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.212
