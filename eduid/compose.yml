@@ -48,7 +48,7 @@ services:
       - rsyslog
 
   html_haproxy:
-    image: 'docker.sunet.se/library/haproxy:latest'
+    image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.230
