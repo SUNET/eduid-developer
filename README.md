@@ -65,6 +65,7 @@ Stopping
 
 ##### Other OS Vagrant environment
 
+    $ make vagrant_stop
     $ make vagrant_halt
 
 
@@ -149,21 +150,32 @@ container (as long as they are present at `EDUID_SRC_PATH`).
 Signup
 ------
 
-The confirmation code will be available in the log file
-TODO (the whole confirmation
-e-mail will be logged instead of sent using SMTP).
+The confirmation email will be available in the log file.
 
+
+ORCID
+-----
+
+You need to obtain the OIDC secrets for the ORCID sandbox from a colleague.
+Create a file named __oidc_client_creds.yaml__ in `eduid-orcid/etc/` that looks like below.
+
+```yaml
+---
+CLIENT_REGISTRATION_INFO:
+  client_id: the_client_id
+  client_secret: the_client_secret
+```
 
 Local Docker vs Vagrant
 -----------------------
 
 If you want to run both you need to reset your networking before switching.
 
-###### Docker:
+##### Docker:
 
     $ docker network rm eduid_dev
 
-###### Vagrant (Virtualbox):
+##### Vagrant (Virtualbox):
 
 Open Virtualbox and go to File -> Host Network Manager and remove the network 172.16.10.0/24.
 
