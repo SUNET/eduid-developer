@@ -79,17 +79,17 @@ TLS certificate
 
   #####  Linux Docker environment
 
-    Run `create_pki.sh` in the `pki` directory before starting your environment.
+  Run `create_pki.sh` in the `pki` directory before starting your environment.
 
   ##### Other OS Vagrant environment
 
-    The script for creating the certificates will be run on `make vagrant_run`.
+  The script for creating the certificates will be run on `make vagrant_run`.
 
   ##### All OS
 
-    The root certificate authority (CA) certificate is located at `pki/rootCA.crt`. This should be added to your browsers certificate in the Authorities section or equivalent.
+  The root certificate authority (CA) certificate is located at `pki/rootCA.crt`. This should be added to your browsers certificate in the Authorities section or equivalent.
 
-    This certificate is generated for each environment so it should be ok to add it to your browser, but keep in mind that you should keep the rootCA.key to yourself as it can be used to do targeted man-in-the-middle attacks against your development machine.
+  This certificate is generated for each environment so it should be ok to add it to your browser, but keep in mind that you should keep the rootCA.key to yourself as it can be used to do targeted man-in-the-middle attacks against your development machine.
 
 Logging
 -------
