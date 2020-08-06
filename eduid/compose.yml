@@ -435,7 +435,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=orcid"
-      - "LOCAL_CFG_FILE=/opt/eduid/etc/oidc_client_creds.py"
+      - "LOCAL_CFG_FILE=/opt/eduid/etc/oidc_client_creds.yaml"
     depends_on:
       - etcd
       - mongodb
