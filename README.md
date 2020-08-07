@@ -31,6 +31,7 @@ The first time it will ask you for sudo rights to be able to write in your /etc/
 Install Vagrant and Virtualbox. Complete the Vagrant Getting started guide until you see that "vagrant up" works.
 
 https://www.virtualbox.org/
+
 https://www.vagrantup.com/intro/getting-started/up
 
 
@@ -64,6 +65,7 @@ Stopping
 
 ##### Other OS Vagrant environment
 
+    $ make vagrant_stop
     $ make vagrant_halt
 
 
@@ -73,6 +75,23 @@ etcd configuration
   The microservices and dashboard js uses etcd to get their configuration.
 
   To update the configuration edit etcd/conf.yaml and run `make update_etcd`.
+
+TLS certificate
+---------------
+
+  #####  Linux Docker environment
+
+  Run `create_pki.sh` in the `pki` directory before starting your environment.
+
+  ##### Other OS Vagrant environment
+
+  The script for creating the certificates will be run on `make vagrant_run`.
+
+  ##### All OS
+
+  The root certificate authority (CA) certificate is located at `pki/rootCA.crt`. This should be added to your browsers certificate in the Authorities section or equivalent.
+
+  This certificate is generated for each environment so it should be ok to add it to your browser, but keep in mind that you should keep the rootCA.key to yourself as it can be used to do targeted man-in-the-middle attacks against your development machine.
 
 Logging
 -------
@@ -131,21 +150,32 @@ container (as long as they are present at `EDUID_SRC_PATH`).
 Signup
 ------
 
-The confirmation code will be available in the log file
-TODO (the whole confirmation
-e-mail will be logged instead of sent using SMTP).
+The confirmation email will be available in the log file.
 
+
+ORCID
+-----
+
+You need to obtain the OIDC secrets for the ORCID sandbox from a colleague.
+Create a file named __oidc_client_creds.yaml__ in `eduid-orcid/etc/` that looks like below.
+
+```yaml
+---
+CLIENT_REGISTRATION_INFO:
+  client_id: the_client_id
+  client_secret: the_client_secret
+```
 
 Local Docker vs Vagrant
 -----------------------
 
 If you want to run both you need to reset your networking before switching.
 
-###### Docker:
+##### Docker:
 
     $ docker network rm eduid_dev
 
-###### Vagrant (Virtualbox):
+##### Vagrant (Virtualbox):
 
 Open Virtualbox and go to File -> Host Network Manager and remove the network 172.16.10.0/24.
 
