@@ -13,12 +13,8 @@ services:
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-signup-amp:/opt/eduid/src/eduid-signup-amp:ro
-      - ../sources/eduid-dashboard-amp:/opt/eduid/src/eduid-dashboard-amp:ro
-      - ../sources/eduid-proofing-amp:/opt/eduid/src/eduid-proofing-amp:ro
-      - ../sources/eduid-action:/opt/eduid/src/eduid-action:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-signup-amp:/opt/eduid/src/eduid-dashboard-amp:/opt/eduid/src/eduid-proofing-amp:/opt/eduid/src/eduid-action/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src"
       - "HOSTNAME=am"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
