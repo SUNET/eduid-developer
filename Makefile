@@ -41,10 +41,10 @@ vagrant_update_etcd:
 	vagrant ssh -c "cd /opt/eduid-developer; make update_etcd"
 
 show_logs:
-	(echo "Logs are in /var/log/eduid/"; docker run -it --init --rm -v eduidlogdata:/var/log/eduid docker.sunet.se/eduid/eduid-webapp bash)
+	(echo "Logs are in /var/log/eduid/"; docker run -it --init --rm --name showlogs -v eduidlogdata:/var/log/eduid docker.sunet.se/eduid/eduid-webapp bash)
 
 show_appdata:
-	(echo "Data is in /appdata/"; docker run -it --init --rm -v appdata:/appdata docker.sunet.se/eduid/eduid-webapp bash)
+	(echo "Data is in /appdata/"; docker run -it --init --rm --name appdata -v appdata:/appdata docker.sunet.se/eduid/eduid-webapp bash)
 
 vagrant_show_logs:
 	(echo "Logs are in /var/log/eduid/"; vagrant ssh -c "docker run -it --init --rm -v eduidlogdata:/var/log/eduid docker.sunet.se/eduid/eduid-webapp bash")
