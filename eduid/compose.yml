@@ -529,8 +529,7 @@ services:
       - actions2
 
   idp:
-    #image: docker.sunet.se/eduid/eduid-idp:latest
-    image: docker.sunet.se/eduid/eduid-idp2:latest
+    image: docker.sunet.se/eduid/eduid-idp:latest
     networks:
       dev:
     volumes:
@@ -538,18 +537,16 @@ services:
       - appdata:/opt/eduid/eduid-idp/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      #- ../sources/eduid-IdP:/opt/eduid/src/eduid-IdP:ro
+      - ../sources/eduid-IdP:/opt/eduid/src/eduid-IdP:ro
       - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-IdP/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=idp"
-      - "app_name=idp"
     depends_on:
       - mongodb
       - redis
