@@ -332,6 +332,16 @@ eduid:
             shared_session_cookie_name: sessid
             shared_session_secret_key: supersecretkey
             tou_reaccept_interval: 604800  # 1 week
+            logging_config:
+              loggers:
+                'saml2':
+                  level: 'WARNING'
+                'xmlsec':
+                  level: 'INFO'
+                'urllib3':
+                  level: 'INFO'
+                'eduid_common.session':
+                  level: 'INFO'
         reset_password:
             server_name: login.eduid.docker
             mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev
