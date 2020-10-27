@@ -46,11 +46,17 @@ show_logs:
 show_appdata:
 	(echo "Data is in /appdata/"; docker run -it --init --rm --name appdata -v appdata:/appdata docker.sunet.se/eduid/eduid-webapp bash)
 
+mongodb_cli:
+	./bin/docker-compose -f eduid/compose.yml exec mongodb mongo
+
 vagrant_show_logs:
 	(echo "Logs are in /var/log/eduid/"; vagrant ssh -c "docker run -it --init --rm -v eduidlogdata:/var/log/eduid docker.sunet.se/eduid/eduid-webapp bash")
 
 vagrant_show_appdata:
 	(echo "Data is in /appdata/"; vagrant ssh -c "docker run -it --init --rm -v appdata:/appdata docker.sunet.se/eduid/eduid-webapp bash")
+
+vagrant_mongodb:
+	vagrant ssh -c "cd /opt/eduid-developer; make mongodb_cli"
 
 vagrant_destroy:
 	vagrant destroy
