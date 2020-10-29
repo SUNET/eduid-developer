@@ -84,7 +84,7 @@ eduid:
             saml2_strip_saml_user_suffix: "@local.eduid.se"
             signup_authn_success_redirect_url: https://dashboard.eduid.docker
             signup_authn_failure_redirect_url: https://html.eduid.docker/
-            unsolicited_response_redirect_url: https://dashboard.eduid.docker
+            unsolicited_response_redirect_url: https://html.eduid.docker
             safe_relay_domain: eduid.docker
         letter_proofing:
             server_name: dashboard.eduid.docker
