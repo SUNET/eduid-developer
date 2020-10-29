@@ -50,10 +50,10 @@ mongodb_cli:
 	./bin/docker-compose -f eduid/compose.yml exec mongodb mongo
 
 vagrant_show_logs:
-	(echo "Logs are in /var/log/eduid/"; vagrant ssh -c "docker run -it --init --rm -v eduidlogdata:/var/log/eduid docker.sunet.se/eduid/eduid-webapp bash")
+	(echo "Logs are in /var/log/eduid/"; vagrant ssh -c "cd /opt/eduid-developer; make show_logs")
 
 vagrant_show_appdata:
-	(echo "Data is in /appdata/"; vagrant ssh -c "docker run -it --init --rm -v appdata:/appdata docker.sunet.se/eduid/eduid-webapp bash")
+	(echo "Data is in /appdata/"; vagrant ssh -c "cd /opt/eduid-developer; make show_appdata")
 
 vagrant_mongodb:
 	vagrant ssh -c "cd /opt/eduid-developer; make mongodb_cli"
