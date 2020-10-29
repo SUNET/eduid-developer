@@ -46,14 +46,20 @@ show_logs:
 show_appdata:
 	(echo "Data is in /appdata/"; docker run -it --init --rm --name appdata -v appdata:/appdata docker.sunet.se/eduid/eduid-webapp bash)
 
+cp_appdata:
+	(echo "You need 'show_appdata' running in another terminal"; docker cp appdata:/appdata/${file} .)
+
 mongodb_cli:
 	./bin/docker-compose -f eduid/compose.yml exec mongodb mongo
 
 vagrant_show_logs:
-	(echo "Logs are in /var/log/eduid/"; vagrant ssh -c "cd /opt/eduid-developer; make show_logs")
+	(vagrant ssh -c "cd /opt/eduid-developer; make show_logs")
 
 vagrant_show_appdata:
-	(echo "Data is in /appdata/"; vagrant ssh -c "cd /opt/eduid-developer; make show_appdata")
+	(vagrant ssh -c "cd /opt/eduid-developer; make show_appdata")
+
+vagrant_cp_appdata:
+	(vagrant ssh -c "cd /opt/eduid-developer; make cp_appdata file=${file}")
 
 vagrant_mongodb:
 	vagrant ssh -c "cd /opt/eduid-developer; make mongodb_cli"
