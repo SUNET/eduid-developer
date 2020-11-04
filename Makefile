@@ -61,10 +61,10 @@ vagrant_show_appdata:
 vagrant_cp_appdata:
 	(vagrant ssh -c "cd /opt/eduid-developer; make cp_appdata file=${file}")
 
-vagrant_mongodb:
+vagrant_mongodb_cli:
 	vagrant ssh -c "cd /opt/eduid-developer; make mongodb_cli"
 
 vagrant_destroy:
 	vagrant destroy
 
-.PHONY: vagrant_run start vagrant_start vagrant_ssh stop vagrant_stop vagrant_halt up vagrant_up pull vagrant_pull update_etcd vagrant_update_etcd vagrant_destroy
+.PHONY: vagrant_run start vagrant_start vagrant_ssh stop vagrant_stop vagrant_halt up vagrant_up pull vagrant_pull update_etcd vagrant_update_etcd show_logs vagrant_show_logs show_appdata vagrant_show_appdata cp_appdata vagrant_cp_appdata mongodb_cli vagrant_mongodb_cli vagrant_destroy
