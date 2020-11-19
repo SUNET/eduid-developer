@@ -28,9 +28,8 @@ eduid:
             # available. This defaults to http
             preferred_url_scheme: https
             # Redis config
-            redis_host: redis.eduid_dev
-            redis_port: 6379
-            redis_db: 0
+            redis_config:
+              host: redis.eduid_dev
             saml2_logout_redirect_url: https://html.eduid.docker/
             token_service_url: https://dashboard.eduid.docker/services/authn
             celery_config:
@@ -189,7 +188,7 @@ eduid:
             chpass_timeout: 600
             u2f_max_allowed_tokens: 50
             u2f_max_description_length: 64
-            u2f_facets:
+            u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
         signup2:
@@ -292,22 +291,14 @@ eduid:
             eidas_url: https://eidas.eduid.docker/
             mfa_authn_idp: http://dev.test.swedenconnect.se/idp
         idp:
-            # this enviroment is a cherrypy thing, that can have as
-            # value(staging|production|embedded|test_suite)
-            environment: staging
-            static_dir: /opt/eduid/eduid-idp/etc/static_files
+            server_name: idp.eduid.docker
+            application_root: /
             pysaml2_config: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
-            listen_port: 8080
-            logdir: /var/log/eduid
-            logfile: /var/log/eduid/eduid_idp.log
             mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/
             userdb_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_am
             userdb_mongo_database: eduid_am
             sso_session_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_idp
             authn_info_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_idp_authninfo
-            raven_dsn: https://foo:bar@sentry/2
-            content_packages:
-                - [eduid_IdP_html, html/]
             password_reset_link: https://dashboard.eduid.docker/services/security/reset-password
             signup_link: https://signup.eduid.docker/
             dashboard_link: https://dashboard.eduid.docker/
@@ -325,10 +316,7 @@ eduid:
             status_test_usernames: f-testuser1@spam.thulin.net
             default_scoped_affiliation: affiliate@local.eduid.se
             max_authn_failures_per_month: 50
-            max_auhtn_failures_per_month: 50   # misspelled in earlier versions
             vccs_url: http://turq:13085/
-            insecure_cookies: true
-            http_headers: Content-Security-Policy:default-src 'self'; script-src 'self' 'unsafe-inline', X-Frame-Options:DENY
             shared_session_cookie_name: sessid
             shared_session_secret_key: supersecretkey
             tou_reaccept_interval: 604800  # 1 week
