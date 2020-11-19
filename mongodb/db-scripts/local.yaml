@@ -284,6 +284,14 @@ mongo_databases:
       read:
         - 'eduid_support'
 
+  eduid_queue:
+    collections:
+      - 'messages'
+    access:
+      readWrite:
+        - 'eduid_queue'
+        - 'eduid_scimapi'
+
   seleg_op:
     collections:
       - 'access_tokens'
