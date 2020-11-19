@@ -79,9 +79,11 @@ mongo_databases:
   eduid_signup:
     collections:
       - 'registered'
+      - 'invites'
     access:
       readWrite:
         - 'eduid_signup'
+        - 'eduid_scimapi'
       read:
         - 'eduid_am'
         - 'eduid_support'
