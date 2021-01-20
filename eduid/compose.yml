@@ -786,6 +786,7 @@ services:
     expose:
       - 8000
     volumes:
+      - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi
       - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro

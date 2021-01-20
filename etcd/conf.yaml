@@ -22,8 +22,9 @@ eduid:
                         level: 'INFO'
                 handlers:
                     notifications:
-                       class: logging.handlers.RotatingFileHandler
-                       filename: '/var/log/eduid/notifications.log'
+                       class: 'logging.handlers.RotatingFileHandler'
+                       formatter: 'default'
+                       filename: '/var/log/eduid/eduid-scimapi-notifications.log'
                        maxBytes: 1024
                        backupCount: 10
     webapp:
