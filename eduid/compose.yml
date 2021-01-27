@@ -815,9 +815,6 @@ services:
       expose:
         - 8000
       volumes:
-         - /etc/group:/etc/group:ro
-         - /etc/passwd:/etc/passwd:ro
-         - /var/log/eduid/eduid-vccs:/var/log/eduid
          - ../vccs:/opt/eduid/vccs:ro
          - ../sources/VCCS2/src/vccs:/opt/eduid/src/vccs:ro
       environment:
