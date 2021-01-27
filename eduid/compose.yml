@@ -806,22 +806,22 @@ services:
     #working_dir: "/opt/eduid/src/eduid-scimapi/src"
     command: /opt/eduid/env/bin/gunicorn --bind=0.0.0.0:8000 --reload --reload-engine poll --capture-output eduid_scimapi.run:api
 
-    vccs:
-      image: 'docker.sunet.se/eduid/eduid-vccs2:latest'
-      restart: always
-      networks:
-        dev:
-          ipv4_address: 172.16.10.238
-      expose:
-        - 8000
-      volumes:
-         - ../vccs:/opt/eduid/vccs:ro
-         - ../sources/VCCS2/src/vccs:/opt/eduid/src/vccs:ro
-      environment:
-        - "PYTHONPATH=/opt/eduid/src"
-        - "EDUID_CONFIG_YAML=/opt/eduid/vccs/config.yaml"
-#      devices:
-#         - /dev/ttyACM0:/dev/ttyACM0
+  vccs:
+    image: 'docker.sunet.se/eduid/eduid-vccs2:latest'
+    restart: always
+    networks:
+      dev:
+        ipv4_address: 172.16.10.238
+    expose:
+      - 8000
+    volumes:
+       - ../vccs:/opt/eduid/vccs:ro
+       - ../sources/VCCS2/src/vccs:/opt/eduid/src/vccs:ro
+    environment:
+      - "PYTHONPATH=/opt/eduid/src"
+      - "EDUID_CONFIG_YAML=/opt/eduid/vccs/config.yaml"
+#    devices:
+#       - /dev/ttyACM0:/dev/ttyACM0
 
 
 volumes:
