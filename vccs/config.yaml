@@ -1,0 +1,7 @@
+---
+eduid:
+  api:
+    vccs:
+      add_creds_password_key_handle: 1
+      mongo_uri: 'mongodb://mongodb.eduid.docker'
+      yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
