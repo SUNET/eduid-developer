@@ -331,6 +331,7 @@ services:
       - etcd
       - msg
       - rsyslog
+      - vccs
 
   phone:
     image: docker.sunet.se/eduid/eduid-phone:latest
@@ -552,7 +553,7 @@ services:
     depends_on:
       - mongodb
       - redis
-      - turq
+      - vccs
       - rsyslog
       - etcd
 
@@ -640,6 +641,7 @@ services:
       - etcd
       - msg
       - rsyslog
+      - vccs
 
   login_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -681,6 +683,7 @@ services:
       - etcd
       - msg
       - rsyslog
+      - vccs
 
   etcd:
     image: docker.sunet.se/library/etcd:v3.3.12
@@ -802,6 +805,26 @@ services:
       - neo4jdb
     #working_dir: "/opt/eduid/src/eduid-scimapi/src"
     command: /opt/eduid/env/bin/gunicorn --bind=0.0.0.0:8000 --reload --reload-engine poll --capture-output eduid_scimapi.run:api
+
+    vccs:
+      image: 'docker.sunet.se/eduid/eduid-vccs2:latest'
+      restart: always
+      networks:
+        dev:
+          ipv4_address: 172.16.10.238
+      expose:
+        - 8000
+      volumes:
+         - /etc/group:/etc/group:ro
+         - /etc/passwd:/etc/passwd:ro
+         - /var/log/eduid/eduid-vccs:/var/log/eduid
+         - ../vccs:/opt/eduid/vccs:ro
+         - ../sources/VCCS2/src/vccs:/opt/eduid/src/vccs:ro
+      environment:
+        - "PYTHONPATH=/opt/eduid/src"
+        - "EDUID_CONFIG_YAML=/opt/eduid/vccs/config.yaml"
+#      devices:
+#         - /dev/ttyACM0:/dev/ttyACM0
 
 
 volumes:

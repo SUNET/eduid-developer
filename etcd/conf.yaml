@@ -196,7 +196,7 @@ eduid:
             mongo_uri: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: security
-            vccs_url: 'http://turq:13085/'
+            vccs_url: 'http://vccs:8000/'
             password_length: 12
             password_entropy: 25
             chpass_timeout: 600
@@ -212,7 +212,7 @@ eduid:
             log_level: DEBUG
             logger_name: signup2
             password_length: 10
-            vccs_url: 'http://turq:13085/'
+            vccs_url: 'http://vccs:8000/'
             signup_authn_url: https://dashboard.eduid.docker/services/authn/signup-authn
             default_finish_url: https://www.eduid.se/
             # These keys are for signup.eduid.docker
@@ -330,7 +330,7 @@ eduid:
             status_test_usernames: f-testuser1@spam.thulin.net
             default_scoped_affiliation: affiliate@local.eduid.se
             max_authn_failures_per_month: 50
-            vccs_url: http://turq:13085/
+            vccs_url: 'http://vccs:8000/'
             shared_session_cookie_name: sessid
             shared_session_secret_key: supersecretkey
             tou_reaccept_interval: 604800  # 1 week
