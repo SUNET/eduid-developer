@@ -815,8 +815,9 @@ services:
     expose:
       - 8000
     volumes:
-       - ../vccs:/opt/eduid/vccs:ro
-       - ../sources/VCCS2/src/vccs:/opt/eduid/src/vccs:ro
+      - /var/log/eduid/eduid-vccs:/var/log/eduid
+      - ../vccs:/opt/eduid/vccs:ro
+      - ../sources/VCCS2/src/vccs:/opt/eduid/src/vccs:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src"
       - "EDUID_CONFIG_YAML=/opt/eduid/vccs/config.yaml"

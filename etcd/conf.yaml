@@ -361,7 +361,7 @@ eduid:
             password_generation_rounds: 32
             phone_verification_timeout: 24
             chpass_timeout: 600
-            vccs_url: http://turq:13085/
+            vccs_url: http://vccs:8000/
     worker:
         common:
             celery:
