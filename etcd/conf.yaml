@@ -327,7 +327,7 @@ eduid:
             base_url: https://idp.eduid.docker/
             default_eppn_scope: local.eduid.se
             login_state_ttl: 1
-            status_test_usernames: f-testuser1@spam.thulin.net
+            status_test_usernames: ['f-testuser1@spam.thulin.net']
             default_scoped_affiliation: affiliate@local.eduid.se
             max_authn_failures_per_month: 50
             vccs_url: 'http://vccs:8000/'
