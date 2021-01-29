@@ -362,6 +362,9 @@ eduid:
             phone_verification_timeout: 24
             chpass_timeout: 600
             vccs_url: http://vccs:8000/
+            u2f_valid_facets:
+                - https://dashboard.dev.eduid.se
+                - https://idp.dev.eduid.se
     worker:
         common:
             celery:
