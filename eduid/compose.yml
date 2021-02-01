@@ -67,6 +67,7 @@ services:
       dev:
         ipv4_address: 172.16.10.231
     volumes:
+      # If you don't build JS bundles locally, leave html.conf out (and also sources/eduid-front/build below)
       - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf:ro
       # source volumes
       - ../sources/eduid-html:/src/eduid/www:ro
