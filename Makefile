@@ -35,7 +35,7 @@ vagrant_pull:
 	vagrant ssh -c "cd /opt/eduid-developer; make pull"
 
 update_etcd:
-	(cd etcd; python3 etcd_config_bootstrap.py --host etcd.eduid.docker)
+	(cd etcd; python3 etcd_config_bootstrap.py --host 172.16.10.254)
 
 vagrant_update_etcd:
 	vagrant ssh -c "cd /opt/eduid-developer; make update_etcd"
