@@ -46,7 +46,23 @@ eduid:
               host: redis.eduid_dev
             saml2_logout_redirect_url: https://html.eduid.docker/
             token_service_url: https://dashboard.eduid.docker/services/authn
+            # OLD:
             celery_config:
+                accept_content: ["application/json"]
+                broker_url: redis://redis.eduid_dev:6379/1
+                result_backend: redis://redis.eduid_dev:6379/1
+                broker_transport_options:
+                    # backwards incompatible setting that the documentation says will be the default in the future
+                    fanout_prefix: true
+                # Avoid broken connections across firewall by disabling pool
+                # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
+                #BROKER_POOL_LIMIT: 0
+                task_routes:
+                  'eduid_am.*': {'queue': 'am'}
+                  'eduid_msg.*': {'queue': 'msg'}
+                  'eduid_lookup_mobile.*': {'queue': 'lookup_mobile'}
+            # NEW
+            celery:
                 accept_content: ["application/json"]
                 broker_url: redis://redis.eduid_dev:6379/1
                 result_backend: redis://redis.eduid_dev:6379/1
@@ -78,7 +94,7 @@ eduid:
               - tou
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
-            environment: dev
+            environment: 'dev'
             tou_url: https://idp.eduid.docker/services/actions2/get-tous/
             tou_version: 2016-v1
             secret_key: supersecretkey
