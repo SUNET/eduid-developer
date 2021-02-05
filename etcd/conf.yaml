@@ -80,6 +80,7 @@ eduid:
                 en: English
                 sv: Svenska
             mail_default_from: info@eduid.se
+            eduid_site_name: eduID
             eduid_site_url: https://html.eduid.docker
             eduid_static_url: https://html.eduid.docker/static/
             static_url: https://html.eduid.docker/static/
@@ -162,6 +163,7 @@ eduid:
             safe_relay_domain: eduid.docker
             token_verify_redirect_url: https://dashboard.eduid.docker/profile/security
             nin_verify_redirect_url: https://dashboard.eduid.docker/profile/nins
+            action_url: https://idp.eduid.docker/services/actions2/
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/lookup-mobile-proofing
@@ -239,6 +241,7 @@ eduid:
             staff_link: https://www.eduid.se/personal.html
             faq_link: https://www.eduid.se/faq.html
         jsconfig:
+            mongo_uri: not_needed
             # this is configuration for the flask app serving the jsconfig microservice
             server_name: eduid.docker
             application_root: /services/jsconfig
