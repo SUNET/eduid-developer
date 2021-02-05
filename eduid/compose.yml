@@ -797,7 +797,7 @@ services:
       - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
       - ../sources/eduid-graphdb:/opt/eduid/src/eduid-graphdb:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/src/eduid-scimapi/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/eduid-scimapi/src"
       - "HOSTNAME=scimapi"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
