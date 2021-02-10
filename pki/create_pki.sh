@@ -43,3 +43,10 @@ if [ ! -f ./signup.key ]; then
     openssl x509 -req -in signup.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out signup.crt -days 730 -sha256 -extfile signup.ext
     cat signup.key signup.crt rootCA.crt > signup.pem
 fi
+
+## login
+if [ ! -f ./login.key ]; then
+    openssl req -new -sha256 -nodes -out login.csr -newkey rsa:2048 -keyout login.key -config login.conf
+    openssl x509 -req -in login.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out login.crt -days 730 -sha256 -extfile login.ext
+    cat login.key login.crt rootCA.crt > login.pem
+fi

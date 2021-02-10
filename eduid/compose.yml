@@ -651,6 +651,7 @@ services:
         ipv4_address: 172.16.10.212
     volumes:
       - ../login-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/login.pem:/etc/ssl/login.pem:ro
       - /dev/log:/dev/log
     depends_on:
       - html
