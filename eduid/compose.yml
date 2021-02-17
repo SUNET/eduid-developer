@@ -225,8 +225,9 @@ services:
       - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
       - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi:ro
       - ../sources/eduid-graphdb:/opt/eduid/src/eduid-graphdb:ro
+      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=group_management"
     depends_on:
