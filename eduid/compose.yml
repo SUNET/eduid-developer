@@ -775,13 +775,13 @@ services:
       dev:
         ipv4_address: 172.16.10.238
     expose:
-      - 8000
+      - 8080
     volumes:
-      - /var/log/eduid/eduid-vccs:/var/log/eduid
+      - eduidlogdata:/var/log/eduid
       - ../vccs:/opt/eduid/vccs:ro
-      - ../sources/VCCS2/src/vccs:/opt/eduid/src/vccs:ro
+      - ../sources/VCCS2/:/opt/eduid/src/VCCS2:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src"
+      - "PYTHONPATH=/opt/eduid/src/VCCS2/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/VCCS2/src"
       - "EDUID_CONFIG_YAML=/opt/eduid/vccs/config.yaml"
 
 
