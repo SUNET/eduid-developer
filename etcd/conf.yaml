@@ -13,6 +13,9 @@ eduid:
             neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
             neo4j_config:
                 encrypted: false
+            data_owners:
+              'eduid.se':
+                notify: []
             logging_config:
                 loggers:
                     'eduid_scimapi.notifications':
