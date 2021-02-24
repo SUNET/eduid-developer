@@ -16,7 +16,8 @@ apt-get install -y git \
   software-properties-common \
   python-pip \
   bash-completion \
-  bridge-utils
+  bridge-utils \
+  python3-pip
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 apt-key fingerprint 0EBFCD88
 add-apt-repository \
@@ -31,5 +32,5 @@ apt-get clean
 
 # Setup environment
 usermod -aG docker vagrant
-pip install pyyaml python-etcd
+pip3 install pyyaml python-etcd
 
