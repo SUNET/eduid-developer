@@ -32,7 +32,7 @@ services:
       - "dashboard.eduid.docker:172.16.10.220"
 
   am:
-    image: docker.sunet.se/eduid/eduid-am:latest
+    image: eduid-worker:latest
     networks:
       dev:
     volumes:
@@ -46,12 +46,12 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src"
       - "HOSTNAME=am"
       - "ETCD_HOST=etcd.eduid_dev"
+      - "eduid_name=am"
     depends_on:
       - etcd
       - mongodb
       - redis
       - rsyslog
-    command: bash /start.sh
 
   authn:
     image: eduid-webapp:latest
@@ -106,7 +106,7 @@ services:
       - personal_data
 
   eidas:
-    image: docker.sunet.se/eduid/eduid-eidas:latest
+    image: eduid-webapp:latest
     networks:
       dev:
     expose:
@@ -124,6 +124,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/pysaml2/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=eidas"
+      - "eduid_name=eidas"
     depends_on:
       - am
       - etcd
@@ -146,7 +147,7 @@ services:
       - eidas
 
   email:
-    image: docker.sunet.se/eduid/eduid-email:latest
+    image: eduid-webapp:latest
     networks:
       dev:
         ipv4_address: 172.16.10.225
@@ -166,6 +167,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=email"
+      - "eduid_name=email"
     depends_on:
       - redis
       - mongodb
@@ -212,7 +214,7 @@ services:
       - "HOSTNAME=feature-html"
 
   group_management:
-    image: docker.sunet.se/eduid/eduid-group-management:latest
+    image: eduid-webapp:latest
     restart: on-failure
     networks:
       dev:
@@ -233,6 +235,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=group_management"
+      - "eduid_name=group_management"
     depends_on:
       - etcd
       - mongodb
@@ -273,7 +276,7 @@ services:
       - feature_html
 
   idp:
-    image: docker.sunet.se/eduid/eduid-idp2:latest
+    image: eduid-webapp:latest
     networks:
       dev:
     volumes:
@@ -292,7 +295,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=idp"
-      - "app_name=idp"
+      - "eduid_name=idp"
     depends_on:
       - etcd
       - mongodb
@@ -317,7 +320,7 @@ services:
       - idp
 
   jsconfig:
-    image: docker.sunet.se/eduid/eduid-jsconfig:latest
+    image: eduid-webapp:latest
     networks:
       dev:
     expose:
@@ -337,6 +340,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=jsconfig"
+      - "eduid_name=jsconfig"
     depends_on:
       - etcd
       - mongodb
@@ -344,7 +348,7 @@ services:
       - rsyslog
 
   letter_proofing:
-    image: docker.sunet.se/eduid/eduid-letter-proofing:latest
+    image: eduid-webapp:latest
     networks:
       dev:
     expose:
@@ -362,6 +366,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src:/opt/eduid/eduid-am:/opt/eduid/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=letter_proofing"
+      - "eduid_name=letter_proofing"
     depends_on:
       - am
       - etcd
@@ -384,7 +389,7 @@ services:
       - reset_password
 
   lookup-mobile:
-    image: docker.sunet.se/eduid/eduid-lookup-mobile:latest
+    image: eduid-worker:latest
     networks:
       dev:
     volumes:
@@ -399,13 +404,14 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-lookup-mobile"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=lookup_mobile"
+      - "eduid_name=lookup_mobile"
     depends_on:
       - mongodb
       - redis
       - rsyslog
 
   lookup_mobile_proofing:
-    image: docker.sunet.se/eduid/eduid-lookup-mobile-proofing:latest
+    image: eduid-webapp:latest
     networks:
       dev:
     expose:
@@ -421,6 +427,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=lookup_mobile_proofing"
+      - "eduid_name=lookup_mobile_proofing"
     depends_on:
       - am
       - etcd
@@ -441,7 +448,7 @@ services:
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
 
   msg:
-    image: docker.sunet.se/eduid/eduid-msg:latest
+    image: eduid-worker:latest
     networks:
       dev:
     volumes:
@@ -456,6 +463,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-am"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=msg"
+      - "eduid_name=msg"
     depends_on:
       - etcd
       - mongodb
@@ -477,7 +485,7 @@ services:
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
 
   oidc_proofing:
-    image: docker.sunet.se/eduid/eduid-oidc-proofing:latest
+    image: eduid-webapp:latest
     networks:
       dev:
     expose:
@@ -493,6 +501,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=oidc_proofing"
+      - "eduid_name=oidc_proofing"
     depends_on:
       - am
       - etcd
@@ -502,7 +511,7 @@ services:
       - turq
 
   orcid:
-    image: docker.sunet.se/eduid/eduid-orcid:latest
+    image: eduid-webapp:latest
     networks:
       dev:
     expose:
@@ -520,6 +529,7 @@ services:
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=orcid"
       - "LOCAL_CFG_FILE=/opt/eduid/etc/oidc_client_creds.yaml"
+      - "eduid_name=orcid"
     depends_on:
       - am
       - etcd
@@ -529,7 +539,7 @@ services:
       - turq
 
   personal_data:
-    image: docker.sunet.se/eduid/eduid-personal-data:latest
+    image: eduid-webapp:latest
     networks:
       dev:
         ipv4_address: 172.16.10.224
@@ -548,6 +558,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=personal_data"
+      - "eduid_name=personal_data"
     depends_on:
       - etcd
       - mongodb
@@ -555,7 +566,7 @@ services:
       - rsyslog
 
   phone:
-    image: docker.sunet.se/eduid/eduid-phone:latest
+    image: eduid-webapp:latest
     networks:
       dev:
         ipv4_address: 172.16.10.226
@@ -575,6 +586,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=phone"
+      - "eduid_name=phone"
     depends_on:
       - etcd
       - mongodb
@@ -610,7 +622,7 @@ services:
       - redisdata:/data
 
   reset_password:
-    image: docker.sunet.se/eduid/eduid-reset-password:latest
+    image: eduid-webapp:latest
     networks:
       dev:
         ipv4_address: 172.16.10.213
@@ -630,6 +642,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=reset_password"
+      - "eduid_name=reset_password"
     depends_on:
       - etcd
       - mongodb
@@ -672,7 +685,7 @@ services:
       - neo4jdb
 
   security:
-    image: docker.sunet.se/eduid/eduid-security:latest
+    image: eduid-webapp:latest
     networks:
       dev:
         ipv4_address: 172.16.10.227
@@ -692,6 +705,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=security"
+      - "eduid_name=security"
     depends_on:
       - etcd
       - mongodb
@@ -701,7 +715,7 @@ services:
       - vccs
 
   signup:
-    image: docker.sunet.se/eduid/eduid-signup2:latest
+    image: eduid-webapp:latest
     networks:
       dev:
         ipv4_address: 172.16.10.211
@@ -721,6 +735,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=signup"
+      - "eduid_name=signup"
     depends_on:
       - etcd
       - mongodb
@@ -744,7 +759,7 @@ services:
       - signup
 
   support:
-    image: docker.sunet.se/eduid/eduid-support:latest
+    image: eduid-webapp:latest
     networks:
       dev:
         ipv4_address: 172.16.10.223
@@ -759,6 +774,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=support"
+      - "eduid_name=support"
     depends_on:
       - etcd
       - mongodb
