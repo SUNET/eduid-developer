@@ -3,7 +3,7 @@ version: '3.4'
 services:
 
   actions2:
-    image: docker.sunet.se/eduid/eduid-actions2:latest
+    image: eduid-webapp:latest
     networks:
       dev:
     expose:
@@ -21,6 +21,8 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions2"
+      - "eduid_name=actions2"
+      - "eduid_entrypoint=eduid_webapp.actions.run:app"
     depends_on:
       - etcd
       - mongodb
@@ -52,7 +54,7 @@ services:
     command: bash /start.sh
 
   authn:
-    image: docker.sunet.se/eduid/eduid-authn:latest
+    image: eduid-webapp:latest
     networks:
       dev:
     expose:
@@ -69,6 +71,7 @@ services:
       - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=authn"
+      - "eduid_name=authn"
     depends_on:
       - etcd
       - mongodb
