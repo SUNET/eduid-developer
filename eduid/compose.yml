@@ -13,12 +13,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions2"
       - "eduid_name=actions2"
@@ -39,11 +35,8 @@ services:
       - ../eduid-am/etc:/opt/eduid/eduid-am/etc:ro
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src"
       - "HOSTNAME=am"
       - "ETCD_HOST=etcd.eduid_dev"
       - "eduid_name=am"
@@ -64,11 +57,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=authn"
       - "eduid_name=authn"
@@ -116,12 +106,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/pysaml2/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=eidas"
       - "eduid_name=eidas"
@@ -158,13 +144,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=email"
       - "eduid_name=email"
@@ -225,14 +206,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi:ro
-      - ../sources/eduid-graphdb:/opt/eduid/src/eduid-graphdb:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=group_management"
       - "eduid_name=group_management"
@@ -284,15 +259,11 @@ services:
       - appdata:/opt/eduid/eduid-idp/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      #- ../sources/eduid-IdP:/opt/eduid/src/eduid-IdP:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src:/opt/eduid/eduid-webapp/src"
+      - "PYTHONPATH=/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=idp"
       - "eduid_name=idp"
@@ -331,13 +302,9 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
       - "REQUESTS_CA_BUNDLE=/etc/ssl/rootCA.crt"
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=jsconfig"
       - "eduid_name=jsconfig"
@@ -357,13 +324,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src:/opt/eduid/eduid-am:/opt/eduid/eduid_msg"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=letter_proofing"
       - "eduid_name=letter_proofing"
@@ -397,11 +359,8 @@ services:
       - appdata:/opt/eduid/eduid-lookup-mobile/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-lookup-mobile"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=lookup_mobile"
       - "eduid_name=lookup_mobile"
@@ -420,11 +379,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=lookup_mobile_proofing"
       - "eduid_name=lookup_mobile_proofing"
@@ -456,11 +412,8 @@ services:
       - appdata:/opt/eduid/eduid-msg/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-am"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=msg"
       - "eduid_name=msg"
@@ -494,11 +447,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=oidc_proofing"
       - "eduid_name=oidc_proofing"
@@ -521,11 +471,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=orcid"
       - "LOCAL_CFG_FILE=/opt/eduid/etc/oidc_client_creds.yaml"
@@ -550,12 +497,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=personal_data"
       - "eduid_name=personal_data"
@@ -577,13 +520,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=phone"
       - "eduid_name=phone"
@@ -633,13 +571,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=reset_password"
       - "eduid_name=reset_password"
@@ -671,12 +604,8 @@ services:
     volumes:
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-graphdb:/opt/eduid/src/eduid-graphdb:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/eduid-scimapi/src"
       - "HOSTNAME=scimapi"
       - "ETCD_HOST=etcd.eduid_dev"
     depends_on:
@@ -696,13 +625,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=security"
       - "eduid_name=security"
@@ -726,13 +650,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=signup"
       - "eduid_name=signup"
@@ -767,11 +686,8 @@ services:
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=support"
       - "eduid_name=support"
