@@ -398,6 +398,7 @@ eduid:
                     fanout_patterns: true
                 # Workaround for Celery 4.2.1 not issuing AMQP heartbeats
                 #broker_heartbeat: 0
+            environment: 'dev'
         am:
             mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
             new_user_date: '2001-01-01'
