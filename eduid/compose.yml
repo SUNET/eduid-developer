@@ -40,6 +40,7 @@ services:
       - "HOSTNAME=am"
       - "ETCD_HOST=etcd.eduid_dev"
       - "eduid_name=am"
+      - "celery_args=--loglevel DEBUG"
     depends_on:
       - etcd
       - mongodb
@@ -364,6 +365,7 @@ services:
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=lookup_mobile"
       - "eduid_name=lookup_mobile"
+      - "celery_args=--loglevel DEBUG"
     depends_on:
       - mongodb
       - redis
@@ -417,6 +419,7 @@ services:
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=msg"
       - "eduid_name=msg"
+      - "celery_args=--loglevel DEBUG"
     depends_on:
       - etcd
       - mongodb
