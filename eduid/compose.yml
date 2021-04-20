@@ -3,7 +3,7 @@ version: '3.4'
 services:
 
   actions2:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     expose:
@@ -18,7 +18,7 @@ services:
       - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions2"
       - "eduid_name=actions2"
-      - "eduid_entrypoint=eduid_webapp.actions.run:app"
+      - "eduid_entrypoint=eduid.webapp.actions.run:app"
     depends_on:
       - etcd
       - mongodb
@@ -28,7 +28,7 @@ services:
       - "dashboard.eduid.docker:172.16.10.220"
 
   am:
-    image: eduid-worker:latest
+    image: docker.sunet.se/eduid/worker:20210420T133114-staging
     networks:
       dev:
     volumes:
@@ -48,7 +48,7 @@ services:
       - rsyslog
 
   authn:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     expose:
@@ -97,7 +97,7 @@ services:
       - personal_data
 
   eidas:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     expose:
@@ -134,7 +134,7 @@ services:
       - eidas
 
   email:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
         ipv4_address: 172.16.10.225
@@ -178,25 +178,8 @@ services:
     volumes:
       - etcddata:/data
 
-  feature_html:
-    image: docker.sunet.se/eduid/eduid-html:latest
-    expose:
-      - 80
-    dns: 172.16.10.1
-    networks:
-      dev:
-        ipv4_address: 172.16.10.232
-    volumes:
-      - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf:ro
-      # source volumes
-      - ../sources/eduid-html:/src/eduid/www:ro
-      - ../sources/eduid-html/static:/src/eduid/static:ro
-      - ../sources/eduid-front/build:/src/eduid/front-build:ro
-    environment:
-      - "HOSTNAME=feature-html"
-
   group_management:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     restart: on-failure
     networks:
       dev:
@@ -249,10 +232,9 @@ services:
       - /dev/log:/dev/log
     depends_on:
       - html
-      - feature_html
 
   idp:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     volumes:
@@ -292,7 +274,7 @@ services:
       - idp
 
   jsconfig:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     expose:
@@ -316,7 +298,7 @@ services:
       - rsyslog
 
   letter_proofing:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     expose:
@@ -352,7 +334,7 @@ services:
       - reset_password
 
   lookup-mobile:
-    image: eduid-worker:latest
+    image: docker.sunet.se/eduid/worker:20210420T133114-staging
     networks:
       dev:
     volumes:
@@ -372,7 +354,7 @@ services:
       - rsyslog
 
   lookup_mobile_proofing:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     expose:
@@ -406,7 +388,7 @@ services:
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
 
   msg:
-    image: eduid-worker:latest
+    image: docker.sunet.se/eduid/worker:20210420T133114-staging
     networks:
       dev:
     volumes:
@@ -441,7 +423,7 @@ services:
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
 
   oidc_proofing:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     expose:
@@ -464,7 +446,7 @@ services:
       - turq
 
   orcid:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     expose:
@@ -489,7 +471,7 @@ services:
       - turq
 
   personal_data:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
         ipv4_address: 172.16.10.224
@@ -512,7 +494,7 @@ services:
       - rsyslog
 
   phone:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
         ipv4_address: 172.16.10.226
@@ -563,7 +545,7 @@ services:
       - redisdata:/data
 
   reset_password:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
         ipv4_address: 172.16.10.213
@@ -597,7 +579,7 @@ services:
       - rsyslogdata:/var/log/eduid
 
   scimapi:
-    image: eduid-falconapi:latest
+    image: docker.sunet.se/eduid/falconapi:20210420T133114-staging
     restart: on-failure
     networks:
       dev:
@@ -619,7 +601,7 @@ services:
       - neo4jdb
 
   security:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
         ipv4_address: 172.16.10.227
@@ -644,7 +626,7 @@ services:
       - vccs
 
   signup:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
         ipv4_address: 172.16.10.211
@@ -683,7 +665,7 @@ services:
       - signup
 
   support:
-    image: eduid-webapp:latest
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
         ipv4_address: 172.16.10.223
@@ -709,7 +691,7 @@ services:
         ipv4_address: 172.16.10.250
 
   vccs:
-    image: 'docker.sunet.se/eduid/eduid-vccs2:latest'
+    image: docker.sunet.se/eduid/fastapi:20210420T133114-staging
     restart: always
     networks:
       dev:
@@ -723,11 +705,13 @@ services:
     environment:
       - "PYTHONPATH=/opt/eduid/src/VCCS2/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/VCCS2/src"
       - "EDUID_CONFIG_YAML=/opt/eduid/vccs/config.yaml"
+      - "eduid_entrypoint=eduid.vccs.server.run:app"
+      - "eduid_name=vccs"
 
 
   # Update config in etcd on each restart
   update_etcd:
-    image: 'docker.sunet.se/eduid/eduid-webapp:latest'
+    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
     networks:
       dev:
     volumes:

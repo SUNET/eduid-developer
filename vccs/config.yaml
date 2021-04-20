@@ -1,6 +1,8 @@
 ---
 eduid:
   api:
+    common:
+      bogus: true
     vccs:
       add_creds_password_key_handle: 1
       mongo_uri: 'mongodb://mongodb.eduid_dev'
