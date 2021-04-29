@@ -30,6 +30,10 @@ eduid:
                        filename: '/var/log/eduid/eduid-scimapi-notifications.log'
                        maxBytes: 1024
                        backupCount: 10
+        vccs:
+            add_creds_password_key_handle: 1
+            mongo_uri: 'mongodb://mongodb.eduid_dev'
+            yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
     webapp:
         common:
             devel_mode: yes
@@ -226,12 +230,12 @@ eduid:
             u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
-        signup2:
+        signup:
             server_name: signup.eduid.docker
             application_root: /services/signup
             mongo_uri: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
             log_level: DEBUG
-            logger_name: signup2
+            logger_name: signup
             password_length: 10
             vccs_url: 'http://vccs:8080/'
             signup_authn_url: https://dashboard.eduid.docker/services/authn/signup-authn

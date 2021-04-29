@@ -10,17 +10,18 @@ services:
       - 8080
     volumes:
       - ../eduid-actions2/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=actions2"
       - "eduid_name=actions2"
+      - "EDUID_CONFIG_NS=/eduid/webapp/actions2"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
       - "eduid_entrypoint=eduid.webapp.actions.run:app"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -33,16 +34,17 @@ services:
       dev:
     volumes:
       - ../eduid-am/etc:/opt/eduid/eduid-am/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
       - "HOSTNAME=am"
-      - "ETCD_HOST=etcd.eduid_dev"
       - "eduid_name=am"
+      - "EDUID_CONFIG_NS=/eduid/worker/am"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
       - "celery_args=--loglevel DEBUG"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -57,14 +59,15 @@ services:
       - ../eduid-authn/etc:/opt/eduid/etc:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=authn"
       - "eduid_name=authn"
+      - "EDUID_CONFIG_NS=/eduid/webapp/authn"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -104,17 +107,18 @@ services:
       - 8080
     volumes:
       - ../eduid-eidas/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=eidas"
       - "eduid_name=eidas"
+      - "EDUID_CONFIG_NS=/eduid/webapp/eidas"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -142,41 +146,19 @@ services:
       - 8080
     volumes:
       - ../eduid-email/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=email"
       - "eduid_name=email"
+      - "EDUID_CONFIG_NS=/eduid/webapp/email"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - redis
       - mongodb
-      - etcd
-
-  etcd:
-    image: docker.sunet.se/library/etcd:v3.3.12
-    expose:
-      - 2379
-      - 2380
-      - 4001
-    networks:
-      dev:
-        ipv4_address: 172.16.10.254
-    command: >-
-      etcd
-      -name etcd
-      -advertise-client-urls http://172.16.10.254:2379,http://172.16.10.254:4001
-      -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
-      -initial-advertise-peer-urls http://172.16.10.254:2380
-      -listen-peer-urls http://0.0.0.0:2380
-      -initial-cluster-token etcd-cluster-1
-      -initial-cluster etcd=http://172.16.10.254:2380
-      -initial-cluster-state new
-      -data-dir /data
-    volumes:
-      - etcddata:/data
 
   group_management:
     image: docker.sunet.se/eduid/webapp:20210420T133114-staging
@@ -187,16 +169,17 @@ services:
       - 8080
     volumes:
       - ../eduid-group-management/etc:/opt/eduid/etc
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=group_management"
       - "eduid_name=group_management"
+      - "EDUID_CONFIG_NS=/eduid/webapp/group_management"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -239,6 +222,7 @@ services:
       dev:
     volumes:
       - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/eduid-idp/run
       - eduidlogdata:/var/log/eduid
       # source volumes
@@ -247,11 +231,11 @@ services:
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src"
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=idp"
       - "eduid_name=idp"
+      - "EDUID_CONFIG_NS=/eduid/webapp/idp"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -282,17 +266,19 @@ services:
     volumes:
       - ../eduid-jsconfig/etc:/opt/eduid/etc:ro
       - ../pki/rootCA.crt:/etc/ssl/rootCA.crt:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
       - "REQUESTS_CA_BUNDLE=/etc/ssl/rootCA.crt"
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=jsconfig"
       - "eduid_name=jsconfig"
+      # Can't set EDUID_CONFIG_NS for jsconfig as the value will be used for jsapps also
+      #- "EDUID_CONFIG_NS=/eduid/webapp/jsconfig"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -304,17 +290,18 @@ services:
     expose:
       - 8080
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=letter_proofing"
       - "eduid_name=letter_proofing"
+      - "EDUID_CONFIG_NS=/eduid/webapp/letter_proofing"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -339,14 +326,16 @@ services:
       dev:
     volumes:
       - ../eduid-lookup-mobile/etc:/opt/eduid/eduid-lookup-mobile/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/eduid-lookup-mobile/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=lookup_mobile"
       - "eduid_name=lookup_mobile"
+      - "EDUID_CONFIG_NS=/eduid/worker/lookup_mobile"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
       - "celery_args=--loglevel DEBUG"
     depends_on:
       - mongodb
@@ -360,17 +349,18 @@ services:
     expose:
       - 8080
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=lookup_mobile_proofing"
       - "eduid_name=lookup_mobile_proofing"
+      - "EDUID_CONFIG_NS=/eduid/webapp/lookup_mobile_proofing"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - turq
@@ -393,17 +383,18 @@ services:
       dev:
     volumes:
       - ../eduid-msg/etc:/opt/eduid/eduid-msg/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/eduid-msg/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=msg"
       - "eduid_name=msg"
+      - "EDUID_CONFIG_NS=/eduid/worker/msg"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
       - "celery_args=--loglevel DEBUG"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -429,17 +420,18 @@ services:
     expose:
       - 8080
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=oidc_proofing"
       - "eduid_name=oidc_proofing"
+      - "EDUID_CONFIG_NS=/eduid/webapp/oidc_proofing"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -453,18 +445,19 @@ services:
       - 8080
     volumes:
       - ../eduid-orcid/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=orcid"
       - "LOCAL_CFG_FILE=/opt/eduid/etc/oidc_client_creds.yaml"
       - "eduid_name=orcid"
+      - "EDUID_CONFIG_NS=/eduid/webapp/orcid"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -479,16 +472,17 @@ services:
       - 8080
     volumes:
       - ../eduid-personal-data/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=personal_data"
       - "eduid_name=personal_data"
+      - "EDUID_CONFIG_NS=/eduid/webapp/personal_data"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -502,16 +496,17 @@ services:
       - 8080
     volumes:
       - ../eduid-phone/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=phone"
       - "eduid_name=phone"
+      - "EDUID_CONFIG_NS=/eduid/webapp/phone"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - msg
       - redis
@@ -553,16 +548,17 @@ services:
       - 8080
     volumes:
       - ../eduid-reset-password/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=reset_password"
       - "eduid_name=reset_password"
+      - "EDUID_CONFIG_NS=/eduid/webapp/reset_password"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - msg
       - redis
@@ -587,17 +583,18 @@ services:
     expose:
       - 8000
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
       - "eduid_name=scimapi"
-      - "eduid_entrypoint=eduid.scimapi.run:api"
       - "HOSTNAME=scimapi"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "EDUID_CONFIG_NS=/eduid/api/scimapi"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      - "eduid_entrypoint=eduid.scimapi.run:api"
     depends_on:
       - mongodb
-      - etcd
       - neo4jdb
 
   security:
@@ -609,16 +606,17 @@ services:
       - 8080
     volumes:
       - ../eduid-security/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=security"
       - "eduid_name=security"
+      - "EDUID_CONFIG_NS=/eduid/webapp/security"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - msg
       - redis
@@ -633,17 +631,18 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-signup2/etc:/opt/eduid/etc
+      - ../eduid-signup/etc:/opt/eduid/etc
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=signup"
       - "eduid_name=signup"
+      - "EDUID_CONFIG_NS=/eduid/webapp/signup"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - msg
       - redis
@@ -670,16 +669,17 @@ services:
       dev:
         ipv4_address: 172.16.10.223
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro
     environment:
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=support"
       - "eduid_name=support"
+      - "EDUID_CONFIG_NS=/eduid/webapp/support"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -699,33 +699,16 @@ services:
     expose:
       - 8080
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
       - ../vccs:/opt/eduid/vccs:ro
       - ../sources/VCCS2/:/opt/eduid/src/VCCS2:ro
     environment:
       - "PYTHONPATH=/opt/eduid/src/VCCS2/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/VCCS2/src"
-      - "EDUID_CONFIG_YAML=/opt/eduid/vccs/config.yaml"
       - "eduid_entrypoint=eduid.vccs.server.run:app"
       - "eduid_name=vccs"
-
-
-  # Update config in etcd on each restart
-  update_etcd:
-    image: docker.sunet.se/eduid/webapp:20210420T133114-staging
-    networks:
-      dev:
-    volumes:
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-      - /opt/eduid/src/eduid-developer/etcd:/etcd:ro
-    environment:
-      - "ETCD_HOST=etcd.eduid_dev"
-    links:
-      - etcd
-    depends_on:
-      - etcd
-    working_dir: /etcd
-    entrypoint: "sh -c 'sleep 1; /opt/eduid/bin/python3 /etcd/etcd_config_bootstrap.py'"
+      - "EDUID_CONFIG_NS=/eduid/api/vccs"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
 
 
 volumes:
@@ -733,8 +716,6 @@ volumes:
     name: appdata
   eduidlogdata:
     name: eduidlogdata
-  etcddata:
-    name: etcddata
   mongodbdata:
     name: mongodbdata
   neo4jdbdata:

@@ -21,7 +21,6 @@ done
 #
 (printf "172.16.10.200\tidp.eduid_dev idp.eduid.docker\n";
     printf "172.16.10.210\tsignup.eduid_dev signup.eduid.docker\n";
-    printf "172.16.10.211\tsignup2.eduid_dev signup2.eduid.docker\n";
     printf "172.16.10.212\tlogin.eduid_dev login.eduid.docker\n";
     printf "172.16.10.220\tdashboard.eduid_dev dashboard.eduid.docker\n";
     printf "172.16.10.223\tsupport.eduid_dev support.eduid.docker\n";
