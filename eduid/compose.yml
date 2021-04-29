@@ -687,7 +687,8 @@ services:
     image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
-        ipv4_address: 172.16.10.223
+    expose:
+      - 8080
     volumes:
       - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
@@ -704,6 +705,20 @@ services:
       - mongodb
       - redis
       - rsyslog
+
+  support_haproxy:
+    image: 'docker.sunet.se/eduid/haproxy:latest'
+    networks:
+      dev:
+        ipv4_address: 172.16.10.223
+    volumes:
+      - ../support-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/support.pem:/etc/ssl/support.pem
+      - /dev/log:/dev/log
+    links:
+      - support
+    depends_on:
+      - support
 
   turq:
     image: docker.sunet.se/eduid/turq

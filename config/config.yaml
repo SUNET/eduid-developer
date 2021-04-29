@@ -186,6 +186,7 @@ eduid:
             support_personnel:
               - mojud-dosiv
               - sadug-katoh
+              - bamus-mutod
         personal_data:
             server_name: dashboard.eduid.docker
             application_root: /services/personal-data

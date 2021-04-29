@@ -50,3 +50,10 @@ if [ ! -f ./login.key ]; then
     openssl x509 -req -in login.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out login.crt -days 730 -sha256 -extfile login.ext
     cat login.key login.crt rootCA.crt > login.pem
 fi
+
+## support
+if [ ! -f ./support.key ]; then
+    openssl req -new -sha256 -nodes -out support.csr -newkey rsa:2048 -keyout support.key -config support.conf
+    openssl x509 -req -in support.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out support.crt -days 730 -sha256 -extfile support.ext
+    cat support.key support.crt rootCA.crt > support.pem
+fi
