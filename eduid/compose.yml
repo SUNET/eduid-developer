@@ -721,9 +721,10 @@ services:
     expose:
       - 8080
     volumes:
+      - ../vccs:/opt/eduid/vccs:ro
       - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
-      - ../vccs:/opt/eduid/vccs:ro
+      # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
       <<: *common-env-variables
