@@ -15,4 +15,8 @@ py11softhsm/var/
 raw_db_changes
 vagrant.yml
 .vagrant/
-pki/
+pki/*key
+pki/*crt
+pki/*pem
+pki/*srl
+pki/*csr
