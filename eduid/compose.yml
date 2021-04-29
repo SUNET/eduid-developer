@@ -1,7 +1,12 @@
 ---
 version: '3.4'
-services:
 
+x-common-env-variables: &common-env-variables
+  PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/
+  EDUID_CONFIG_YAML: /opt/eduid/config.yaml
+  extra_args: --reload
+
+services:
   actions2:
     image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
@@ -16,12 +21,11 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=actions2"
-      - "eduid_name=actions2"
-      - "EDUID_CONFIG_NS=/eduid/webapp/actions2"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
-      - "eduid_entrypoint=eduid.webapp.actions.run:app"
+      <<: *common-env-variables
+      HOSTNAME: actions2
+      eduid_name: actions2
+      EDUID_CONFIG_NS: /eduid/webapp/actions2
+      eduid_entrypoint: eduid.webapp.actions.run:app
     depends_on:
       - mongodb
       - redis
@@ -40,12 +44,11 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=am"
-      - "eduid_name=am"
-      - "EDUID_CONFIG_NS=/eduid/worker/am"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
-      - "celery_args=--loglevel DEBUG"
+      <<: *common-env-variables
+      HOSTNAME: am
+      eduid_name: am
+      EDUID_CONFIG_NS: /eduid/worker/am
+      celery_args: --loglevel DEBUG
     depends_on:
       - mongodb
       - redis
@@ -65,11 +68,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=authn"
-      - "eduid_name=authn"
-      - "EDUID_CONFIG_NS=/eduid/webapp/authn"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: authn
+      eduid_name: authn
+      EDUID_CONFIG_NS: /eduid/webapp/authn
     depends_on:
       - mongodb
       - redis
@@ -116,11 +118,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=eidas"
-      - "eduid_name=eidas"
-      - "EDUID_CONFIG_NS=/eduid/webapp/eidas"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: eidas
+      eduid_name: eidas
+      EDUID_CONFIG_NS: /eduid/webapp/eidas
     depends_on:
       - am
       - mongodb
@@ -156,11 +157,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=email"
-      - "eduid_name=email"
-      - "EDUID_CONFIG_NS=/eduid/webapp/email"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: email
+      eduid_name: email
+      EDUID_CONFIG_NS: /eduid/webapp/email
     depends_on:
       - redis
       - mongodb
@@ -180,11 +180,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=group_management"
-      - "eduid_name=group_management"
-      - "EDUID_CONFIG_NS=/eduid/webapp/group_management"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: group_management
+      eduid_name: group_management
+      EDUID_CONFIG_NS: /eduid/webapp/group_management
     depends_on:
       - mongodb
       - redis
@@ -206,7 +205,7 @@ services:
       - ../sources/eduid-html/static:/src/eduid/static:ro
       - ../sources/eduid-front/build:/src/eduid/front-build:ro
     environment:
-      - "HOSTNAME=html"
+      HOSTNAME: html
 
   html_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -236,12 +235,12 @@ services:
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src:/opt/eduid/src/"
-      - "HOSTNAME=idp"
-      - "eduid_name=idp"
-      - "EDUID_CONFIG_NS=/eduid/webapp/idp"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
-      - "pysaml2_settings=/opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py"
+      <<: *common-env-variables
+      PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src:/opt/eduid/src/
+      HOSTNAME: idp
+      eduid_name: idp
+      EDUID_CONFIG_NS: /eduid/webapp/idp
+      pysaml2_settings: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
     depends_on:
       - mongodb
       - redis
@@ -279,13 +278,13 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "REQUESTS_CA_BUNDLE=/etc/ssl/rootCA.crt"
-      - "HOSTNAME=jsconfig"
-      - "eduid_name=jsconfig"
+      <<: *common-env-variables
+      PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/
+      REQUESTS_CA_BUNDLE: /etc/ssl/rootCA.crt
+      HOSTNAME: jsconfig
+      eduid_name: jsconfig
       # Can't set EDUID_CONFIG_NS for jsconfig as the value will be used for jsapps also
       #- "EDUID_CONFIG_NS=/eduid/webapp/jsconfig"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - mongodb
       - redis
@@ -304,11 +303,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=letter_proofing"
-      - "eduid_name=letter_proofing"
-      - "EDUID_CONFIG_NS=/eduid/webapp/letter_proofing"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: letter_proofing
+      eduid_name: letter_proofing
+      EDUID_CONFIG_NS: /eduid/webapp/letter_proofing
     depends_on:
       - am
       - mongodb
@@ -341,12 +339,11 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=lookup_mobile"
-      - "eduid_name=lookup_mobile"
-      - "EDUID_CONFIG_NS=/eduid/worker/lookup_mobile"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
-      - "celery_args=--loglevel DEBUG"
+      <<: *common-env-variables
+      HOSTNAME: lookup_mobile
+      eduid_name: lookup_mobile
+      EDUID_CONFIG_NS: /eduid/worker/lookup_mobile
+      celery_args: --loglevel DEBUG
     depends_on:
       - mongodb
       - redis
@@ -365,11 +362,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=lookup_mobile_proofing"
-      - "eduid_name=lookup_mobile_proofing"
-      - "EDUID_CONFIG_NS=/eduid/webapp/lookup_mobile_proofing"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: lookup_mobile_proofing
+      eduid_name: lookup_mobile_proofing
+      EDUID_CONFIG_NS: /eduid/webapp/lookup_mobile_proofing
     depends_on:
       - am
       - mongodb
@@ -400,12 +396,11 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=msg"
-      - "eduid_name=msg"
-      - "EDUID_CONFIG_NS=/eduid/worker/msg"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
-      - "celery_args=--loglevel DEBUG"
+      <<: *common-env-variables
+      HOSTNAME: msg
+      eduid_name: msg
+      EDUID_CONFIG_NS: /eduid/worker/msg
+      celery_args: --loglevel DEBUG
     depends_on:
       - mongodb
       - redis
@@ -438,11 +433,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=oidc_proofing"
-      - "eduid_name=oidc_proofing"
-      - "EDUID_CONFIG_NS=/eduid/webapp/oidc_proofing"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: oidc_proofing
+      eduid_name: oidc_proofing
+      EDUID_CONFIG_NS: /eduid/webapp/oidc_proofing
     depends_on:
       - am
       - mongodb
@@ -464,12 +458,11 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=orcid"
-      - "LOCAL_CFG_FILE=/opt/eduid/etc/oidc_client_creds.yaml"
-      - "eduid_name=orcid"
-      - "EDUID_CONFIG_NS=/eduid/webapp/orcid"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: orcid
+      LOCAL_CFG_FILE: /opt/eduid/etc/oidc_client_creds.yaml
+      eduid_name: orcid
+      EDUID_CONFIG_NS: /eduid/webapp/orcid
     depends_on:
       - am
       - mongodb
@@ -492,11 +485,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=personal_data"
-      - "eduid_name=personal_data"
-      - "EDUID_CONFIG_NS=/eduid/webapp/personal_data"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: personal_data
+      eduid_name: personal_data
+      EDUID_CONFIG_NS: /eduid/webapp/personal_data
     depends_on:
       - mongodb
       - redis
@@ -517,11 +509,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=phone"
-      - "eduid_name=phone"
-      - "EDUID_CONFIG_NS=/eduid/webapp/phone"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: phone
+      eduid_name: phone
+      EDUID_CONFIG_NS: /eduid/webapp/phone
     depends_on:
       - mongodb
       - msg
@@ -540,9 +531,9 @@ services:
       - ../sources/pyeleven:/opt/eduid/src/pyeleven:ro
       - ../py11softhsm/idp-public-snakeoil.key:/opt/eduid/idp-public-snakeoil.key:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/pyeleven/src"
-      - "ENABLE_PKCS11_SPY=anything"
-      - "p11softhsm_init_rsa_key=/opt/eduid/idp-public-snakeoil.key"
+      PYTHONPATH: /opt/eduid/src/pyeleven/src
+      ENABLE_PKCS11_SPY: anything
+      p11softhsm_init_rsa_key: /opt/eduid/idp-public-snakeoil.key
 
   redis:
     image: docker.sunet.se/eduid/redis
@@ -570,11 +561,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=reset_password"
-      - "eduid_name=reset_password"
-      - "EDUID_CONFIG_NS=/eduid/webapp/reset_password"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: reset_password
+      eduid_name: reset_password
+      EDUID_CONFIG_NS: /eduid/webapp/reset_password
     depends_on:
       - mongodb
       - msg
@@ -605,12 +595,11 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "eduid_name=scimapi"
-      - "HOSTNAME=scimapi"
-      - "EDUID_CONFIG_NS=/eduid/api/scimapi"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
-      - "eduid_entrypoint=eduid.scimapi.run:api"
+      <<: *common-env-variables
+      eduid_name: scimapi
+      HOSTNAME: scimapi
+      EDUID_CONFIG_NS: /eduid/api/scimapi
+      eduid_entrypoint: eduid.scimapi.run:api
     depends_on:
       - mongodb
       - neo4jdb
@@ -630,11 +619,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=security"
-      - "eduid_name=security"
-      - "EDUID_CONFIG_NS=/eduid/webapp/security"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: security
+      eduid_name: security
+      EDUID_CONFIG_NS: /eduid/webapp/security
     depends_on:
       - mongodb
       - msg
@@ -657,11 +645,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=signup"
-      - "eduid_name=signup"
-      - "EDUID_CONFIG_NS=/eduid/webapp/signup"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: signup
+      eduid_name: signup
+      EDUID_CONFIG_NS: /eduid/webapp/signup
     depends_on:
       - mongodb
       - msg
@@ -696,11 +683,10 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "HOSTNAME=support"
-      - "eduid_name=support"
-      - "EDUID_CONFIG_NS=/eduid/webapp/support"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      HOSTNAME: support
+      eduid_name: support
+      EDUID_CONFIG_NS: /eduid/webapp/support
     depends_on:
       - mongodb
       - redis
@@ -740,11 +726,10 @@ services:
       - ../vccs:/opt/eduid/vccs:ro
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
-      - "eduid_entrypoint=eduid.vccs.server.run:app"
-      - "eduid_name=vccs"
-      - "EDUID_CONFIG_NS=/eduid/api/vccs"
-      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      <<: *common-env-variables
+      eduid_name: vccs
+      EDUID_CONFIG_NS: /eduid/api/vccs
+      eduid_entrypoint: eduid.vccs.server.run:app
 
 
 volumes:
