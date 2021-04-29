@@ -3,26 +3,26 @@ version: '3.4'
 services:
 
   actions2:
-    image: docker.sunet.se/eduid/eduid-actions2:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
       - ../eduid-actions2/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=actions2"
+      - "eduid_name=actions2"
+      - "EDUID_CONFIG_NS=/eduid/webapp/actions2"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      - "eduid_entrypoint=eduid.webapp.actions.run:app"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -30,29 +30,29 @@ services:
       - "dashboard.eduid.docker:172.16.10.220"
 
   am:
-    image: docker.sunet.se/eduid/eduid-am:latest
+    image: docker.sunet.se/eduid/worker:20210427T122545-staging
     networks:
       dev:
     volumes:
       - ../eduid-am/etc:/opt/eduid/eduid-am/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=am"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "eduid_name=am"
+      - "EDUID_CONFIG_NS=/eduid/worker/am"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      - "celery_args=--loglevel DEBUG"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
-    command: bash /start.sh
 
   authn:
-    image: docker.sunet.se/eduid/eduid-authn:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
     expose:
@@ -61,16 +61,16 @@ services:
       - ../eduid-authn/etc:/opt/eduid/etc:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=authn"
+      - "eduid_name=authn"
+      - "EDUID_CONFIG_NS=/eduid/webapp/authn"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -103,27 +103,26 @@ services:
       - personal_data
 
   eidas:
-    image: docker.sunet.se/eduid/eduid-eidas:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
       - ../eduid-eidas/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/pysaml2/src:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=eidas"
+      - "eduid_name=eidas"
+      - "EDUID_CONFIG_NS=/eduid/webapp/eidas"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -143,7 +142,7 @@ services:
       - eidas
 
   email:
-    image: docker.sunet.se/eduid/eduid-email:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
         ipv4_address: 172.16.10.225
@@ -151,65 +150,23 @@ services:
       - 8080
     volumes:
       - ../eduid-email/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=email"
+      - "eduid_name=email"
+      - "EDUID_CONFIG_NS=/eduid/webapp/email"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - redis
       - mongodb
-      - etcd
-
-  etcd:
-    image: docker.sunet.se/library/etcd:v3.3.12
-    expose:
-      - 2379
-      - 2380
-      - 4001
-    networks:
-      dev:
-        ipv4_address: 172.16.10.254
-    command: >-
-      etcd
-      -name etcd
-      -advertise-client-urls http://172.16.10.254:2379,http://172.16.10.254:4001
-      -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
-      -initial-advertise-peer-urls http://172.16.10.254:2380
-      -listen-peer-urls http://0.0.0.0:2380
-      -initial-cluster-token etcd-cluster-1
-      -initial-cluster etcd=http://172.16.10.254:2380
-      -initial-cluster-state new
-      -data-dir /data
-    volumes:
-      - etcddata:/data
-
-  feature_html:
-    image: docker.sunet.se/eduid/eduid-html:latest
-    expose:
-      - 80
-    dns: 172.16.10.1
-    networks:
-      dev:
-        ipv4_address: 172.16.10.232
-    volumes:
-      - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf:ro
-      # source volumes
-      - ../sources/eduid-html:/src/eduid/www:ro
-      - ../sources/eduid-html/static:/src/eduid/static:ro
-      - ../sources/eduid-front/build:/src/eduid/front-build:ro
-    environment:
-      - "HOSTNAME=feature-html"
 
   group_management:
-    image: docker.sunet.se/eduid/eduid-group-management:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     restart: on-failure
     networks:
       dev:
@@ -217,21 +174,18 @@ services:
       - 8080
     volumes:
       - ../eduid-group-management/etc:/opt/eduid/etc
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi:ro
-      - ../sources/eduid-graphdb:/opt/eduid/src/eduid-graphdb:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=group_management"
+      - "eduid_name=group_management"
+      - "EDUID_CONFIG_NS=/eduid/webapp/group_management"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -267,32 +221,28 @@ services:
       - /dev/log:/dev/log
     depends_on:
       - html
-      - feature_html
 
   idp:
-    image: docker.sunet.se/eduid/eduid-idp2:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
     volumes:
       - ../eduid-idp/etc:/opt/eduid/eduid-idp/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/eduid-idp/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      #- ../sources/eduid-IdP:/opt/eduid/src/eduid-IdP:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
       - ../sources/pyXMLSecurity:/opt/eduid/src/pyXMLSecurity:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src:/opt/eduid/src/"
       - "HOSTNAME=idp"
-      - "app_name=idp"
+      - "eduid_name=idp"
+      - "EDUID_CONFIG_NS=/eduid/webapp/idp"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
       - "pysaml2_settings=/opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -315,7 +265,7 @@ services:
       - idp
 
   jsconfig:
-    image: docker.sunet.se/eduid/eduid-jsconfig:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
     expose:
@@ -323,46 +273,44 @@ services:
     volumes:
       - ../eduid-jsconfig/etc:/opt/eduid/etc:ro
       - ../pki/rootCA.crt:/etc/ssl/rootCA.crt:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "REQUESTS_CA_BUNDLE=/etc/ssl/rootCA.crt"
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
       - "HOSTNAME=jsconfig"
+      - "eduid_name=jsconfig"
+      # Can't set EDUID_CONFIG_NS for jsconfig as the value will be used for jsapps also
+      #- "EDUID_CONFIG_NS=/eduid/webapp/jsconfig"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
 
   letter_proofing:
-    image: docker.sunet.se/eduid/eduid-letter-proofing:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src:/opt/eduid/eduid-am:/opt/eduid/eduid_msg"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=letter_proofing"
+      - "eduid_name=letter_proofing"
+      - "EDUID_CONFIG_NS=/eduid/webapp/letter_proofing"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -382,46 +330,48 @@ services:
       - reset_password
 
   lookup-mobile:
-    image: docker.sunet.se/eduid/eduid-lookup-mobile:latest
+    image: docker.sunet.se/eduid/worker:20210427T122545-staging
     networks:
       dev:
     volumes:
       - ../eduid-lookup-mobile/etc:/opt/eduid/eduid-lookup-mobile/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/eduid-lookup-mobile/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-lookup-mobile:/opt/eduid/src/eduid-lookup-mobile:ro
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-lookup-mobile"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=lookup_mobile"
+      - "eduid_name=lookup_mobile"
+      - "EDUID_CONFIG_NS=/eduid/worker/lookup_mobile"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      - "celery_args=--loglevel DEBUG"
     depends_on:
       - mongodb
       - redis
       - rsyslog
 
   lookup_mobile_proofing:
-    image: docker.sunet.se/eduid/eduid-lookup-mobile-proofing:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=lookup_mobile_proofing"
+      - "eduid_name=lookup_mobile_proofing"
+      - "EDUID_CONFIG_NS=/eduid/webapp/lookup_mobile_proofing"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - turq
@@ -439,23 +389,24 @@ services:
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
 
   msg:
-    image: docker.sunet.se/eduid/eduid-msg:latest
+    image: docker.sunet.se/eduid/worker:20210427T122545-staging
     networks:
       dev:
     volumes:
       - ../eduid-msg/etc:/opt/eduid/eduid-msg/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/eduid-msg/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid_msg:/opt/eduid/src/eduid-am"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=msg"
+      - "eduid_name=msg"
+      - "EDUID_CONFIG_NS=/eduid/worker/msg"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      - "celery_args=--loglevel DEBUG"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -475,59 +426,59 @@ services:
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
 
   oidc_proofing:
-    image: docker.sunet.se/eduid/eduid-oidc-proofing:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=oidc_proofing"
+      - "eduid_name=oidc_proofing"
+      - "EDUID_CONFIG_NS=/eduid/webapp/oidc_proofing"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - rsyslog
       - turq
 
   orcid:
-    image: docker.sunet.se/eduid/eduid-orcid:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
     expose:
       - 8080
     volumes:
       - ../eduid-orcid/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=orcid"
       - "LOCAL_CFG_FILE=/opt/eduid/etc/oidc_client_creds.yaml"
+      - "eduid_name=orcid"
+      - "EDUID_CONFIG_NS=/eduid/webapp/orcid"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
       - am
-      - etcd
       - mongodb
       - redis
       - rsyslog
       - turq
 
   personal_data:
-    image: docker.sunet.se/eduid/eduid-personal-data:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
         ipv4_address: 172.16.10.224
@@ -535,25 +486,24 @@ services:
       - 8080
     volumes:
       - ../eduid-personal-data/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=personal_data"
+      - "eduid_name=personal_data"
+      - "EDUID_CONFIG_NS=/eduid/webapp/personal_data"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
 
   phone:
-    image: docker.sunet.se/eduid/eduid-phone:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
         ipv4_address: 172.16.10.226
@@ -561,20 +511,18 @@ services:
       - 8080
     volumes:
       - ../eduid-phone/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=phone"
+      - "eduid_name=phone"
+      - "EDUID_CONFIG_NS=/eduid/webapp/phone"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - msg
       - redis
@@ -608,7 +556,7 @@ services:
       - redisdata:/data
 
   reset_password:
-    image: docker.sunet.se/eduid/eduid-reset-password:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
         ipv4_address: 172.16.10.213
@@ -616,20 +564,18 @@ services:
       - 8080
     volumes:
       - ../eduid-reset-password/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=reset_password"
+      - "eduid_name=reset_password"
+      - "EDUID_CONFIG_NS=/eduid/webapp/reset_password"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - msg
       - redis
@@ -646,7 +592,7 @@ services:
       - rsyslogdata:/var/log/eduid
 
   scimapi:
-    image: docker.sunet.se/eduid/eduid-scimapi:latest
+    image: docker.sunet.se/eduid/falconapi:20210427T122545-staging
     restart: on-failure
     networks:
       dev:
@@ -654,23 +600,23 @@ services:
     expose:
       - 8000
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-scimapi:/opt/eduid/src/eduid-scimapi
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-graphdb:/opt/eduid/src/eduid-graphdb:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-scimapi/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-graphdb/src:/opt/eduid/eduid-scimapi/src"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
+      - "eduid_name=scimapi"
       - "HOSTNAME=scimapi"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "EDUID_CONFIG_NS=/eduid/api/scimapi"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
+      - "eduid_entrypoint=eduid.scimapi.run:api"
     depends_on:
       - mongodb
-      - etcd
       - neo4jdb
 
   security:
-    image: docker.sunet.se/eduid/eduid-security:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
         ipv4_address: 172.16.10.227
@@ -678,20 +624,18 @@ services:
       - 8080
     volumes:
       - ../eduid-security/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=security"
+      - "eduid_name=security"
+      - "EDUID_CONFIG_NS=/eduid/webapp/security"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - msg
       - redis
@@ -699,28 +643,26 @@ services:
       - vccs
 
   signup:
-    image: docker.sunet.se/eduid/eduid-signup2:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
         ipv4_address: 172.16.10.211
     expose:
       - 8080
     volumes:
-      - ../eduid-signup2/etc:/opt/eduid/etc
+      - ../eduid-signup/etc:/opt/eduid/etc
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
-      - ../sources/eduid-am:/opt/eduid/src/eduid-am:ro
-      - ../sources/eduid_msg:/opt/eduid/src/eduid_msg:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/src/eduid-am:/opt/eduid/src/eduid_msg:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=signup"
+      - "eduid_name=signup"
+      - "EDUID_CONFIG_NS=/eduid/webapp/signup"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - msg
       - redis
@@ -742,23 +684,23 @@ services:
       - signup
 
   support:
-    image: docker.sunet.se/eduid/eduid-support:latest
+    image: docker.sunet.se/eduid/webapp:20210427T122545-staging
     networks:
       dev:
         ipv4_address: 172.16.10.223
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-userdb:/opt/eduid/src/eduid-userdb:ro
-      - ../sources/eduid-common:/opt/eduid/src/eduid-common:ro
-      - ../sources/eduid-webapp:/opt/eduid/src/eduid-webapp:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/eduid-webapp/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/eduid-webapp/src"
-      - "ETCD_HOST=etcd.eduid_dev"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
       - "HOSTNAME=support"
+      - "eduid_name=support"
+      - "EDUID_CONFIG_NS=/eduid/webapp/support"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
     depends_on:
-      - etcd
       - mongodb
       - redis
       - rsyslog
@@ -770,7 +712,7 @@ services:
         ipv4_address: 172.16.10.250
 
   vccs:
-    image: 'docker.sunet.se/eduid/eduid-vccs2:latest'
+    image: docker.sunet.se/eduid/fastapi:20210427T122545-staging
     restart: always
     networks:
       dev:
@@ -778,31 +720,16 @@ services:
     expose:
       - 8080
     volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
       - ../vccs:/opt/eduid/vccs:ro
-      - ../sources/VCCS2/:/opt/eduid/src/VCCS2:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
-      - "PYTHONPATH=/opt/eduid/src/VCCS2/src:/opt/eduid/src/eduid-userdb/src:/opt/eduid/src/eduid-common/src:/opt/eduid/VCCS2/src"
-      - "EDUID_CONFIG_YAML=/opt/eduid/vccs/config.yaml"
-
-
-  # Update config in etcd on each restart
-  update_etcd:
-    image: 'docker.sunet.se/eduid/eduid-webapp:latest'
-    networks:
-      dev:
-    volumes:
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-      - /opt/eduid/src/eduid-developer/etcd:/etcd:ro
-    environment:
-      - "ETCD_HOST=etcd.eduid_dev"
-    links:
-      - etcd
-    depends_on:
-      - etcd
-    working_dir: /etcd
-    entrypoint: "sh -c 'sleep 1; /opt/eduid/bin/python3 /etcd/etcd_config_bootstrap.py'"
+      - "PYTHONPATH=/opt/eduid/sources/:/opt/eduid/src/"
+      - "eduid_entrypoint=eduid.vccs.server.run:app"
+      - "eduid_name=vccs"
+      - "EDUID_CONFIG_NS=/eduid/api/vccs"
+      - "EDUID_CONFIG_YAML=/opt/eduid/config.yaml"
 
 
 volumes:
@@ -810,8 +737,6 @@ volumes:
     name: appdata
   eduidlogdata:
     name: eduidlogdata
-  etcddata:
-    name: etcddata
   mongodbdata:
     name: mongodbdata
   neo4jdbdata:
