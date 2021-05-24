@@ -315,6 +315,7 @@ eduid:
             # This key is for signup.eduid.docker
             recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
             reset_passwd_url: https://dashboard.eduid.docker/services/security/reset-password
+            idp_next_url: https://idp.eduid.docker/services/idp/next
 
         actions2:
             server_name: idp.eduid.docker
@@ -354,6 +355,8 @@ eduid:
             actions_app_uri: https://idp.eduid.docker/services/actions2/
             static_link: https://html.eduid.docker/static
             base_url: https://idp.eduid.docker/
+            # uncomment login_bundle_url to enable the IdP API (and disable the template IdP)
+            #login_bundle_url: https://login.eduid.docker/login
             default_eppn_scope: local.eduid.se
             login_state_ttl: 1
             status_test_usernames: ['f-testuser1@spam.thulin.net']
