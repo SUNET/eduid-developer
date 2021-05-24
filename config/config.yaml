@@ -371,7 +371,7 @@ eduid:
                   level: 'INFO'
                 'urllib3':
                   level: 'INFO'
-                'eduid_common.session':
+                'eduid.webapp.common.session':
                   level: 'INFO'
         reset_password:
             server_name: login.eduid.docker
