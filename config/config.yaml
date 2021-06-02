@@ -371,6 +371,9 @@ eduid:
             shared_session_cookie_name: sessid
             shared_session_secret_key: supersecretkey
             tou_reaccept_interval: 604800  # 1 week
+            u2f_valid_facets:
+                - https://dashboard.dev.eduid.se
+                - https://idp.dev.eduid.se
             logging_config:
               loggers:
                 'saml2':
