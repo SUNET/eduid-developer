@@ -390,7 +390,6 @@ eduid:
             application_root: /services/reset-password
             log_level: DEBUG
             logger_name: reset_password
-
             app_name: reset_password
             email_code_timeout: 7200
             phone_code_timeout: 600
@@ -405,6 +404,7 @@ eduid:
             u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
+            password_reset_link: https://login.eduid.docker/reset-password/email-code
     worker:
         common:
             celery:
