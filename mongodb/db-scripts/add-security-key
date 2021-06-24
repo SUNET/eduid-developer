@@ -54,7 +54,7 @@ def main(dry_run, eppn, cred_type):
         print(cred)
         user.credentials.add(cred)
 
-        raw_user.doc = user.to_dict(old_userdb_format = False)
+        raw_user.doc = user.to_dict()
         db.save_with_backup(raw_user, dry_run=dry_run)
         count += 1
 

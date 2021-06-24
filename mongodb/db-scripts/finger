@@ -54,6 +54,7 @@ def print_credential(key, value, aux_collections):
         metadata = []
         authn_info = aux_collections['authn_info']['coll']
         cred_dict = this.to_dict()
+        cred_dict['id'] = this.key
         for last_used in authn_info.find({aux_collections['authn_info']['key']: this.key}):
             if 'success_ts' in last_used:
                 cred_dict['last_used'] = last_used['success_ts'].isoformat()

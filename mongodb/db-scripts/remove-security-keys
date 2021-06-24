@@ -20,7 +20,7 @@ def main(dry_run, eppn):
     count = 0
 
     for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
-        user = User(raw_user.doc)
+        user = User.from_dict(raw_user.doc)
         print(user)
         security_keys = user.credentials.filter(FidoCredential).to_list()
         print(f'Will remove: {security_keys}')
