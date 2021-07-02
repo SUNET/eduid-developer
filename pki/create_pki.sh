@@ -57,3 +57,10 @@ if [ ! -f ./support.key ]; then
     openssl x509 -req -in support.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out support.crt -days 730 -sha256 -extfile support.ext
     cat support.key support.crt rootCA.crt > support.pem
 fi
+
+## api
+if [ ! -f ./api.key ]; then
+    openssl req -new -sha256 -nodes -out api.csr -newkey rsa:2048 -keyout api.key -config api.conf
+    openssl x509 -req -in api.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out api.crt -days 730 -sha256 -extfile api.ext
+    cat api.key api.crt rootCA.crt > api.pem
+fi

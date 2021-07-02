@@ -77,6 +77,20 @@ services:
       - redis
       - rsyslog
 
+  api_haproxy:
+    image: 'docker.sunet.se/eduid/haproxy:latest'
+    networks:
+      dev:
+        ipv4_address: 172.16.10.235
+    volumes:
+      - ../api-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/api.pem:/etc/ssl/api.pem
+      - /dev/log:/dev/log
+    links:
+      - scimapi
+    depends_on:
+      - scimapi
+
   dashboard_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
@@ -117,8 +131,10 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
     environment:
       <<: *common-env-variables
+      PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/
       HOSTNAME: eidas
       eduid_name: eidas
       EDUID_CONFIG_NS: /eduid/webapp/eidas
@@ -585,7 +601,6 @@ services:
     restart: on-failure
     networks:
       dev:
-        ipv4_address: 172.16.10.235
     expose:
       - 8000
     volumes:

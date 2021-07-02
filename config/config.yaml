@@ -10,13 +10,14 @@ eduid:
         scimapi:
             mongo_uri: 'mongodb://eduid_scimapi:eduid_scimapi_pw@mongodb.eduid_dev'
             server_name: 'scimapi.eduid.docker:8000'
-            application_root: '/'
+            application_root: '/scim'
             neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
             neo4j_config:
                 encrypted: false
             authorization_mandatory: false
             keystore_path: /opt/eduid/eduid-scimapi/etc/keystore.jwks
             signing_key_id: scimapi-dev-202106
+            authorization_token_expire: 1440
             data_owners:
               'eduid.se':
                 notify: []
