@@ -302,8 +302,10 @@ eduid:
             oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
             orcid_url: /services/orcid/
             eidas_url: https://eidas.eduid.docker/
-            #password_service_url: https://login.eduid.docker/services/reset-password/
+            # old reset password
             password_service_url: /services/security/
+            # new reset password
+            reset_password_service: https://login.eduid.docker/services/reset-password/
             token_verify_idp: http://dev.test.swedenconnect.se/idp
             password_length: 12
             password_entropy: 25

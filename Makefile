@@ -75,4 +75,12 @@ build_frontend_bundle:
 		docker.sunet.se/sunet/docker-jenkins-node-job /build-frontend-bundle.sh
 	ls -l sources/eduid-front/build
 
+developer_release:
+	@echo "Version expected to be a timestamp: '$(VERSION)'"
+	@echo $(VERSION) | grep -qE '^[0-9]{8}T[0-9]{6}$$'
+	grep -E '[0-9]{8}T[0-9]{6}-staging$$' ./eduid/compose.yml | awk -F ':' '{print $$NF}' | sort | uniq | while read ver; do \
+		sed -ie "s/$${ver}/$(VERSION)-staging/g" ./eduid/compose.yml ; \
+	done
+	git commit -m "Updated version to $(VERSION)" ./eduid/compose.yml
+
 .PHONY: vagrant_run start vagrant_start vagrant_ssh stop vagrant_stop vagrant_halt up vagrant_up pull vagrant_pull update_etcd vagrant_update_etcd show_logs vagrant_show_logs show_appdata vagrant_show_appdata cp_appdata vagrant_cp_appdata mongodb_cli vagrant_mongodb_cli vagrant_destroy build_frontend_bundle
