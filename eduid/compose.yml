@@ -277,6 +277,7 @@ services:
       - actions2
       - html
       - idp
+      - reset_password
 
   jsconfig:
     image: docker.sunet.se/eduid/webapp:20210819T153714-staging
@@ -327,20 +328,6 @@ services:
       - mongodb
       - redis
       - rsyslog
-
-  login_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    networks:
-      dev:
-        ipv4_address: 172.16.10.212
-    volumes:
-      - ../login-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
-      - ../pki/login.pem:/etc/ssl/login.pem:ro
-      - /dev/log:/dev/log
-    depends_on:
-      - html
-      - jsconfig
-      - reset_password
 
   lookup-mobile:
     image: docker.sunet.se/eduid/worker:20210819T153714-staging

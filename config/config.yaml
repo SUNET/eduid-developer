@@ -367,7 +367,7 @@ eduid:
             static_link: https://html.eduid.docker/static
             base_url: https://idp.eduid.docker/
             # uncomment login_bundle_url to enable the IdP API (and disable the template IdP)
-            login_bundle_url: https://login.eduid.docker/login
+            login_bundle_url: https://html.eduid.docker/login
             default_eppn_scope: local.eduid.se
             login_state_ttl: 1
             status_test_usernames: ['f-testuser1@spam.thulin.net']
