@@ -255,79 +255,64 @@ eduid:
             faq_link: https://www.eduid.se/faq.html
             am_relay_for_override: eduid_signup
         jsconfig:
-            mongo_uri: not_needed
             # this is configuration for the flask app serving the jsconfig microservice
-            server_name: eduid.docker
             application_root: /services/jsconfig
             log_level: DEBUG
             logger_name: jsconfig
-            # Dashboard config
-            dashboard_bundle_path: front-build/dashboard-bundle.dev.js
-            dashboard_bundle_version: dev
-            dashboard_bundle_feature_cookie: bundle-version
-            dashboard_bundle_feature_version:
-              beta: beta1
-            # Signup config
-            signup_bundle_path: front-build/signup-bundle.dev.js
-            signup_bundle_version: dev
-            signup_bundle_feature_cookie: bundle-version
-            signup_bundle_feature_version:
-              beta: beta1
-            # Login config
-            login_bundle_path: front-build/login-bundle.dev.js
-            login_bundle_version: dev
-            login_bundle_feature_cookie: bundle-version
-            login_bundle_feature_version:
-              beta: beta1
-        jsapps:
-            ### this is the configuration for the js apps, that is sent by the jsconfig
-            ### microservice to the js apps.
-            ### Take care not to put any sensitive data here.
-            # Shared config
-            debug: yes
-            static_faq_url: https://html.eduid.docker/faq.html
-            # Dashboard config
-            available_languages:
-                - [en, English]
-                - [sv, Svenska]
-            dashboard_url: https://dashboard.eduid.docker/profile/
-            personal_data_url: /services/personal-data/
-            emails_url: /services/email/
-            mobile_url: /services/phone/
-            oidc_proofing_url: /services/oidc-proofing/proofing/
-            lookup_mobile_proofing_url: /services/lookup-mobile-proofing/proofing/
-            letter_proofing_url: /services/letter-proofing/
-            security_url: /services/security/
-            token_service_url: /services/authn/
-            oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
-            orcid_url: /services/orcid/
-            eidas_url: https://eidas.eduid.docker/
-            # old reset password
-            password_service_url: /services/security/
-            # new reset password
-            reset_password_service: https://login.eduid.docker/services/reset-password/
-            token_verify_idp: http://dev.test.swedenconnect.se/idp
-            password_length: 12
-            password_entropy: 25
-            chpass_timeout: 600
-            proofing_methods:
-                - letter
-                - lookup_mobile
-                - oidc
-                - eidas
-            default_country_code: 46
-            # Signup config
-            signup_authn_url: https://dashboard.eduid.docker/services/authn/signup-authn
-            # This key is for signup.eduid.docker
-            recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
-            reset_passwd_url: https://dashboard.eduid.docker/services/security/reset-password
-            # Login config
-            login_next_url: https://idp.eduid.docker/services/idp/next
-            eduid_site_name: eduID Developer
-            eduid_site_url: https://html.eduid.docker
-            signup_url: https://signup.eduid.docker/
-
-
+            fix_dashboard_uppercase_config: true
+            fix_dashboard_available_languages: true
+            fix_signup_uppercase_config: true
+            fix_signup_available_languages: true
+            jsapps:
+              ### this is the configuration for the js apps, that is sent by the jsconfig
+              ### microservice to the js apps.
+              ### Take care not to put any sensitive data here.
+              # Shared config
+              debug: yes
+              environment: dev
+              static_faq_url: https://html.eduid.docker/faq.html
+              # Dashboard config
+              available_languages:
+                  en: English
+                  sv: Svenska
+              dashboard_url: https://dashboard.eduid.docker/profile/
+              personal_data_url: /services/personal-data/
+              emails_url: /services/email/
+              mobile_url: /services/phone/
+              phone_url: /services/phone/
+              oidc_proofing_url: /services/oidc-proofing/proofing/
+              lookup_mobile_proofing_url: /services/lookup-mobile-proofing/proofing/
+              letter_proofing_url: /services/letter-proofing/
+              security_url: /services/security/
+              token_service_url: /services/authn/
+              authn_url: /services/authn/
+              oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
+              orcid_url: /services/orcid/
+              group_mgmt_url: /services/group-management/
+              eidas_url: https://eidas.eduid.docker/
+              # old reset password
+              password_service_url: /services/security/
+              # new reset password
+              reset_password_url: https://login.eduid.docker/services/reset-password/
+              token_verify_idp: http://dev.test.swedenconnect.se/idp
+              password_length: 12
+              password_entropy: 25
+              chpass_timeout: 600
+              proofing_methods:
+                  - letter
+                  - lookup_mobile
+                  - oidc
+                  - eidas
+              default_country_code: 46
+              # This key is for signup.eduid.docker
+              recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
+              reset_passwd_url: https://dashboard.eduid.docker/services/security/reset-password
+              # Login config
+              login_next_url: https://idp.eduid.docker/services/idp/next
+              eduid_site_name: eduID Developer
+              eduid_site_url: https://html.eduid.docker
+              signup_url: https://signup.eduid.docker/
+              reset_password_link: https://html.eduid.docker/reset-password/
         actions2:
             server_name: idp.eduid.docker
             application_root: /services/actions2
