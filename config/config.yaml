@@ -395,7 +395,7 @@ eduid:
             u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
-            password_reset_link: https://idp.eduid.docker/reset-password/email-code
+            password_reset_link: https://html.eduid.docker/reset-password/email-code
     worker:
         common:
             celery:
