@@ -293,7 +293,7 @@ eduid:
               # old reset password
               password_service_url: /services/security/
               # new reset password
-              reset_password_url: https://login.eduid.docker/services/reset-password/
+              reset_password_url: https://idp.eduid.docker/services/reset-password/
               token_verify_idp: http://dev.test.swedenconnect.se/idp
               password_length: 12
               password_entropy: 25
@@ -376,7 +376,7 @@ eduid:
                 'eduid.webapp.common.session':
                   level: 'INFO'
         reset_password:
-            server_name: login.eduid.docker
+            server_name: idp.eduid.docker
             mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev
             application_root: /services/reset-password
             log_level: DEBUG
@@ -395,7 +395,7 @@ eduid:
             u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
-            password_reset_link: https://login.eduid.docker/reset-password/email-code
+            password_reset_link: https://idp.eduid.docker/reset-password/email-code
     worker:
         common:
             celery:
