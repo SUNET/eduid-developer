@@ -38,7 +38,6 @@ done
     printf "172.16.10.251\trabbitmq.eduid.docker\n";
     printf "172.16.10.252\tredis.eduid.docker\n";
     printf "172.16.10.253\tmongodb.eduid.docker\n";
-    printf "172.16.10.254\tetcd.eduid.docker\n";
 ) \
     | while read line; do
     if ! grep -q "^${line}$" /etc/hosts; then
