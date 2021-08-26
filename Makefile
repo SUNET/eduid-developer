@@ -34,12 +34,6 @@ pull:
 vagrant_pull:
 	vagrant ssh -c "cd /opt/eduid-developer; make pull"
 
-update_etcd:
-	(cd etcd; python3 etcd_config_bootstrap.py --host 172.16.10.254)
-
-vagrant_update_etcd:
-	vagrant ssh -c "cd /opt/eduid-developer; make update_etcd"
-
 show_logs:
 	docker run -it --init --rm --name showlogs --workdir /var/log/eduid/ -v eduidlogdata:/var/log/eduid busybox:stable sh
 

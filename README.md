@@ -20,7 +20,7 @@ Running
 
 Start all the containers with the Makefile in this repository.
 
-The first time it will ask you for sudo rights to be able to write in your /etc/hosts. You also need to write the configuration to etcd before anything can start, see etcd configuration below.
+The first time it will ask you for sudo rights to be able to write in your /etc/hosts. 
 
 ##### Linux Docker environment:
 
@@ -68,13 +68,6 @@ Stopping
     $ make vagrant_stop
     $ make vagrant_halt
 
-
-etcd configuration
-------------------
-
-  The microservices and dashboard js uses etcd to get their configuration.
-
-  To update the configuration edit etcd/conf.yaml and run `make update_etcd`.
 
 TLS certificate
 ---------------
@@ -130,7 +123,6 @@ Services
 
   mongodb://mongodb.eduid.docker
   redis://redis.eduid.docker
-  etcd://etcd.eduid.docker
   neo4j://neo4jdb.eduid.docker
 
 Live code reloads
@@ -192,8 +184,6 @@ Recipes that starts with "vagrant\_" should be run from the host OS when using v
     $ make vagrant_halt         # Stops all containers and shuts the vagrant vm down
     $ make up                   # Tries to start all non-running containers
     $ make vagrant_up           # See above
-    $ make update_etcd          # Runs the configuration import script for etcd
-    $ make vagrant_update_etcd  # See above
     $ make pull                 # Pull all images using docker-compose
     $ vagrant_pull              # See above
     $ make show_logs            # Starts a shell in a container with the log data volume mounted
