@@ -306,7 +306,7 @@ eduid:
               default_country_code: 46
               # This key is for signup.eduid.docker
               recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
-              reset_passwd_url: https://dashboard.eduid.docker/services/security/reset-password
+              reset_passwd_url: https://html.eduid.docker/reset-password/
               # Login config
               login_next_url: https://idp.eduid.docker/services/idp/next
               eduid_site_name: eduID Developer
