@@ -38,7 +38,7 @@ show_logs:
 	docker run -it --init --rm --name showlogs --workdir /var/log/eduid/ -v eduidlogdata:/var/log/eduid busybox:stable sh
 
 show_appdata:
-	docker run -it --init --rm --name appdata --workdir /appdata -v appdata:/appdata docker.sunet.se/eduid/eduid-webapp bash
+	docker run -it --init --rm --name appdata --workdir /appdata -v appdata:/appdata busybox:stable sh
 
 cp_appdata:
 	(echo "You need 'show_appdata' running in another terminal"; docker cp appdata:/appdata/${file} .)
