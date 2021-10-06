@@ -34,7 +34,7 @@ services:
       - "dashboard.eduid.docker:172.16.10.220"
 
   am:
-    image: docker.sunet.se/eduid/worker:20210915T091908-staging
+    image: docker.sunet.se/eduid/worker:20211006T162410-testing
     networks:
       dev:
     volumes:
@@ -389,7 +389,7 @@ services:
       REPLSET: "yes"
 
   msg:
-    image: docker.sunet.se/eduid/worker:20210915T091908-staging
+    image: docker.sunet.se/eduid/worker:20211006T162410-testing
     networks:
       dev:
     volumes:
@@ -540,7 +540,7 @@ services:
       p11softhsm_init_rsa_key: /opt/eduid/idp-public-snakeoil.key
 
   queue_mail_worker:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/worker:20211006T162410-testing
     networks:
       dev:
     volumes:
@@ -554,17 +554,13 @@ services:
       eduid_name: queue_mail_worker
       WORKER_NAME: queue_mail_worker_1
       EDUID_CONFIG_NS: /eduid/queue/mail_worker
-    entrypoint: ["start-stop-daemon", "--start", "-c", "eduid:eduid",
-                 "--exec", "/opt/eduid/webapp/bin/python",
-                 "--pidfile", "/var/run/eduid_queue.pid",
-                 "--user=eduid", "--group=eduid",
-                 "--", "-m", "eduid.queue.workers.mail"
-                ]
+      NEW_QUEUE: "yes"
+      eduid_entrypoint: eduid.queue.workers.mail
     depends_on:
       - mongodb
 
   queue_sink_worker:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/worker:20211006T162410-testing
     networks:
       dev:
     volumes:
@@ -578,12 +574,8 @@ services:
       eduid_name: queue_sink_worker
       WORKER_NAME: queue_sink_worker_1
       EDUID_CONFIG_NS: /eduid/queue/sink_worker
-    entrypoint: ["start-stop-daemon", "--start", "-c", "eduid:eduid",
-                 "--exec", "/opt/eduid/webapp/bin/python",
-                 "--pidfile", "/var/run/eduid_queue.pid",
-                 "--user=eduid", "--group=eduid",
-                 "--", "/opt/eduid/sources/eduid/queue/workers/sink.py"
-                ]
+      NEW_QUEUE: "yes"
+      eduid_entrypoint: eduid.queue.workers.sink
     depends_on:
       - mongodb
 

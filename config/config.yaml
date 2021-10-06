@@ -400,13 +400,18 @@ eduid:
       common:
         environment: dev
         log_level: DEBUG
-        logger_name: reset_password
+        logger_name: queue
       mail_worker:
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
         mongo_collection: message
       sink_worker:
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
         mongo_collection: test
+        log_level: INFO
+        logging_config:
+          loggers:
+            'eduid.queue.workers.base':
+              level: 'WARNING'
 
     worker:
         common:
