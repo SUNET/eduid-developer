@@ -558,7 +558,7 @@ services:
                  "--exec", "/opt/eduid/webapp/bin/python",
                  "--pidfile", "/var/run/eduid_queue.pid",
                  "--user=eduid", "--group=eduid",
-                 "--", "/opt/eduid/sources/eduid/queue/workers/mail.py"
+                 "--", "-m", "eduid.queue.workers.mail"
                 ]
     depends_on:
       - mongodb
