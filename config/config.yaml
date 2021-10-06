@@ -347,7 +347,7 @@ eduid:
             staff_link: https://html.eduid.docker/personal.html
             faq_link: https://html.eduid.docker/faq.html
             privacy_link: https://html.eduid.docker/privacy.html
-            # uri for the new actions microservice
+            # uri for the old actions microservice
             actions_app_uri: https://idp.eduid.docker/services/actions2/
             static_link: https://html.eduid.docker/static
             base_url: https://idp.eduid.docker/
@@ -396,6 +396,15 @@ eduid:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
             password_reset_link: https://html.eduid.docker/reset-password/email-code
+    queue:
+      common:
+        environment: dev
+        log_level: DEBUG
+        logger_name: reset_password
+      mail_worker:
+        mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
+        mongo_collection: message
+
     worker:
         common:
             celery:
