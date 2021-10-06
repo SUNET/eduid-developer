@@ -9,11 +9,10 @@
 
 import sys
 
-from datetime import datetime
-
-from eduid_userdb import User
-from eduid_userdb.credentials import FidoCredential, Webauthn, U2F, webauthn_from_dict, u2f_from_dict
-from eduid_userdb.admin import RawDb
+from eduid.userdb import User
+from eduid.userdb.admin import RawDb
+from eduid.userdb.credentials import FidoCredential, U2F, Webauthn
+from eduid.userdb.util import utc_now
 
 
 def main(dry_run, eppn, cred_type):
@@ -23,10 +22,10 @@ def main(dry_run, eppn, cred_type):
     count = 0
 
     for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
-        user = User(raw_user.doc)
+        user = User.from_dict(raw_user.doc)
         print(user)
 
-        security_keys_count = len(user.credentials.filter(FidoCredential).to_list())
+        security_keys_count = len(user.credentials.filter(FidoCredential))
         if cred_type == 'webauthn':
             data = {
                 'keyhandle': f'keyhandle_{security_keys_count + 1}',
@@ -35,9 +34,9 @@ def main(dry_run, eppn, cred_type):
                 'attest_obj': 'an_attest_obj',
                 'description': f'Dev key {security_keys_count + 1}',
                 'created_by': 'add-security-key',
-                'created_ts': datetime.now(tz=None)
+                'created_ts': utc_now()
             }
-            cred = webauthn_from_dict(data)
+            cred = Webauthn.from_dict(data)
         elif cred_type == 'u2f':
             data = {
                 'version': 'Dev version',
@@ -47,9 +46,11 @@ def main(dry_run, eppn, cred_type):
                 'attest_cert': 'an_attest_cert',
                 'description': f'Dev key {security_keys_count + 1}',
                 'created_by': 'add-security-key',
-                'created_ts': datetime.now(tz=None)
+                'created_ts': utc_now()
             }
-            cred = u2f_from_dict(data)
+            cred = U2F.from_dict(data)
+        else:
+            raise RuntimeError(f'Invalid cred_type: {cred_type}')
 
         print(cred)
         user.credentials.add(cred)
