@@ -563,6 +563,30 @@ services:
     depends_on:
       - mongodb
 
+  queue_sink_worker:
+    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    networks:
+      dev:
+    volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+    environment:
+      <<: *common-env-variables
+      HOSTNAME: queue_sink_worker
+      eduid_name: queue_sink_worker
+      WORKER_NAME: queue_sink_worker_1
+      EDUID_CONFIG_NS: /eduid/queue/sink_worker
+    entrypoint: ["start-stop-daemon", "--start", "-c", "eduid:eduid",
+                 "--exec", "/opt/eduid/webapp/bin/python",
+                 "--pidfile", "/var/run/eduid_queue.pid",
+                 "--user=eduid", "--group=eduid",
+                 "--", "/opt/eduid/sources/eduid/queue/workers/sink.py"
+                ]
+    depends_on:
+      - mongodb
+
   redis:
     image: docker.sunet.se/eduid/redis
     expose:

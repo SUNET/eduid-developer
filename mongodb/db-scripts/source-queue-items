@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+#
+# Source eduID queue items for testing
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/source-queue-items
+#
+import os
+import sys
+from datetime import timedelta
+
+from eduid.queue.db import QueueItem, SenderInfo
+from eduid.queue.db.message.db import TestDB
+from eduid.queue.db.message.payload import EduidTestPayload
+from eduid.userdb.admin import get_argparser
+from eduid.userdb.util import utc_now
+
+
+def get_db_uri() -> str:
+    user = os.environ.get('MONGODB_ADMIN')
+    pw = os.environ.get('MONGODB_ADMIN_PASSWORD')
+    host = os.environ.get('MONGODB_HOST')
+    port = os.environ.get('MONGODB_PORT')
+    if not host:
+        host = 'localhost'
+    if not port:
+        port = '27017'
+    if user and pw:
+        dburi = f'mongodb://{user}:{pw}@{host}:{port}/'
+    else:
+        dburi = f'mongodb://{host}:{port}/'
+    return dburi
+
+
+def main(args):
+
+    start_ts = utc_now()
+
+    db = TestDB(db_uri=get_db_uri())
+    sender_info = SenderInfo(hostname=os.environ.get('HOSTNAME'), node_id='source-queue-items')
+
+    print(f'Sourcing {args.num} queue items in {db}')
+
+    for c in range(0, args.num):
+        payload = EduidTestPayload(counter=c)
+        now = utc_now()
+        qitem = QueueItem(
+            version=1,
+            expires_at=now + timedelta(seconds=60),
+            discard_at=now + timedelta(seconds=120),
+            sender_info=sender_info,
+            payload_type=payload.get_type(),
+            payload=payload,
+        )
+        db.save(qitem)
+
+    end_ts = utc_now()
+    print(f'Done (time: {end_ts - start_ts})')
+    return True
+
+
+if __name__ == '__main__':
+    parser = get_argparser(description='Source a number of test queue items', eppn=False)
+    parser.add_argument(
+        '--num', metavar='NUM', type=int, default=10, help='Number of queue items to make before exiting'
+    )
+    args = parser.parse_args()
+
+    if main(args):
+        sys.exit(0)
+
+    sys.exit(1)
