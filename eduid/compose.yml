@@ -8,7 +8,7 @@ x-common-env-variables: &common-env-variables
 
 services:
   actions2:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     expose:
@@ -55,7 +55,7 @@ services:
       - rsyslog
 
   authn:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     expose:
@@ -119,7 +119,7 @@ services:
       - personal_data
 
   eidas:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     expose:
@@ -159,7 +159,7 @@ services:
       - eidas
 
   email:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
         ipv4_address: 172.16.10.225
@@ -182,7 +182,7 @@ services:
       - mongodb
 
   group_management:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     restart: on-failure
     networks:
       dev:
@@ -237,7 +237,7 @@ services:
       - html
 
   idp:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     volumes:
@@ -280,7 +280,7 @@ services:
       - reset_password
 
   jsconfig:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     expose:
@@ -307,7 +307,7 @@ services:
       - rsyslog
 
   letter_proofing:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     expose:
@@ -330,7 +330,7 @@ services:
       - rsyslog
 
   lookup-mobile:
-    image: docker.sunet.se/eduid/worker:20210915T091908-staging
+    image: docker.sunet.se/eduid/worker:20211006T162410-staging
     networks:
       dev:
     volumes:
@@ -352,7 +352,7 @@ services:
       - rsyslog
 
   lookup_mobile_proofing:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     expose:
@@ -425,7 +425,7 @@ services:
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
 
   oidc_proofing:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     expose:
@@ -449,7 +449,7 @@ services:
       - turq
 
   orcid:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     expose:
@@ -475,7 +475,7 @@ services:
       - turq
 
   personal_data:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
         ipv4_address: 172.16.10.224
@@ -499,7 +499,7 @@ services:
       - rsyslog
 
   phone:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
         ipv4_address: 172.16.10.226
@@ -591,7 +591,7 @@ services:
       - redisdata:/data
 
   reset_password:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
         ipv4_address: 172.16.10.213
@@ -626,7 +626,7 @@ services:
       - rsyslogdata:/var/log/eduid
 
   scimapi:
-    image: docker.sunet.se/eduid/fastapi:20210915T091908-staging
+    image: docker.sunet.se/eduid/fastapi:20211006T162410-staging
     restart: on-failure
     networks:
       dev:
@@ -649,7 +649,7 @@ services:
       - neo4jdb
 
   security:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
         ipv4_address: 172.16.10.227
@@ -675,7 +675,7 @@ services:
       - vccs
 
   signup:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
         ipv4_address: 172.16.10.211
@@ -715,7 +715,7 @@ services:
       - signup
 
   support:
-    image: docker.sunet.se/eduid/webapp:20210915T091908-staging
+    image: docker.sunet.se/eduid/webapp:20211006T162410-staging
     networks:
       dev:
     expose:
@@ -757,7 +757,7 @@ services:
         ipv4_address: 172.16.10.250
 
   vccs:
-    image: docker.sunet.se/eduid/fastapi:20210915T091908-staging
+    image: docker.sunet.se/eduid/fastapi:20211006T162410-staging
     restart: always
     networks:
       dev:
