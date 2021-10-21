@@ -42,7 +42,7 @@ def main():
     args = parser.parse_args()
 
     with open(args.file) as f:
-        data = yaml.load(f)
+        data = yaml.safe_load(f)
 
     try:
         # opportunistic replica set initialization, this will fail
