@@ -4,6 +4,8 @@ mongo_databases:
   admin:
     collections: []
     access:
+      root:
+        - 'admin'
       backup:
         - 'backup'
       clusterMonitor:
