@@ -15,14 +15,21 @@ from pymongo.errors import OperationFailure
 
 def create_users(client, databases):
     for db_name, conf in databases.items():
-        print('Adding users for {}'.format(db_name))
+        update = False
+        if client[db_name].command('getUser', user) is None:
+            print('Adding users for {}'.format(db_name))
+        else:
+            print('Updating users for {}'.format(db_name))
+            update = True
         access_conf = conf.get('access', dict())
-        for rw_user in access_conf.get('readWrite', list()):
-            print('Added rw user: {}'.format(rw_user))
-            client[db_name].add_user(rw_user, '{}_pw'.format(rw_user), roles=[{'role':'readWrite', 'db': db_name}])
-        for ro_user in access_conf.get('read', list()):
-            print('Added ro user: {}'.format(ro_user))
-            client[db_name].add_user(ro_user, '{}_pw'.format(ro_user), roles=[{'role':'read', 'db': db_name}])
+        for role, users in access_conf.items():
+            print(f'users as {role} in database {db_name}:')
+            for user in users:
+                if update:
+                    client[db_name].command('updateUser', user, pwd=f'{user}_pw', roles=[role])
+                else:
+                    client[db_name].command('createUser', user, pwd=f'{user}_pw', roles=[role])
+                print(f'\t{user}')
         print('---')
 
 def init_collections(client, databases):
