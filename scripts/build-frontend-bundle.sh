@@ -19,7 +19,7 @@ cd /src/eduid-front
 ls -l
 
 npm install
-npm run-script test-headless
+npm test
 npm run build-development
 #npm run manage:plugins && npm run manage:plugins:staging && npm run manage:plugins:pro
 
