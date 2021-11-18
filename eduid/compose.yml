@@ -548,6 +548,8 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+    healthcheck:
+      disable: true
     environment:
       <<: *common-env-variables
       HOSTNAME: queue_mail_worker
@@ -568,6 +570,8 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+    healthcheck:
+      disable: true
     environment:
       <<: *common-env-variables
       HOSTNAME: queue_sink_worker
