@@ -2,7 +2,7 @@
 
 set -e
 
-service_names="dashboard eidas html idp signup support api"
+service_names="dashboard eidas html idp signup support api developer"
 
 # Generate CA key and cert
 if [ ! -f ./rootCA.key ]; then
@@ -17,11 +17,53 @@ create_leaf_cert() {
         service_name=${1}
 
 if [ ! -f ./${service_name}.key ]; then
-        echo Creating leaf certificate for ${service_name}
+    echo Creating leaf certificate for ${service_name}
 
-        openssl req -new -sha256 -nodes -out ${service_name}.csr -newkey rsa:2048 -keyout ${service_name}.key -config ${service_name}.conf
-        openssl x509 -req -in ${service_name}.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out ${service_name}.crt -days 730 -sha256 -extfile ${service_name}.ext
-        cat ${service_name}.key ${service_name}.crt rootCA.crt > ${service_name}.pem
+    # Generate config files for openssl
+    if [ ! -f ${service_name}.conf ]; then
+	cat > ${service_name}.conf <<EOF
+[req]
+default_bits       = 2048
+prompt             = no
+default_md         = sha256
+distinguished_name = dn
+
+[dn]
+C  = SE
+ST = Milky Way
+L  = Earth
+O  = Sunet
+OU = eduid_dev_rootCA
+CN = ${service_name}.eduid.docker
+EOF
+	conf_generated=1
+    fi
+
+    if [ ! -f ${service_name}.ext ]; then
+	cat > ${service_name}.ext <<EOF
+# v3.ext
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = ${service_name}.eduid.docker
+EOF
+	ext_generated=1
+    fi
+
+    openssl req -new -sha256 -nodes -out ${service_name}.csr -newkey rsa:2048 -keyout ${service_name}.key -config ${service_name}.conf
+    openssl x509 -req -in ${service_name}.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out ${service_name}.crt -days 730 -sha256 -extfile ${service_name}.ext
+    cat ${service_name}.key ${service_name}.crt rootCA.crt > ${service_name}.pem
+
+    # remove any generated config files
+    if [ $conf_generated -eq 1 ]; then
+	rm ${service_name}.conf
+    fi
+    if [ $ext_generated -eq 1 ]; then
+	rm ${service_name}.ext
+    fi
 fi
 }
 
