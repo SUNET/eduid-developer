@@ -104,6 +104,7 @@ services:
       - authn
       - html
       - jsconfig
+      - ladok
       - letter_proofing
       - lookup_mobile_proofing
       - oidc_proofing
@@ -113,6 +114,7 @@ services:
       - authn
       - html
       - jsconfig
+      - ladok
       - letter_proofing
       - lookup_mobile_proofing
       - oidc_proofing
@@ -305,6 +307,27 @@ services:
       - mongodb
       - redis
       - rsyslog
+
+  ladok:
+    image: docker.sunet.se/eduid/webapp:20211202T155038-staging
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+    environment:
+      <<: *common-env-variables
+      HOSTNAME: ladok
+      eduid_name: ladok
+      EDUID_CONFIG_NS: /eduid/webapp/ladok
+    depends_on:
+      - am
+      - mongodb
 
   letter_proofing:
     image: docker.sunet.se/eduid/webapp:20211202T155038-staging
