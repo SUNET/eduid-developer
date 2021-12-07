@@ -143,10 +143,10 @@ eduid:
                 'Uni-B':
                   name_sv: 'Universitet B'
                   name_en: 'University B'
-                  fake_students: true
                 'Uni-C':
                   name_sv: 'Universitet C'
                   name_en: 'University C'
+            dev_fake_users_in: ['Uni-B']
         letter_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/letter-proofing
