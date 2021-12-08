@@ -294,6 +294,7 @@ mongo_databases:
         - 'eduid_orcid'
         - 'eduid_signup'
         - 'eduid_eidas'
+        - 'eduid_ladok'
       read:
         - 'eduid_support'
 
