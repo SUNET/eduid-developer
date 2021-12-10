@@ -138,14 +138,14 @@ eduid:
               url: http://localhost/NOTSET
               dev_universities:
                 'Uni-A':
-                  name_sv: 'Universitet A'
-                  name_en: 'University A'
+                  sv: 'Universitet A'
+                  en: 'University A'
                 'Uni-B':
-                  name_sv: 'Universitet B'
-                  name_en: 'University B'
+                  sv: 'Universitet B'
+                  en: 'University B'
                 'Uni-C':
-                  name_sv: 'Universitet C'
-                  name_en: 'University C'
+                  sv: 'Universitet C'
+                  en: 'University C'
             dev_fake_users_in: ['Uni-B']
         letter_proofing:
             server_name: dashboard.eduid.docker
