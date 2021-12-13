@@ -128,6 +128,25 @@ eduid:
             signup_authn_failure_redirect_url: https://html.eduid.docker/
             unsolicited_response_redirect_url: https://html.eduid.docker
             safe_relay_domain: eduid.docker
+        ladok:
+            server_name: dashboard.eduid.docker
+            application_root: /services/ladok
+            logger_name: ladok
+            log_level: DEBUG
+            mongo_uri: mongodb://eduid_ladok:eduid_ladok_pw@mongodb.eduid_dev
+            ladok_client:
+              url: http://localhost/NOTSET
+              dev_universities:
+                'Uni-A':
+                  sv: 'Universitet A'
+                  en: 'University A'
+                'Uni-B':
+                  sv: 'Universitet B'
+                  en: 'University B'
+                'Uni-C':
+                  sv: 'Universitet C'
+                  en: 'University C'
+            dev_fake_users_in: ['Uni-B']
         letter_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/letter-proofing
@@ -282,6 +301,7 @@ eduid:
               mobile_url: /services/phone/
               phone_url: /services/phone/
               oidc_proofing_url: /services/oidc-proofing/proofing/
+              ladok_url: /services/ladok/
               lookup_mobile_proofing_url: /services/lookup-mobile-proofing/proofing/
               letter_proofing_url: /services/letter-proofing/
               security_url: /services/security/

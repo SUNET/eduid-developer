@@ -37,6 +37,7 @@ mongo_databases:
         - 'eduid_support'
         - 'eduid_scimapi'
         - 'eduid_group_management'
+        - 'eduid_ladok'
         - 'munin'
 
   eduid_api:
@@ -150,6 +151,16 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_idproofing_letter'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
+
+  eduid_ladok:
+    collections:
+      - 'profiles'
+    access:
+      readWrite:
+        - 'eduid_ladok'
       read:
         - 'eduid_am'
         - 'eduid_support'
@@ -283,6 +294,7 @@ mongo_databases:
         - 'eduid_orcid'
         - 'eduid_signup'
         - 'eduid_eidas'
+        - 'eduid_ladok'
       read:
         - 'eduid_support'
 
