@@ -329,6 +329,7 @@ eduid:
               recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
               reset_passwd_url: https://html.eduid.docker/reset-password/
               # Login config
+              login_base_url: https://idp.eduid.docker/services/idp
               login_next_url: https://idp.eduid.docker/services/idp/next
               eduid_site_name: eduID Developer
               eduid_site_url: https://html.eduid.docker
@@ -374,6 +375,7 @@ eduid:
             base_url: https://idp.eduid.docker/
             # uncomment login_bundle_url to enable the IdP API (and disable the template IdP)
             login_bundle_url: https://html.eduid.docker/login
+            other_device_url: https://html.eduid.docker/login/other
             default_eppn_scope: local.eduid.se
             login_state_ttl: 1
             status_test_usernames: ['f-testuser1@spam.thulin.net']
@@ -397,6 +399,7 @@ eduid:
                   level: 'INFO'
                 'eduid.webapp.common.session':
                   level: 'INFO'
+            allow_other_device_logins: true
         reset_password:
             server_name: idp.eduid.docker
             mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev
