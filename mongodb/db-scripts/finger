@@ -1,30 +1,40 @@
-#!/opt/eduid/bin/python
+#!/usr/bin/env python3
 #
 # Show information about a specific eduID user
 #
-
-import sys
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/finger search-criteria
+#
 import datetime
-import bson
+import json
+import pprint
 
-from eduid_userdb.admin import get_client
-from eduid_userdb.credentials import CredentialList
+import bson
+import sys
+
+from eduid.userdb import User
+from eduid.userdb.admin import RawDb, get_argparser
+from eduid.webapp.common.session.redis_session import EduidJSONEncoder
+
 
 def print_subinfo(key, value):
-    attrs = {'mailAliases': 'email',
-             'mobile': 'mobile',
-             }
+    attrs = {
+        'mailAliases': 'email',
+        'mobile': 'mobile',
+        'tou': 'version',
+        'phone': 'number',
+        'nins': 'number',
+    }
     main_attr = attrs[key]
     key_text = "{!s:>25}".format('{!s} (list)'.format(key))
     for this in value:
-        v_text = ''
         metadata = ['{!s}={!s}'.format(x, this[x]) for x in this.keys() if x != main_attr]
         if metadata:
             metadata = '(' + ', '.join(metadata) + ')'
-        print("  {key_text}: {value!s} {metadata}".format(key_text=key_text,
-                                                          value=this.get(main_attr),
-                                                          metadata=metadata)
-              )
+        print(
+            "  {key_text}: {value!s} {metadata}".format(key_text=key_text, value=this.get(main_attr), metadata=metadata)
+        )
         key_text = "{!s:>25}".format('')
 
 
@@ -32,35 +42,36 @@ def print_datecount(key, value):
     key_text = "{!s:>25}".format('{!s} (list)'.format(key))
     for date, count in sorted(value.items()):
         v_text = '{!s}: {!s}'.format(date, count)
-        print("  {key_text}: {value!s}".format(key_text=key_text,
-                                               value=v_text,
-                                               ))
+        print("  {key_text}: {value!s}".format(key_text=key_text, value=v_text,))
         key_text = "{!s:>25}".format('')
 
 
 def print_value(key, value):
     if isinstance(value, str):
-        print("  {!s:>25}: {!s}".format(key, value))
+        print("  {!s:>25}: {!s}".format(key, value.encode('utf-8')))
     elif isinstance(value, datetime.datetime):
         print("  {!s:>25}: {!s}".format(key, value.isoformat()))
     else:
-        print("  {!s:>25}: {!r}".format(key, value))
+        # pprint.pformat unknown data, and increase the indentation
+        pretty = pprint.pformat(value).replace('\n  ', '\n' + (' ' * 29))
+        print("  {!s:>25}: {}".format(key, pretty))
 
 
-def print_credential(key, value, aux_collections):
+def print_credential(key, value, aux_collections, db):
     key_text = "{!s:>25}".format('{!s} (list)'.format(key))
-    credentials = CredentialList(value)
-    for this in credentials.to_list():
+    for this in value:
         metadata = []
-        authn_info = aux_collections['authn_info']['coll']
-        cred_dict = this.to_dict()
-        cred_dict['id'] = this.key
-        for last_used in authn_info.find({aux_collections['authn_info']['key']: this.key}):
-            if 'success_ts' in last_used:
-                cred_dict['last_used'] = last_used['success_ts'].isoformat()
-        for key, val in sorted(cred_dict.items()):
-            val_str = str(val)
-            if key not in['id', 'last_used']:
+        dbname, dbcoll = aux_collections['authn_info']['name'].split('.')
+        cred_id = this.get('credential_id', this.get('id'))  # new and old name for this field
+        for last_used in db.find(dbname, dbcoll, {aux_collections['authn_info']['key']: cred_id}):
+            if 'success_ts' in last_used.doc:
+                this['last_used'] = last_used.doc['success_ts'].isoformat()
+        for key, val in sorted(this.items()):
+            try:
+                val_str = str(val)
+            except:
+                val_str = '{!r}'.format(val)
+            if key not in ['id', 'last_used']:
                 if len(val_str) > 16:
                     val_str = val_str[:16] + '...'
             metadata.append('{!s}={!s}'.format(key, val_str))
@@ -69,92 +80,97 @@ def print_credential(key, value, aux_collections):
         key_text = ''
 
 
-def show_user(user, aux_collections):
+def print_key_value(key, value, aux_collections, db):
+    if key in ['mailAliases', 'mobile', 'phone', 'tou']:
+        print_subinfo(key, value)
+        return
+    if key == 'passwords':
+        print_credential(key, value, aux_collections, db)
+        return
+    if key in ['success_count', 'fail_count']:
+        print_datecount(key, value)
+        return
+    print_value(key, value)
+
+
+def show_user(user: User, aux_collections, db):
     # Show general unidentified attributes
-    for (key, value) in sorted(user.items()):
-        if key in ['mailAliases', 'mobile']:
-            print_subinfo(key, value)
-            continue
-        if key == 'passwords':
-            print_credential(key, value, aux_collections)
-            continue
-        print_value(key, value)
+    for (key, value) in sorted(user.to_dict().items()):
+        print_key_value(key, value, aux_collections, db)
 
     for aux in aux_collections.values():
-        data = aux['coll'].find({aux['key']: user['_id']})
-        if data:
+        dbname, dbcoll = aux['name'].split('.')
+        rawdata = db.find(dbname, dbcoll, {aux['key']: user.user_id})
+        if rawdata:
             print('\n  Collection {!s}:'.format(aux['name']))
-            for this in data:
-                for (key, value) in sorted(this.items()):
+            for this in rawdata:
+                for (key, value) in sorted(this.doc.items()):
                     if key in ['_id']:
                         continue
-                    if key in ['success_count', 'fail_count']:
-                        print_datecount(key, value)
-                        continue
-                    print_value(key, value)
+                    print_key_value(key, value, aux_collections, db)
+                print('')
 
 
-def main(search_for):
-    #client = MongoClient('mongodb://mongodb.docker:27017/', read_preference=ReadPreference.SECONDARY)
-    client = get_client()
+def main(args):
+    db = RawDb()
 
-    coll = client['eduid_am']['attributes']
-
-    aux_collections = {'authn_info': {'name': 'eduid_idp_authninfo.authn_info',
-                                      'coll': client['eduid_idp_authninfo']['authn_info'],
-                                      'key': '_id',
-                                      },
-                       'signup':     {'name': 'eduid_signup.registered',
-                                      'coll': client['eduid_signup']['registered'],
-                                      'key': '_id',
-                                      },
-                       'dashboard':  {'name': 'eduid_dashboard.profiles',
-                                      'coll': client['eduid_dashboard']['profiles'],
-                                      'key': '_id',
-                                      },
-                       'verifications': {'name': 'eduid_dashboard.verifications',
-                                         'coll': client['eduid_dashboard']['verifications'],
-                                         'key': 'user_oid',
-                                         },
-                       }
+    aux_collections = {
+        'authn_info': {'name': 'eduid_idp_authninfo.authn_info', 'key': '_id',},
+        'signup': {'name': 'eduid_signup.registered', 'key': '_id',},
+        'dashboard': {'name': 'eduid_dashboard.profiles', 'key': '_id',},
+        'verifications': {'name': 'eduid_dashboard.verifications', 'key': 'user_oid',},
+    }
     count = 0
     seen = {}
 
+    search = [
+        {'email': args.search_for},
+        {'mailAliases.email': args.search_for},
+        {'mobile': args.search_for},
+        {'phone.number': args.search_for},
+        {'nins.number': args.search_for},
+        {'eduPersonPrincipalName': args.search_for},
+    ]
     try:
-        found_id = coll.find({'_id': bson.ObjectId(search_for)})
+        search.extend([{'_id': bson.ObjectId(args.search_for)}])
     except bson.errors.InvalidId:
-        found_id = []
+        pass
+
     separator = ''
-    for user_iter in [found_id,
-                      coll.find({'$or': [{'email': search_for},
-                                         {'mailAliases.email': search_for},
-                                         {'mobile': search_for},
-                                         {'norEduPersonNIN': search_for},
-                                         {'eduPersonPrincipalName': search_for},
-                                         ]
-                                 })]:
-        if not user_iter:
+
+    for raw in db.find('eduid_am', 'attributes', {'$or': search}):
+        if raw.doc['_id'] in seen:
             continue
-        for user in user_iter:
-            if user['_id'] in seen:
-                continue
-            if separator:
-                print(separator)
-            separator = '-' * 79
-            seen[user['_id']] = 1
-            count += 1
-            print('Collection eduid_am.attributes:')
-            show_user(user, aux_collections)
+        seen[raw.doc['_id']] = 1
+        if separator:
+            print(separator)
+        separator = '-' * 79
+        count += 1
+
+        print('Collection eduid_am.attributes:')
+
+        if args.json:
+            print(json.dumps(raw.doc, indent=4, sort_keys=True, cls=EduidJSONEncoder))
+            for aux in aux_collections.values():
+                dbname, dbcoll = aux['name'].split('.')
+                for rawdata in db.find(dbname, dbcoll, {aux['key']: raw.doc['_id']}):
+                    print('\nCollection {!s}:'.format(aux['name']))
+                    print(json.dumps(rawdata.doc, indent=4, sort_keys=True, cls=EduidJSONEncoder))
+        else:
+            user = User.from_dict(raw.doc)
+            show_user(user, aux_collections, db)
 
     return bool(count > 0)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        sys.stderr.write("Syntax: finger e-mail/mobile/NIN/eppn\n")
-        sys.exit(1)
+    parser = get_argparser(description='Locate and show users in the eduID user database')
+    parser.add_argument('--json', dest='json', action='store_true', default=False, help='Print user document as JSON')
 
-    if main(sys.argv[1]):
+    parser.add_argument('search_for', metavar='STR', type=str, help='eppn/phone/e-mail/objectid to search for')
+    args = parser.parse_args()
+
+    if main(args):
         sys.exit(0)
 
     sys.exit(1)
