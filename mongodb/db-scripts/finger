@@ -15,7 +15,7 @@ import sys
 
 from eduid.userdb import User
 from eduid.userdb.admin import RawDb, get_argparser
-from eduid.webapp.common.session.redis_session import EduidJSONEncoder
+from eduid.common.misc.encoders import EduidJSONEncoder
 
 
 def print_subinfo(key, value):
