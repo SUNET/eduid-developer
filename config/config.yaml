@@ -389,6 +389,10 @@ eduid:
             u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
+            other_device_logins_ttl: PT3M
+            other_device_secret_key: 'lx0sg0g21QUkiu9JAPfhx4hJ5prJtbk1PPE-OBvpiAk='
+            known_devices_secret_key: 'WwemHQgPm1hpx41NYaVBQpRV7BAq0OMtfF3k4H72J7c='
+            known_devices_feature_enabled: true
             logging_config:
               loggers:
                 'saml2':
