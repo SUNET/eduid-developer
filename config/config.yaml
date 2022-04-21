@@ -296,23 +296,23 @@ eduid:
                   en: English
                   sv: Svenska
               dashboard_url: https://dashboard.eduid.docker/profile/
-              personal_data_url: /services/personal-data/
-              emails_url: /services/email/
-              mobile_url: /services/phone/
-              phone_url: /services/phone/
-              oidc_proofing_url: /services/oidc-proofing/proofing/
-              ladok_url: /services/ladok/
-              lookup_mobile_proofing_url: /services/lookup-mobile-proofing/proofing/
-              letter_proofing_url: /services/letter-proofing/
-              security_url: /services/security/
-              token_service_url: /services/authn/
-              authn_url: /services/authn/
-              oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
-              orcid_url: /services/orcid/
-              group_mgmt_url: /services/group-management/
+              personal_data_url: https://dashboard.eduid.docker/services/personal-data/
+              emails_url: https://dashboard.eduid.docker/services/email/
+              mobile_url: https://dashboard.eduid.docker/services/phone/
+              phone_url: https://dashboard.eduid.docker/services/phone/
+              oidc_proofing_url: https://dashboard.eduid.docker/services/oidc-proofing/proofing/
+              ladok_url: https://dashboard.eduid.docker/services/ladok/
+              lookup_mobile_proofing_url: https://dashboard.eduid.docker/services/lookup-mobile-proofing/proofing/
+              letter_proofing_url: https://dashboard.eduid.docker/services/letter-proofing/
+              security_url: https://dashboard.eduid.docker/services/security/
+              token_service_url: https://dashboard.eduid.docker/services/authn/
+              authn_url: https://dashboard.eduid.docker/services/authn/
+              oidc_proofing_freja_url: https://dashboard.eduid.docker/services/oidc-proofing/freja/proofing/
+              orcid_url: https://dashboard.eduid.docker/services/orcid/
+              group_mgmt_url: https://dashboard.eduid.docker/services/group-management/
               eidas_url: https://eidas.eduid.docker/
               # old reset password
-              password_service_url: /services/security/
+              password_service_url: https://dashboard.eduid.docker/services/security/
               # new reset password
               reset_password_url: https://idp.eduid.docker/services/reset-password/
               token_verify_idp: http://dev.test.swedenconnect.se/idp
