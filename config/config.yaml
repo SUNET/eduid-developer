@@ -113,6 +113,7 @@ eduid:
             secret_key: supersecretkey
             fido2_rp_id: eduid.docker
             u2f_app_id: https://dashboard.dev.eduid.se
+            errors_url_template: 'https://html.eduid.docker/errors?code={ERRORURL_CODE}&ts={ERRORURL_TS}&rp={ERRORURL_RP}&tid={ERRORURL_TID}&ctx={ERRORURL_CTX}'
         authn:
             server_name: dashboard.eduid.docker
             application_root: /services/authn
@@ -128,7 +129,6 @@ eduid:
             signup_authn_failure_redirect_url: https://html.eduid.docker/
             unsolicited_response_redirect_url: https://html.eduid.docker
             safe_relay_domain: eduid.docker
-            errors_url_template: 'https://html.eduid.docker/errors?errorurl_code={ERRORURL_CODE}&errorurl_ts={ERRORURL_TS}&errorurl_rp={ERRORURL_RP}&errorurl_tid={ERRORURL_TID}&errorurl_ctx={ERRORURL_CTX}'
         ladok:
             server_name: dashboard.eduid.docker
             application_root: /services/ladok
