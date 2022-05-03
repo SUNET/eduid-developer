@@ -113,6 +113,7 @@ eduid:
             secret_key: supersecretkey
             fido2_rp_id: eduid.docker
             u2f_app_id: https://dashboard.dev.eduid.se
+            errors_url_template: 'https://html.eduid.docker/errors?code={ERRORURL_CODE}&ts={ERRORURL_TS}&rp={ERRORURL_RP}&tid={ERRORURL_TID}&ctx={ERRORURL_CTX}'
         authn:
             server_name: dashboard.eduid.docker
             application_root: /services/authn
@@ -296,23 +297,23 @@ eduid:
                   en: English
                   sv: Svenska
               dashboard_url: https://dashboard.eduid.docker/profile/
-              personal_data_url: /services/personal-data/
-              emails_url: /services/email/
-              mobile_url: /services/phone/
-              phone_url: /services/phone/
-              oidc_proofing_url: /services/oidc-proofing/proofing/
-              ladok_url: /services/ladok/
-              lookup_mobile_proofing_url: /services/lookup-mobile-proofing/proofing/
-              letter_proofing_url: /services/letter-proofing/
-              security_url: /services/security/
-              token_service_url: /services/authn/
-              authn_url: /services/authn/
-              oidc_proofing_freja_url: /services/oidc-proofing/freja/proofing/
-              orcid_url: /services/orcid/
-              group_mgmt_url: /services/group-management/
+              personal_data_url: https://dashboard.eduid.docker/services/personal-data/
+              emails_url: https://dashboard.eduid.docker/services/email/
+              mobile_url: https://dashboard.eduid.docker/services/phone/
+              phone_url: https://dashboard.eduid.docker/services/phone/
+              oidc_proofing_url: https://dashboard.eduid.docker/services/oidc-proofing/proofing/
+              ladok_url: https://dashboard.eduid.docker/services/ladok/
+              lookup_mobile_proofing_url: https://dashboard.eduid.docker/services/lookup-mobile-proofing/proofing/
+              letter_proofing_url: https://dashboard.eduid.docker/services/letter-proofing/
+              security_url: https://dashboard.eduid.docker/services/security/
+              token_service_url: https://dashboard.eduid.docker/services/authn/
+              authn_url: https://dashboard.eduid.docker/services/authn/
+              oidc_proofing_freja_url: https://dashboard.eduid.docker/services/oidc-proofing/freja/proofing/
+              orcid_url: https://dashboard.eduid.docker/services/orcid/
+              group_mgmt_url: https://dashboard.eduid.docker/services/group-management/
               eidas_url: https://eidas.eduid.docker/
               # old reset password
-              password_service_url: /services/security/
+              password_service_url: https://dashboard.eduid.docker/services/security/
               # new reset password
               reset_password_url: https://idp.eduid.docker/services/reset-password/
               token_verify_idp: http://dev.test.swedenconnect.se/idp
@@ -331,6 +332,7 @@ eduid:
               # Login config
               login_base_url: https://idp.eduid.docker/services/idp
               login_next_url: https://idp.eduid.docker/services/idp/next
+              error_info_url: https://idp.eduid.docker/services/idp/error_info
               eduid_site_name: eduID Developer
               eduid_site_url: https://html.eduid.docker
               signup_url: https://signup.eduid.docker/
@@ -389,6 +391,10 @@ eduid:
             u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
+            other_device_logins_ttl: PT3M
+            other_device_secret_key: 'lx0sg0g21QUkiu9JAPfhx4hJ5prJtbk1PPE-OBvpiAk='
+            known_devices_secret_key: 'WwemHQgPm1hpx41NYaVBQpRV7BAq0OMtfF3k4H72J7c='
+            known_devices_feature_enabled: true
             logging_config:
               loggers:
                 'saml2':
