@@ -73,6 +73,9 @@ eduid:
                   'eduid_am.*': {'queue': 'am'}
                   'eduid_msg.*': {'queue': 'msg'}
                   'eduid_lookup_mobile.*': {'queue': 'lookup_mobile'}
+            # Configure backdoor for UI testing
+            magic_cookie: magiccookie
+            magic_cookie_name: magiccookie
             # NEW
             celery:
                 accept_content: ["application/json"]
