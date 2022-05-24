@@ -1,0 +1,82 @@
+#!/opt/eduid/admintools/bin/python
+#
+# Add an orcid element to a user for development
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/add-orcid
+#
+
+import sys
+
+from eduid.userdb import User, Orcid
+from eduid.userdb.admin import RawDb
+from eduid.userdb.credentials import FidoCredential, U2F, Webauthn
+from eduid.userdb.util import utc_now
+
+
+def main(dry_run, eppn):
+    db = RawDb(myname='add-orcid')
+    print('Running add-orcid')
+
+    count = 0
+
+    for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
+        user = User.from_dict(raw_user.doc)
+        print(user)
+        orcid_data = {
+            'created_by': 'script',
+            'created_ts': utc_now(),
+            'family_name': 'Testsson',
+            'given_name': 'Testaren Test',
+            'id': 'https://sandbox.orcid.org/0000-0002-8544-3534',
+            'modified_ts': utc_now(),
+            'oidc_authz': {
+                'access_token': 'xxxxxxxx-131a-480b-xxxx-60bae2dd2b85',
+                'created_by': 'db-script',
+                'created_ts': utc_now(),
+                'expires_in': 631138518,
+                'id_token': {
+                    'aud': ['APP-YIAD0N1L4B3Z3W9Q'],
+                    'auth_time': 1653400926,
+                    'created_by': 'script',
+                    'created_ts': utc_now(),
+                    'exp': 1653487334,
+                    'iat': 1653400934,
+                    'iss': 'https://sandbox.orcid.org',
+                    'modified_ts': utc_now(),
+                    'nonce': 'xxxxxxxx-6770-44b7-xxxx-03ca8d920269',
+                    'sub': '0000-0002-8544-xxxx',
+                },
+                'modified_ts': utc_now(),
+                'refresh_token': 'addf3f5f-7ea0-4b2b-88de-e52ea368860c',
+                'token_type': 'bearer',
+            },
+            'verified': True,
+        }
+        orcid = Orcid(**orcid_data)
+        print(orcid)
+        user.orcid = orcid
+
+        raw_user.doc = user.to_dict()
+        db.save_with_backup(raw_user, dry_run=dry_run)
+        count += 1
+
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    args = sys.argv[1:]
+    if not args:
+        print('Syntax: add-orcid [--force] eppn')
+        sys.exit(1)
+    dry_run = True
+    if args[0] == '--force':
+        dry_run = False
+        args = args[1:]
+    eppn = args[0]
+    print('Dry run: {}'.format(dry_run))
+    if main(dry_run, eppn):
+        sys.exit(0)
+    print('No user with eppn {} found'.format(eppn))
+    sys.exit(1)
