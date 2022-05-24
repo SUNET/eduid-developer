@@ -19,11 +19,17 @@ if [ -t 0 ]; then
     DOCKER_RUN_OPTIONS="$DOCKER_RUN_OPTIONS -i"
 fi
 
+# do not mount non existing source
+SOURCES=""
+if [ -f ${PWD}/sources/eduid-backend/src/eduid/__init__.py  ]; then
+    SOURCES="-v ${PWD}/sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro"
+fi
+
 docker run --rm ${DOCKER_RUN_OPTIONS} \
        --net eduid_dev \
        -e MONGODB_HOST=eduid_mongodb_1 \
        -v ${PWD}/mongodb/db-scripts:/opt/eduid/mongodb/db-scripts:ro \
        -v ${PWD}/raw_db_changes:/root/raw_db_changes \
-       -v ${PWD}/sources/eduid-backend/src/eduid:/opt/eduid/src/eduid:ro \
+       ${SOURCES} \
        docker.sunet.se/eduid/admintools:staging \
        $*
