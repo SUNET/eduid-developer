@@ -196,9 +196,9 @@ eduid:
             # SAML2 and SP config
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             safe_relay_domain: eduid.docker
-            token_verify_redirect_url: https://dashboard.eduid.docker/profile/security
-            nin_verify_redirect_url: https://dashboard.eduid.docker/profile/nins
-            action_url: https://idp.eduid.docker/services/actions2/
+            token_verify_redirect_url: https://dashboard.eduid.docker/profile/settings/advanced-settings
+            identity_verify_redirect_url: https://dashboard.eduid.docker/profile/verify-identity/
+            foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/lookup-mobile-proofing
@@ -260,6 +260,7 @@ eduid:
             u2f_valid_facets:
                 - https://dashboard.dev.eduid.se
                 - https://idp.dev.eduid.se
+            webauthn_attestation: 'direct'
         signup:
             server_name: signup.eduid.docker
             application_root: /services/signup
