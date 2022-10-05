@@ -38,6 +38,7 @@ mongo_databases:
         - 'eduid_scimapi'
         - 'eduid_group_management'
         - 'eduid_ladok'
+        - 'eduid_svipe_id'
         - 'munin'
 
   eduid_api:
@@ -279,6 +280,15 @@ mongo_databases:
       read:
         - 'eduid_support'
 
+  eduid_svipe_id:
+    collections:
+      - 'profiles'
+    access:
+      readWrite:
+        - 'eduid_svipe_id'
+      read:
+        - 'eduid_support'
+
   eduid_logs:
     collections:
       - 'proofing_log'
@@ -305,6 +315,7 @@ mongo_databases:
       readWrite:
         - 'eduid_queue'
         - 'eduid_scimapi'
+        - 'eduid_signup'
 
   seleg_op:
     collections:
