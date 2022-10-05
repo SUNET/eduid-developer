@@ -77,6 +77,28 @@ services:
       - redis
       - rsyslog
 
+  auth_server:
+    image: docker.sunet.se/sunet/sunet-auth-server:latest
+    restart: on-failure
+    networks:
+      dev:
+    expose:
+      - 8000
+    volumes:
+      - ../auth-server/etc:/opt/sunet/auth-server/etc
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - eduidlogdata:/var/log/sunet
+      # source volumes
+      - ../sources/sunet-auth-server/src/auth_server:/opt/eduid/sources/auth_server:ro
+    environment:
+      <<: *common-env-variables
+      HOSTNAME: auth_server
+      app_name: auth_server
+      config_file: /opt/eduid/config.yaml
+      config_ns: /eduid/api/auth_server
+      app_entrypoint: auth_server.run:app
+
+
   api_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
@@ -88,8 +110,10 @@ services:
       - /dev/log:/dev/log
     links:
       - scimapi
+      - auth_server
     depends_on:
       - scimapi
+      - auth_server
 
   dashboard_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -777,6 +801,30 @@ services:
       - support
     depends_on:
       - support
+
+  svipe_id:
+    image: docker.sunet.se/eduid/webapp:20220826T125504-testing
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-svipe-id/etc:/opt/eduid/etc
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+    environment:
+      <<: *common-env-variables
+      HOSTNAME: svipe_id
+      eduid_name: svipe_id
+      EDUID_CONFIG_NS: /eduid/webapp/svipe_id
+    depends_on:
+      - mongodb
+      - am
+      - redis
+      - rsyslog
 
   turq:
     image: docker.sunet.se/eduid/turq

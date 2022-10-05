@@ -39,6 +39,28 @@ eduid:
             add_creds_password_key_handle: 1
             mongo_uri: 'mongodb://mongodb.eduid_dev'
             yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
+        auth_server:
+          environment: dev
+          log_level: DEBUG
+          application_root: /auth
+          auth_token_issuer: api.eduid.docker
+          auth_flows:
+            - ConfigFlow
+          auth_token_audience: eduid.docker
+          keystore_path: /opt/sunet/auth-server/etc/keystore.jwks
+          signing_key_id: localauthserver
+          client_keys:
+            devkey:
+              proof:
+                method: jws
+              jwk:
+                kty: EC
+                kid: devkey
+                crv: P-256
+                x: "zZR7GB5d2mp-kzXKcqzyoL4ixAHsZ26TCWgNV-ok5Sg"
+                y: "VMkvhwa5Zg5L4-KZQrEUJ7_V6jjv26Oh0UNtDOfRIus"
+              claims:
+                test_claim: "this is my test claim"
     webapp:
         common:
             devel_mode: yes
