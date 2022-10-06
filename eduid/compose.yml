@@ -7,31 +7,6 @@ x-common-env-variables: &common-env-variables
   extra_args: --reload
 
 services:
-  actions2:
-    image: docker.sunet.se/eduid/webapp:20220830T105521-staging
-    networks:
-      dev:
-    expose:
-      - 8080
-    volumes:
-      - ../eduid-actions2/etc:/opt/eduid/etc:ro
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - appdata:/opt/eduid/run
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-    environment:
-      <<: *common-env-variables
-      HOSTNAME: actions2
-      eduid_name: actions2
-      EDUID_CONFIG_NS: /eduid/webapp/actions2
-      eduid_entrypoint: eduid.webapp.actions.run:app
-    depends_on:
-      - mongodb
-      - redis
-      - rsyslog
-    extra_hosts:
-      - "dashboard.eduid.docker:172.16.10.220"
 
   am:
     image: docker.sunet.se/eduid/worker:20220830T105521-staging
@@ -276,7 +251,6 @@ services:
       - ../pki/idp.pem:/etc/ssl/idp.pem:ro
       - /dev/log:/dev/log
     depends_on:
-      - actions2
       - html
       - idp
       - reset_password
