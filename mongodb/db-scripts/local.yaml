@@ -305,6 +305,7 @@ mongo_databases:
       readWrite:
         - 'eduid_queue'
         - 'eduid_scimapi'
+        - 'eduid_signup'
 
   seleg_op:
     collections:
