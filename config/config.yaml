@@ -133,7 +133,6 @@ eduid:
               - mfa
             # ENVIRONMENT=(dev|staging|pro)
             environment: 'dev'
-            tou_url: https://idp.eduid.docker/services/actions2/get-tous/
             tou_version: 2016-v1
             secret_key: supersecretkey
             fido2_rp_id: eduid.docker
@@ -220,7 +219,11 @@ eduid:
             safe_relay_domain: eduid.docker
             token_verify_redirect_url: https://dashboard.eduid.docker/profile/settings/advanced-settings
             identity_verify_redirect_url: https://dashboard.eduid.docker/profile/verify-identity/
+            freja_idp: http://dev.test.swedenconnect.se/idp
             foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
+            frontend_action_finish_url:
+              eidasVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
+              eidasVerifyCredential: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/lookup-mobile-proofing
@@ -363,23 +366,6 @@ eduid:
               eduid_site_url: https://html.eduid.docker
               signup_url: https://signup.eduid.docker/
               reset_password_link: https://html.eduid.docker/reset-password/
-        actions2:
-            server_name: idp.eduid.docker
-            application_root: /services/actions2
-            log_level: DEBUG
-            mongo_uri: mongodb://eduid_actions:eduid_actions_pw@mongodb.eduid_dev
-            #am_broker_url: amqp://eduid:eduid_pw@rabbitmq/am
-            bundles_path: /front-build/
-            bundles_version: iamaversion
-            bundles_feature_cookie: bundle-version
-            bundles_feature_version:
-              beta: beta1
-            idp_url: https://idp.eduid.docker/sso/redirect
-            u2f_valid_facets:
-                - https://dashboard.dev.eduid.se
-                - https://idp.dev.eduid.se
-            eidas_url: https://eidas.eduid.docker/
-            mfa_authn_idp: http://dev.test.swedenconnect.se/idp
         idp:
             server_name: idp.eduid.docker
             application_root: /
@@ -397,8 +383,6 @@ eduid:
             staff_link: https://html.eduid.docker/personal.html
             faq_link: https://html.eduid.docker/faq.html
             privacy_link: https://html.eduid.docker/privacy.html
-            # uri for the old actions microservice
-            actions_app_uri: https://idp.eduid.docker/services/actions2/
             static_link: https://html.eduid.docker/static
             base_url: https://idp.eduid.docker/
             # uncomment login_bundle_url to enable the IdP API (and disable the template IdP)
