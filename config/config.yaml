@@ -63,6 +63,7 @@ eduid:
                 test_claim: "this is my test claim"
     webapp:
         common:
+            cors_origins: ['.*\.eduid.docker$', '^eduid.docker$']
             devel_mode: yes
             # enable disable debug mode
             debug: yes
