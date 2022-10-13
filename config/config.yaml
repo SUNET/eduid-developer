@@ -345,6 +345,7 @@ eduid:
               eduid_site_url: https://html.eduid.docker
               signup_url: https://signup.eduid.docker/
               reset_password_link: https://html.eduid.docker/reset-password/
+              tou_url: not_used_remove_me_after_config_model_update
         idp:
             server_name: idp.eduid.docker
             application_root: /
