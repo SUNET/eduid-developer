@@ -282,6 +282,8 @@ eduid:
             log_level: DEBUG
             logger_name: svipe_id
             client_registration_info:
+                client_id: 'change_me'
+                client_secret: 'change_me'
             provider_configuration_info:
                 issuer: https://api.svipe.com/oidc/v1/
             proofing_redirect_url:  https://dashboard.eduid.docker/profile/verify-identity/
