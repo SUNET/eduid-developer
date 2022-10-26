@@ -9,7 +9,8 @@ eduid:
             environment: 'dev'
         scimapi:
             mongo_uri: 'mongodb://eduid_scimapi:eduid_scimapi_pw@mongodb.eduid_dev'
-            server_name: 'scimapi.eduid.docker:8000'
+            protocol: 'https'
+            server_name: 'scimapi.eduid.docker'
             application_root: '/scim'
             neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
             neo4j_config:
@@ -48,7 +49,7 @@ eduid:
             - ConfigFlow
           auth_token_audience: eduid.docker
           keystore_path: /opt/sunet/auth-server/etc/keystore.jwks
-          signing_key_id: localauthserver
+          signing_key_id: auth-server-dev-221011
           client_keys:
             devkey:
               proof:
@@ -57,9 +58,11 @@ eduid:
                 kty: EC
                 kid: devkey
                 crv: P-256
-                x: "zZR7GB5d2mp-kzXKcqzyoL4ixAHsZ26TCWgNV-ok5Sg"
-                y: "VMkvhwa5Zg5L4-KZQrEUJ7_V6jjv26Oh0UNtDOfRIus"
+                x: "LsX8Jl-DwZfJjgkwvTiRu5nqMNYcwh29hdkDtCsj26w"
+                y: "hifFMvRh_moHOvBLx58JokS0LMjjo3Ww5SfjzFVSVSA"
               claims:
+                scopes:
+                  - eduid.se
                 test_claim: "this is my test claim"
     webapp:
         common:
@@ -76,6 +79,8 @@ eduid:
             # The URL scheme that should be used for URL generation if no URL scheme is
             # available. This defaults to http
             preferred_url_scheme: https
+            # CORS
+            cors_origins: '.*\.eduid\.docker$'
             # Redis config
             redis_config:
               host: redis.eduid_dev
@@ -270,6 +275,16 @@ eduid:
                 encrypted: false
             log_level: DEBUG
             logger_name: group_management
+        svipe_id:
+            server_name: dashboard.eduid.docker
+            application_root: /services/svipe-id
+            mongo_uri: mongodb://eduid_svipe_id:eduid_svipe_id_pw@mongodb.eduid_dev
+            log_level: DEBUG
+            logger_name: svipe_id
+            client_registration_info:
+            provider_configuration_info:
+                issuer: https://api.svipe.com/oidc/v1/
+            proofing_redirect_url:  https://dashboard.eduid.docker/profile/verify-identity/
         security:
             server_name: dashboard.eduid.docker
             application_root: /services/security
@@ -444,8 +459,21 @@ eduid:
         log_level: DEBUG
         logger_name: queue
       mail_worker:
+        debug: true
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
         mongo_collection: message
+        logging_config:
+         'root':
+            handlers: [file, console]
+         handlers:
+            file:
+              class: 'logging.handlers.RotatingFileHandler'
+              filename: '/var/log/eduid/queue_mail_worker.log'
+              formatter: 'default'
+              filters: ['app_filter']
+              maxBytes: 1024
+              backupCount: 0
+
       sink_worker:
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
         mongo_collection: test
