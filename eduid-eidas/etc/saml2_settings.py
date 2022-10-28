@@ -41,41 +41,27 @@ SAML_CONFIG = {
                      saml2.BINDING_HTTP_REDIRECT),
                 ],
             },
-            # required attributes
-            'required_attributes': ['personalIdentityNumber', 'DateOfBirth'],
-            # attributes that may be useful to have but not required
-            'optional_attributes': ['displayName', 'givenName', 'sn'],
-
-            # eIDAS specific
-            'sp_type': 'public',
-            "sp_type_in_metadata": True,
-            'requested_attributes': [
-                {
-                    "friendly_name": "personalIdentityNumber",
-                    "required": True,
-                },
-                {
-                    "friendly_name": "DateOfBirth",
-                    "required": True,
-                },
-                {
-                    "friendly_name": "displayName",
-                    "required": False,
-                },
-                {
-                    "friendly_name": "givenName",
-                    "required": False,
-                },
-                {
-                    "friendly_name": "sn",
-                    "required": False,
-                },
-            ],
+            # we need to request all attributes as optional as we don't get the same attributes
+            # from a swedish eid and a foreign eid
+            'optional_attributes': [
+                'personalIdentityNumber',
+                'DateOfBirth',
+                'displayName',
+                'givenName',
+                'sn',
+                'countryOfCitizenship',
+                'transactionIdentifier',
+                'authContextParams',
+                'prid',
+                'pridPersistence',
+                'eidasPersonIdentifier',
+                ],
 
             # Sign authn request
             'authn_requests_signed': True,
             # Require signed authn response
             'want_response_signed': True,
+            'name': 'eidas_local',
         },
     },
 
