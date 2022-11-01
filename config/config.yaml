@@ -129,6 +129,12 @@ eduid:
             fido2_rp_id: eduid.docker
             u2f_app_id: https://dashboard.dev.eduid.se
             errors_url_template: 'https://html.eduid.docker/errors?code={ERRORURL_CODE}&ts={ERRORURL_TS}&rp={ERRORURL_RP}&tid={ERRORURL_TID}&ctx={ERRORURL_CTX}'
+            logging_config:
+              loggers:
+                'eduid.webapp.common.session':
+                  level: 'INFO'
+                'eduid.webapp.common.authn.middleware':
+                  level: 'INFO'
         authn:
             server_name: dashboard.eduid.docker
             application_root: /services/authn
