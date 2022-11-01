@@ -752,7 +752,6 @@ services:
       - redis
       - rsyslog
       - vccs
-    entrypoint: /pip_install_webapp.sh
 
   signup_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -807,7 +806,7 @@ services:
       - support
 
   svipe_id:
-    image: docker.sunet.se/eduid/webapp:20220826T125504-testing
+    image: docker.sunet.se/eduid/webapp:20221028T114934-staging
     networks:
       dev:
     expose:
