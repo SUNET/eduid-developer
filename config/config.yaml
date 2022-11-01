@@ -21,7 +21,7 @@ eduid:
             authorization_token_expire: 1440
             data_owners:
               'eduid.se':
-                notify: []
+                notify: ['http://turq:13085/']
             logging_config:
                 loggers:
                     'eduid_scimapi.notifications':
@@ -86,21 +86,6 @@ eduid:
               host: redis.eduid_dev
             saml2_logout_redirect_url: https://html.eduid.docker/
             token_service_url: https://dashboard.eduid.docker/services/authn
-            # OLD:
-            celery_config:
-                accept_content: ["application/json"]
-                broker_url: redis://redis.eduid_dev:6379/1
-                result_backend: redis://redis.eduid_dev:6379/1
-                broker_transport_options:
-                    # backwards incompatible setting that the documentation says will be the default in the future
-                    fanout_prefix: true
-                # Avoid broken connections across firewall by disabling pool
-                # http://docs.celeryproject.org/en/latest/configuration.html#broker-pool-limit
-                #BROKER_POOL_LIMIT: 0
-                task_routes:
-                  'eduid_am.*': {'queue': 'am'}
-                  'eduid_msg.*': {'queue': 'msg'}
-                  'eduid_lookup_mobile.*': {'queue': 'lookup_mobile'}
             # Configure backdoor for UI testing
             magic_cookie: magiccookie
             magic_cookie_name: magiccookie
@@ -144,6 +129,12 @@ eduid:
             fido2_rp_id: eduid.docker
             u2f_app_id: https://dashboard.dev.eduid.se
             errors_url_template: 'https://html.eduid.docker/errors?code={ERRORURL_CODE}&ts={ERRORURL_TS}&rp={ERRORURL_RP}&tid={ERRORURL_TID}&ctx={ERRORURL_CTX}'
+            logging_config:
+              loggers:
+                'eduid.webapp.common.session':
+                  level: 'INFO'
+                'eduid.webapp.common.authn.middleware':
+                  level: 'INFO'
         authn:
             server_name: dashboard.eduid.docker
             application_root: /services/authn
@@ -329,10 +320,10 @@ eduid:
             application_root: /services/jsconfig
             log_level: DEBUG
             logger_name: jsconfig
-            fix_dashboard_uppercase_config: true
+            fix_dashboard_uppercase_config: false
             fix_dashboard_available_languages: true
-            fix_signup_uppercase_config: true
-            fix_signup_available_languages: true
+            fix_signup_uppercase_config: false
+            fix_signup_available_languages: false
             jsapps:
               ### this is the configuration for the js apps, that is sent by the jsconfig
               ### microservice to the js apps.
@@ -462,6 +453,9 @@ eduid:
         environment: dev
         log_level: DEBUG
         logger_name: queue
+      scim_event_worker:
+        mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
+        mongo_collection: message
       mail_worker:
         debug: true
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
@@ -479,6 +473,11 @@ eduid:
               backupCount: 0
 
       sink_worker:
+        log_level: INFO
+        logging_config:
+          loggers:
+            'eduid.queue.workers.base':
+              level: 'WARNING'
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
         mongo_collection: test
         log_level: INFO
