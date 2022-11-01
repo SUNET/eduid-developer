@@ -67,6 +67,7 @@ services:
       - ../sources/sunet-auth-server/src/auth_server:/opt/eduid/sources/auth_server:ro
     environment:
       <<: *common-env-variables
+      PYTHONPATH: /opt/eduid/sources/:/opt/sunet/sunet-auth-server/src/
       HOSTNAME: auth_server
       app_name: auth_server
       config_file: /opt/eduid/config.yaml
