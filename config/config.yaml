@@ -320,10 +320,10 @@ eduid:
             application_root: /services/jsconfig
             log_level: DEBUG
             logger_name: jsconfig
-            fix_dashboard_uppercase_config: true
+            fix_dashboard_uppercase_config: false
             fix_dashboard_available_languages: true
-            fix_signup_uppercase_config: true
-            fix_signup_available_languages: true
+            fix_signup_uppercase_config: false
+            fix_signup_available_languages: false
             jsapps:
               ### this is the configuration for the js apps, that is sent by the jsconfig
               ### microservice to the js apps.
