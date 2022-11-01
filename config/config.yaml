@@ -21,7 +21,7 @@ eduid:
             authorization_token_expire: 1440
             data_owners:
               'eduid.se':
-                notify: []
+                notify: ['http://turq:13085/']
             logging_config:
                 loggers:
                     'eduid_scimapi.notifications':
@@ -453,6 +453,9 @@ eduid:
         environment: dev
         log_level: DEBUG
         logger_name: queue
+      scim_event_worker:
+        mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
+        mongo_collection: message
       mail_worker:
         debug: true
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
@@ -470,6 +473,11 @@ eduid:
               backupCount: 0
 
       sink_worker:
+        log_level: INFO
+        logging_config:
+          loggers:
+            'eduid.queue.workers.base':
+              level: 'WARNING'
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
         mongo_collection: test
         log_level: INFO
