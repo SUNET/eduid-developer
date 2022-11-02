@@ -15,7 +15,7 @@ eduid:
             neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
             neo4j_config:
                 encrypted: false
-            authorization_mandatory: false
+            authorization_mandatory: true
             keystore_path: /opt/eduid/eduid-scimapi/etc/keystore.jwks
             signing_key_id: scimapi-dev-202106
             authorization_token_expire: 1440
