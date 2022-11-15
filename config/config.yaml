@@ -222,6 +222,7 @@ eduid:
               eidasVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
               eidasVerifyCredential: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
               loginMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
+              resetpwMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/lookup-mobile-proofing
