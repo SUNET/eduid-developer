@@ -5,6 +5,21 @@ set -e
 service_names="dashboard eidas html idp signup support api developer"
 
 # Generate CA key and cert
+cat > ca.conf <<EOF
+[req]
+default_bits       = 2048
+prompt             = no
+default_md         = sha256
+distinguished_name = dn
+
+[dn]
+C  = SE
+ST = Milky Way
+L  = Earth
+O  = Sunet
+OU = eduID Dev
+CN = eduid_dev_ca
+EOF
 if [ ! -f ./rootCA.key ]; then
     echo Creating Root CA
 
