@@ -825,7 +825,6 @@ services:
       HOSTNAME: svipe_id
       eduid_name: svipe_id
       EDUID_CONFIG_NS: /eduid/webapp/svipe_id
-    entrypoint: /pip_install_webapp.sh
     depends_on:
       - mongodb
       - am
