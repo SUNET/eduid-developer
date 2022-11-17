@@ -222,6 +222,7 @@ eduid:
               eidasVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
               eidasVerifyCredential: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
               loginMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
+              resetpwMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/lookup-mobile-proofing
@@ -273,11 +274,12 @@ eduid:
             mongo_uri: mongodb://eduid_svipe_id:eduid_svipe_id_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: svipe_id
-            client_registration_info:
-                client_id: 'change_me'
-                client_secret: 'change_me'
-            provider_configuration_info:
+            svipe_client:
+                client_id: 'client_id'
+                client_secret: 'client_secret'
                 issuer: https://api.svipe.com/oidc/v1/
+                acr_values: ["face_present"]
+                scopes: ["openid", "document"]
             proofing_redirect_url:  https://dashboard.eduid.docker/profile/verify-identity/
         security:
             server_name: dashboard.eduid.docker
