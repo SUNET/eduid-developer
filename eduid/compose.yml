@@ -430,6 +430,7 @@ services:
     networks:
       dev:
         ipv4_address: 172.16.10.253
+    hostname: "mongodb"
     volumes:
       - mongodbdata:/data
       - ../mongodb/etc:/opt/eduid/etc:ro
