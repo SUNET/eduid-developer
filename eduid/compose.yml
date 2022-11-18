@@ -43,8 +43,6 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-      - ../start_temp.sh:/start_temp.sh
-    entrypoint: /start_temp.sh
     environment:
       <<: *common-env-variables
       eduid_name: amapi

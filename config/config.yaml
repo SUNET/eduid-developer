@@ -64,6 +64,7 @@ eduid:
                 scopes:
                   - eduid.se
                 test_claim: "this is my test claim"
+                service_name: "test-service"
     webapp:
         common:
             cors_origins: ['.*\.eduid.docker$', '^eduid.docker$']
@@ -504,6 +505,24 @@ eduid:
             new_user_date: '2001-01-01'
             action_plugins:
                 - "tou"
+        amapi:
+            mongo_uri: mongodb://eduid_amapi:eduid_amapi_pw@mongodb.eduid_dev
+            protocol: 'http'
+            server_name: 'amapi.eduid.docker'
+            keystore_path: /opt/eduid/eduid-amapi/etc/keystore.jwks
+            log_filters: [app_filter]
+            user_restriction:
+                test-service:
+                    - endpoint: /users/*/name
+                      method: put
+                    - endpoint: /users/*/email
+                      method: put
+                    - endpoint: /users/*/language
+                      method: put
+                    - endpoint: /users/*/phone
+                      method: put
+                    - endpoint: /users/*/terminate
+                      method: put
         msg:
             mongo_uri: mongodb://mongodb/eduid_msg
             mongo_dbname: eduid_msg
