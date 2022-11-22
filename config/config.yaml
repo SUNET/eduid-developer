@@ -359,6 +359,7 @@ eduid:
               password_service_url: https://dashboard.eduid.docker/services/security/
               # new reset password
               reset_password_url: https://idp.eduid.docker/services/reset-password/
+              svipe_url: https://dashboard.eduid.docker/services/svipe-id/
               token_verify_idp: http://dev.test.swedenconnect.se/idp
               password_length: 12
               password_entropy: 25
