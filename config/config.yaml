@@ -280,7 +280,8 @@ eduid:
                 issuer: https://api.svipe.com/oidc/v1/
                 acr_values: ["face_present"]
                 scopes: ["openid", "document"]
-            proofing_redirect_url:  https://dashboard.eduid.docker/profile/verify-identity/
+            frontend_action_finish_url:
+              svipeidVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
         security:
             server_name: dashboard.eduid.docker
             application_root: /services/security
