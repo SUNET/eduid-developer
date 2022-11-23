@@ -64,6 +64,7 @@ eduid:
                 scopes:
                   - eduid.se
                 test_claim: "this is my test claim"
+                service_name: test_service_name
     webapp:
         common:
             cors_origins: ['.*\.eduid.docker$', '^eduid.docker$']
