@@ -29,6 +29,29 @@ services:
       - redis
       - rsyslog
 
+  amapi:
+    image: docker.sunet.se/eduid/fastapi:20221118T110605-staging
+    restart: on-failure
+    networks:
+      dev:
+        ipv4_address: 172.16.10.215
+    expose:
+      - 8080
+    volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - ../eduid-amapi/etc:/opt/eduid/eduid-amapi/etc:ro
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+    environment:
+      <<: *common-env-variables
+      eduid_name: amapi
+      HOSTNAME: amapi
+      EDUID_CONFIG_NS: /eduid/worker/amapi
+      eduid_entrypoint: eduid.workers.amapi.run:api
+    depends_on:
+      - mongodb
+
   authn:
     image: docker.sunet.se/eduid/webapp:20221124T135935-staging
     networks:

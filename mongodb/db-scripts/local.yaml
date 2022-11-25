@@ -17,6 +17,7 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_am'
+        - 'eduid_amapi'
       read:
         - 'eduid_actions'
         - 'eduid_authn'
