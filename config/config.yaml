@@ -507,6 +507,22 @@ eduid:
             new_user_date: '2001-01-01'
             action_plugins:
                 - "tou"
+        amapi:
+            mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
+            keystore_path: /opt/eduid/eduid-amapi/etc/keystore.jwks
+            user_restriction:
+                test_service_name:
+                    - endpoint: "/users/*/name"
+                      method: put
+                    - endpoint: "/users/*/email"
+                      method: put
+                    - endpoint: "/users/*/language"
+                      method: put
+                    - endpoint: "/users/*/phone"
+                      method: put
+                    - endpoint: "/users/*/terminate"
+                      method: put
+
         msg:
             mongo_uri: mongodb://mongodb/eduid_msg
             mongo_dbname: eduid_msg
@@ -523,4 +539,26 @@ eduid:
             devel_mode: true
             teleadress_client_user: 'TEST'
             teleadress_client_password: 'TEST'
+
+        user_cleaner:
+            skatteverket:
+                debug: true
+                user_count: 100
+                change_quota: 0.10
+                mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
+                amapi_url: amapi.eduid.docker
+                gnap_auth_data:
+                    authn_server_url: authn.eduid.docker
+                    key_name: devkey
+                    client_jwk:
+                        kty: EC
+                        kid: devkey
+                        crv: P-256
+                        x: "LsX8Jl-DwZfJjgkwvTiRu5nqMNYcwh29hdkDtCsj26w"
+                        y: "hifFMvRh_moHOvBLx58JokS0LMjjo3Ww5SfjzFVSVSA"
+                        d: "tghyR6Z5kmJZiEw3VBF8d5VGCSaXX_-4w8TN94auHP0"
+                    access:
+                        - type: amapi
+                    #access: List[Union[str, Access]] = Field(default_factory=list)
+                    #default_access_token_expires_in: timedelta = timedelta(hours=1)
 

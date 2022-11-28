@@ -104,7 +104,7 @@ services:
       dev:
         ipv4_address: 172.16.10.235
     expose:
-        - 443
+      - 443
     volumes:
       - ../api-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/api.pem:/etc/ssl/api.pem
@@ -115,13 +115,14 @@ services:
       - scimapi
       - auth_server
 
+
   dashboard_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
       dev:
         ipv4_address: 172.16.10.220
     expose:
-        - 443
+      - 443
     volumes:
       - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/dashboard.pem:/etc/ssl/dashboard.pem
@@ -180,7 +181,7 @@ services:
         aliases:
           - eidas.eduid.docker
     expose:
-        - 443
+      - 443
     volumes:
       - ../eidas-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/eidas.pem:/etc/ssl/eidas.pem:ro
@@ -259,7 +260,7 @@ services:
         aliases:
           - html.eduid.docker
     expose:
-        - 443
+      - 443
     volumes:
       - ../html-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/html.pem:/etc/ssl/html.pem:ro
@@ -328,7 +329,7 @@ services:
       HOSTNAME: jsconfig
       eduid_name: jsconfig
       # Can't set EDUID_CONFIG_NS for jsconfig as the value will be used for jsapps also
-      #- "EDUID_CONFIG_NS=/eduid/webapp/jsconfig"
+      # - "EDUID_CONFIG_NS=/eduid/webapp/jsconfig"
     depends_on:
       - mongodb
       - redis
@@ -784,7 +785,7 @@ services:
       dev:
         ipv4_address: 172.16.10.210
     expose:
-        - 443
+      - 443
     volumes:
       - ../signup-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/signup.pem:/etc/ssl/signup.pem:ro
@@ -821,7 +822,7 @@ services:
       dev:
         ipv4_address: 172.16.10.223
     expose:
-        - 443
+      - 443
     volumes:
       - ../support-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/support.pem:/etc/ssl/support.pem
@@ -861,6 +862,28 @@ services:
       dev:
         ipv4_address: 172.16.10.250
 
+  user_cleaner_skv_worker:
+    image: docker.sunet.se/eduid/worker:20221122T160754-staging
+    networks:
+      dev:
+    volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+    healthcheck:
+      disable: true
+    environment:
+      <<: *common-env-variables
+      HOSTNAME: cleaner_skv_worker
+      eduid_name: cleaner_skv_worker
+      EDUID_CONFIG_NS: /eduid/worker/user_cleaner/skatteverket
+      NEW_QUEUE: "yes"
+      eduid_entrypoint: eduid.workers.user_cleaner.workers.skv
+    depends_on:
+      - mongodb
+      - amapi
+
   vccs:
     image: docker.sunet.se/eduid/fastapi:20221128T095036-staging
     restart: always
@@ -899,7 +922,6 @@ volumes:
     name: softhsmdata
 
 
-
 networks:
   dev:
     driver: bridge
@@ -908,4 +930,4 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.16.10.0/24
+        - subnet: 172.16.10.0/24
