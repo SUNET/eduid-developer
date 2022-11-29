@@ -883,6 +883,10 @@ services:
     depends_on:
       - mongodb
       - amapi
+      - msg
+      - auth_server
+      - api_haproxy
+      - rsyslog
 
   vccs:
     image: docker.sunet.se/eduid/fastapi:20221129T120455-staging
