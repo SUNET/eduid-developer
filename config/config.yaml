@@ -546,9 +546,11 @@ eduid:
                 user_count: 100
                 change_quota: 0.10
                 mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
-                amapi_url: amapi.eduid.docker
+                amapi_url: http://amapi:8080
+                amapi_tls_verify: false
                 gnap_auth_data:
-                    authn_server_url: authn.eduid.docker
+                    auth_server_url: https://api_haproxy/auth
+                    auth_server_verify: false
                     key_name: devkey
                     client_jwk:
                         kty: EC
@@ -559,6 +561,16 @@ eduid:
                         d: "tghyR6Z5kmJZiEw3VBF8d5VGCSaXX_-4w8TN94auHP0"
                     access:
                         - type: amapi
-                    #access: List[Union[str, Access]] = Field(default_factory=list)
-                    #default_access_token_expires_in: timedelta = timedelta(hours=1)
+                logging_config:
+                    'root':
+                        handlers: [file, console]
+                    handlers:
+                        file:
+                            class: 'logging.handlers.RotatingFileHandler'
+                            filename: '/var/log/eduid/user_cleaner_skatteverket_worker.log'
+                            formatter: 'default'
+                            filters: ['app_filter']
+                            maxBytes: 1024
+                            backupCount: 10
+
 
