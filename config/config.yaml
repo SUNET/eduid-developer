@@ -319,6 +319,18 @@ eduid:
             staff_link: https://www.eduid.se/personal.html
             faq_link: https://www.eduid.se/faq.html
             am_relay_for_override: eduid_signup
+            scim_api_url: https://api_haproxy/scim
+            gnap_auth_data:
+              authn_server_url: https://api_haproxy/auth
+              authn_server_verify: false
+              key_name: devkey
+              client_jwk:
+                kty: EC
+                kid: devkey
+                crv: P-256
+                x: "LsX8Jl-DwZfJjgkwvTiRu5nqMNYcwh29hdkDtCsj26w"
+                y: "hifFMvRh_moHOvBLx58JokS0LMjjo3Ww5SfjzFVSVSA"
+                d: "tghyR6Z5kmJZiEw3VBF8d5VGCSaXX_-4w8TN94auHP0"
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             application_root: /services/jsconfig
