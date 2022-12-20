@@ -17,6 +17,7 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_am'
+        - 'eduid_amapi'
       read:
         - 'eduid_actions'
         - 'eduid_authn'
@@ -305,6 +306,7 @@ mongo_databases:
         - 'eduid_signup'
         - 'eduid_eidas'
         - 'eduid_ladok'
+        - 'eduid_svipe_id'
       read:
         - 'eduid_support'
 

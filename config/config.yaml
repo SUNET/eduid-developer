@@ -64,6 +64,7 @@ eduid:
                 scopes:
                   - eduid.se
                 test_claim: "this is my test claim"
+                service_name: test_service_name
     webapp:
         common:
             cors_origins: ['.*\.eduid.docker$', '^eduid.docker$']
@@ -280,7 +281,8 @@ eduid:
                 issuer: https://api.svipe.com/oidc/v1/
                 acr_values: ["face_present"]
                 scopes: ["openid", "document"]
-            proofing_redirect_url:  https://dashboard.eduid.docker/profile/verify-identity/
+            frontend_action_finish_url:
+              svipeidVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
         security:
             server_name: dashboard.eduid.docker
             application_root: /services/security
@@ -317,6 +319,18 @@ eduid:
             staff_link: https://www.eduid.se/personal.html
             faq_link: https://www.eduid.se/faq.html
             am_relay_for_override: eduid_signup
+            scim_api_url: https://api_haproxy/scim
+            gnap_auth_data:
+              authn_server_url: https://api_haproxy/auth
+              authn_server_verify: false
+              key_name: devkey
+              client_jwk:
+                kty: EC
+                kid: devkey
+                crv: P-256
+                x: "LsX8Jl-DwZfJjgkwvTiRu5nqMNYcwh29hdkDtCsj26w"
+                y: "hifFMvRh_moHOvBLx58JokS0LMjjo3Ww5SfjzFVSVSA"
+                d: "tghyR6Z5kmJZiEw3VBF8d5VGCSaXX_-4w8TN94auHP0"
         jsconfig:
             # this is configuration for the flask app serving the jsconfig microservice
             application_root: /services/jsconfig
@@ -358,6 +372,7 @@ eduid:
               password_service_url: https://dashboard.eduid.docker/services/security/
               # new reset password
               reset_password_url: https://idp.eduid.docker/services/reset-password/
+              svipe_url: https://dashboard.eduid.docker/services/svipe-id/
               token_verify_idp: http://dev.test.swedenconnect.se/idp
               password_length: 12
               password_entropy: 25
@@ -504,6 +519,22 @@ eduid:
             new_user_date: '2001-01-01'
             action_plugins:
                 - "tou"
+        amapi:
+            mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
+            keystore_path: /opt/eduid/eduid-amapi/etc/keystore.jwks
+            user_restriction:
+                test_service_name:
+                    - endpoint: "/users/*/name"
+                      method: put
+                    - endpoint: "/users/*/email"
+                      method: put
+                    - endpoint: "/users/*/language"
+                      method: put
+                    - endpoint: "/users/*/phone"
+                      method: put
+                    - endpoint: "/users/*/terminate"
+                      method: put
+
         msg:
             mongo_uri: mongodb://mongodb/eduid_msg
             mongo_dbname: eduid_msg
@@ -520,4 +551,40 @@ eduid:
             devel_mode: true
             teleadress_client_user: 'TEST'
             teleadress_client_password: 'TEST'
+
+        user_cleaner:
+            skatteverket:
+                debug: true
+                user_count: 100
+                change_quota: 0.10
+                mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
+                job_delay: 1.0
+                amapi:
+                    url: http://amapi:8080
+                    tls_verify: false
+                gnap_auth_data:
+                    auth_server_url: https://api_haproxy/auth
+                    auth_server_verify: false
+                    key_name: devkey
+                    client_jwk:
+                        kty: EC
+                        kid: devkey
+                        crv: P-256
+                        x: "LsX8Jl-DwZfJjgkwvTiRu5nqMNYcwh29hdkDtCsj26w"
+                        y: "hifFMvRh_moHOvBLx58JokS0LMjjo3Ww5SfjzFVSVSA"
+                        d: "tghyR6Z5kmJZiEw3VBF8d5VGCSaXX_-4w8TN94auHP0"
+                    access:
+                        - type: amapi
+                logging_config:
+                    'root':
+                        handlers: [file, console]
+                    handlers:
+                        file:
+                            class: 'logging.handlers.RotatingFileHandler'
+                            filename: '/var/log/eduid/user_cleaner_skatteverket_worker.log'
+                            formatter: 'default'
+                            filters: ['app_filter']
+                            maxBytes: 1024
+                            backupCount: 10
+
 
