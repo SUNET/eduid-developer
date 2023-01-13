@@ -867,11 +867,11 @@ services:
     networks:
       dev:
     volumes:
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt
+      - ../config/config.yaml:/opt/eduid/config.yaml
       - eduidlogdata:/var/log/eduid
       # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid
+      - ../dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt
     healthcheck:
       test: ["CMD-SHELL", "[ -f /tmp/healthy ] || exit 1" ]
       interval: 10s
