@@ -585,10 +585,10 @@ services:
       - /dev/log:/dev/log
       - ../sources/pyeleven:/opt/eduid/src/pyeleven:ro
       - ../py11softhsm/idp-public-snakeoil.key:/opt/eduid/idp-public-snakeoil.key:ro
+      - ../py11softhsm/keys.txt:/keys.txt:ro
     environment:
       PYTHONPATH: /opt/eduid/src/pyeleven/src
       ENABLE_PKCS11_SPY: anything
-      p11softhsm_init_rsa_key: /opt/eduid/idp-public-snakeoil.key
 
   queue_mail_worker:
     image: docker.sunet.se/eduid/worker:20230113T171629-staging
