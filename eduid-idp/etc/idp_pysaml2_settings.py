@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from os import path
 
-from saml2 import attributemaps
 from saml2 import BINDING_HTTP_REDIRECT
 from saml2 import BINDING_HTTP_POST
 from saml2 import BINDING_SOAP
@@ -84,13 +83,7 @@ CONFIG = {
             "email_address": "support@eduid.se"
         },
     ],
-
     "crypto_backend": "XMLSecurity",
-
-    #"xmlsec_binary": "/bin/false",  # pysaml2 checks for this
-    # This database holds the map between a subjects local identifier and
-    # the identifier returned to a SP
-    "attribute_map_dir": "/opt/eduid/eduid-idp/etc/attributemaps",
     "logger": {
         "rotating": {
             "filename": "/var/log/eduid/pysaml2.log",
