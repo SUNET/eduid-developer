@@ -583,7 +583,7 @@ services:
       - rsyslog
 
   py11softhsm:
-    image: docker.sunet.se/eduid/py11softhsm:working-dev
+    image: docker.sunet.se/eduid/py11softhsm:latest
     networks:
       dev:
     expose:
