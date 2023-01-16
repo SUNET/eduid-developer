@@ -8,6 +8,14 @@ x-common-env-variables: &common-env-variables
 
 services:
 
+  # This is a one-off job that deletes old logs on startup (preserving permissions etc. on the log files).
+  log_cleanup:
+    image: 'docker.sunet.se/eduid/worker:20221207T144149-staging'
+    volumes:
+      - eduidlogdata:/var/log/eduid
+    entrypoint: "sh -c 'find /var/log/eduid/ -type f -name '*.log' -exec truncate --size 0 {} \\;'"
+
+
   am:
     image: docker.sunet.se/eduid/worker:20221207T144149-staging
     networks:
