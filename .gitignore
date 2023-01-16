@@ -9,6 +9,7 @@ redis/data
 .*.swp
 .*.swo
 sources
+sources.*
 eduid-orcid/etc/oidc_client_creds.yaml
 etcd/data/
 py11softhsm/var/
@@ -20,3 +21,6 @@ pki/*crt
 pki/*pem
 pki/*srl
 pki/*csr
+tmp
+pypiserver/packages
+.idea/
