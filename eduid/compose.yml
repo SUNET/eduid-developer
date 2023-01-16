@@ -1,5 +1,5 @@
 ---
-version: '3.4'
+version: '3.6'
 
 x-common-env-variables: &common-env-variables
   PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/
@@ -589,9 +589,6 @@ services:
     expose:
       - 8000
     volumes:
-      # By NOT providing a volume for /var/lib/softhsm, the container will re-initialize the softhsm database
-      # every time it is started. This is useful here to ensure it works, but not for production.
-      #- softhsmdata:/var/lib/softhsm
       - ../sources/pyeleven:/opt/eduid/src/pyeleven:ro
       - ../py11softhsm/idp-public-snakeoil.key:/opt/eduid/idp-public-snakeoil.key:ro
       - ../py11softhsm/idp_dev_key_202301.pem:/opt/eduid/idp_dev_key_202301.pem:ro
@@ -600,6 +597,8 @@ services:
       #- ../sources/eduid-dockerfiles/py11softhsm/import-key.sh:/import-key.sh:ro
       #- ../sources/eduid-dockerfiles/py11softhsm/start.sh:/start.sh:ro
       #- ../sources/eduid-dockerfiles/py11softhsm/healthcheck.sh:/healthcheck.sh:ro
+    tmpfs:
+      - /var/lib/softhsm  # re-init every time
     environment:
       PYTHONPATH: /opt/eduid/src/pyeleven/src
       ENABLE_PKCS11_SPY: anything
