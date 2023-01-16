@@ -8,6 +8,14 @@ x-common-env-variables: &common-env-variables
 
 services:
 
+  # This is a one-off job that deletes old logs on startup (preserving permissions etc. on the log files).
+  log_cleanup:
+    image: 'docker.sunet.se/eduid/worker:20221207T144149-staging'
+    volumes:
+      - eduidlogdata:/var/log/eduid
+    entrypoint: "sh -c 'find /var/log/eduid/ -type f -name '*.log' -exec truncate --size 0 {} \\;'"
+
+
   am:
     image: docker.sunet.se/eduid/worker:20221207T144149-staging
     networks:
@@ -581,11 +589,17 @@ services:
     expose:
       - 8000
     volumes:
-      - softhsmdata:/var/lib/softhsm
-      - /dev/log:/dev/log
+      # By NOT providing a volume for /var/lib/softhsm, the container will re-initialize the softhsm database
+      # every time it is started. This is useful here to ensure it works, but not for production.
+      #- softhsmdata:/var/lib/softhsm
       - ../sources/pyeleven:/opt/eduid/src/pyeleven:ro
       - ../py11softhsm/idp-public-snakeoil.key:/opt/eduid/idp-public-snakeoil.key:ro
+      - ../py11softhsm/idp_dev_key_202301.pem:/opt/eduid/idp_dev_key_202301.pem:ro
       - ../py11softhsm/keys.txt:/keys.txt:ro
+      # Mount these scripts from the eduid-dockerfiles repo when developing them:
+      #- ../sources/eduid-dockerfiles/py11softhsm/import-key.sh:/import-key.sh:ro
+      #- ../sources/eduid-dockerfiles/py11softhsm/start.sh:/start.sh:ro
+      #- ../sources/eduid-dockerfiles/py11softhsm/healthcheck.sh:/healthcheck.sh:ro
     environment:
       PYTHONPATH: /opt/eduid/src/pyeleven/src
       ENABLE_PKCS11_SPY: anything
