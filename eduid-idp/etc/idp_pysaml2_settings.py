@@ -62,8 +62,7 @@ CONFIG = {
     "debug": True,
     # SAML signing is done using pyeleven (through pyXMLSecurity), but pysaml2
     # requires a certificate to look at so we give it the snakeoil cert here.
-    #"key_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.key",
-    "key_file": "xmlsec+http://py11softhsm:8000/eduid/developer_key",
+    "key_file": "xmlsec+http://py11softhsm:8000/eduid/dev_idp_key_202301",
     "cert_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem",
     "metadata": {
         "local": ["/opt/eduid/eduid-idp/etc/authn_metadata.xml"],
