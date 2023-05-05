@@ -114,7 +114,7 @@ eduid:
             eduid_site_url: https://html.eduid.docker
             eduid_static_url: https://html.eduid.docker/static/
             static_url: https://html.eduid.docker/static/
-            dashboard_url: https://dashboard.eduid.docker/start/
+            dashboard_url: https://dashboard.eduid.docker/profile/
             reset_passwd_url: https://dashboard.eduid.docker/services/security/reset-password
             # set absolute URL so it can be included in emails
             signup_url: https://signup.eduid.docker/register/
@@ -206,7 +206,7 @@ eduid:
             provider_configuration_info:
                 issuer: https://sandbox.orcid.org
             mongo_uri: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
-            orcid_verify_redirect_url: /start/accountlinking
+            orcid_verify_redirect_url: /profile/accountlinking
         eidas:
             server_name: eidas.eduid.docker
             application_root: /
@@ -216,13 +216,13 @@ eduid:
             # SAML2 and SP config
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             safe_relay_domain: eduid.docker
-            token_verify_redirect_url: https://dashboard.eduid.docker/start/settings/advanced-settings
-            identity_verify_redirect_url: https://dashboard.eduid.docker/start/verify-identity/
+            token_verify_redirect_url: https://dashboard.eduid.docker/profile/settings/advanced-settings
+            identity_verify_redirect_url: https://dashboard.eduid.docker/profile/verify-identity/
             freja_idp: http://dev.test.swedenconnect.se/idp
             foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
             frontend_action_finish_url:
-              eidasVerifyIdentity: https://dashboard.eduid.docker/start/ext-return/{app_name}/{authn_id}
-              eidasVerifyCredential: https://dashboard.eduid.docker/start/ext-return/{app_name}/{authn_id}
+              eidasVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
+              eidasVerifyCredential: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
               loginMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
               resetpwMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
         lookup_mobile_proofing:
@@ -253,7 +253,7 @@ eduid:
             mongo_uri: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: email
-            email_verify_redirect_url: /start/emails
+            email_verify_redirect_url: /profile/emails
         phone:
             server_name: dashboard.eduid.docker
             application_root: /services/phone
@@ -283,7 +283,7 @@ eduid:
                 acr_values: ["face_present"]
                 scopes: ["openid", "document"]
             frontend_action_finish_url:
-              svipeidVerifyIdentity: https://dashboard.eduid.docker/start/ext-return/{app_name}/{authn_id}
+              svipeidVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
         security:
             server_name: dashboard.eduid.docker
             application_root: /services/security
@@ -353,7 +353,7 @@ eduid:
               available_languages:
                   en: English
                   sv: Svenska
-              dashboard_url: https://dashboard.eduid.docker/start/
+              dashboard_url: https://dashboard.eduid.docker/profile/
               personal_data_url: https://dashboard.eduid.docker/services/personal-data/
               emails_url: https://dashboard.eduid.docker/services/email/
               mobile_url: https://dashboard.eduid.docker/services/phone/
@@ -560,8 +560,7 @@ eduid:
                 change_quota: 1.0
                 mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
                 minimum_delay: 1
-                periodicity:
-                    seconds: 10
+                periodicity: 30
                 amapi:
                     url: http://amapi:8080
                     tls_verify: false
