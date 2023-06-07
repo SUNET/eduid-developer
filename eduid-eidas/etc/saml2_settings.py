@@ -67,7 +67,7 @@ SAML_CONFIG = {
 
     # where the remote metadata is stored
     'metadata': {
-        'remote': [{'url': 'http://eid.svelegtest.se/metadata/mdx/role/idp.xml', 'cert': '/opt/eduid/etc/sandbox-metadata-cert.crt'}],
+        'remote': [{'url': 'https://eid.svelegtest.se/metadata/mdx/role/idp.xml', 'cert': '/opt/eduid/etc/sandbox-metadata-cert.crt'}],
         #'local': [path.join(SAML2DIR, 'idp_metadata.xml')],
     },
 
