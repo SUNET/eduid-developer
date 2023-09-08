@@ -556,10 +556,11 @@ eduid:
         user_cleaner:
             skatteverket:
                 debug: true
-                user_count: 100
-                change_quota: 0.10
+                dry_run: false
+                change_quota: 1.0
                 mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
-                job_delay: 1.0
+                minimum_delay: 1
+                periodicity: 30
                 amapi:
                     url: http://amapi:8080
                     tls_verify: false
