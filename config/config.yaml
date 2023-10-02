@@ -353,7 +353,7 @@ eduid:
               available_languages:
                   en: English
                   sv: Svenska
-              dashboard_link: https://dashboard.eduid.docker/profile/
+              dashboard_link: https://html.eduid.docker/profile/
               personal_data_service_url: https://dashboard.eduid.docker/services/personal-data/
               emails_service_url: https://dashboard.eduid.docker/services/email/
               mobile_service_url: https://dashboard.eduid.docker/services/phone/
@@ -389,33 +389,8 @@ eduid:
               eduid_site_name: eduID Developer
               eduid_site_url: https://html.eduid.docker
               signup_service_url: https://signup.eduid.docker/services/signup
-              signup_link: https://signup.eduid.docker
+              signup_link: https://html.eduid.docker/register
               reset_password_link: https://html.eduid.docker/reset-password/
-              # deprecated config keys
-              static_faq_url: https://html.eduid.docker/faq
-              dashboard_url: https://dashboard.eduid.docker/profile/
-              personal_data_url: https://dashboard.eduid.docker/services/personal-data/
-              emails_url: https://dashboard.eduid.docker/services/email/
-              mobile_url: https://dashboard.eduid.docker/services/phone/
-              phone_url: https://dashboard.eduid.docker/services/phone/
-              oidc_proofing_url: https://dashboard.eduid.docker/services/oidc-proofing/proofing/
-              ladok_url: https://dashboard.eduid.docker/services/ladok/
-              lookup_mobile_proofing_url: https://dashboard.eduid.docker/services/lookup-mobile-proofing/proofing/
-              letter_proofing_url: https://dashboard.eduid.docker/services/letter-proofing/
-              security_url: https://dashboard.eduid.docker/services/security/
-              authn_url: https://dashboard.eduid.docker/services/authn/
-              oidc_proofing_freja_url: https://dashboard.eduid.docker/services/oidc-proofing/freja/proofing/
-              orcid_url: https://dashboard.eduid.docker/services/orcid/
-              group_mgmt_url: https://dashboard.eduid.docker/services/group-management/
-              eidas_url: https://eidas.eduid.docker/
-              password_service_url: https://dashboard.eduid.docker/services/security/
-              reset_password_url: https://idp.eduid.docker/services/reset-password/
-              svipe_url: https://dashboard.eduid.docker/services/svipe-id/
-              reset_passwd_url: https://html.eduid.docker/reset-password/
-              login_base_url: https://idp.eduid.docker/services/idp
-              signup_url: https://signup.eduid.docker/
-              token_service_url: https://dashboard.eduid.docker/services/authn/
-              # end deprecated config keys
         idp:
             server_name: idp.eduid.docker
             application_root: /
