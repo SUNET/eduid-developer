@@ -67,7 +67,6 @@ eduid:
                 service_name: test_service_name
     webapp:
         common:
-            cors_origins: ['.*\.eduid.docker$', '^eduid.docker$']
             devel_mode: yes
             # enable disable debug mode
             debug: yes
@@ -82,7 +81,7 @@ eduid:
             # available. This defaults to http
             preferred_url_scheme: https
             # CORS
-            cors_origins: '.*\.eduid\.docker$'
+            cors_origins: ['.*\.eduid.docker$', '^eduid.docker$']
             # Redis config
             redis_config:
               host: redis.eduid_dev
