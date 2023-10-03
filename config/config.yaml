@@ -362,7 +362,6 @@ eduid:
               lookup_mobile_proofing_service_url: https://dashboard.eduid.docker/services/lookup-mobile-proofing/proofing/
               letter_proofing_service_url: https://dashboard.eduid.docker/services/letter-proofing/
               security_service_url: https://dashboard.eduid.docker/services/security/
-              token_service_url: https://dashboard.eduid.docker/services/authn/
               authn_service_url: https://dashboard.eduid.docker/services/authn/
               orcid_service_url: https://dashboard.eduid.docker/services/orcid/
               group_mgmt_service_url: https://dashboard.eduid.docker/services/group-management/
