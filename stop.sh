@@ -5,4 +5,5 @@ if [ ! -f eduid/compose.yml ]; then
     exit 1
 fi
 
+./bin/docker-compose -f eduid/compose.yml down
 ./bin/docker-compose -f eduid/compose.yml rm -s -f
