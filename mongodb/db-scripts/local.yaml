@@ -331,3 +331,15 @@ mongo_databases:
     access:
       readWrite:
         - 'op'
+
+  eduid_auth_server:
+    collections:
+      - 'transaction_states'
+      - 'saml_authentications_cache'
+      - 'pysaml2_identity_cache'
+      - 'pysaml2_outstanding_queries'
+      - 'pysaml2_state_cache'
+    access:
+      readWrite:
+        - 'eduid_auth_server'
+

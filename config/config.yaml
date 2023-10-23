@@ -45,11 +45,17 @@ eduid:
           log_level: DEBUG
           application_root: /auth
           auth_token_issuer: api.eduid.docker
-          auth_flows:
-            - ConfigFlow
+          auth_token_expires_in: PT1H
           auth_token_audience: eduid.docker
           keystore_path: /opt/sunet/auth-server/etc/keystore.jwks
           signing_key_id: auth-server-dev-221011
+          mongo_uri: mongodb://eduid_auth_server:eduid_auth_server_pw@mongodb.eduid_dev/eduid_auth_server
+          pysaml2_config_path: /opt/sunet/auth-server/etc/saml2_settings.py
+          saml2_discovery_service_url: https://ds.qa.swamid.se/ds  # just for testing endpoints, it does not work to use for auth
+          auth_flows:
+            - ConfigFlow
+            - InteractionFlow
+            - TestFlow
           client_keys:
             devkey:
               proof:
@@ -65,6 +71,18 @@ eduid:
                   - eduid.se
                 test_claim: "this is my test claim"
                 service_name: test_service_name
+            eduid_managed_accounts_1:
+              proof:
+                method: jwsd
+              jwk:
+                kty: EC
+                kid: eduid_managed_accounts_1
+                crv: P-256
+                x: dCxVL9thTTc-ZtiL_CrPpMp1Vqo2p_gUVqiVBRwqjq8
+                y: P3dAvr2IYy7DQEf4vA5bPN8gCg41M1oA5993vHr9peE
+              claims:
+                scopes:
+                  - eduid.se
     webapp:
         common:
             cors_origins: ['.*\.eduid.docker$', '^eduid.docker$']

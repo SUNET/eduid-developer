@@ -104,7 +104,8 @@ services:
       config_file: /opt/eduid/config.yaml
       config_ns: /eduid/api/auth_server
       app_entrypoint: auth_server.run:app
-
+    depends_on:
+      - mongodb
 
   api_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'

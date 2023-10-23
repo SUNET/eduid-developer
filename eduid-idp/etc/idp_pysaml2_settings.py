@@ -65,7 +65,10 @@ CONFIG = {
     "key_file": "xmlsec+http://py11softhsm:8000/eduid/dev_idp_key_202301",
     "cert_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem",
     "metadata": {
-        "local": ["/opt/eduid/eduid-idp/etc/authn_metadata.xml"],
+        "local": [
+            "/opt/eduid/eduid-idp/etc/authn_metadata.xml",
+            "/opt/eduid/eduid-idp/etc/auth_server_metadata.xml",
+        ],
     },
     "organization": {
         "display_name": "eduID LOCAL TEST",
