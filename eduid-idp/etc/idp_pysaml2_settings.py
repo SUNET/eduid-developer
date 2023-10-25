@@ -32,7 +32,7 @@ CONFIG = {
                     "attribute_restrictions": None,  # means all I have
                     "name_form": NAME_FORMAT_URI,
                     "nameid_format": NAMEID_FORMAT_PERSISTENT,
-                    "entity_categories": ["swamid", "edugain"],
+                    "entity_categories": ["swamid"],
                     "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
                 },
                 "https://dashboard.eduid.docker/services/authn/saml2-metadata": {

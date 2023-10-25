@@ -58,6 +58,7 @@ SAML_CONFIG = {
     #},
     "metadata": {
          "local": [path.join(METADATA_DIR, "idp_metadata.xml")],
+          #"mdq": [{'url': 'https://mds.swamid.se/qa/', 'freshness_period': 'P0Y0M0DT0H10M0S'}],
     },
 
     # set to 1 to output debugging information

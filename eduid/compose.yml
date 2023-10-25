@@ -296,6 +296,7 @@ services:
       eduid_name: idp
       EDUID_CONFIG_NS: /eduid/webapp/idp
       pysaml2_settings: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
+      limit_request_line: 8190
     depends_on:
       - mongodb
       - redis
