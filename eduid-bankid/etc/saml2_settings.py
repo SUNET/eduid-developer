@@ -61,7 +61,8 @@ SAML_CONFIG = {
 
     # where the remote metadata is stored
     'metadata': {
-        'mdq': [{'url': 'https://mds.swamid.se/qa/', 'freshness_period': 'P0Y0M0DT0H10M0S'}],
+        #'mdq': [{'url': 'https://mds.swamid.se/qa/', 'freshness_period': 'P0Y0M0DT0H10M0S'}],
+        "local": ["/opt/eduid/etc/bankidp.qa.swamid.se.xml"],
     },
 
     # set to 1 to output debugging information
