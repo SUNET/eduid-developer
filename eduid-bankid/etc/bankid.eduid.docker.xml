@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" entityID="https://bankid.eduid.docker/saml2-metadata">
+  <ns0:Extensions>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#md5"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#ripemd160"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2009/xmldsig11#dsa-sha256"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-md5"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha224"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+  </ns0:Extensions>
+  <ns0:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" AuthnRequestsSigned="true" WantAssertionsSigned="true">
+    <ns0:KeyDescriptor use="signing">
+      <ns2:KeyInfo>
+        <ns2:X509Data>
+          <ns2:X509Certificate>MIIFSTCCAzGgAwIBAgIUaXQaKatHfXOGSgsgDfzkoFegV1gwDQYJKoZIhvcNAQELBQAwNDELMAkGA1UEBhMCU0UxJTAjBgNVBAMMHGJhbmtpZC0yMDIzMTExNi5lZHVpZC5kb2NrZXIwHhcNMjMxMTE2MTE0NTA2WhcNMzMxMTEzMTE0NTA2WjA0MQswCQYDVQQGEwJTRTElMCMGA1UEAwwcYmFua2lkLTIwMjMxMTE2LmVkdWlkLmRvY2tlcjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALgtkBFlRdyvWs71Y4S7OrTASnpieAWdR8Q1FHAN3gWG5wB+iP38VTl5bmFMXgpHNyEjCSz4IPBCSwTgf8R+vWfels1gpAwBlHnhJQvVoGaC4idt7WcARw0ggo+VovXpExtPdBOgn77BsKAEO7Kj8GuB9i5ifzaYQDTPLgxhth9EhKzbVSHSJdGpuGJ3iEecsLpGk7jBZXVUxdBerMYQqsS0XtG8G4Ee0R7HlRWf1AQm1qp52XGMdVVZII5fc1u4phAVCcv3OzpJ7XyOtgVmxWV/LT7IfEp8oE66002MR7xYHLtC5W5QD6Hypl4P5L/gjgaAnvho3ESiTu2/ogeSsQcLlXYh7RWdSY4wWNzhA+BqWlhuEfDzMCfJmYgqldmjkcaiYNTUrKGmPzQ0/LiP4LyZETTTIeKLRc+TpYWlto5qELHRk1kOuUv477bdS/8WA/DFHQ67HtYI9eLnucbLGEBl49s4PG8DtZtnnIbt1/HktJ4lZGPKGmQBNtUYc3N2eM8MMn4dX5exbYx8DHMM+sooySPo4bONh3N/7fFQtYL27/L12kps4ymoF0f+uLbz/0fEStI0+3KmJLEjWC/k+4T/+4io+VuSGT9n/Xtic5+qKDTeAvD1p5ca5nZwwCwHTSaacajO70YHI5ot/bxZZ2D669fmkvkXVCsfO1DbumI1AgMBAAGjUzBRMB0GA1UdDgQWBBRli1jtGdRSaWMyj1e4t1NoVob4rzAfBgNVHSMEGDAWgBRli1jtGdRSaWMyj1e4t1NoVob4rzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQBhmJcmDvU2YCk4HORt9n65zdmR0btTZwtdF2JXoUqpS1Ny/L0spV3JorlkJsHklGvjfromkWCY6mggocQOaYDcDeXLLs4SMOTAswXoHoFRClPzOtTjgtuetB7xNM7U6t5P6w5FODA6N+IAQSkqMfksMrPfOyydCyTzjHRuwrOyNaMq5LXekUCsYEMk1RDDDz2NyEyONbrpzqBrqbYEvpTGr3gmx3W6O8/D2arVK4irEJdzLJZrpzEeinzhkbIV6101+VhudTHvN/ZOhVSCTtGLSsxr7ir1ZnvIg0khUrESbuDbN9Z/vh+vrVdljmGWwUYrJAxBtPJHHcASxaW91vwG6JNA13M+13Z+t/59YdXA5bs3lIAS8/PnfQig9+jFtx859mkxtYRp/74ajWrh1bbGYU8zgF1QCAhHn3WZg7/ryqJ1qEf/BTv2f3TOpFKg2DHLRhOd203ZSqeoA0ucfbox31/ZMkSrx5csNIcPD835ivlgisQ6EP7zGxh8C18qFIQkFktNzVUnjAnneASVtwF+gCVbvbADvBtzyDfBI0bEGt9Ji7KmJy0X1Fc+uC4w0GyhcZSKztwiWnnyd6nWJvZwmNsORpZEfM8rMEAz/tHJzCLyXDgWeLT/0nY6uJARWn1oECgYRDDQz4SfcAcVKYRRUHXhofLNynK3Qfq8tEFMvw==</ns2:X509Certificate>
+        </ns2:X509Data>
+      </ns2:KeyInfo>
+    </ns0:KeyDescriptor>
+    <ns0:KeyDescriptor use="encryption">
+      <ns2:KeyInfo>
+        <ns2:X509Data>
+          <ns2:X509Certificate>MIIFSTCCAzGgAwIBAgIUaXQaKatHfXOGSgsgDfzkoFegV1gwDQYJKoZIhvcNAQELBQAwNDELMAkGA1UEBhMCU0UxJTAjBgNVBAMMHGJhbmtpZC0yMDIzMTExNi5lZHVpZC5kb2NrZXIwHhcNMjMxMTE2MTE0NTA2WhcNMzMxMTEzMTE0NTA2WjA0MQswCQYDVQQGEwJTRTElMCMGA1UEAwwcYmFua2lkLTIwMjMxMTE2LmVkdWlkLmRvY2tlcjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALgtkBFlRdyvWs71Y4S7OrTASnpieAWdR8Q1FHAN3gWG5wB+iP38VTl5bmFMXgpHNyEjCSz4IPBCSwTgf8R+vWfels1gpAwBlHnhJQvVoGaC4idt7WcARw0ggo+VovXpExtPdBOgn77BsKAEO7Kj8GuB9i5ifzaYQDTPLgxhth9EhKzbVSHSJdGpuGJ3iEecsLpGk7jBZXVUxdBerMYQqsS0XtG8G4Ee0R7HlRWf1AQm1qp52XGMdVVZII5fc1u4phAVCcv3OzpJ7XyOtgVmxWV/LT7IfEp8oE66002MR7xYHLtC5W5QD6Hypl4P5L/gjgaAnvho3ESiTu2/ogeSsQcLlXYh7RWdSY4wWNzhA+BqWlhuEfDzMCfJmYgqldmjkcaiYNTUrKGmPzQ0/LiP4LyZETTTIeKLRc+TpYWlto5qELHRk1kOuUv477bdS/8WA/DFHQ67HtYI9eLnucbLGEBl49s4PG8DtZtnnIbt1/HktJ4lZGPKGmQBNtUYc3N2eM8MMn4dX5exbYx8DHMM+sooySPo4bONh3N/7fFQtYL27/L12kps4ymoF0f+uLbz/0fEStI0+3KmJLEjWC/k+4T/+4io+VuSGT9n/Xtic5+qKDTeAvD1p5ca5nZwwCwHTSaacajO70YHI5ot/bxZZ2D669fmkvkXVCsfO1DbumI1AgMBAAGjUzBRMB0GA1UdDgQWBBRli1jtGdRSaWMyj1e4t1NoVob4rzAfBgNVHSMEGDAWgBRli1jtGdRSaWMyj1e4t1NoVob4rzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQBhmJcmDvU2YCk4HORt9n65zdmR0btTZwtdF2JXoUqpS1Ny/L0spV3JorlkJsHklGvjfromkWCY6mggocQOaYDcDeXLLs4SMOTAswXoHoFRClPzOtTjgtuetB7xNM7U6t5P6w5FODA6N+IAQSkqMfksMrPfOyydCyTzjHRuwrOyNaMq5LXekUCsYEMk1RDDDz2NyEyONbrpzqBrqbYEvpTGr3gmx3W6O8/D2arVK4irEJdzLJZrpzEeinzhkbIV6101+VhudTHvN/ZOhVSCTtGLSsxr7ir1ZnvIg0khUrESbuDbN9Z/vh+vrVdljmGWwUYrJAxBtPJHHcASxaW91vwG6JNA13M+13Z+t/59YdXA5bs3lIAS8/PnfQig9+jFtx859mkxtYRp/74ajWrh1bbGYU8zgF1QCAhHn3WZg7/ryqJ1qEf/BTv2f3TOpFKg2DHLRhOd203ZSqeoA0ucfbox31/ZMkSrx5csNIcPD835ivlgisQ6EP7zGxh8C18qFIQkFktNzVUnjAnneASVtwF+gCVbvbADvBtzyDfBI0bEGt9Ji7KmJy0X1Fc+uC4w0GyhcZSKztwiWnnyd6nWJvZwmNsORpZEfM8rMEAz/tHJzCLyXDgWeLT/0nY6uJARWn1oECgYRDDQz4SfcAcVKYRRUHXhofLNynK3Qfq8tEFMvw==</ns2:X509Certificate>
+        </ns2:X509Data>
+      </ns2:KeyInfo>
+    </ns0:KeyDescriptor>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://bankid.eduid.docker/logout"/>
+    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://bankid.eduid.docker/saml2-acs" index="1"/>
+    <ns0:AttributeConsumingService index="1">
+      <ns0:ServiceName xml:lang="en"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.2.752.29.4.13" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="personalIdentityNumber" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:2.16.840.1.113730.3.1.241" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="displayName" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:2.5.4.42" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="givenName" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:2.5.4.4" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="sn" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.2.752.201.3.2" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="transactionIdentifier" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.2.752.201.3.3" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="authContextParams" isRequired="false"/>
+    </ns0:AttributeConsumingService>
+  </ns0:SPSSODescriptor>
+  <ns0:Organization>
+    <ns0:OrganizationName xml:lang="en">Sunet</ns0:OrganizationName>
+    <ns0:OrganizationDisplayName xml:lang="en">Sunet</ns0:OrganizationDisplayName>
+    <ns0:OrganizationURL xml:lang="en">https://www.sunet.se/</ns0:OrganizationURL>
+  </ns0:Organization>
+  <ns0:ContactPerson contactType="technical">
+    <ns0:Company>Sunet</ns0:Company>
+    <ns0:GivenName>Johan</ns0:GivenName>
+    <ns0:SurName>Lundberg</ns0:SurName>
+    <ns0:EmailAddress>feedback@eduid.se</ns0:EmailAddress>
+  </ns0:ContactPerson>
+</ns0:EntityDescriptor>
