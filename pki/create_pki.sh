@@ -2,7 +2,7 @@
 
 set -e
 
-service_names="dashboard eidas html idp signup support api developer"
+service_names="bankid dashboard eidas html idp signup support api developer"
 
 # Generate CA key and cert
 cat > ca.conf <<EOF

@@ -40,6 +40,7 @@ mongo_databases:
         - 'eduid_group_management'
         - 'eduid_ladok'
         - 'eduid_svipe_id'
+        - 'eduid_bankid'
         - 'munin'
 
   eduid_api:
@@ -307,6 +308,7 @@ mongo_databases:
         - 'eduid_eidas'
         - 'eduid_ladok'
         - 'eduid_svipe_id'
+        - 'eduid_bankid'
       read:
         - 'eduid_support'
 
@@ -342,4 +344,15 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_auth_server'
+
+  eduid_bankid:
+    collections:
+      - 'profiles'
+      - 'proofing_data'
+    access:
+      readWrite:
+        - 'eduid_bankid'
+      read:
+        - 'eduid_am'
+        - 'eduid_support'
 

@@ -124,6 +124,48 @@ services:
       - scimapi
       - auth_server
 
+  bankid:
+    image: docker.sunet.se/eduid/webapp:bankid-test
+    pull_policy: if_not_present
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-bankid/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+    environment:
+      <<: *common-env-variables
+      PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/
+      HOSTNAME: bankid
+      eduid_name: bankid
+      EDUID_CONFIG_NS: /eduid/webapp/bankid
+    depends_on:
+      - am
+      - mongodb
+      - redis
+      - rsyslog
+
+  bankid_haproxy:
+    image: 'docker.sunet.se/eduid/haproxy:latest'
+    networks:
+      dev:
+        ipv4_address: 172.16.10.232
+        aliases:
+          - bankid.eduid.docker
+    expose:
+      - 443
+    volumes:
+      - ../bankid-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/bankid.pem:/etc/ssl/bankid.pem:ro
+    depends_on:
+      - eidas
+
 
   dashboard_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -146,6 +188,7 @@ services:
       - orcid
       - personal_data
       - eidas
+      - bankid
     depends_on:
       - authn
       - html
