@@ -1,0 +1,16 @@
+---
+module: eduid.satosa.scimapi.scim_attributes.ScimAttributes
+plugin: ScimAttributes
+name: ScimAttributes
+config:
+  mongo_uri: "mongodb://eduid_idpproxy:eduid_idpproxy_pw@mongodb.eduid_dev"
+  neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
+  neo4j_config:
+    encrypted: false
+  allow_users_not_in_database: true
+  fallback_data_owner: eduid.docker
+  idp_to_data_owner:
+    https://idp.eduid.docker/idp.xml: eduid.docker
+  mfa_stepup_issuer_to_entity_id:
+    eduid.docker: https://idp.eduid.docker/idp.xml
+

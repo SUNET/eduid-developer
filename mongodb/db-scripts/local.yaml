@@ -36,7 +36,6 @@ mongo_databases:
         - 'eduid_security'
         - 'eduid_signup'
         - 'eduid_support'
-        - 'eduid_scimapi'
         - 'eduid_group_management'
         - 'eduid_ladok'
         - 'eduid_svipe_id'
@@ -271,7 +270,7 @@ mongo_databases:
         - 'eduid_scimapi'
         - 'eduid_group_management'
       read:
-        - 'eduid_support'
+        - 'eduid_idpproxy'
 
   eduid_group_management:
     collections:
@@ -356,3 +355,7 @@ mongo_databases:
         - 'eduid_am'
         - 'eduid_support'
 
+  eduid_idpproxy:
+    access:
+      readWrite:
+        - 'eduid_idpproxy'

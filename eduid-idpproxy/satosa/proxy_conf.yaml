@@ -1,0 +1,51 @@
+---
+BASE: https://idpproxy.eduid.docker
+INTERNAL_ATTRIBUTES: "/opt/eduid/idpproxy/satosa/internal_attributes.yaml"
+CUSTOM_PLUGIN_MODULE_PATHS:
+  - plugins
+BACKEND_MODULES:
+  - "/opt/eduid/idpproxy/satosa/plugins/saml2_backend.yaml"
+FRONTEND_MODULES:
+  - "/opt/eduid/idpproxy/satosa/plugins/saml2_frontend.yaml"
+MICRO_SERVICES:
+  #- "/opt/eduid/idpproxy/satosa/plugins/attribute_filters.yaml"
+  #- "/opt/eduid/idpproxy/satosa/plugins/stepup_authncontext.yaml"
+  - "/opt/eduid/idpproxy/satosa/plugins/scim_attributes.yaml"
+  #- "/opt/eduid/idpproxy/satosa/plugins/rewrite_authncontext.yaml"
+  #- "/opt/eduid/idpproxy/satosa/plugins/stepup.yaml"
+LOGGING:
+  version: 1
+  formatters:
+    default:
+      format: "%(asctime)s [%(process)d] [%(levelname)s] [%(name)s.%(funcName)s] %(message)s"
+  handlers:
+    console:
+      class: logging.StreamHandler
+      level: DEBUG
+      formatter: default
+      stream: ext://sys.stdout
+  loggers:
+    satosa:
+      level: DEBUG
+      handlers:
+      - console
+    saml2:
+      level: DEBUG
+      handlers:
+      - console
+    scim_attributes:
+      level: DEBUG
+      handlers:
+      - console
+    static_attributes:
+      level: DEBUG
+      handlers:
+      - console
+    stepup:
+      level: DEBUG
+      handlers:
+      - console
+STATE_ENCRYPTION_KEY: a549svWCrhT9WutrMARwkjkI66UI
+USER_ID_HASH_SALT: PkoC3ZlcwukQg93cz341YyI0N4PM
+COOKIE_STATE_NAME: SATOSA_STATE
+

@@ -68,6 +68,7 @@ CONFIG = {
         "local": [
             "/opt/eduid/eduid-idp/etc/authn_metadata.xml",
             "/opt/eduid/eduid-idp/etc/auth_server_metadata.xml",
+            "/opt/eduid/eduid-idp/etc/idpproxy-backend.xml",
         ],
     },
     "organization": {

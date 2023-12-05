@@ -28,7 +28,7 @@ SAML_CONFIG = {
     'service': {
         # we are just a lonely SP
         'sp': {
-            'name': 'Sunet Auth Server SP',
+            'name': 'Local Sunet Auth Server SP',
             'endpoints': {
                 # url and binding to the assetion consumer service view
                 # do not change the binding or service name
@@ -43,11 +43,19 @@ SAML_CONFIG = {
                      saml2.BINDING_HTTP_REDIRECT),
                 ],
             },
+            'required_attributes': [
+                'eduPersonPrincipalName',
+                'eduPersonAssurance',
+                'eduPersonEntitlement',
+                'displayName',
+                'givenName',
+                'sn',
+            ],
             # Sign authn request
             'authn_requests_signed': True,
             # Require signed authn response
             'want_response_signed': True,
-            'name': 'sunet_auth_server_sp',
+            'name': 'local_sunet_auth_server_sp',
             'name_id_format': NAMEID_FORMAT_PERSISTENT,
         },
     },
@@ -57,7 +65,8 @@ SAML_CONFIG = {
     #    'local': [{'url': 'http://pyff:8080', 'freshness_period': 'P0Y0M0DT0H10M0S'}],
     #},
     "metadata": {
-         "local": [path.join(METADATA_DIR, "idp_metadata.xml")],
+         "local": [path.join(METADATA_DIR, "idpproxy-frontend.xml")],
+          #"local": [path.join(METADATA_DIR, "idp_metadata.xml")],
           #"mdq": [{'url': 'https://mds.swamid.se/qa/', 'freshness_period': 'P0Y0M0DT0H10M0S'}],
     },
 

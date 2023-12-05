@@ -1,0 +1,73 @@
+---
+attributes:
+  displayname:
+    saml:
+    - displayName
+  commonname:
+    saml:
+    - cn
+  givenname:
+    saml:
+    - givenName
+  surname:
+    saml:
+    - sn
+  mail:
+    saml:
+    - mail
+  edupersonprincipalname:
+    saml:
+    - eduPersonPrincipalName
+  edupersonscopedaffiliation:
+    saml:
+    - eduPersonScopedAffiliation
+  noredupersonnin:
+    saml:
+    - norEduPersonNIN
+  edupersonentitlement:
+    saml:
+    - eduPersonEntitlement
+  edupersonassurance:
+    saml:
+    - eduPersonAssurance
+  schachomeorganization:
+    saml:
+    - schacHomeOrganization
+  schachomeorganizationtype:
+    saml:
+    - schacHomeOrganizationType
+  organizationname:
+    saml:
+    - ou
+  noreduorgacronym:
+    saml:
+    - norEduOrgAcronym
+  countryname:
+    saml:
+    - c
+  friendlycountryname:
+    saml:
+    - co
+  o:
+    saml:
+    - o
+  edupersontargetedid:
+    saml:
+    - eduPersonTargetedID
+  subject-id:
+    saml:
+    - subject-id
+  schacdateofbirth:
+    saml:
+    - schacDateOfBirth
+  personalidentitynumber:
+    saml:
+    - personalIdentityNumber
+  edupersonaffiliation:
+    saml:
+    - eduPersonAffiliation
+  pairwise-id:
+    saml:
+    - pairwise-id
+user_id_to_attr: edupersontargetedid
+

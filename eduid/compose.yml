@@ -125,7 +125,7 @@ services:
       - auth_server
 
   bankid:
-    image: docker.sunet.se/eduid/webapp:bankid-test
+    image: docker.sunet.se/eduid/webapp:20231204T093126-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -164,7 +164,7 @@ services:
       - ../bankid-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/bankid.pem:/etc/ssl/bankid.pem:ro
     depends_on:
-      - eidas
+      - bankid
 
 
   dashboard_haproxy:
@@ -759,6 +759,43 @@ services:
       dev:
     volumes:
       - rsyslogdata:/var/log/eduid
+
+  idpproxy:
+    image: docker.sunet.se/eduid/satosa_scim:20231204T093126-staging
+    restart: on-failure
+    networks:
+      dev:
+    expose:
+      - 8000
+    volumes:
+      - ../eduid-idpproxy/satosa:/opt/eduid/idpproxy/satosa:ro
+      - ../eduid-idpproxy/satosa/run:/opt/eduid/idpproxy/satosa/run:rw
+      - ../eduid-idpproxy/satosa/metadata:/opt/eduid/idpproxy/satosa/metadata:rw
+      - eduidlogdata:/var/log/eduid
+    environment:
+      eduid_name: satosa
+      eduid_entrypoint: satosa.wsgi:app
+      SATOSA_CONFIG: opt/eduid/idpproxy/satosa/proxy_conf.yaml
+      DATA_DIR: /opt/eduid/idpproxy/satosa
+      METADATA_DIR: opt/eduid/idpproxy/satosa/metadata
+      PYTHONPATH: opt/eduid/idpproxy/satosa/eduid_plugins
+      limit_request_line: 8190
+    depends_on:
+      - mongodb
+      - neo4jdb
+
+  idpproxy_haproxy:
+    image: 'docker.sunet.se/eduid/haproxy:latest'
+    networks:
+      dev:
+        ipv4_address: 172.16.10.233
+        aliases:
+          - idpproxy.eduid.docker
+    volumes:
+      - ../idpproxy-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/idpproxy.pem:/etc/ssl/idpproxy.pem:ro
+    depends_on:
+      - idpproxy
 
   scimapi:
     image: docker.sunet.se/eduid/fastapi:20231204T093126-staging

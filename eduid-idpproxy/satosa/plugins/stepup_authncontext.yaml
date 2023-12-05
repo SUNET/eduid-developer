@@ -1,0 +1,22 @@
+---
+module: eduid.satosa.scimapi.stepup.AuthnContext
+name: stepup_authn
+config:
+  mfa:
+    by_entity_id:
+      https://provplattformen-utb.skolverket.se:
+        requested:
+        - https://refeds.org/profile/mfa
+      https://provplattformen-utb.skolverket.se/auth/index.php/auth/saml:
+        requested:
+        - https://refeds.org/profile/mfa
+      https://provplattformen-pre.skolverket.se:
+        requested:
+        - https://refeds.org/profile/mfa
+      https://provplattformen-pre.skolverket.se/auth/index.php/auth/saml:
+        requested:
+        - https://refeds.org/profile/mfa
+      https://release-check.swamid.se/shibboleth:
+        requested:
+        - https://refeds.org/profile/mfa
+

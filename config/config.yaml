@@ -52,7 +52,7 @@ eduid:
           mongo_uri: mongodb://eduid_auth_server:eduid_auth_server_pw@mongodb.eduid_dev/eduid_auth_server
           pysaml2_config_path: /opt/sunet/auth-server/etc/saml2_settings.py
           saml2_discovery_service_url: https://ds.qa.swamid.se/ds  # just for testing endpoints, it does not work to use for auth
-          saml2_single_idp: https://idp.eduid.docker/idp.xml
+          saml2_single_idp: https://idpproxy.eduid.docker/idp
           auth_flows:
             - ConfigFlow
             - InteractionFlow
