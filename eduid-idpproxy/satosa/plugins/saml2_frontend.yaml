@@ -34,11 +34,11 @@ config:
         - "/opt/eduid/idpproxy/satosa/metadata/release-check.swamid.se-shibboleth.xml"
         - "/opt/eduid/idpproxy/satosa/metadata/api.eduid.docker_auth.xml"
     entityid: https://idpproxy.eduid.docker/idp
-    entity_attributes:
-    - name: http://macedir.org/entity-category-support
-      name_format: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
-      values:
-      - http://refeds.org/category/research-and-scholarship
+    #entity_attributes:
+    #- name: http://macedir.org/entity-category-support
+    #  name_format: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
+    #  values:
+    #    - http://refeds.org/category/research-and-scholarship
     xmlsec_binary: "/usr/bin/xmlsec1"
     service:
       idp:
@@ -46,17 +46,15 @@ config:
           single_sign_on_service: []
         name: idp_proxy
         name_id_format:
-          - urn:oasis:names:tc:SAML:2.0:nameid-format:transient
+          - urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
         policy:
           default:
-            attribute_restrictions: ~
+            attribute_restrictions: null
             fail_on_missing_requested: false
             lifetime:
               minutes: 15
             name_form: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
-            entity_categories:
-              - swamid
+            entity_categories: []
         want_authn_requests_signed: false
-        entity_categories:
-          - ''
-
+        #entity_categories:
+        #  - ""

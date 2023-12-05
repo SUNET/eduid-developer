@@ -51,11 +51,11 @@ config:
     - name: http://macedir.org/entity-category
       name_format: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
       values:
-      - http://refeds.org/category/research-and-scholarship
+        - http://refeds.org/category/research-and-scholarship
     - name: http://macedir.org/entity-category
       name_format: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
       values:
-      - http://www.geant.net/uri/dataprotection-code-of-conduct/v1
+        - http://www.geant.net/uri/dataprotection-code-of-conduct/v1
     xmlsec_binary: "/usr/bin/xmlsec1"
     service:
       sp:

@@ -24,9 +24,7 @@
     <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
     <ns0:EntityAttributes>
         <ns0:Attribute Name="http://macedir.org/entity-category" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <ns0:AttributeValue>http://refeds.org/category/research-and-scholarship</ns0:AttributeValue>
             <ns0:AttributeValue>http://www.geant.net/uri/dataprotection-code-of-conduct/v1</ns0:AttributeValue>
-            <ns0:AttributeValue>https://refeds.org/category/personalized</ns0:AttributeValue>
         </ns0:Attribute>
     </ns0:EntityAttributes>
   </ns0:Extensions>
@@ -41,6 +39,7 @@
     <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://api.eduid.docker/auth/saml2/sp/saml2-ls"/>
     <ns0:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</ns0:NameIDFormat>
     <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://api.eduid.docker/auth/saml2/sp/saml2-acs" index="1"/>
+    <!--
     <ns0:AttributeConsumingService index="1">
       <ns0:ServiceName xml:lang="en"/>
       <ns0:RequestedAttribute Name="urn:oid:1.3.6.1.4.1.5923.1.1.1.6" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="eduPersonPrincipalName" isRequired="true"/>
@@ -49,7 +48,8 @@
       <ns0:RequestedAttribute Name="urn:oid:2.16.840.1.113730.3.1.241" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="displayName" isRequired="true"/>
       <ns0:RequestedAttribute Name="urn:oid:2.5.4.42" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="givenName" isRequired="true"/>
       <ns0:RequestedAttribute Name="urn:oid:2.5.4.4" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="sn" isRequired="true"/>
-    </ns0:AttributeConsumingService>
+  </ns0:AttributeConsumingService>
+  -->
   </ns0:SPSSODescriptor>
   <ns0:Organization>
     <ns0:OrganizationName xml:lang="en">Sunet</ns0:OrganizationName>
