@@ -8,7 +8,7 @@ config:
   neo4j_config:
     encrypted: false
   allow_users_not_in_database: true
-  fallback_data_owner: eduid.docker
+  fallback_data_owner: eduid.se
   idp_to_data_owner:
     https://idp.eduid.docker/idp.xml: eduid.docker
   mfa_stepup_issuer_to_entity_id:

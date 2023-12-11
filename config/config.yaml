@@ -22,6 +22,8 @@ eduid:
             data_owners:
               'eduid.se':
                 notify: ['http://turq:13085/']
+              'eduid.docker':
+                notify: ['http://turq:13085/']
             logging_config:
                 loggers:
                     'eduid_scimapi.notifications':

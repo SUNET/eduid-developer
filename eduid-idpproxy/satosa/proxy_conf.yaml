@@ -28,23 +28,15 @@ LOGGING:
     satosa:
       level: DEBUG
       handlers:
-      - console
+        - console
     saml2:
       level: DEBUG
       handlers:
-      - console
-    scim_attributes:
+        - console
+    eduid.satosa.scimapi:
       level: DEBUG
       handlers:
-      - console
-    static_attributes:
-      level: DEBUG
-      handlers:
-      - console
-    stepup:
-      level: DEBUG
-      handlers:
-      - console
+        - console
 STATE_ENCRYPTION_KEY: a549svWCrhT9WutrMARwkjkI66UI
 USER_ID_HASH_SALT: PkoC3ZlcwukQg93cz341YyI0N4PM
 COOKIE_STATE_NAME: SATOSA_STATE

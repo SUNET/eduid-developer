@@ -772,13 +772,16 @@ services:
       - ../eduid-idpproxy/satosa/run:/opt/eduid/idpproxy/satosa/run:rw
       - ../eduid-idpproxy/satosa/metadata:/opt/eduid/idpproxy/satosa/metadata:rw
       - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/satosa/src/satosa:/opt/eduid/sources/satosa:ro
     environment:
+      <<: *common-env-variables
       eduid_name: satosa
       eduid_entrypoint: satosa.wsgi:app
       SATOSA_CONFIG: opt/eduid/idpproxy/satosa/proxy_conf.yaml
       DATA_DIR: /opt/eduid/idpproxy/satosa
       METADATA_DIR: opt/eduid/idpproxy/satosa/metadata
-      PYTHONPATH: opt/eduid/idpproxy/satosa/eduid_plugins
       limit_request_line: 8190
     depends_on:
       - mongodb
