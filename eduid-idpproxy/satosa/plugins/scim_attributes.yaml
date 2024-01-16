@@ -7,7 +7,8 @@ config:
   neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
   neo4j_config:
     encrypted: false
-  allow_users_not_in_database: true
+  allow_users_not_in_database:
+    default: true
   fallback_data_owner: eduid.se
   idp_to_data_owner:
     https://idp.eduid.docker/idp.xml: eduid.docker
