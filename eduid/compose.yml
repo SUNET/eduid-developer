@@ -38,7 +38,7 @@ services:
       - rsyslog
 
   maccapi:
-    image: docker.sunet.se/eduid/fastapi:20231204T093126-staging
+    image: docker.sunet.se/eduid/fastapi:20231213T151510-staging
     restart: on-failure
     networks:
       dev:
