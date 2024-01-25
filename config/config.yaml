@@ -7,6 +7,13 @@ eduid:
             log_level: 'DEBUG'
             log_format: '{asctime} | {levelname:7} | {name} | {module:10} | {message}'
             environment: 'dev'
+        maccapi:
+            protocol: 'https'
+            server_name: 'maccapi.eduid.docker'
+            mongo_uri: 'mongodb://eduid_maccapi:eduid_maccapi_pw@mongodb.eduid_dev'
+            vccs_url: 'http://vccs:8080/'
+            authorization_mandatory: true
+            keystore_path: /opt/eduid/eduid-maccapi/etc/keystore.jwks
         scimapi:
             mongo_uri: 'mongodb://eduid_scimapi:eduid_scimapi_pw@mongodb.eduid_dev'
             protocol: 'https'

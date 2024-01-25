@@ -37,6 +37,29 @@ services:
       - redis
       - rsyslog
 
+  maccapi:
+    image: docker.sunet.se/eduid/fastapi:20231204T093126-staging
+    restart: on-failure
+    networks:
+      dev:
+        ipv4_address: 172.16.10.216
+    expose:
+      - 8080
+    volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - ../eduid-maccapi/etc:/opt/eduid/eduid-maccapi/etc:ro
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+    environment:
+      <<: *common-env-variables
+      eduid_name: maccapi
+      HOSTNAME: maccapi
+      EDUID_CONFIG_NS: /eduid/api/maccapi
+      eduid_entrypoint: eduid.maccapi.run:api
+    depends_on:
+      - mongodb
+
   amapi:
     image: docker.sunet.se/eduid/fastapi:20231204T093126-staging
     restart: on-failure

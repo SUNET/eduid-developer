@@ -359,3 +359,10 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_idpproxy'
+
+  eduid_managed_accounts:
+    collections:
+      - 'users'
+    access:
+      readWrite:
+        - 'eduid_maccapi'
