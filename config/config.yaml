@@ -93,6 +93,13 @@ eduid:
               claims:
                 scopes:
                   - eduid.se
+            scim_admin:
+              proof:
+                method: mtls
+              cert_S256: v9gBSszfZfdBBaYPJr9H/jYoFRMXNq2pZE/XOBJXlnM=
+              claims:
+                scopes:
+                  - eduid.docker
     webapp:
         common:
             cors_origins: ['.*\.eduid.docker$', '^eduid.docker$']
