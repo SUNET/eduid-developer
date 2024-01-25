@@ -1,0 +1,69 @@
+#!/opt/eduid/bin/python
+#
+# Convert users to the new User database format.
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/unlock-user
+#
+
+__author__ = 'lundberg'
+
+import datetime
+
+import sys
+
+from eduid_userdb import User
+from eduid_userdb.admin import RawDb
+from eduid_userdb.credentials import Password
+
+
+def main(eppn, dry_run, max_fail_count=50):
+    db = RawDb(myname='unlock-user')
+    authndb = RawDb(myname='unlock-user')
+
+    ts = datetime.datetime.utcnow()
+    this_month = str((ts.year * 100) + ts.month)  # format year-month as string (e.g. 201402)
+
+    count = 0
+
+    for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
+        user = User.from_dict(raw_user.doc)
+        print(f'Found user {user.eppn} with user_id {user.user_id}.')
+
+        remove_credential = False
+        for authn_doc in authndb.find('eduid_idp_authninfo', 'authn_info', {'_id': user.user_id}):
+
+            print(f'Found authninfo document for user:\n{authn_doc.doc}')
+            current_fail_count = authn_doc.doc['fail_count'].get(this_month)
+            print(f'Current fail count for {this_month} is {int(current_fail_count)}.')
+
+            # minimize changes
+            if current_fail_count and current_fail_count >= max_fail_count:
+                authn_doc.doc['fail_count'][this_month] = 0
+                print(f'Setting fail count for {this_month} to 0.')
+                authndb.save_with_backup(authn_doc, dry_run=dry_run)
+                count += 1
+                remove_credential = True
+
+        if remove_credential:
+            # remove password credential to force a password reset (and possibly re-validating user identity)
+            for pw in user.credentials.filter(Password).to_list():
+                print(f'Removing password credential: {pw}')
+                user.credentials.remove(pw.key)
+
+            raw_user.doc = user.to_dict(old_userdb_format=False)
+            db.save_with_backup(raw_user, dry_run=dry_run)
+
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    dry_run = bool('--force' not in sys.argv)
+    print('Dry run: {}'.format(dry_run))
+    eppn = input('Enter eppn: ')
+
+    if main(eppn, dry_run):
+        sys.exit(0)
+
+    sys.exit(1)

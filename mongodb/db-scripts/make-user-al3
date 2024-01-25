@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+#
+# Manually set user verifed NIN and 'proof' a credential. Never do this in production!
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/make-user-al3
+#
+
+import sys
+
+from eduid.userdb import User
+from eduid.userdb.admin import RawDb, get_argparser
+from eduid.userdb.identity import NinIdentity, IdentityProofingMethod
+from eduid.userdb.credentials import FidoCredential, CredentialProofingMethod
+
+
+def main(args):
+    db = RawDb(myname='make-user-al3')
+
+    count = 0
+
+    for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': args.eppn}):
+        user = User.from_dict(raw_user.doc)
+        print(f'User: {user}')
+        print_identities(user)
+        print_creds(user)
+
+        # verify user identity if not already verified
+        if user.identities.nin is None:
+            if args.nin is None:
+                print(f'User {user} has no nin identity and no nin supplied on command line')
+                sys.exit(1)
+            nin_identity = NinIdentity(number=args.nin, proofing_method=IdentityProofingMethod.SWEDEN_CONNECT)
+            user.identities.add(nin_identity)
+        if not user.identities.nin.is_verified:
+            user.identities.nin.is_verified = True
+
+        fido_credentials = user.credentials.filter(FidoCredential)
+        if args.credential_key is not None:
+            # only verify the supplied credential
+            for this in fido_credentials:
+                if this.key.startswith(args.credential_key):
+                    fido_credentials = [this]
+                    break
+        if not fido_credentials:
+            print(f'User {user} credential {args.credential_key} not found')
+            continue
+        for cred in fido_credentials:
+            print(f"BEFORE: {cred}")
+            cred.is_verified = True
+            cred.proofing_method = CredentialProofingMethod.SWAMID_AL3_MFA
+            cred.proofing_version = "make-user-al3 script v1"
+            print(f"AFTER: {cred}")
+
+        raw_user.doc = user.to_dict()
+        db.save_with_backup(raw_user, dry_run=not args.force)
+        count += 1
+        print_identities(user)
+        print_creds(user)
+
+    return bool(count > 0)
+
+def show_user(eppn: str) -> None:
+    db = RawDb(myname='make-user-al3')
+    for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
+        user = User.from_dict(raw_user.doc)
+        print(user)
+        print_identities(user)
+        print_creds(user)
+
+def print_identities(user: User) -> None:
+    print('')
+    print('Identities:')
+    for this in user.identities.to_list():
+        print(f'    {this.__class__.__name__:15} {this.key} {this}')
+    print('')
+
+def print_creds(user: User) -> None:
+    print('')
+    print('Credentials:')
+    for this in user.credentials.to_list():
+        if isinstance(this, FidoCredential):
+            print(
+                f'    {this.__class__.__name__:15} key {this.key}, description {this.description}, '
+                f'proofing {this.proofing_method} (version {this.proofing_version})'
+            )
+        else:
+            print(f'    {this.__class__.__name__:15} {this.key} {this}')
+    print('')
+
+
+if __name__ == '__main__':
+    parser = get_argparser(description='Manually make user AL3', eppn=True)
+    parser.add_argument('--nin', help='National Identity Number', required=False, default=None)
+    parser.add_argument('--credential-key', help='credential.key', required=False, default=None)
+    parser.add_argument('--show', help='only print user', action="store_true", required=False, default=False)
+
+    args = parser.parse_args()
+
+    if args.show:
+        # just show credentials
+        show_user(args.eppn)
+        sys.exit(0)
+
+    if main(args):
+        sys.exit(0)
+
+    sys.exit(1)

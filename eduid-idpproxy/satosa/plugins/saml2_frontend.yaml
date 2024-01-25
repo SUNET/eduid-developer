@@ -32,7 +32,7 @@ config:
     metadata:
       local:
         - "/opt/eduid/idpproxy/satosa/metadata/release-check.swamid.se-shibboleth.xml"
-        - "/opt/eduid/idpproxy/satosa/metadata/api.eduid.docker_auth.xml"
+        - "/opt/eduid/idpproxy/satosa/metadata/auth_server.xml"
     entityid: https://idpproxy.eduid.docker/idp
     #entity_attributes:
     #- name: http://macedir.org/entity-category-support
@@ -49,12 +49,14 @@ config:
           - urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
         policy:
           default:
-            attribute_restrictions: null
+            #attribute_restrictions: null
             fail_on_missing_requested: false
             lifetime:
               minutes: 15
             name_form: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
-            entity_categories: []
+            entity_categories: ["swamid"]
+          "https://api.eduid.docker/auth/saml2/sp/metadata":
+            entity_categories: ["eduid.satosa.entity_category.auth_server"]
         want_authn_requests_signed: false
         #entity_categories:
         #  - ""

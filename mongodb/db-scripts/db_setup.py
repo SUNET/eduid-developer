@@ -17,6 +17,9 @@ def create_users(client, databases):
     for db_name, conf in databases.items():
         print('Adding users for {}'.format(db_name))
         access_conf = conf.get('access', dict())
+        for root_user in access_conf.get('root', list()):
+            print('Added root user: {}'.format(root_user))
+            client[db_name].add_user(root_user, '{}_pw'.format(root_user), roles=["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"])
         for rw_user in access_conf.get('readWrite', list()):
             print('Added rw user: {}'.format(rw_user))
             client[db_name].add_user(rw_user, '{}_pw'.format(rw_user), roles=[{'role':'readWrite', 'db': db_name}])
