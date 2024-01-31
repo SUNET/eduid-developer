@@ -38,6 +38,12 @@ eduid:
                        filename: '/var/log/eduid/eduid-scimapi-notifications.log'
                        maxBytes: 1024
                        backupCount: 10
+        maccapi:
+            mongo_uri: 'mongodb://eduid_maccapi:eduid_maccapi_pw@mongodb.eduid_dev'
+            protocol: 'https'
+            server_name: 'api.eduid.docker'
+            application_root: '/maccapi'
+            keystore_path: /opt/eduid/eduid-maccapi/etc/keystore.jwks
         vccs:
             add_creds_password_key_handle: 1
             mongo_uri: 'mongodb://mongodb.eduid_dev'

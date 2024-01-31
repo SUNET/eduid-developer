@@ -308,6 +308,7 @@ mongo_databases:
         - 'eduid_ladok'
         - 'eduid_svipe_id'
         - 'eduid_bankid'
+        - 'eduid_maccapi'
       read:
         - 'eduid_support'
 
@@ -359,3 +360,10 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_idpproxy'
+
+  eduid_managed_accounts:
+    collections:
+      - 'users'
+    access:
+      readWrite:
+        - 'eduid_maccapi'
