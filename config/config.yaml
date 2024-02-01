@@ -7,9 +7,15 @@ eduid:
             log_level: 'DEBUG'
             log_format: '{asctime} | {levelname:7} | {name} | {module:10} | {message}'
             environment: 'dev'
+            data_owners:
+              'eduid.se':
+                notify: ['http://turq:13085/']
+              'eduid.docker':
+                notify: ['http://turq:13085/']
         maccapi:
             protocol: 'https'
-            server_name: 'maccapi.eduid.docker'
+            server_name: 'api.eduid.docker'
+            application_root: '/maccapi'
             mongo_uri: 'mongodb://eduid_maccapi:eduid_maccapi_pw@mongodb.eduid_dev'
             vccs_url: 'http://vccs:8080/'
             authorization_mandatory: true
@@ -29,11 +35,6 @@ eduid:
             keystore_path: /opt/eduid/eduid-scimapi/etc/keystore.jwks
             signing_key_id: NOT_USED
             authorization_token_expire: 1440
-            data_owners:
-              'eduid.se':
-                notify: ['http://turq:13085/']
-              'eduid.docker':
-                notify: ['http://turq:13085/']
             logging_config:
                 loggers:
                     'eduid_scimapi.notifications':
