@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+#
+# Load and save one or more user documents to clean out cruft in the database.
+#
+# If an eppn is not supplied, updates a number of users (controlled with --num) and then exits.
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/load-save-users
+#
+from pprint import pformat
+
+import sys
+
+from pydantic import ValidationError
+
+from eduid.userdb import User
+from eduid.userdb.admin import RawDb, get_argparser
+from eduid.userdb.exceptions import UserIsRevoked, UserHasNotCompletedSignup, UserDBValueError
+
+
+def main(args):
+    db = RawDb(myname='load-save-users')
+
+    count = 0
+
+    filter = {}
+    if args.eppn:
+        filter = {'eduPersonPrincipalName': args.eppn}
+    for raw_user in db.find('eduid_am', 'attributes', filter):
+        # Cancel out changes when moving to pydantic BaseModels:
+        # try:
+        #    for t in raw_user.before['tou']:
+        #        t['event_id'] = str(t['event_id'])
+        #    if 'locked_identity' in raw_user.before:
+        #        for t in raw_user.before['locked_identity']:
+        #            if t['created_ts'] is True:
+        #                t.pop('created_ts')
+        #        for t in raw_user.doc['locked_identity']:
+        #            if t['created_ts'] is True:
+        #                t.pop('created_ts')
+        #    if 'orcid' in raw_user.before and raw_user.before['orcid'].get('name', '') == None:
+        #        raw_user.before['orcid'].pop('name')
+        # except Exception:
+        #    pass
+        try:
+            user = User.from_dict(raw_user.doc)
+            print(user)
+
+            raw_user.doc = user.to_dict()
+            if db.save_with_backup(raw_user, dry_run=(not args.force)) is not None:
+                count += 1
+        except (UserIsRevoked, UserHasNotCompletedSignup):
+            pass
+        except (UserDBValueError, ValidationError) as e:
+            print(f'Raw document that could not be loaded ({e}):')
+            print(pformat(raw_user.doc))
+            input('press enter')
+            # break
+        if count == args.num:
+            print('Chickening out after {} modified users'.format(args.num))
+            break
+
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    parser = get_argparser(description='Load and save a number of users to update the db representation')
+    parser.add_argument('--num', metavar='NUM', type=int, default=100, help='Number of users to update before exiting')
+    # optional eppn to operate on
+    parser.add_argument('--eppn', metavar='STR', type=str, default=None, help='eduPersonPrincipalName to operate on')
+    args = parser.parse_args()
+    print('Dry run: {}'.format(not args.force))
+    if main(args):
+        sys.exit(0)
+
+    sys.exit(1)

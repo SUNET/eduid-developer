@@ -27,7 +27,10 @@ fi
 
 docker run --rm ${DOCKER_RUN_OPTIONS} \
        --net eduid_dev \
-       -e MONGODB_HOST=eduid_mongodb_1 \
+       -e MONGODB_HOST=eduid_mongodb_1.eduid_dev \
+       -e MONGODB_ADMIN=admin \
+       -e MONGODB_ADMIN_PASSWORD=admin_pw \
+       -v ${PWD}/mongodb/mongo_credentials:/root/.mongo_credentials:ro \
        -v ${PWD}/mongodb/db-scripts:/opt/eduid/mongodb/db-scripts:ro \
        -v ${PWD}/raw_db_changes:/root/raw_db_changes \
        ${SOURCES} \

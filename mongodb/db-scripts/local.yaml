@@ -367,3 +367,6 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_maccapi'
+      read:
+        - 'eduid_idp'
+

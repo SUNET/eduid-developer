@@ -17,7 +17,8 @@ services:
 
 
   am:
-    image: docker.sunet.se/eduid/worker:20231213T151510-staging
+    image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -37,31 +38,8 @@ services:
       - redis
       - rsyslog
 
-  maccapi:
-    image: docker.sunet.se/eduid/fastapi:20231213T151510-staging
-    restart: on-failure
-    networks:
-      dev:
-        ipv4_address: 172.16.10.216
-    expose:
-      - 8080
-    volumes:
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - ../eduid-maccapi/etc:/opt/eduid/eduid-maccapi/etc:ro
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-    environment:
-      <<: *common-env-variables
-      eduid_name: maccapi
-      HOSTNAME: maccapi
-      EDUID_CONFIG_NS: /eduid/api/maccapi
-      eduid_entrypoint: eduid.maccapi.run:api
-    depends_on:
-      - mongodb
-
   amapi:
-    image: docker.sunet.se/eduid/fastapi:20231213T151510-staging
+    image: docker.sunet.se/eduid/fastapi:20240130T112553-staging
     restart: on-failure
     networks:
       dev:
@@ -84,7 +62,8 @@ services:
       - mongodb
 
   authn:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -148,7 +127,7 @@ services:
       - auth_server
 
   bankid:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -223,7 +202,8 @@ services:
       - personal_data
 
   eidas:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -264,7 +244,8 @@ services:
       - eidas
 
   email:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.225
@@ -287,7 +268,8 @@ services:
       - mongodb
 
   group_management:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     restart: on-failure
     networks:
       dev:
@@ -317,13 +299,13 @@ services:
     dns: 172.16.10.1
     networks:
       dev:
-        ipv4_address: 172.16.10.231
     volumes:
       - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf:ro
       # source volumes
       - ../sources/eduid-html:/src/eduid/www:ro
       - ../sources/eduid-html/static:/src/eduid/static:ro
-      - ../sources/eduid-front/build:/src/eduid/front-build:ro
+      - ../sources/eduid-front/build:/src/eduid-front:ro
+      - ../sources/eduid-managed-accounts/dist:/src/eduid-managed-accounts:ro
     environment:
       HOSTNAME: html
 
@@ -342,8 +324,24 @@ services:
     depends_on:
       - html
 
+  managed_accounts_haproxy:
+    image: 'docker.sunet.se/eduid/haproxy:latest'
+    networks:
+      dev:
+        ipv4_address: 172.16.10.231
+        aliases:
+          - managed-accounts.eduid.docker
+    expose:
+      - 443
+    volumes:
+      - ../managed-accounts-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/managed-accounts.pem:/etc/ssl/managed-accounts.pem:ro
+    depends_on:
+      - html
+
   idp:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -384,8 +382,49 @@ services:
       - idp
       - reset_password
 
+  idpproxy:
+    image: docker.sunet.se/eduid/satosa_scim:20240130T112553-staging
+    restart: on-failure
+    networks:
+      dev:
+    expose:
+      - 8000
+    volumes:
+      - ../eduid-idpproxy/satosa:/opt/eduid/idpproxy/satosa:ro
+      - ../eduid-idpproxy/satosa/run:/opt/eduid/idpproxy/satosa/run:rw
+      - ../eduid-idpproxy/satosa/metadata:/opt/eduid/idpproxy/satosa/metadata:rw
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/satosa/src/satosa:/opt/eduid/sources/satosa:ro
+    environment:
+      <<: *common-env-variables
+      eduid_name: satosa
+      eduid_entrypoint: satosa.wsgi:app
+      SATOSA_CONFIG: opt/eduid/idpproxy/satosa/proxy_conf.yaml
+      DATA_DIR: /opt/eduid/idpproxy/satosa
+      METADATA_DIR: opt/eduid/idpproxy/satosa/metadata
+      limit_request_line: 8190
+    depends_on:
+      - mongodb
+      - neo4jdb
+
+  idpproxy_haproxy:
+    image: 'docker.sunet.se/eduid/haproxy:latest'
+    networks:
+      dev:
+        ipv4_address: 172.16.10.233
+        aliases:
+          - idpproxy.eduid.docker
+    volumes:
+      - ../idpproxy-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/idpproxy.pem:/etc/ssl/idpproxy.pem:ro
+    depends_on:
+      - idpproxy
+
   jsconfig:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -412,7 +451,8 @@ services:
       - rsyslog
 
   ladok:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -433,7 +473,8 @@ services:
       - mongodb
 
   letter_proofing:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -456,7 +497,8 @@ services:
       - rsyslog
 
   lookup-mobile:
-    image: docker.sunet.se/eduid/worker:20231213T151510-staging
+    image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -478,7 +520,8 @@ services:
       - rsyslog
 
   lookup_mobile_proofing:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -500,6 +543,30 @@ services:
       - redis
       - turq
 
+  maccapi:
+    image: docker.sunet.se/eduid/fastapi:20240130T112553-staging
+    pull_policy: if_not_present
+    restart: on-failure
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - ../eduid-maccapi/etc:/opt/eduid/eduid-maccapi/etc:ro
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+    environment:
+      <<: *common-env-variables
+      eduid_name: maccapi
+      HOSTNAME: maccapi
+      EDUID_CONFIG_NS: /eduid/api/maccapi
+      eduid_entrypoint: eduid.maccapi.run:api
+    depends_on:
+      - mongodb
+      - vccs
+
   mongodb:
     image: docker.sunet.se/eduid/mongodb
     expose:
@@ -516,7 +583,8 @@ services:
       REPLSET: "yes"
 
   msg:
-    image: docker.sunet.se/eduid/worker:20231213T151510-staging
+    image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -552,7 +620,8 @@ services:
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
 
   oidc_proofing:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -576,7 +645,8 @@ services:
       - turq
 
   orcid:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -602,7 +672,8 @@ services:
       - turq
 
   personal_data:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.224
@@ -626,7 +697,8 @@ services:
       - rsyslog
 
   phone:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.226
@@ -672,7 +744,8 @@ services:
       ENABLE_PKCS11_SPY: anything
 
   queue_mail_worker:
-    image: docker.sunet.se/eduid/worker:20231213T151510-staging
+    image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -694,7 +767,8 @@ services:
       - mongodb
 
   queue_scim_event:
-    image: docker.sunet.se/eduid/worker:20231213T151510-staging
+    image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -716,7 +790,7 @@ services:
       - mongodb
 
   queue_sink_worker:
-    image: docker.sunet.se/eduid/worker:20231213T151510-staging
+    image: docker.sunet.se/eduid/worker:20240130T112553-staging
     networks:
       dev:
     volumes:
@@ -749,7 +823,8 @@ services:
       - redisdata:/data
 
   reset_password:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.213
@@ -783,48 +858,9 @@ services:
     volumes:
       - rsyslogdata:/var/log/eduid
 
-  idpproxy:
-    image: docker.sunet.se/eduid/satosa_scim:20231213T151510-staging
-    restart: on-failure
-    networks:
-      dev:
-    expose:
-      - 8000
-    volumes:
-      - ../eduid-idpproxy/satosa:/opt/eduid/idpproxy/satosa:ro
-      - ../eduid-idpproxy/satosa/run:/opt/eduid/idpproxy/satosa/run:rw
-      - ../eduid-idpproxy/satosa/metadata:/opt/eduid/idpproxy/satosa/metadata:rw
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-      - ../sources/satosa/src/satosa:/opt/eduid/sources/satosa:ro
-    environment:
-      <<: *common-env-variables
-      eduid_name: satosa
-      eduid_entrypoint: satosa.wsgi:app
-      SATOSA_CONFIG: opt/eduid/idpproxy/satosa/proxy_conf.yaml
-      DATA_DIR: /opt/eduid/idpproxy/satosa
-      METADATA_DIR: opt/eduid/idpproxy/satosa/metadata
-      limit_request_line: 8190
-    depends_on:
-      - mongodb
-      - neo4jdb
-
-  idpproxy_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    networks:
-      dev:
-        ipv4_address: 172.16.10.233
-        aliases:
-          - idpproxy.eduid.docker
-    volumes:
-      - ../idpproxy-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
-      - ../pki/idpproxy.pem:/etc/ssl/idpproxy.pem:ro
-    depends_on:
-      - idpproxy
-
   scimapi:
-    image: docker.sunet.se/eduid/fastapi:20231213T151510-staging
+    image: docker.sunet.se/eduid/fastapi:20240130T112553-staging
+    pull_policy: if_not_present
     restart: on-failure
     networks:
       dev:
@@ -847,7 +883,8 @@ services:
       - neo4jdb
 
   security:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.227
@@ -874,7 +911,8 @@ services:
       - vccs
 
   signup:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.211
@@ -916,7 +954,8 @@ services:
       - signup
 
   support:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -953,7 +992,8 @@ services:
       - support
 
   svipe_id:
-    image: docker.sunet.se/eduid/webapp:20231213T151510-staging
+    image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -984,7 +1024,7 @@ services:
         ipv4_address: 172.16.10.250
 
   user_cleaner_skv_worker:
-    image: docker.sunet.se/eduid/worker:20231213T151510-staging
+    image: docker.sunet.se/eduid/worker:20240130T112553-staging
     networks:
       dev:
     volumes:
@@ -1014,7 +1054,8 @@ services:
       - rsyslog
 
   vccs:
-    image: docker.sunet.se/eduid/fastapi:20231213T151510-staging
+    image: docker.sunet.se/eduid/fastapi:20240130T112553-staging
+    pull_policy: if_not_present
     restart: always
     networks:
       dev:
