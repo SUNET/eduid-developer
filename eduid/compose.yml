@@ -18,6 +18,7 @@ services:
 
   am:
     image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -62,6 +63,7 @@ services:
 
   authn:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -201,6 +203,7 @@ services:
 
   eidas:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -242,6 +245,7 @@ services:
 
   email:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.225
@@ -265,6 +269,7 @@ services:
 
   group_management:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     restart: on-failure
     networks:
       dev:
@@ -299,7 +304,7 @@ services:
       # source volumes
       - ../sources/eduid-html:/src/eduid/www:ro
       - ../sources/eduid-html/static:/src/eduid/static:ro
-      - ../sources/eduid-front/build:/src/eduid-front/:ro
+      - ../sources/eduid-front/build:/src/eduid-front:ro
       - ../sources/eduid-managed-accounts/dist:/src/eduid-managed-accounts:ro
     environment:
       HOSTNAME: html
@@ -336,6 +341,7 @@ services:
 
   idp:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -378,6 +384,7 @@ services:
 
   jsconfig:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -405,6 +412,7 @@ services:
 
   ladok:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -426,6 +434,7 @@ services:
 
   letter_proofing:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -449,6 +458,7 @@ services:
 
   lookup-mobile:
     image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -471,6 +481,7 @@ services:
 
   lookup_mobile_proofing:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -509,6 +520,7 @@ services:
 
   msg:
     image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -545,6 +557,7 @@ services:
 
   oidc_proofing:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -569,6 +582,7 @@ services:
 
   orcid:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -595,6 +609,7 @@ services:
 
   personal_data:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.224
@@ -619,6 +634,7 @@ services:
 
   phone:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.226
@@ -665,6 +681,7 @@ services:
 
   queue_mail_worker:
     image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -687,6 +704,7 @@ services:
 
   queue_scim_event:
     image: docker.sunet.se/eduid/worker:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     volumes:
@@ -742,6 +760,7 @@ services:
 
   reset_password:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.213
@@ -817,6 +836,7 @@ services:
 
   scimapi:
     image: docker.sunet.se/eduid/fastapi:20240130T112553-staging
+    pull_policy: if_not_present
     restart: on-failure
     networks:
       dev:
@@ -891,6 +911,7 @@ services:
 
   signup:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
         ipv4_address: 172.16.10.211
@@ -933,6 +954,7 @@ services:
 
   support:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -970,6 +992,7 @@ services:
 
   svipe_id:
     image: docker.sunet.se/eduid/webapp:20240130T112553-staging
+    pull_policy: if_not_present
     networks:
       dev:
     expose:
@@ -1031,6 +1054,7 @@ services:
 
   vccs:
     image: docker.sunet.se/eduid/fastapi:20240130T112553-staging
+    pull_policy: if_not_present
     restart: always
     networks:
       dev:
