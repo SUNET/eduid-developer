@@ -308,6 +308,7 @@ mongo_databases:
         - 'eduid_ladok'
         - 'eduid_svipe_id'
         - 'eduid_bankid'
+        - 'eduid_maccapi'
       read:
         - 'eduid_support'
 

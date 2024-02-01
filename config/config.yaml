@@ -14,6 +14,9 @@ eduid:
             vccs_url: 'http://vccs:8080/'
             authorization_mandatory: true
             keystore_path: /opt/eduid/eduid-maccapi/etc/keystore.jwks
+            default_eppn_scope: local.eduid.se
+            log_retention_days: 730
+            account_retention_days: 365
         scimapi:
             mongo_uri: 'mongodb://eduid_scimapi:eduid_scimapi_pw@mongodb.eduid_dev'
             protocol: 'https'
