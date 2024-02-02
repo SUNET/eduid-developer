@@ -17,7 +17,7 @@ services:
 
 
   am:
-    image: docker.sunet.se/eduid/worker:20240202T093043-staging
+    image: docker.sunet.se/eduid/worker:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -39,7 +39,7 @@ services:
       - rsyslog
 
   amapi:
-    image: docker.sunet.se/eduid/fastapi:20240202T093043-staging
+    image: docker.sunet.se/eduid/fastapi:20240202T123803-staging
     restart: on-failure
     networks:
       dev:
@@ -62,7 +62,7 @@ services:
       - mongodb
 
   authn:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -127,7 +127,7 @@ services:
       - auth_server
 
   bankid:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -202,7 +202,7 @@ services:
       - personal_data
 
   eidas:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -244,7 +244,7 @@ services:
       - eidas
 
   email:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -268,7 +268,7 @@ services:
       - mongodb
 
   group_management:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     restart: on-failure
     networks:
@@ -340,7 +340,7 @@ services:
       - html
 
   idp:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -383,7 +383,7 @@ services:
       - reset_password
 
   idpproxy:
-    image: docker.sunet.se/eduid/satosa_scim:20240202T093043-staging
+    image: docker.sunet.se/eduid/satosa_scim:20240202T123803-staging
     restart: on-failure
     networks:
       dev:
@@ -423,7 +423,7 @@ services:
       - idpproxy
 
   jsconfig:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -451,7 +451,7 @@ services:
       - rsyslog
 
   ladok:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -473,7 +473,7 @@ services:
       - mongodb
 
   letter_proofing:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -497,7 +497,7 @@ services:
       - rsyslog
 
   lookup-mobile:
-    image: docker.sunet.se/eduid/worker:20240202T093043-staging
+    image: docker.sunet.se/eduid/worker:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -520,7 +520,7 @@ services:
       - rsyslog
 
   lookup_mobile_proofing:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -544,7 +544,7 @@ services:
       - turq
 
   maccapi:
-    image: docker.sunet.se/eduid/fastapi:20240202T093043-staging
+    image: docker.sunet.se/eduid/fastapi:20240202T123803-staging
     pull_policy: if_not_present
     restart: on-failure
     networks:
@@ -583,7 +583,7 @@ services:
       REPLSET: "yes"
 
   msg:
-    image: docker.sunet.se/eduid/worker:20240202T093043-staging
+    image: docker.sunet.se/eduid/worker:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -620,7 +620,7 @@ services:
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
 
   oidc_proofing:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -645,7 +645,7 @@ services:
       - turq
 
   orcid:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -672,7 +672,7 @@ services:
       - turq
 
   personal_data:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -697,7 +697,7 @@ services:
       - rsyslog
 
   phone:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -744,7 +744,7 @@ services:
       ENABLE_PKCS11_SPY: anything
 
   queue_mail_worker:
-    image: docker.sunet.se/eduid/worker:20240202T093043-staging
+    image: docker.sunet.se/eduid/worker:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -767,7 +767,7 @@ services:
       - mongodb
 
   queue_scim_event:
-    image: docker.sunet.se/eduid/worker:20240202T093043-staging
+    image: docker.sunet.se/eduid/worker:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -790,7 +790,7 @@ services:
       - mongodb
 
   queue_sink_worker:
-    image: docker.sunet.se/eduid/worker:20240202T093043-staging
+    image: docker.sunet.se/eduid/worker:20240202T123803-staging
     networks:
       dev:
     volumes:
@@ -823,7 +823,7 @@ services:
       - redisdata:/data
 
   reset_password:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -859,7 +859,7 @@ services:
       - rsyslogdata:/var/log/eduid
 
   scimapi:
-    image: docker.sunet.se/eduid/fastapi:20240202T093043-staging
+    image: docker.sunet.se/eduid/fastapi:20240202T123803-staging
     pull_policy: if_not_present
     restart: on-failure
     networks:
@@ -883,7 +883,7 @@ services:
       - neo4jdb
 
   security:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -911,7 +911,7 @@ services:
       - vccs
 
   signup:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -954,7 +954,7 @@ services:
       - signup
 
   support:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -992,7 +992,7 @@ services:
       - support
 
   svipe_id:
-    image: docker.sunet.se/eduid/webapp:20240202T093043-staging
+    image: docker.sunet.se/eduid/webapp:20240202T123803-staging
     pull_policy: if_not_present
     networks:
       dev:
@@ -1024,7 +1024,7 @@ services:
         ipv4_address: 172.16.10.250
 
   user_cleaner_skv_worker:
-    image: docker.sunet.se/eduid/worker:20240202T093043-staging
+    image: docker.sunet.se/eduid/worker:20240202T123803-staging
     networks:
       dev:
     volumes:
@@ -1054,7 +1054,7 @@ services:
       - rsyslog
 
   vccs:
-    image: docker.sunet.se/eduid/fastapi:20240202T093043-staging
+    image: docker.sunet.se/eduid/fastapi:20240202T123803-staging
     pull_policy: if_not_present
     restart: always
     networks:
