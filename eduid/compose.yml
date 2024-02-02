@@ -552,8 +552,8 @@ services:
     expose:
       - 8080
     volumes:
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - ../eduid-maccapi/etc:/opt/eduid/eduid-maccapi/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
