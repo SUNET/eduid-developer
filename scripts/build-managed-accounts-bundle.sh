@@ -26,7 +26,8 @@ make build
 cat >/src/eduid-managed-accounts/dist/config.js <<EOL
 const managed_accounts_config = {
   auth_server_url: "https://api.eduid.docker/auth/",
-  scim_server_url: "https://api.eduid.docker/scim",
-  redirect_url: "https://managed-accounts.eduid.docker/callback",
+  scim_server_url: "https://api.eduid.docker/scim/",
+  maccapi_url:"https://api.eduid.docker/maccapi/",
+  ma_website_url: "https://managed-accounts.eduid.docker",
 };
 EOL
