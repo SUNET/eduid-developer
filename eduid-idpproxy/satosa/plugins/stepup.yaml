@@ -1,0 +1,66 @@
+---
+module: eduid.satosa.scimapi.stepup.StepUp
+name: stepup
+config:
+  mfa:
+    by_assurance_certification:
+      https://fidus.skolverket.se/authentication/e-leg:
+        requested:
+        - http://id.elegnamnden.se/loa/1.0/loa2
+        - http://id.elegnamnden.se/loa/1.0/loa3
+        - http://id.elegnamnden.se/loa/1.0/loa4
+        - http://id.swedenconnect.se/loa/1.0/uncertified-loa2
+        - http://id.swedenconnect.se/loa/1.0/uncertified-loa3
+        - http://id.swedenconnect.se/loa/1.0/loa2-nonresident
+        - http://id.swedenconnect.se/loa/1.0/loa3-nonresident
+        - http://id.swedenconnect.se/loa/1.0/loa4-nonresident
+        - http://id.elegnamnden.se/loa/1.0/nf-low
+        - http://id.elegnamnden.se/loa/1.0/nf-sub
+        - http://id.elegnamnden.se/loa/1.0/nf-high
+  sp_config:
+    organization:
+      display_name: Local StepUp Microservice
+      name: Local StepUp Microservice
+      url: https://idpproxy.eduid.docker
+    preferred_binding:
+      single_sign_on_service:
+      - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+    contact_person:
+    - contact_type: technical
+      email_address: technical@example.com
+      given_name: Technical
+    - contact_type: support
+      email_address: support@example.com
+      given_name: Support
+    metadata:
+      local:
+      - "/opt/eduid/idpproxy/satosa/metadata/idp.eduid.docker-idp.xml"
+    key_file: "/opt/eduid/idpproxy/satosa/keys/stepup.key"
+    cert_file: "/opt/eduid/idpproxy/satosa/keys/stepup.crt"
+    want_assertions_or_response_signed: true
+    entityid: "<base_url>/<name>/metadata.xml"
+    entity_attributes:
+    - name: http://macedir.org/entity-category
+      name_format: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
+      values:
+      - http://refeds.org/category/research-and-scholarship
+      - http://www.geant.net/uri/dataprotection-code-of-conduct/v1
+    service:
+      sp:
+        force_authn: true
+        allow_unsolicited: false
+        name_id_format:
+        - urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+        - urn:oasis:names:tc:SAML:2.0:nameid-format:transient
+        name_id_policy_format: 
+        authn_requests_signed: false
+        want_response_signed: false
+        want_assertions_signed: false
+        want_assertions_or_response_signed: true
+        endpoints:
+          assertion_consumer_service:
+          - - "<base_url>/<name>/acs/post"
+            - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+          - - "<base_url>/<name>/acs/redirect"
+            - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
+

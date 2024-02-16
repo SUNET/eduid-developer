@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" entityID="https://api.eduid.docker/auth/saml2/sp/metadata">
+  <ns0:Extensions>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#md5"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#ripemd160"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2009/xmldsig11#dsa-sha256"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-md5"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha224"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+    <ns0:EntityAttributes>
+        <ns0:Attribute Name="http://macedir.org/entity-category" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+            <ns0:AttributeValue>http://refeds.org/category/research-and-scholarship</ns0:AttributeValue>
+            <ns0:AttributeValue>http://www.geant.net/uri/dataprotection-code-of-conduct/v1</ns0:AttributeValue>
+            <ns0:AttributeValue>https://refeds.org/category/personalized</ns0:AttributeValue>
+        </ns0:Attribute>
+    </ns0:EntityAttributes>
+  </ns0:Extensions>
+  <ns0:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" AuthnRequestsSigned="true" WantAssertionsSigned="true">
+    <ns0:KeyDescriptor use="signing">
+      <ns2:KeyInfo>
+        <ns2:X509Data>
+          <ns2:X509Certificate>MIIFTTCCAzWgAwIBAgIUWDBNNYm9Eg6ds/44g1YH4bvzlkgwDQYJKoZIhvcNAQELBQAwNjELMAkGA1UEBhMCU0UxJzAlBgNVBAMMHmF1dGgtZGV2LTIwMjMxMDIwLmVkdWlkLmRvY2tlcjAeFw0yMzEwMjAwNzU5NTZaFw0zMzEwMTcwNzU5NTZaMDYxCzAJBgNVBAYTAlNFMScwJQYDVQQDDB5hdXRoLWRldi0yMDIzMTAyMC5lZHVpZC5kb2NrZXIwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCtoJiCukmyGtIuLrmKNlDwqpeqR5x+FDj2BHPw1srgu4KTx+/wwpT/DSGJn1/SbeCxAGIrqS/UFNh80BeMPblW29Zwj7orODidOIRgN4LoU3QtN9TaKl/B5KlSkSj2m+Heo9DNmmwCjauLz2R1edgAHtxJzAeC0w1AhieNtsGDCC6Uyn7UNYbSnrCQln4ZB4JUB97IQHtAv3NQl+etbHoM65wRJat1SCfXuBxSdJ/ZL41gxM8HToUPBhWgz119CLTIEclipKa7fJXgFXMW6BMhb3QFF9UeEaoVw6iYzq7nvq+WfbTIGDHN7NRO60bs3lUk19SXZqxAlV/ugYUTEe0aY9p5o0Z7cjjJguHNgq4T37TH+rhoepIejBFUraJNpVjdiV3Nnga6I+iIfd310A6DkdgIReXcsUHId6awQEncelUGfSkySHCkhG4WDvMhkfujtoEhA84kiH8uibwYMO9ZNMTmFRsIAqSA3sOgvZ6GE8baY3JsMZ67lX/AomH6MEbtGQSrUrlx4t0JX1SBz6YpeLlD+RjtXEDZ7/94yQYGCgOomBmSy42fX7SY5a9HTmaUKvaQpgu7BI2KORirTlXUkke9QQtZUhCCX3NBJFvyWUBJa+Enq/SmaA79LDXYZ0xRE72dTPjFZVzQSnpbOyZ6cC/rHPTWwctUq0ek5Gs8HQIDAQABo1MwUTAdBgNVHQ4EFgQUgy19gA2krkwieuKUqX+qYiQM8GwwHwYDVR0jBBgwFoAUgy19gA2krkwieuKUqX+qYiQM8GwwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAgEAfibbNEGVjFlYRLHJDa38eTckZ9v42X+Yz6Roh1Lrv9FWL8gvWNQ822sUp6O9gZmhfBr3JYm8OB9S1ce+JbxUjSZy1dBBmy6OClPcpjDLtaFoNKweeeS4Ql6yoLeCXn7S1qrgI4Y3vwY+1X0RNbEIhlMtcrGj3caHlhhi9YLSjSKwkLu6uE40iYN5z2LzTbE9HzmMoUz39/cZIbvJziIXqNND5dTGCO34VNJ4YL1IRQQX+CxF390nhrEe5A7FAUIS7w1w7MzVVqKQlVB5xJEXHv57vMaSbOy0mta9U7VS3177d+s1ZDMr5JKQ+ZZMO/K8Wimp3c004e/qtwqKkV11C77DSFZXB4w7aW2g3yAY1Lmr+Y0pm4+IscqqV60d2HdpXzbJ7J9jXAsZLqpI5PWdeej1bKfv0/S82w1uyywqfz3hI0pMLYkFbCKgrk9YJ0c8FlOdLQTDzOX5t0/inF5gurp2eBkRvMUvmSJn7UL5m4hXQmgmGdElQginLuOjvSpCEVWSJaO/99GowsliAxDBK+nreTy+5njYFW5rU/rEBkkYdaZqnr7l0EkYnJQssdxVGf/OcUBz0/J6LDW/6/bNXdUiaGc23fLgC7kRwW4bfgvjIJefwAwnPR8UTDDy1+loVMTQSRBejt0Qe6PZs7JsE28rLwSHLQUTJj28ny7L23s=</ns2:X509Certificate>
+        </ns2:X509Data>
+      </ns2:KeyInfo>
+    </ns0:KeyDescriptor>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://api.eduid.docker/auth/saml2/sp/saml2-ls"/>
+    <ns0:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</ns0:NameIDFormat>
+    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://api.eduid.docker/auth/saml2/sp/saml2-acs" index="1"/>
+  </ns0:SPSSODescriptor>
+  <ns0:Organization>
+    <ns0:OrganizationName xml:lang="en">Sunet</ns0:OrganizationName>
+    <ns0:OrganizationDisplayName xml:lang="en">Sunet</ns0:OrganizationDisplayName>
+    <ns0:OrganizationURL xml:lang="en">https://www.sunet.se</ns0:OrganizationURL>
+  </ns0:Organization>
+  <ns0:ContactPerson contactType="technical">
+    <ns0:Company>Sunet</ns0:Company>
+    <ns0:GivenName>Johan</ns0:GivenName>
+    <ns0:SurName>Lundberg</ns0:SurName>
+    <ns0:EmailAddress>lundberg@sunet.se</ns0:EmailAddress>
+  </ns0:ContactPerson>
+</ns0:EntityDescriptor>

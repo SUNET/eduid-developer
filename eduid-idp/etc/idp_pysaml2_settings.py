@@ -32,7 +32,7 @@ CONFIG = {
                     "attribute_restrictions": None,  # means all I have
                     "name_form": NAME_FORMAT_URI,
                     "nameid_format": NAMEID_FORMAT_PERSISTENT,
-                    "entity_categories": ["swamid", "edugain"],
+                    "entity_categories": ["swamid"],
                     "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
                 },
                 "https://dashboard.eduid.docker/services/authn/saml2-metadata": {
@@ -65,7 +65,11 @@ CONFIG = {
     "key_file": "xmlsec+http://py11softhsm:8000/eduid/dev_idp_key_202301",
     "cert_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem",
     "metadata": {
-        "local": ["/opt/eduid/eduid-idp/etc/authn_metadata.xml"],
+        "local": [
+            "/opt/eduid/eduid-idp/etc/authn_metadata.xml",
+            "/opt/eduid/eduid-idp/etc/auth_server_metadata.xml",
+            "/opt/eduid/eduid-idp/etc/idpproxy-backend.xml",
+        ],
     },
     "organization": {
         "display_name": "eduID LOCAL TEST",

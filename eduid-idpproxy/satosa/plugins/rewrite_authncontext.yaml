@@ -1,0 +1,30 @@
+---
+module: eduid.satosa.scimapi.stepup.RewriteAuthnContextClass
+name: stepup_rewrite
+config:
+  mfa:
+    by_entity_id:
+      https://login.idp.eduid.se/idp.xml:
+        requested:
+        - https://refeds.org/profile/mfa
+        returned: https://refeds.org/profile/mfa
+      https://idp.dev.eduid.se/idp.xml:
+        requested:
+        - https://refeds.org/profile/mfa
+        returned: https://refeds.org/profile/mfa
+    by_assurance_certification:
+      https://fidus.skolverket.se/authentication/e-leg:
+        requested:
+        - http://id.elegnamnden.se/loa/1.0/loa2
+        - http://id.elegnamnden.se/loa/1.0/loa3
+        - http://id.elegnamnden.se/loa/1.0/loa4
+        - http://id.swedenconnect.se/loa/1.0/uncertified-loa2
+        - http://id.swedenconnect.se/loa/1.0/uncertified-loa3
+        - http://id.swedenconnect.se/loa/1.0/loa2-nonresident
+        - http://id.swedenconnect.se/loa/1.0/loa3-nonresident
+        - http://id.swedenconnect.se/loa/1.0/loa4-nonresident
+        - http://id.elegnamnden.se/loa/1.0/nf-low
+        - http://id.elegnamnden.se/loa/1.0/nf-sub
+        - http://id.elegnamnden.se/loa/1.0/nf-high
+        returned: https://refeds.org/profile/mfa
+

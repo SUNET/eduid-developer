@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:ns2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:ns4="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:ns5="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" xmlns:ns6="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" entityID="https://idpproxy.eduid.docker/sp">
+  <ns0:Extensions>
+    <ns1:EntityAttributes>
+      <ns2:Attribute Name="http://macedir.org/entity-category">
+        <ns2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">http://refeds.org/category/research-and-scholarship</ns2:AttributeValue>
+      </ns2:Attribute>
+      <ns2:Attribute Name="http://macedir.org/entity-category">
+        <ns2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">http://www.geant.net/uri/dataprotection-code-of-conduct/v1</ns2:AttributeValue>
+      </ns2:Attribute>
+    </ns1:EntityAttributes>
+    <ns4:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#md5"/>
+    <ns4:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#ripemd160"/>
+    <ns4:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+    <ns4:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
+    <ns4:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+    <ns4:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+    <ns4:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2009/xmldsig11#dsa-sha256"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-md5"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha224"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
+    <ns4:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+  </ns0:Extensions>
+  <ns0:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" AuthnRequestsSigned="false" WantAssertionsSigned="false">
+    <ns0:Extensions>
+      <ns5:DiscoveryResponse Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" Location="https://idpproxy.eduid.docker/Saml2SP/disco" index="1"/>
+    </ns0:Extensions>
+    <ns0:KeyDescriptor use="signing">
+      <ns6:KeyInfo>
+        <ns6:X509Data>
+          <ns6:X509Certificate>MIIFTTCCAzWgAwIBAgIUJoQzI0nwP9bOEWJMEqmF8XqxC70wDQYJKoZIhvcNAQELBQAwNjELMAkGA1UEBhMCU0UxJzAlBgNVBAMMHmlkcHByb3h5LTIwMjMxMjAxLmVkdWlkLmRvY2tlcjAeFw0yMzEyMDExMzQ2MjZaFw0zMzExMjgxMzQ2MjZaMDYxCzAJBgNVBAYTAlNFMScwJQYDVQQDDB5pZHBwcm94eS0yMDIzMTIwMS5lZHVpZC5kb2NrZXIwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDcjX7UTe8qR6iGIUuswHuy7Mpf4AWjaYMKMuxEViyV/5eMOxxCq9qZxK1H1R6R4Zd2AxnN925AhQ3s40x9vi4Qsl6/V23yPie1t/O46xOVXnBFCEAn42egOEN5ggQhfoxYdseokwSebuX5bhDK06s94TZbvdH4Tfw1dwIIFKCitY0nZKNwHH52O7vzMDeSh+ujLNO5vExHh9TEFlgcP25hDzp3yD5us9Y/eSdVHqeqZCW7U9otFwvZAUWKP2Y9btmroR2FuZUxzx7Ei8h3O+2h6HgqsEf5WqW1iumkgqkjres9XNQVHRCM5bOtBolf527q0Kq6t2s4ptAAEzsCps5rQ0umo8pG0ZkvF4bRf/d832DFEPBWuTJWVqgA1k7QO1JXYu6mGeAX+kGgs7a37G4HnJluZVKsfcRItU8XPDH4gZl2sEK6hK4221CCuX0IVJaS+zNbiLazF3tYAwS864EJEfuCKLNCXYcIfnpcLQ1SmycaWDqc1izcRJncjwKu2rtMQsvGgBayLePq3My5Ir75lDt7NxWQWgBqhycBz5+1UfTzM/Nb+BiQqLPv+vcn1Ilq45Q/gjyW9SjrdqNgJKxdZNyukXioew3svGG7yFoGj/9JqqRTsrEJs1HUwx7Tj2uwQhp9PtVArYBmRiC28SH97Yg7/6kqmgQk6N4YoeW5SwIDAQABo1MwUTAdBgNVHQ4EFgQUHHmi6vIIF8jyhKJ7yw6m3B4Yis4wHwYDVR0jBBgwFoAUHHmi6vIIF8jyhKJ7yw6m3B4Yis4wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAgEAsVhAWZtwL9mNzpPe5jPsvAC6fGxWcTgr1eWn23mUBGWOUgRMbEnunuhxbyXEcqdhSeRcilJwlHTHXitFNsNpnzxiTmOjWpORkItdL9XQVl2r4P7H7kbM+XueIYon2ZzuBkpGrOAy7Ro3PW9VL7YeEGZLuopbz3OUjlFVt7pwhjh/bYZjXNMebFGN/l59hJ67pgS6HAkexKcHg4mSYHb0u/i2/GqyCLFeEq/rJ8fvgDsx1ohcqBau2H2TWuCTZfercA8M0EGJWoe/IH6LKhVhpfcA/Dfxf73/w0QA1BInOf5FDqqYkKY7Y+Enti681WYmCV0Is92X5f32LcVq2CvGboWgeAUwiHZGBU6Reltr/UsC18iG1YAzWh7muPDlewM4NwjDbYU5hfLxpdsz9NUSkrwJTbxiyjOMAhohbD+lPWcAUpoU4Pmqp8tpYDiXgIIhyxFvR7FwFzj8C5f3s44Z5T/2t4RTas8UBpWFKdJsFnDhKY+7iXDhkmp3lRTZS08gwYwxw1qhjltm/DK0A7ck7Ok8Ji6G7oUZyUntU641Nfx1Ccb51rb/yJTSo9oIaocKQiJhmTs8Ei/hJvYOh3Qf5M+yrLmm0Fth29pz5RNdXvQq62FC/WifNuKv2KLXvIrEyzcUG/GZaf+fJPsWzcUc9rlftMDdvG32EXcM4RK43Nc=</ns6:X509Certificate>
+        </ns6:X509Data>
+      </ns6:KeyInfo>
+    </ns0:KeyDescriptor>
+    <ns0:KeyDescriptor use="encryption">
+      <ns6:KeyInfo>
+        <ns6:X509Data>
+          <ns6:X509Certificate>MIIFTTCCAzWgAwIBAgIUJoQzI0nwP9bOEWJMEqmF8XqxC70wDQYJKoZIhvcNAQELBQAwNjELMAkGA1UEBhMCU0UxJzAlBgNVBAMMHmlkcHByb3h5LTIwMjMxMjAxLmVkdWlkLmRvY2tlcjAeFw0yMzEyMDExMzQ2MjZaFw0zMzExMjgxMzQ2MjZaMDYxCzAJBgNVBAYTAlNFMScwJQYDVQQDDB5pZHBwcm94eS0yMDIzMTIwMS5lZHVpZC5kb2NrZXIwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDcjX7UTe8qR6iGIUuswHuy7Mpf4AWjaYMKMuxEViyV/5eMOxxCq9qZxK1H1R6R4Zd2AxnN925AhQ3s40x9vi4Qsl6/V23yPie1t/O46xOVXnBFCEAn42egOEN5ggQhfoxYdseokwSebuX5bhDK06s94TZbvdH4Tfw1dwIIFKCitY0nZKNwHH52O7vzMDeSh+ujLNO5vExHh9TEFlgcP25hDzp3yD5us9Y/eSdVHqeqZCW7U9otFwvZAUWKP2Y9btmroR2FuZUxzx7Ei8h3O+2h6HgqsEf5WqW1iumkgqkjres9XNQVHRCM5bOtBolf527q0Kq6t2s4ptAAEzsCps5rQ0umo8pG0ZkvF4bRf/d832DFEPBWuTJWVqgA1k7QO1JXYu6mGeAX+kGgs7a37G4HnJluZVKsfcRItU8XPDH4gZl2sEK6hK4221CCuX0IVJaS+zNbiLazF3tYAwS864EJEfuCKLNCXYcIfnpcLQ1SmycaWDqc1izcRJncjwKu2rtMQsvGgBayLePq3My5Ir75lDt7NxWQWgBqhycBz5+1UfTzM/Nb+BiQqLPv+vcn1Ilq45Q/gjyW9SjrdqNgJKxdZNyukXioew3svGG7yFoGj/9JqqRTsrEJs1HUwx7Tj2uwQhp9PtVArYBmRiC28SH97Yg7/6kqmgQk6N4YoeW5SwIDAQABo1MwUTAdBgNVHQ4EFgQUHHmi6vIIF8jyhKJ7yw6m3B4Yis4wHwYDVR0jBBgwFoAUHHmi6vIIF8jyhKJ7yw6m3B4Yis4wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAgEAsVhAWZtwL9mNzpPe5jPsvAC6fGxWcTgr1eWn23mUBGWOUgRMbEnunuhxbyXEcqdhSeRcilJwlHTHXitFNsNpnzxiTmOjWpORkItdL9XQVl2r4P7H7kbM+XueIYon2ZzuBkpGrOAy7Ro3PW9VL7YeEGZLuopbz3OUjlFVt7pwhjh/bYZjXNMebFGN/l59hJ67pgS6HAkexKcHg4mSYHb0u/i2/GqyCLFeEq/rJ8fvgDsx1ohcqBau2H2TWuCTZfercA8M0EGJWoe/IH6LKhVhpfcA/Dfxf73/w0QA1BInOf5FDqqYkKY7Y+Enti681WYmCV0Is92X5f32LcVq2CvGboWgeAUwiHZGBU6Reltr/UsC18iG1YAzWh7muPDlewM4NwjDbYU5hfLxpdsz9NUSkrwJTbxiyjOMAhohbD+lPWcAUpoU4Pmqp8tpYDiXgIIhyxFvR7FwFzj8C5f3s44Z5T/2t4RTas8UBpWFKdJsFnDhKY+7iXDhkmp3lRTZS08gwYwxw1qhjltm/DK0A7ck7Ok8Ji6G7oUZyUntU641Nfx1Ccb51rb/yJTSo9oIaocKQiJhmTs8Ei/hJvYOh3Qf5M+yrLmm0Fth29pz5RNdXvQq62FC/WifNuKv2KLXvIrEyzcUG/GZaf+fJPsWzcUc9rlftMDdvG32EXcM4RK43Nc=</ns6:X509Certificate>
+        </ns6:X509Data>
+      </ns6:KeyInfo>
+    </ns0:KeyDescriptor>
+    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idpproxy.eduid.docker/Saml2SP/acs/post" index="1"/>
+    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idpproxy.eduid.docker/Saml2SP/acs/redirect" index="2"/>
+  </ns0:SPSSODescriptor>
+  <ns0:Organization>
+    <ns0:OrganizationName xml:lang="en">eduID Proxy SP</ns0:OrganizationName>
+    <ns0:OrganizationDisplayName xml:lang="en">eduID Local Proxy SP</ns0:OrganizationDisplayName>
+    <ns0:OrganizationURL xml:lang="en">https://html.eduid.docker</ns0:OrganizationURL>
+  </ns0:Organization>
+  <ns0:ContactPerson contactType="technical">
+    <ns0:GivenName>Technical</ns0:GivenName>
+    <ns0:EmailAddress>feedback@eduid.se</ns0:EmailAddress>
+  </ns0:ContactPerson>
+  <ns0:ContactPerson contactType="support">
+    <ns0:GivenName>Support</ns0:GivenName>
+    <ns0:EmailAddress>feedback@eduid.se</ns0:EmailAddress>
+  </ns0:ContactPerson>
+</ns0:EntityDescriptor>

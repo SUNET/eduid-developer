@@ -1,0 +1,75 @@
+---
+module: eduid.satosa.scimapi.stepup.StepupSAMLBackend
+name: Saml2SP
+plugin: BackendModulePlugin
+config:
+  mfa:
+    by_assurance_certification:
+      https://fidus.skolverket.se/authentication/e-leg:
+        requested:
+        - http://id.elegnamnden.se/loa/1.0/loa2
+        - http://id.elegnamnden.se/loa/1.0/loa3
+        - http://id.elegnamnden.se/loa/1.0/loa4
+        - http://id.swedenconnect.se/loa/1.0/uncertified-loa2
+        - http://id.swedenconnect.se/loa/1.0/uncertified-loa3
+        - http://id.swedenconnect.se/loa/1.0/loa2-nonresident
+        - http://id.swedenconnect.se/loa/1.0/loa3-nonresident
+        - http://id.swedenconnect.se/loa/1.0/loa4-nonresident
+        - http://id.elegnamnden.se/loa/1.0/nf-low
+        - http://id.elegnamnden.se/loa/1.0/nf-sub
+        - http://id.elegnamnden.se/loa/1.0/nf-high
+        returned: https://refeds.org/profile/mfa
+  entityid_endpoint: true
+  attribute_profile: saml
+  disco_srv: https://ds-test.swamid.se
+  sp_config:
+    organization:
+      display_name: eduID Local Proxy SP
+      name: eduID Proxy SP
+      url: https://html.eduid.docker
+    contact_person:
+    - contact_type: technical
+      email_address: feedback@eduid.se
+      given_name: Technical
+    - contact_type: support
+      email_address: feedback@eduid.se
+      given_name: Support
+    key_file: "/opt/eduid/idpproxy/satosa/keys/backend.key"
+    cert_file: "/opt/eduid/idpproxy/satosa/keys/backend.crt"
+    encryption_keypairs:
+    - key_file: "/opt/eduid/idpproxy/satosa/keys/backend.key"
+      cert_file: "/opt/eduid/idpproxy/satosa/keys/backend.crt"
+    allow_unknown_attributes: true
+    metadata:
+      #mdq:
+      #- url: https://mds.swamid.se/qa/
+      #  freshness_period: P0Y0M0DT0H30M0S
+      local:
+        - "/opt/eduid/idpproxy/satosa/metadata/idp.eduid.docker-idp.xml"
+    entityid: https://idpproxy.eduid.docker/sp
+    entity_attributes:
+    - name: http://macedir.org/entity-category
+      name_format: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
+      values:
+        - http://refeds.org/category/research-and-scholarship
+    - name: http://macedir.org/entity-category
+      name_format: urn:oasis:names:tc:SAML:2.0:attrname-format:uri
+      values:
+        - http://www.geant.net/uri/dataprotection-code-of-conduct/v1
+    xmlsec_binary: "/usr/bin/xmlsec1"
+    service:
+      sp:
+        allow_unsolicited: true
+        want_response_signed: false
+        want_assertions_signed: false
+        want_assertions_or_response_signed: true
+        endpoints:
+          assertion_consumer_service:
+          - - "<base_url>/<name>/acs/post"
+            - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+          - - "<base_url>/<name>/acs/redirect"
+            - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
+          discovery_response:
+          - - "<base_url>/<name>/disco"
+            - urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol
+

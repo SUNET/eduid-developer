@@ -69,6 +69,14 @@ build_frontend_bundle:
 		docker.sunet.se/sunet/docker-jenkins-node-job /build-frontend-bundle.sh
 	ls -l sources/eduid-front/build
 
+build_managed_account_bundle:
+	ls -l sources/eduid-managed-accounts/dist
+	docker run --rm -it \
+		-v ${CURDIR}/scripts/build-managed-accounts-bundle.sh:/build-managed-accounts-bundle.sh:ro \
+		-v ${CURDIR}/sources/eduid-managed-accounts:/src/eduid-managed-accounts \
+		docker.sunet.se/sunet/docker-jenkins-node-job /build-managed-accounts-bundle.sh
+	ls -l sources/eduid-managed-accounts/dist
+
 frontend_npm_start:
 	docker run --rm -it \
 		-v ${CURDIR}/scripts/frontend-npm-start.sh:/frontend-npm-start.sh:ro \
