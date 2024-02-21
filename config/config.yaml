@@ -153,10 +153,10 @@ eduid:
             eduid_site_url: https://html.eduid.docker
             eduid_static_url: https://html.eduid.docker/static/
             static_url: https://html.eduid.docker/static/
-            dashboard_url: https://dashboard.eduid.docker/profile/
+            dashboard_url: https://html.eduid.docker/profile/
             reset_passwd_url: https://dashboard.eduid.docker/services/security/reset-password
             # set absolute URL so it can be included in emails
-            signup_url: https://signup.eduid.docker/register/
+            signup_url: https://html.eduid.docker/register/
             no_authn_urls:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
@@ -255,13 +255,13 @@ eduid:
             # SAML2 and SP config
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             safe_relay_domain: eduid.docker
-            token_verify_redirect_url: https://dashboard.eduid.docker/profile/settings/advanced-settings
-            identity_verify_redirect_url: https://dashboard.eduid.docker/profile/verify-identity/
+            token_verify_redirect_url: https://html.eduid.docker/profile/settings/advanced-settings
+            identity_verify_redirect_url: https://html.eduid.docker/profile/verify-identity/
             freja_idp: http://dev.test.swedenconnect.se/idp
             foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
             frontend_action_finish_url:
-              eidasVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
-              eidasVerifyCredential: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
+              eidasVerifyIdentity: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
+              eidasVerifyCredential: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
               loginMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
               resetpwMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
         bankid:
@@ -275,8 +275,8 @@ eduid:
             safe_relay_domain: eduid.docker
             bankid_idp: https://bankidp.qa.swamid.se/bankid/idp
             frontend_action_finish_url:
-              bankidVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
-              bankidVerifyCredential: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
+              bankidVerifyIdentity: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
+              bankidVerifyCredential: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
               loginMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
               resetpwMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
         lookup_mobile_proofing:
@@ -337,7 +337,7 @@ eduid:
                 acr_values: ["face_present"]
                 scopes: ["openid", "document"]
             frontend_action_finish_url:
-              svipeidVerifyIdentity: https://dashboard.eduid.docker/profile/ext-return/{app_name}/{authn_id}
+              svipeidVerifyIdentity: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
         security:
             server_name: dashboard.eduid.docker
             application_root: /services/security
@@ -352,7 +352,7 @@ eduid:
             u2f_max_allowed_tokens: 50
             u2f_max_description_length: 64
             u2f_valid_facets:
-                - https://dashboard.dev.eduid.se
+                - https://html.dev.eduid.se
                 - https://idp.dev.eduid.se
             webauthn_attestation: 'direct'
         signup:
@@ -364,7 +364,7 @@ eduid:
             password_length: 10
             vccs_url: 'http://vccs:8080/'
             tou_url: not_used_remove_me_after_config_model_update
-            signup_authn_url: https://dashboard.eduid.docker/services/authn/signup-authn
+            signup_authn_url: not_used
             default_finish_url: https://www.eduid.se/
             # These keys are for signup.eduid.docker
             recaptcha_public_key: 6Lf5rCETAAAAAAW6UP4o59VSNEWG7RrzY_b5uH_M
@@ -478,7 +478,7 @@ eduid:
             tou_reaccept_interval: 604800  # 1 week
             #tou_reaccept_interval: 60  # 1 min
             u2f_valid_facets:
-                - https://dashboard.dev.eduid.se
+                - https://html.dev.eduid.se
                 - https://idp.dev.eduid.se
             other_device_logins_ttl: PT3M
             other_device_secret_key: 'lx0sg0g21QUkiu9JAPfhx4hJ5prJtbk1PPE-OBvpiAk='
@@ -513,7 +513,7 @@ eduid:
             chpass_timeout: 600
             vccs_url: http://vccs:8080/
             u2f_valid_facets:
-                - https://dashboard.dev.eduid.se
+                - https://html.dev.eduid.se
                 - https://idp.dev.eduid.se
             password_reset_link: https://html.eduid.docker/reset-password/email-code
     queue:
