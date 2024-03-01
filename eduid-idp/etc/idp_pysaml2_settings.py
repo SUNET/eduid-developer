@@ -29,11 +29,31 @@ CONFIG = {
             "policy": {
                 "default": {
                     "lifetime": {"minutes": 5},
-                    "attribute_restrictions": None,  # means all I have
+                    # Restrict to all attributes except norEduPersonNIN and personalIdentityNumber.
+                    "attribute_restrictions": {
+                        "c": None,
+                        "cn": None,
+                        "co": None,
+                        "displayName": None,
+                        "eduPersonAssurance": None,
+                        "eduPersonEntitlement": None,
+                        "eduPersonOrcid": None,
+                        "eduPersonPrincipalName": None,
+                        "eduPersonTargetedID": None,
+                        "givenName": None,
+                        "mail": None,
+                        "mailLocalAddress": None,
+                        "pairwise-id": None,
+                        "preferredLanguage": None,
+                        "schacDateOfBirth": None,
+                        "schacPersonalUniqueCode": None,
+                        "sn": None,
+                        "subject-id": None,
+                    },
                     "name_form": NAME_FORMAT_URI,
                     "nameid_format": NAMEID_FORMAT_PERSISTENT,
                     "entity_categories": ["swamid"],
-                    "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
+                    "fail_on_missing_requested": True,  # Fail on unsatisfied RequiredAttributes
                 },
                 "https://dashboard.eduid.docker/services/authn/saml2-metadata": {
                     # release the internal attribute eduidIdPCredentialsUsed, the eppn and nothing else to eduid-authn
@@ -45,6 +65,15 @@ CONFIG = {
                     "nameid_format": NAMEID_FORMAT_PERSISTENT,
                     "entity_categories": [],
                     "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
+                },
+                # Only release all attributes to SPs that have registrationAuthority "http://www.swamid.se/"
+                "http://www.swamid.se/": {
+                    "lifetime": {"minutes": 5},
+                    "attribute_restrictions": None,  # All I have
+                    "name_form": NAME_FORMAT_URI,
+                    "nameid_format": NAMEID_FORMAT_PERSISTENT,
+                    "entity_categories": ["swamid"],
+                    "fail_on_missing_requested": True,  # Fail on unsatisfied RequiredAttributes
                 },
             },
             "subject_data": (
@@ -63,13 +92,14 @@ CONFIG = {
     # SAML signing is done using pyeleven (through pyXMLSecurity), but pysaml2
     # requires a certificate to look at so we give it the snakeoil cert here.
     "key_file": "xmlsec+http://py11softhsm:8000/eduid/dev_idp_key_202301",
-    "cert_file": "/opt/eduid/eduid-idp/etc/idp-public-snakeoil.pem",
+    "cert_file": "/opt/eduid/eduid-idp/etc/idp_dev_key_202302_cert.pem",
     "metadata": {
         "local": [
             "/opt/eduid/eduid-idp/etc/authn_metadata.xml",
             "/opt/eduid/eduid-idp/etc/auth_server_metadata.xml",
             "/opt/eduid/eduid-idp/etc/idpproxy-backend.xml",
         ],
+        "remote": [{"url": "https://mds.swamid.se/qa/md/swamid-sp.xml", "cert": "swamid-qa.crt"}]
     },
     "organization": {
         "display_name": "eduID LOCAL TEST",
