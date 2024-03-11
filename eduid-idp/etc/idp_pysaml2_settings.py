@@ -53,7 +53,7 @@ CONFIG = {
                     "name_form": NAME_FORMAT_URI,
                     "nameid_format": NAMEID_FORMAT_PERSISTENT,
                     "entity_categories": ["swamid"],
-                    "fail_on_missing_requested": True,  # Fail on unsatisfied RequiredAttributes
+                    "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
                 },
                 "https://dashboard.eduid.docker/services/authn/saml2-metadata": {
                     # release the internal attribute eduidIdPCredentialsUsed, the eppn and nothing else to eduid-authn
@@ -73,7 +73,7 @@ CONFIG = {
                     "name_form": NAME_FORMAT_URI,
                     "nameid_format": NAMEID_FORMAT_PERSISTENT,
                     "entity_categories": ["swamid"],
-                    "fail_on_missing_requested": True,  # Fail on unsatisfied RequiredAttributes
+                    "fail_on_missing_requested": False,  # Don't fail on unsatisfied RequiredAttributes
                 },
             },
             "subject_data": (
