@@ -70,9 +70,9 @@ services:
       - 8080
     volumes:
       - ../eduid-authn/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - appdata:/opt/eduid/run
       - eduidlogdata:/var/log/eduid
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
     environment:
