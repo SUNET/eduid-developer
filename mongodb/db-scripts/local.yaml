@@ -320,6 +320,7 @@ mongo_databases:
         - 'eduid_queue'
         - 'eduid_scimapi'
         - 'eduid_signup'
+        - 'eduid_reset_password'
 
   seleg_op:
     collections:
