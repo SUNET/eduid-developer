@@ -321,6 +321,7 @@ mongo_databases:
         - 'eduid_scimapi'
         - 'eduid_signup'
         - 'eduid_reset_password'
+        - 'eduid_email'
 
   seleg_op:
     collections:
