@@ -322,6 +322,7 @@ mongo_databases:
         - 'eduid_signup'
         - 'eduid_reset_password'
         - 'eduid_email'
+        - 'eduid_security'
 
   seleg_op:
     collections:
