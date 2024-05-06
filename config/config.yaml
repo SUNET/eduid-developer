@@ -604,6 +604,16 @@ eduid:
             teleadress_client_user: 'TEST'
             teleadress_client_password: 'TEST'
 
+        job_runner:
+            mongo_uri: mongodb://eduid_job_runner:eduid_job_runner_pw@mongodb/eduid_job_runner
+            jobs:
+              dev:
+                check_skv_users:
+                  second: "*/15"
+              job_runner_dev_1:
+                gather_skv_users:
+                  minute: "*/15"
+
         user_cleaner:
             skatteverket:
                 debug: true

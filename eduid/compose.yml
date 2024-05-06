@@ -1025,8 +1025,8 @@ services:
       dev:
         ipv4_address: 172.16.10.250
 
-  user_cleaner_skv_worker:
-    image: docker.sunet.se/eduid/worker:20240419T084248-staging
+  job_runner:
+    image: docker.sunet.se/eduid/fastapi:20240419T084248-staging
     networks:
       dev:
     volumes:
@@ -1035,25 +1035,18 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid
       - ../dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt
-    healthcheck:
-      test: ["CMD-SHELL", "[ -f /tmp/healthy ] || exit 1" ]
-      interval: 10s
-      timeout: 3s
-      retries: 10
     environment:
       <<: *common-env-variables
-      HOSTNAME: cleaner_skv_worker
-      eduid_name: cleaner_skv_worker
-      EDUID_CONFIG_NS: /eduid/worker/user_cleaner/skatteverket
-      NEW_QUEUE: "yes"
-      eduid_entrypoint: eduid.workers.user_cleaner.workers.skv
+      HOSTNAME: job_runner
+      eduid_name: job_runner
+      EDUID_CONFIG_NS: /eduid/worker/job_runner
+      eduid_entrypoint: eduid.workers.job_runner.run:app
+      WORKER_NAME: job_runner_dev_1
+      worker_threads: 1
+      workers: 1
     depends_on:
       - mongodb
       - amapi
-      - msg
-      - auth_server
-      - api_haproxy
-      - rsyslog
 
   vccs:
     image: docker.sunet.se/eduid/fastapi:20240419T084248-staging

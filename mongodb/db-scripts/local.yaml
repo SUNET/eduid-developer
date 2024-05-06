@@ -41,6 +41,7 @@ mongo_databases:
         - 'eduid_svipe_id'
         - 'eduid_bankid'
         - 'munin'
+        - 'eduid_job_runner'
 
   eduid_api:
     collections:
@@ -373,3 +374,9 @@ mongo_databases:
       read:
         - 'eduid_idp'
 
+  eduid_job_runner:
+    collections:
+      - 'cleaner_queue'
+    access:
+      readWrite:
+        - 'eduid_job_runner'
