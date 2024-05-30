@@ -605,14 +605,35 @@ eduid:
             teleadress_client_password: 'TEST'
 
         job_runner:
+            log_level: DEBUG
             mongo_uri: mongodb://eduid_job_runner:eduid_job_runner_pw@mongodb/eduid_job_runner
             jobs:
+              # TODO: set up a proper schedule
+              # jobs can be set on environment or host level with cron like timings
               dev:
                 check_skv_users:
                   second: "*/15"
+                  # minute: "*/1"
               job_runner_dev_1:
                 gather_skv_users:
-                  minute: "*/15"
+                  minute: "*/1"
+                  # minute: "*/5"
+            amapi:
+                url: http://amapi:8080
+                tls_verify: false
+            gnap_auth_data:
+              authn_server_url: https://api_haproxy/auth
+              authn_server_verify: false
+              key_name: devkey
+              client_jwk:
+                  kty: EC
+                  kid: devkey
+                  crv: P-256
+                  x: "LsX8Jl-DwZfJjgkwvTiRu5nqMNYcwh29hdkDtCsj26w"
+                  y: "hifFMvRh_moHOvBLx58JokS0LMjjo3Ww5SfjzFVSVSA"
+                  d: "tghyR6Z5kmJZiEw3VBF8d5VGCSaXX_-4w8TN94auHP0"
+              access:
+                  - type: amapi
 
         user_cleaner:
             skatteverket:
