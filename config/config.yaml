@@ -194,12 +194,12 @@ eduid:
                 finish_url: "https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}"
               oldLogin:
                 same_user: false
-                finish_url: "https://html.eduid.docker/profile/",
+                finish_url: "https://html.eduid.docker/profile/"
               removeSecurityKeyAuthn:
                 force_mfa: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
-             resetpwMfaAuthn:
+              resetpwMfaAuthn:
                 force_authn: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}"
@@ -578,6 +578,12 @@ eduid:
         environment: dev
         log_level: DEBUG
         logger_name: queue
+        logging_config:
+          loggers:
+            'pymongo.serverSelection':
+              level: 'INFO'
+            'pymongo.command':
+              level: 'INFO'
       scim_event_worker:
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
         mongo_collection: message
@@ -596,7 +602,11 @@ eduid:
               filters: ['app_filter']
               maxBytes: 1024
               backupCount: 0
-
+         loggers:
+           'pymongo.serverSelection':
+             level: 'INFO'
+           'pymongo.command':
+             level: 'INFO'
       sink_worker:
         log_level: INFO
         logging_config:
