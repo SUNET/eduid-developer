@@ -176,6 +176,10 @@ eduid:
                   level: 'INFO'
                 'eduid.webapp.common.authn.middleware':
                   level: 'INFO'
+                'pymongo.serverSelection':
+                  level: 'INFO'
+                'pymongo.command':
+                  level: 'INFO'
         authn:
             server_name: dashboard.eduid.docker
             application_root: /services/authn
