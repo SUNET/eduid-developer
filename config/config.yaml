@@ -172,6 +172,7 @@ eduid:
             errors_url_template: 'https://html.eduid.docker/errors?code={ERRORURL_CODE}&ts={ERRORURL_TS}&rp={ERRORURL_RP}&tid={ERRORURL_TID}&ctx={ERRORURL_CTX}'
             frontend_action_authn_parameters:
               addSecurityKeyAuthn:
+                force_authn: true
                 high_security: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
