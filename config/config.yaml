@@ -412,6 +412,8 @@ eduid:
                 - https://html.dev.eduid.se
                 - https://idp.dev.eduid.se
             webauthn_attestation: 'direct'
+            logout_endpoint: 'https://dashboard.eduid.docker/services/authn/logout'
+            termination_redirect_url: 'https://html.eduid.docker'
         signup:
             server_name: signup.eduid.docker
             application_root: /services/signup
