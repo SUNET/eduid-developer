@@ -4,40 +4,25 @@
 #
 
 import sys
-import os
-from pymongo import MongoClient
+from eduid.userdb.admin import RawDb, get_argparser
 
-def get_db_uri() -> str:
-    user = os.environ.get('MONGODB_ADMIN')
-    pw = os.environ.get('MONGODB_ADMIN_PASSWORD')
-    host = os.environ.get('MONGODB_HOST')
-    port = os.environ.get('MONGODB_PORT')
-    if not host:
-        host = 'localhost'
-    if not port:
-        port = '27017'
-    if user and pw:
-        dburi = f'mongodb://{user}:{pw}@{host}:{port}/'
-    else:
-        dburi = f'mongodb://{host}:{port}/'
-    return dburi
-
-def main(dry_run: bool):
+def main(args):
     """
     Remove all managed accounts by dropping the collection containing them.
     """
+    db = RawDb()
 
-    db_uri = get_db_uri()
-    client = MongoClient(db_uri)
-
-    coll = client['eduid_managed_accounts']['users']
+    coll = db._client['eduid_managed_accounts']['users']
 
     print(f'Removing {coll.count_documents({})} managed users')
-    if not dry_run:
+    if args.force:
         coll.drop()
 
 if __name__ == '__main__':
-    dry_run = bool('--force' not in sys.argv)
-    print(f"{'Dry run' if dry_run else 'For real'}")
-    main(dry_run)
+    parser = get_argparser(description='Remove all managed accounts')
+    args = parser.parse_args()
+
+    if args.debug:
+        print(f"{'Dry run' if not args.force else 'For real'}")
+    main(args)
     sys.exit(0)
