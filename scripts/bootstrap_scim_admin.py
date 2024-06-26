@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import json
 import logging
@@ -55,8 +57,10 @@ def scim_request(
 
     if not r:
         return None
-
-    response = r.json()
+    try:
+        response = r.json()
+    except json.JSONDecodeError:
+        return {"status_code": r.status_code}
     logger.debug(f"Response:\n{pformat(response, width=120)}")
     return response
 
@@ -95,6 +99,8 @@ def search_user(api: ScimApi, external_id: str) -> Optional[str]:
     logger.debug(f"Sending user search query:\n{json.dumps(query, sort_keys=True, indent=4)}")
     res = scim_request(api.session.post, f"{api.url}/Users/.search", data=query, token=api.token)
     logger.debug(f"User search result:\n{json.dumps(res, sort_keys=True, indent=4)}\n")
+    if res is None:
+        return None
     resources = res.get("Resources", [])
     if len(resources) == 0:
         return None
@@ -113,27 +119,47 @@ def search_group(api: ScimApi, display_name: str) -> Optional[str]:
     logger.debug(f"Sending group search query:\n{json.dumps(query, sort_keys=True, indent=4)}")
     res = scim_request(api.session.post, f"{api.url}/Groups/.search", data=query, token=api.token)
     logger.debug(f"Group search result:\n{json.dumps(res, sort_keys=True, indent=4)}\n")
+    if res is None:
+        return None
     resources = res.get("Resources", [])
     if len(resources) == 0:
         return None
     return resources[0]["id"]
 
 
-def create_user(api: ScimApi, external_id: str) -> Optional[str]:
+def create_user(api: ScimApi, external_id: str, scope: str, given_name: str, surname: str, mfa_stepup: bool) -> Optional[str]:
     logger.info(f"Creating user with externalId {external_id}")
-    query = {"schemas": ["urn:ietf:params:scim:schemas:core:2.0:User"], "externalId": external_id}
+    unscoped_external_id, eduid_scope = external_id.split("@")
+    query = {
+        "schemas": ["urn:ietf:params:scim:schemas:core:2.0:User", "https://scim.eduid.se/schema/nutid/user/v1"],
+        "externalId": external_id,
+        "name": {
+            "givenName": given_name,
+            "familyName": surname
+        },
+        "https://scim.eduid.se/schema/nutid/user/v1": {
+            "profiles": {"connectIdp": {"attributes": {"eduPersonPrincipalName": f"{unscoped_external_id}@{scope}"}}},
+            "linked_accounts": [
+                {"issuer": eduid_scope, "value": external_id, "parameters": {"mfa_stepup": mfa_stepup}}
+            ],
+        },
+    }
     logger.debug(f"Sending user create query:\n{pformat(json.dumps(query, sort_keys=True, indent=4))}")
     res = scim_request(api.session.post, f"{api.url}/Users/", data=query, token=api.token)
     logger.debug(f"User create result:\n{json.dumps(res, sort_keys=True, indent=4)}\n")
+    if res is None:
+        return None
     return res["id"]
 
 
-def create_group(api: ScimApi, display_name: str) -> Optional[dict[str, Any]]:
+def create_group(api: ScimApi, display_name: str) -> Optional[str]:
     logger.info(f"Creating group with displayName {display_name}")
     query = {"schemas": ["urn:ietf:params:scim:schemas:core:2.0:Group"], "displayName": display_name, "members": []}
     logger.debug(f"Sending group create query:\n{pformat(json.dumps(query, sort_keys=True, indent=4))}")
     res = scim_request(api.session.post, f"{api.url}/Groups/", data=query, token=api.token)
     logger.debug(f"Group create result:\n{json.dumps(res, sort_keys=True, indent=4)}\n")
+    if res is None:
+        return None
     return res["id"]
 
 
@@ -142,11 +168,17 @@ def get_group_resource(api: ScimApi, scim_id: str) -> Optional[dict[str, Any]]:
 
     return scim_request(api.session.get, f"{api.url}/Groups/{scim_id}", token=api.token)
 
+def get_user_resource(api: ScimApi, scim_id: str) -> Optional[dict[str, Any]]:
+    logger.debug(f"Fetching SCIM user resource {scim_id}")
 
-def add_user_to_group(api: ScimApi, group_scim_id: str, user_scim_id: str, user_external_id: str) -> bool:
+    return scim_request(api.session.get, f"{api.url}/Users/{scim_id}", token=api.token)
+
+def add_user_to_group(api: ScimApi, group_scim_id: Optional[str], user_scim_id: Optional[str], user_external_id: str) -> bool:
+    if group_scim_id is None or user_scim_id is None:
+        return False
     scim_group = get_group_resource(api, group_scim_id)
     if not scim_group:
-        logger.error(f"Group {scim_group['displayName']} not found")
+        logger.error(f"Group with scim ID {group_scim_id} not found")
         return False
 
     meta = scim_group.pop("meta")
@@ -155,7 +187,7 @@ def add_user_to_group(api: ScimApi, group_scim_id: str, user_scim_id: str, user_
         if member["value"] == user_scim_id:
             logger.info(f"User {user_external_id} already in group {scim_group['displayName']}")
             return False
-    members.append({"$ref": f"{api}/Users/{user_scim_id}", "value": user_scim_id, "display": user_external_id})
+    members.append({"$ref": f"{api.url}/Users/{user_scim_id}", "value": user_scim_id, "display": user_external_id})
     scim_group["members"] = members
 
     headers = {"content-type": "application/scim+json", "if-match": meta["version"]}
@@ -167,18 +199,37 @@ def add_user_to_group(api: ScimApi, group_scim_id: str, user_scim_id: str, user_
     logger.debug(f"Update result:\n{json.dumps(res, sort_keys=True, indent=4)}")
     return True
 
+def show_user(api: ScimApi, user_id: Optional[str]) -> None:
+    if user_id is None:
+        logger.info("No user found")
+    res = scim_request(api.session.get, f"{api.url}/Users/{user_id}", token=api.token)
+    logger.info(f"User result:\n{json.dumps(res, sort_keys=True, indent=4)}")
+
+def delete_user(api: ScimApi, user_id: Optional[str], user_version: str) -> None:
+    if user_id is None:
+        logger.info("No user found")
+    headers = {"content-type": "application/scim+json", "if-match": user_version}
+    res = scim_request(api.session.delete, f"{api.url}/Users/{user_id}", headers=headers, token=api.token)
+    logger.info(f"Delete result:\n{res}")
 
 def main(args: argparse.Namespace):
     s = requests.Session()
-    s.verify = args.insecure
+    s.verify = not args.insecure
+    logger.debug(f"Verifying TLS connections: {s.verify}")
     jwt = get_scimapi_jwt(
         s=s, url=args.auth_url, key=args.key, cert=args.cert, key_name=args.key_name, scope=args.scope
     )
     scim_api = ScimApi(session=s, url=args.scim_url, token=jwt)
     # lookup user id
     user_id = search_user(api=scim_api, external_id=args.external_id)
+    if args.show:
+        show_user(api=scim_api, user_id=user_id)
+        sys.exit(0)
+    if args.delete:
+        delete_user(api=scim_api, user_id=user_id, user_version=args.user_version)
+        sys.exit(0)
     if args.create_user and user_id is None:
-        user_id = create_user(api=scim_api, external_id=args.external_id)
+        user_id = create_user(api=scim_api, external_id=args.external_id, scope=args.scope, given_name=args.user_given_name, surname=args.user_surname, mfa_stepup=args.mfa_stepup)
     # lookup group id
     group_id = search_group(api=scim_api, display_name=args.group)
     if group_id is None:
@@ -217,8 +268,17 @@ if __name__ == "__main__":
         "--group", default="Organization Managers", help="display name of group to add user to", type=str
     )
     parser.add_argument("--create-user", default=False, action="store_true", help="create user in scim db if missing")
+    parser.add_argument("--user-given-name", type=str, default="Not set", required=False, help="Set users given name")
+    parser.add_argument("--user-surname", type=str, default="Not set", required=False, help="Set users surname")
+    parser.add_argument(
+        "--mfa-stepup", default=False, action="store_true", help="if user is created, enable mfa step up"
+    )
     parser.add_argument("--insecure", default=False, action="store_true", help="do not validate tls connections")
+    parser.add_argument("--show", default=False, action="store_true", help="show user with supplied external-id")
+    parser.add_argument("--delete", default=False, action="store_true", help="delete user with supplied external-id")
+    parser.add_argument("--user-version", type=str, required=False, help="use with --delete to make sure the correct user is removed")
     parser.add_argument("--debug", default=False, action="store_true", help="enable debug logging")
     args = parser.parse_args()
     _config_logger(args=args, progname="bootstrap_scim_admin")
     main(args=args)
+
