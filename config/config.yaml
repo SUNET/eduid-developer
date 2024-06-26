@@ -170,11 +170,68 @@ eduid:
             fido2_rp_id: eduid.docker
             u2f_app_id: https://dashboard.dev.eduid.se
             errors_url_template: 'https://html.eduid.docker/errors?code={ERRORURL_CODE}&ts={ERRORURL_TS}&rp={ERRORURL_RP}&tid={ERRORURL_TID}&ctx={ERRORURL_CTX}'
+            frontend_action_authn_parameters:
+              addSecurityKeyAuthn:
+                force_authn: true
+                high_security: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              changepwAuthn:
+                force_authn: true
+                high_security: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              changeSecuritySettingsAuthn:
+                force_authn: true
+                high_security: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              login:
+                same_user: false
+                finish_url: "https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}"
+              loginMfaAuthn:
+                force_authn: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}"
+              oldLogin:
+                same_user: false
+                finish_url: "https://html.eduid.docker/profile/"
+              removeSecurityKeyAuthn:
+                force_mfa: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              resetpwMfaAuthn:
+                force_authn: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}"
+              verifyIdentity:
+                force_authn: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              terminateAccountAuthn:
+                force_authn: true
+                high_security: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              verifyCredential:
+                force_authn: true
+                force_mfa: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              removeIdentity:
+                force_authn: true
+                high_security: true
+                allow_login_auth: true
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
             logging_config:
               loggers:
                 'eduid.webapp.common.session':
                   level: 'INFO'
                 'eduid.webapp.common.authn.middleware':
+                  level: 'INFO'
+                'pymongo.serverSelection':
+                  level: 'INFO'
+                'pymongo.command':
                   level: 'INFO'
         authn:
             server_name: dashboard.eduid.docker
@@ -355,6 +412,8 @@ eduid:
                 - https://html.dev.eduid.se
                 - https://idp.dev.eduid.se
             webauthn_attestation: 'direct'
+            logout_endpoint: 'https://dashboard.eduid.docker/services/authn/logout'
+            termination_redirect_url: 'https://html.eduid.docker'
         signup:
             server_name: signup.eduid.docker
             application_root: /services/signup
@@ -522,6 +581,12 @@ eduid:
         environment: dev
         log_level: DEBUG
         logger_name: queue
+        logging_config:
+          loggers:
+            'pymongo.serverSelection':
+              level: 'INFO'
+            'pymongo.command':
+              level: 'INFO'
       scim_event_worker:
         mongo_uri: mongodb://eduid_queue:eduid_queue_pw@mongodb.eduid_dev
         mongo_collection: message
@@ -540,7 +605,11 @@ eduid:
               filters: ['app_filter']
               maxBytes: 1024
               backupCount: 0
-
+         loggers:
+           'pymongo.serverSelection':
+             level: 'INFO'
+           'pymongo.command':
+             level: 'INFO'
       sink_worker:
         log_level: INFO
         logging_config:
