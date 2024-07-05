@@ -181,7 +181,7 @@ eduid:
                 high_security: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
-              changeSecuritySettingsAuthn:
+              changeSecurityPreferencesAuthn:
                 force_authn: true
                 high_security: true
                 allow_login_auth: true
