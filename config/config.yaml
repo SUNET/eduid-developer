@@ -420,7 +420,7 @@ eduid:
             mongo_uri: mongodb://eduid_signup:eduid_signup_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: signup
-            password_length: 10
+            password_length: 12
             vccs_url: 'http://vccs:8080/'
             tou_url: not_used_remove_me_after_config_model_update
             signup_authn_url: not_used
