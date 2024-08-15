@@ -388,13 +388,21 @@ eduid:
             log_level: DEBUG
             logger_name: svipe_id
             svipe_client:
-                client_id: 'client_id'
-                client_secret: 'client_secret'
-                issuer: https://api.svipe.com/oidc/v1/
-                acr_values: ["face_present"]
-                scopes: ["openid", "document"]
-            frontend_action_finish_url:
-              svipeidVerifyIdentity: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
+              client_id: 'client_id'
+              client_secret: 'client_secret'
+              issuer: https://api.svipe.com/oidc/v1/
+              acr_values: ["face_present"]
+              scopes: ["openid", "document"]
+        freja_eid:
+            server_name: dashboard.eduid.docker
+            application_root: /services/freja-eid
+            mongo_uri: mongodb://eduid_freja_eid:eduid_freja_eid_pw@mongodb.eduid_dev
+            log_level: DEBUG
+            logger_name: freja_eid
+            freja_eid_client:
+              client_id: 'oidc-eduid'
+              client_secret: 'secret'
+              issuer: https://oidc-ct.test.frejaeid.com/oidc
         security:
             server_name: dashboard.eduid.docker
             application_root: /services/security
