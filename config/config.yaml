@@ -197,6 +197,7 @@ eduid:
                 same_user: false
                 finish_url: "https://html.eduid.docker/profile/"
               removeSecurityKeyAuthn:
+                force_authn: true
                 force_mfa: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
@@ -347,11 +348,12 @@ eduid:
             logger_name: support
             log_level: DEBUG
             mongo_uri: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
-            token_service_url_logout: https://dashboard.eduid.docker/services/authn/logout
+            authn_service_url_logout: https://dashboard.eduid.docker/services/authn/logout
             support_personnel:
               - mojud-dosiv
               - sadug-katoh
               - bamus-mutod
+              - vonof-hitiz
         personal_data:
             server_name: dashboard.eduid.docker
             application_root: /services/personal-data
@@ -393,6 +395,16 @@ eduid:
               issuer: https://api.svipe.com/oidc/v1/
               acr_values: ["face_present"]
               scopes: ["openid", "document"]
+        freja_eid:
+            server_name: dashboard.eduid.docker
+            application_root: /services/freja-eid
+            mongo_uri: mongodb://eduid_freja_eid:eduid_freja_eid_pw@mongodb.eduid_dev
+            log_level: DEBUG
+            logger_name: freja_eid
+            freja_eid_client:
+              client_id: 'oidc-eduid'
+              client_secret: 'secret'
+              issuer: https://oidc-ct.test.frejaeid.com/oidc
         security:
             server_name: dashboard.eduid.docker
             application_root: /services/security
@@ -551,6 +563,10 @@ eduid:
                 'urllib3':
                   level: 'INFO'
                 'eduid.webapp.common.session':
+                  level: 'INFO'
+                'pymongo.serverSelection':
+                  level: 'INFO'
+                'pymongo.command':
                   level: 'INFO'
             allow_other_device_logins: true
         reset_password:
