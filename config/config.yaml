@@ -197,6 +197,7 @@ eduid:
                 same_user: false
                 finish_url: "https://html.eduid.docker/profile/"
               removeSecurityKeyAuthn:
+                force_authn: true
                 force_mfa: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
@@ -352,6 +353,7 @@ eduid:
               - mojud-dosiv
               - sadug-katoh
               - bamus-mutod
+              - vonof-hitiz
         personal_data:
             server_name: dashboard.eduid.docker
             application_root: /services/personal-data
@@ -561,6 +563,10 @@ eduid:
                 'urllib3':
                   level: 'INFO'
                 'eduid.webapp.common.session':
+                  level: 'INFO'
+                'pymongo.serverSelection':
+                  level: 'INFO'
+                'pymongo.command':
                   level: 'INFO'
             allow_other_device_logins: true
         reset_password:
