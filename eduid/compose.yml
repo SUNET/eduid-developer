@@ -1025,8 +1025,8 @@ services:
       dev:
         ipv4_address: 172.16.10.250
 
-  user_cleaner_skv_worker:
-    image: docker.sunet.se/eduid/worker:20240822T185031-staging
+  job_runner:
+    image: docker.sunet.se/eduid/fastapi:20240822T185031-staging
     networks:
       dev:
     volumes:
