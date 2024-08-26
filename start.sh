@@ -60,6 +60,6 @@ if [ "$vagrant" = true ]; then
     vagrant ssh -c "cd /opt/eduid-developer; make start"
 else
     ./bin/docker-compose -f eduid/compose.yml rm -s -f
-    ./bin/docker-compose -f eduid/compose.yml up $*
+    ./bin/docker-compose -f eduid/compose.yml up --remove-orphans $*
     ./bin/docker-compose -f eduid/compose.yml logs -tf
 fi
