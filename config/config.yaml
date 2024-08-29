@@ -690,9 +690,10 @@ eduid:
         job_runner:
             log_level: DEBUG
             mongo_uri: mongodb://eduid_job_runner:eduid_job_runner_pw@mongodb/eduid_job_runner
-            jobs:
+            jobs: # jobs is optional and can be left out
               # TODO: set up a proper schedule
               # jobs can be set on environment or host level with cron like timings
+              # https://apscheduler.readthedocs.io/en/stable/modules/triggers/cron.html#module-apscheduler.triggers.cron
               dev:
                 check_skv_users:
                   second: "*/15"
@@ -701,6 +702,7 @@ eduid:
                 gather_skv_users:
                   minute: "*/1"
                   # minute: "*/5"
+                  jitter: "5" # randomize start time by up to 5 seconds
             amapi:
                 url: http://amapi:8080
                 tls_verify: false
