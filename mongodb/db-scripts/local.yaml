@@ -380,3 +380,5 @@ mongo_databases:
     access:
       readWrite:
         - 'eduid_job_runner'
+      read:
+        - 'eduid_am'
