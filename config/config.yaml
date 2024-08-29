@@ -487,6 +487,7 @@ eduid:
               security_service_url: https://dashboard.eduid.docker/services/security/
               authn_service_url: https://dashboard.eduid.docker/services/authn/
               orcid_service_url: https://dashboard.eduid.docker/services/orcid/
+              freja_eid_service_url: https://dashboard.eduid.docker/services/freja-eid/
               group_mgmt_service_url: https://dashboard.eduid.docker/services/group-management/
               eidas_service_url: https://eidas.eduid.docker/
               reset_password_service_url: https://idp.eduid.docker/services/reset-password/
