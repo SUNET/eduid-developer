@@ -49,10 +49,13 @@ eduid:
                        filename: '/var/log/eduid/eduid-scimapi-notifications.log'
                        maxBytes: 1024
                        backupCount: 10
-        vccs:
-            add_creds_password_key_handle: 1
-            mongo_uri: 'mongodb://mongodb.eduid_dev'
-            yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
+        vccs_common: &vccs_common_config
+          add_creds_password_key_handle: 1
+          mongo_uri: 'mongodb://mongodb.eduid_dev'
+          yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
+        vccs_local:
+          <<: *vccs_common_config
+          environment: dev
         auth_server:
           environment: dev
           log_level: DEBUG
@@ -487,6 +490,7 @@ eduid:
               security_service_url: https://dashboard.eduid.docker/services/security/
               authn_service_url: https://dashboard.eduid.docker/services/authn/
               orcid_service_url: https://dashboard.eduid.docker/services/orcid/
+              freja_eid_service_url: https://dashboard.eduid.docker/services/freja-eid/
               group_mgmt_service_url: https://dashboard.eduid.docker/services/group-management/
               eidas_service_url: https://eidas.eduid.docker/
               reset_password_service_url: https://idp.eduid.docker/services/reset-password/

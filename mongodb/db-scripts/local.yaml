@@ -40,6 +40,7 @@ mongo_databases:
         - 'eduid_ladok'
         - 'eduid_svipe_id'
         - 'eduid_bankid'
+        - 'eduid_freja_eid'
         - 'munin'
         - 'eduid_job_runner'
 
@@ -291,6 +292,15 @@ mongo_databases:
       read:
         - 'eduid_support'
 
+  eduid_freja_eid:
+    collections:
+      - 'profiles'
+    access:
+      readWrite:
+        - 'eduid_freja_eid'
+      read:
+        - 'eduid_support'
+
   eduid_logs:
     collections:
       - 'proofing_log'
@@ -310,6 +320,7 @@ mongo_databases:
         - 'eduid_svipe_id'
         - 'eduid_bankid'
         - 'eduid_maccapi'
+        - 'eduid_freja_eid'
       read:
         - 'eduid_support'
 
