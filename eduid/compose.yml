@@ -1019,7 +1019,6 @@ services:
     expose:
       - 8080
     volumes:
-      - ../eduid-svipe-id/etc:/opt/eduid/etc
       - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - ../pip_install_webapp.sh:/pip_install_webapp.sh
       - appdata:/opt/eduid/run

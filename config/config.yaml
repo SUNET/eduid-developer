@@ -49,10 +49,13 @@ eduid:
                        filename: '/var/log/eduid/eduid-scimapi-notifications.log'
                        maxBytes: 1024
                        backupCount: 10
-        vccs:
-            add_creds_password_key_handle: 1
-            mongo_uri: 'mongodb://mongodb.eduid_dev'
-            yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
+        vccs_common: &vccs_common_config
+          add_creds_password_key_handle: 1
+          mongo_uri: 'mongodb://mongodb.eduid_dev'
+          yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
+        vccs_local:
+          <<: *vccs_common_config
+          environment: dev
         auth_server:
           environment: dev
           log_level: DEBUG
