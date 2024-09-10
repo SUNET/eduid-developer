@@ -517,7 +517,6 @@ eduid:
               login_next_url: https://idp.eduid.docker/services/idp/next
               error_info_url: https://idp.eduid.docker/services/idp/error_info
               eduid_site_name: eduID Developer
-              eduid_site_url: https://html.eduid.docker
               eduid_site_link: https://html.eduid.docker
               signup_service_url: https://signup.eduid.docker/services/signup
               signup_link: https://html.eduid.docker/register
