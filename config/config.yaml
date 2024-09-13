@@ -31,6 +31,7 @@ eduid:
             neo4j_uri: 'bolt://neo4j:docker@neo4jdb.eduid_dev:7687'
             neo4j_config:
                 encrypted: false
+                telemetry_disabled: false
             authorization_mandatory: true
             keystore_path: /opt/eduid/eduid-scimapi/etc/keystore.jwks
             signing_key_id: NOT_USED
@@ -41,6 +42,12 @@ eduid:
                         level: 'INFO'
                         handlers: [notifications]
                     'neo4j':
+                        level: 'INFO'
+                    'pymongo.serverSelection':
+                        level: 'INFO'
+                    'pymongo.command':
+                        level: 'INFO'
+                    'pymongo.connection':
                         level: 'INFO'
                 handlers:
                     notifications:

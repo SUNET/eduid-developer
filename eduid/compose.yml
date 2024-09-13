@@ -600,7 +600,7 @@ services:
       - rsyslog
 
   neo4jdb:
-    image: neo4j:4.1-enterprise
+    image: neo4j:4.4-enterprise
     expose:
       - 7474
       - 7687
@@ -612,6 +612,7 @@ services:
     environment:
       - "NEO4J_AUTH=neo4j/docker"
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
+      - "NEO4J_dbms_allow__upgrade=true"
 
   oidc_proofing:
     image: docker.sunet.se/eduid/webapp:20240905T131447-staging
