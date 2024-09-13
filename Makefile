@@ -35,7 +35,7 @@ vagrant_pull:
 	vagrant ssh -c "cd /opt/eduid-developer; make pull"
 
 show_logs:
-	docker run -it --init --rm --name showlogs --workdir /var/log/eduid/ -v eduidlogdata:/var/log/eduid busybox:stable sh
+	docker run -it --init --rm --name showlogs --workdir /var/log/eduid/ -v eduidlogdata:/var/log/eduid -v mongodblogdata:/var/log/mongodb -v htmlnginxlogdata:/var/log/nginx/eduid-html busybox:stable sh
 
 show_appdata:
 	docker run -it --init --rm --name appdata --workdir /appdata -v appdata:/appdata busybox:stable sh

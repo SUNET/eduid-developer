@@ -13,7 +13,9 @@ services:
     image: 'docker.sunet.se/eduid/worker:20240905T131447-staging'
     volumes:
       - eduidlogdata:/var/log/eduid
-    entrypoint: "sh -c 'find /var/log/eduid/ -type f -name '*.log' -exec truncate --size 0 {} \\;'"
+      - mongodblogdata:/var/log/mongodb
+      - htmlnginxlogdata:/var/log/nginx/eduid-html
+    entrypoint: "sh -c 'find /var/log/eduid/ /var/log/mongodb /var/log/nginx -type f -name '*.log' -exec truncate --size 0 {} \\;'"
 
 
   am:
@@ -293,6 +295,7 @@ services:
       dev:
     volumes:
       - ../eduid-html/etc/html.conf:/etc/nginx/sites-enabled/html.conf:ro
+      - htmlnginxlogdata:/var/log/nginx/
       # source volumes
       - ../sources/eduid-html:/src/eduid/www:ro
       - ../sources/eduid-html/static:/src/eduid/static:ro
@@ -571,6 +574,7 @@ services:
     hostname: "mongodb"
     volumes:
       - mongodbdata:/data
+      - mongodblogdata:/var/log/mongodb
       - ../mongodb/etc:/opt/eduid/etc:ro
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
     environment:
@@ -613,6 +617,7 @@ services:
       - "NEO4J_AUTH=neo4j/docker"
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
       - "NEO4J_dbms_allow__upgrade=true"
+      - "NEO4J_metrics_enabled=false"
 
   oidc_proofing:
     image: docker.sunet.se/eduid/webapp:20240905T131447-staging
@@ -1094,6 +1099,8 @@ volumes:
     name: eduidlogdata
   mongodbdata:
     name: mongodbdata
+  mongodblogdata:
+    name: mongodblogdata
   neo4jdbdata:
     name: neo4jdbdata
   redisdata:
@@ -1102,6 +1109,8 @@ volumes:
     name: rsyslogdata
   softhsmdata:
     name: softhsmdata
+  htmlnginxlogdata:
+    name: htmlnginxlogdata
 
 
 networks:
