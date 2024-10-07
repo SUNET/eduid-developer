@@ -204,9 +204,6 @@ eduid:
                 force_authn: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}"
-              oldLogin:
-                same_user: false
-                finish_url: "https://html.eduid.docker/profile/"
               removeSecurityKeyAuthn:
                 force_authn: true
                 force_mfa: true
