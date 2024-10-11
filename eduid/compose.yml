@@ -604,6 +604,21 @@ services:
       - redis
       - rsyslog
 
+  navet_service:
+    image: docker.sunet.se/eduid/eduid-navet-service:staging
+    pull_policy: if_not_present
+    networks:
+      dev:
+    volumes:
+      - ../eduid-navet-service/etc:/opt/eduid/eduid-navet-service/etc:ro
+      - ../eduid-navet-service/etc/start.sh:/start.sh:ro
+      - ../eduid-navet-service/run:/opt/eduid/eduid-navet-service/run
+      - eduidlogdata:/var/log/eduid
+    environment:
+      navet_keystore_file: /opt/eduid/eduid-navet-service/run/kommun-a.p12
+      navet_truststore_file: /opt/eduid/eduid-navet-service/run/truststore.jks
+      #command: "bash -c 'useradd eduid; cp /opt/eduid/eduid-navet-service/etc/kommun-a.p12 /opt/eduid/eduid-navet-service/etc/kommun-a.p12; cp /opt/eduid/eduid-navet-service/run/truststore.jks /opt/eduid/eduid-navet-service/run/truststore.jks; /start.sh'"
+
   neo4jdb:
     image: neo4j:4.4-enterprise
     expose:
