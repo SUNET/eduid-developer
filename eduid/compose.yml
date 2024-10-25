@@ -565,8 +565,7 @@ services:
       - vccs
 
   mongodb:
-    #image: docker.sunet.se/eduid/mongodb
-    image: local/mongodb:5.0
+    image: docker.sunet.se/eduid/mongodb
     expose:
       - 27017
     networks:
