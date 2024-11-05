@@ -52,6 +52,8 @@ eduid:
                         level: 'INFO'
                     'pymongo.connection':
                         level: 'INFO'
+                    'pymongo.topology':
+                        level: 'INFO'
                 handlers:
                     notifications:
                        class: 'logging.handlers.RotatingFileHandler'
