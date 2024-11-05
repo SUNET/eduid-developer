@@ -36,6 +36,9 @@ eduid:
             keystore_path: /opt/eduid/eduid-scimapi/etc/keystore.jwks
             signing_key_id: NOT_USED
             authorization_token_expire: 1440
+            data_owners:
+              "eduid.docker":
+                notify: []
             logging_config:
                 loggers:
                     'eduid_scimapi.notifications':
