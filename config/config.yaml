@@ -244,6 +244,8 @@ eduid:
                   level: 'INFO'
                 'pymongo.connection':
                   level: 'INFO'
+                'pymongo.topology':
+                  level: 'INFO'
         authn:
             server_name: dashboard.eduid.docker
             application_root: /services/authn
