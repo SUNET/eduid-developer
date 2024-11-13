@@ -44,7 +44,7 @@ cp_appdata:
 	(echo "You need 'show_appdata' running in another terminal"; docker cp appdata:/appdata/${file} .)
 
 mongodb_cli:
-	./bin/docker-compose -f eduid/compose.yml exec mongodb mongo
+	./bin/docker-compose -f eduid/compose.yml exec mongodb mongosh
 
 vagrant_show_logs:
 	(vagrant ssh -c "cd /opt/eduid-developer; make show_logs")
