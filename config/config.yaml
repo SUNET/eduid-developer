@@ -590,6 +590,8 @@ eduid:
                   level: 'INFO'
                 'pymongo.connection':
                   level: 'INFO'
+                'pymongo.connection':
+                  level: 'INFO'
             allow_other_device_logins: true
         reset_password:
             server_name: idp.eduid.docker
