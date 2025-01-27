@@ -384,13 +384,6 @@ eduid:
             log_level: DEBUG
             logger_name: email
             email_verify_redirect_url: /profile/emails
-        phone:
-            server_name: dashboard.eduid.docker
-            application_root: /services/phone
-            mongo_uri: mongodb://eduid_phone:eduid_phone_pw@mongodb.eduid_dev
-            log_level: DEBUG
-            logger_name: phone
-            phone_verification_timeout: 7200
         group_management:
             server_name: dashboard.eduid.docker
             application_root: /services/group-management

@@ -711,32 +711,6 @@ services:
       - redis
       - rsyslog
 
-  phone:
-    image: docker.sunet.se/eduid/webapp:20250127T134450-staging
-    pull_policy: if_not_present
-    networks:
-      dev:
-        ipv4_address: 172.16.10.226
-    expose:
-      - 8080
-    volumes:
-      - ../eduid-phone/etc:/opt/eduid/etc:ro
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - appdata:/opt/eduid/run
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-    environment:
-      <<: *common-env-variables
-      HOSTNAME: phone
-      eduid_name: phone
-      EDUID_CONFIG_NS: /eduid/webapp/phone
-    depends_on:
-      - mongodb
-      - msg
-      - redis
-      - rsyslog
-
   py11softhsm:
     image: docker.sunet.se/eduid/py11softhsm:latest
     networks:
