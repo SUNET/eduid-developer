@@ -614,8 +614,15 @@ services:
       - ../eduid-navet-service/run:/opt/eduid/eduid-navet-service/run
       - eduidlogdata:/var/log/eduid
     environment:
+      navet_keystore_pw: abc123
+      navet_truststore_pw: abc123
       navet_keystore_file: /opt/eduid/eduid-navet-service/run/kommun-a.p12
       navet_truststore_file: /opt/eduid/eduid-navet-service/run/truststore.jks
+      navet_cert_file: /opt/eduid/eduid-navet-service/etc/kommun-a.crt
+      navet_key_file: /opt/eduid/eduid-navet-service/etc/kommun-a.key
+      navet_ca_cert_file: /opt/eduid/eduid-navet-service/etc/DigiCertGlobalRootG2.crt.pem
+      navet_intermediate_cert_file1: NOT_USED
+      navet_intermediate_cert_file2: NOT_USED
       #command: "bash -c 'useradd eduid; cp /opt/eduid/eduid-navet-service/etc/kommun-a.p12 /opt/eduid/eduid-navet-service/etc/kommun-a.p12; cp /opt/eduid/eduid-navet-service/run/truststore.jks /opt/eduid/eduid-navet-service/run/truststore.jks; /start.sh'"
 
   neo4jdb:

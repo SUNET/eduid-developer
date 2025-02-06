@@ -42,15 +42,15 @@ if [ ! -s "${navet_truststore_file}" ]; then
     -file "${navet_ca_cert_file}" -keystore "${navet_truststore_file}" \
     -deststorepass "${navet_truststore_pw}" -noprompt)
 
-    ls -l "${navet_intermediate_cert_file1}"
-    (umask 077; keytool -import -trustcacerts -alias inter1 \
-    -file "${navet_intermediate_cert_file1}" -keystore "${navet_truststore_file}" \
-    -deststorepass "${navet_truststore_pw}" -noprompt)
+    #ls -l "${navet_intermediate_cert_file1}"
+    #(umask 077; keytool -import -trustcacerts -alias inter1 \
+    #-file "${navet_intermediate_cert_file1}" -keystore "${navet_truststore_file}" \
+    #-deststorepass "${navet_truststore_pw}" -noprompt)
 
-    ls -l "${navet_intermediate_cert_file2}"
-    (umask 077; keytool -import -trustcacerts -alias inter2 \
-    -file "${navet_intermediate_cert_file2}" -keystore "${navet_truststore_file}" \
-    -deststorepass "${navet_truststore_pw}" -noprompt)
+    #ls -l "${navet_intermediate_cert_file2}"
+    #(umask 077; keytool -import -trustcacerts -alias inter2 \
+    #-file "${navet_intermediate_cert_file2}" -keystore "${navet_truststore_file}" \
+    #-deststorepass "${navet_truststore_pw}" -noprompt)
 fi
 
 if [ ! -s "${navet_keystore_file}" ]; then

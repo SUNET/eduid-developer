@@ -697,6 +697,7 @@ eduid:
             mail_host: 'localhost'
             mail_port: 25
             mail_starttls: false
+            navet_api_uri: 'http://eduid_navet_service_1:8080'
         lookup_mobile:
             mongo_uri: 'mongodb://eduid_lookup_mobile:eduid_lookup_mobile_pw@mongodb/eduid_lookup_mobile'
             transaction_audit: true
