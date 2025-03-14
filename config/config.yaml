@@ -413,7 +413,8 @@ eduid:
             logger_name: freja_eid
             freja_eid_client:
               client_id: 'oidc-eduid'
-              client_secret: 'secret'
+              #client_secret: 'secret'
+              client_secret: 'B3gNvUK1cTct0ao0nRKMkMygkcptVAJg'
               issuer: https://oidc-ct.test.frejaeid.com/oidc
         security:
             server_name: dashboard.eduid.docker
@@ -697,16 +698,13 @@ eduid:
             log_level: DEBUG
             mongo_uri: mongodb://eduid_job_runner:eduid_job_runner_pw@mongodb/eduid_job_runner
             jobs:
-              # TODO: set up a proper schedule
               # jobs can be set on environment or host level with cron like timings
               dev:
                 check_skv_users:
-                  second: "*/15"
-                  # minute: "*/1"
-              job_runner_dev_1:
+                  minute: "*/15"
+              job_runner_tug:
                 gather_skv_users:
-                  minute: "*/1"
-                  # minute: "*/5"
+                  hour: "*/6"
             amapi:
                 url: http://amapi:8080
                 tls_verify: false

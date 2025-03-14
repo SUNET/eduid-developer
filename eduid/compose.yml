@@ -171,7 +171,6 @@ services:
     depends_on:
       - bankid
 
-
   dashboard_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
     networks:
@@ -972,7 +971,7 @@ services:
       dev:
         ipv4_address: 172.16.10.250
 
-  job_runner:
+  job_runner_fre:
     image: docker.sunet.se/eduid/fastapi:20250311T133931-staging
     networks:
       dev:
@@ -983,16 +982,40 @@ services:
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid
     environment:
       <<: *common-env-variables
-      HOSTNAME: job_runner
-      eduid_name: job_runner
+      HOSTNAME: job_runner_fre
+      eduid_name: job_runner_fre
       EDUID_CONFIG_NS: /eduid/worker/job_runner
       eduid_entrypoint: eduid.workers.job_runner.run:app
-      WORKER_NAME: job_runner_dev_1
+      WORKER_NAME: job_runner_fre
       worker_threads: 1
       workers: 1
     depends_on:
       - mongodb
       - am
+      - msg
+
+  job_runner_tug:
+    image: docker.sunet.se/eduid/fastapi:20250311T133931-staging
+    networks:
+      dev:
+    volumes:
+      - ../config/config.yaml:/opt/eduid/config.yaml
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid
+    environment:
+      <<: *common-env-variables
+      HOSTNAME: job_runner_tug
+      eduid_name: job_runner_tug
+      EDUID_CONFIG_NS: /eduid/worker/job_runner
+      eduid_entrypoint: eduid.workers.job_runner.run:app
+      WORKER_NAME: job_runner_tug
+      worker_threads: 1
+      workers: 1
+    depends_on:
+      - mongodb
+      - am
+      - msg
 
   vccs:
     image: docker.sunet.se/eduid/fastapi:20250311T133931-staging
