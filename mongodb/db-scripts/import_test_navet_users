@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+#
+# Import Navet tests users from a CSV file.
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/import_test_navet_navet_users
+#
+
+import sys
+import csv
+import struct
+from os import environ, urandom
+from argparse import Namespace
+
+from eduid.common.misc.timeutil import utc_now
+import proquint
+
+from eduid.userdb.admin import get_argparser
+from eduid.userdb import NinIdentity, User
+from eduid.userdb.exceptions import UserDoesNotExist
+from eduid.userdb.userdb import AmDB
+
+
+
+def get_mongodb_uri() -> str:
+    user = environ.get("MONGODB_ADMIN")
+    pw = environ.get("MONGODB_ADMIN_PASSWORD")
+    host = environ.get("MONGODB_HOST")
+    port = environ.get("MONGODB_PORT")
+    if not host:
+        host = "localhost"
+    if not port:
+        port = "27017"
+    if user and pw:
+        db_uri = f"mongodb://{user}:{pw}@{host}:{port}/"
+    else:
+        db_uri = f"mongodb://{host}:{port}/"
+
+    return f"{db_uri}?authsource=admin"
+
+def generate_eppn(db: AmDB) -> str:
+    """
+    Generate a unique eduPersonPrincipalName.
+
+    Unique is defined as 'at least it doesn't exist right now'.
+
+    :return: eppn
+    """
+    for _ in range(10):
+        eppn_int = struct.unpack("I", urandom(4))[0]
+        eppn: str = proquint.uint2quint(eppn_int)
+        try:
+            db.get_user_by_eppn(eppn)
+        except UserDoesNotExist:
+            return eppn
+    raise RuntimeError("Could not generate a unique eppn")
+
+def create_user(db: AmDB, nin: str, given_name: str, surname: str) -> User | None:
+    if not nin or not given_name or not surname:
+        return None
+    eppn = generate_eppn(db=db)
+    _nin = NinIdentity(number=nin, verified_by="navet_test_users_import", verified_ts=utc_now(), is_verified=True)
+    user = User(eduPersonPrincipalName=eppn, given_name=given_name, surname=surname)
+    user.identities.add(_nin)
+    return user
+
+def main(args: Namespace):
+    db = AmDB(db_uri=get_mongodb_uri())
+    count = 0
+    users_to_be_removed: list[User] = []
+
+    with open(args.csv, 'r') as f:
+        reader = csv.reader(f, delimiter=args.delimiter)
+        header = reader.__next__()
+        for row in reader:
+            try:
+                nin, deregister_code, given_name, surname = row
+            except ValueError:
+                print(f"{row} is not a list, did you use the right delimiter in the csv?")
+                sys.exit(1)
+            user = create_user(db=db, nin=nin, given_name=given_name, surname=surname)
+            if user:
+                if args.force is True:
+                    db.save(user)
+                count += 1
+            if deregister_code == "AV":
+               users_to_be_removed.append(user) 
+
+    eppns = [u.eppn for u in users_to_be_removed]
+    print(f"Added {count} user(s)")
+    print(f"Users with code AV: {eppns}")
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    parser = get_argparser(description='Load and save a number of users to update the db representation')
+    # optional csv file to operate on
+    parser.add_argument('--csv', metavar='STR', type=str, default="/opt/eduid/mongodb/db-scripts/navet_test_users.csv",
+                        help='Optional path to csv file with users')
+    parser.add_argument('--delimiter', metavar='STR', type=str, default=";",
+                        help='Optional csv delimiter')
+    args = parser.parse_args()
+    print('Dry run: {}'.format(not args.force))
+
+    if main(args):
+        sys.exit(0)
+    sys.exit(1)
