@@ -35,6 +35,7 @@ services:
       eduid_name: am
       EDUID_CONFIG_NS: /eduid/worker/am
       celery_args: --loglevel DEBUG
+      eduid_worker_min_nodes: 2
     depends_on:
       - mongodb
       - redis
@@ -187,8 +188,6 @@ services:
       - jsconfig
       - ladok
       - letter_proofing
-      - lookup_mobile_proofing
-      - oidc_proofing
       - orcid
       - personal_data
       - eidas
@@ -493,53 +492,6 @@ services:
       - redis
       - rsyslog
 
-  lookup-mobile:
-    image: docker.sunet.se/eduid/worker:20250311T133931-staging
-    pull_policy: if_not_present
-    networks:
-      dev:
-    volumes:
-      - ../eduid-lookup-mobile/etc:/opt/eduid/eduid-lookup-mobile/etc:ro
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - appdata:/opt/eduid/eduid-lookup-mobile/run
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-    environment:
-      <<: *common-env-variables
-      HOSTNAME: lookup_mobile
-      eduid_name: lookup_mobile
-      EDUID_CONFIG_NS: /eduid/worker/lookup_mobile
-      celery_args: --loglevel DEBUG
-    depends_on:
-      - mongodb
-      - redis
-      - rsyslog
-
-  lookup_mobile_proofing:
-    image: docker.sunet.se/eduid/webapp:20250311T133931-staging
-    pull_policy: if_not_present
-    networks:
-      dev:
-    expose:
-      - 8080
-    volumes:
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - appdata:/opt/eduid/run
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-    environment:
-      <<: *common-env-variables
-      HOSTNAME: lookup_mobile_proofing
-      eduid_name: lookup_mobile_proofing
-      EDUID_CONFIG_NS: /eduid/webapp/lookup_mobile_proofing
-    depends_on:
-      - am
-      - mongodb
-      - redis
-      - turq
-
   maccapi:
     image: docker.sunet.se/eduid/fastapi:20250311T133931-staging
     pull_policy: if_not_present
@@ -598,6 +550,7 @@ services:
       eduid_name: msg
       EDUID_CONFIG_NS: /eduid/worker/msg
       celery_args: --loglevel DEBUG
+      eduid_worker_min_nodes: 2
     depends_on:
       - mongodb
       - redis
@@ -640,31 +593,6 @@ services:
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
       - "NEO4J_dbms_allow__upgrade=true"
       - "NEO4J_metrics_enabled=false"
-
-  oidc_proofing:
-    image: docker.sunet.se/eduid/webapp:20250311T133931-staging
-    pull_policy: if_not_present
-    networks:
-      dev:
-    expose:
-      - 8080
-    volumes:
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - appdata:/opt/eduid/run
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-    environment:
-      <<: *common-env-variables
-      HOSTNAME: oidc_proofing
-      eduid_name: oidc_proofing
-      EDUID_CONFIG_NS: /eduid/webapp/oidc_proofing
-    depends_on:
-      - am
-      - mongodb
-      - redis
-      - rsyslog
-      - turq
 
   orcid:
     image: docker.sunet.se/eduid/webapp:20250311T133931-staging

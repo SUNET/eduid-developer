@@ -669,8 +669,6 @@ eduid:
         am:
             mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
             new_user_date: '2001-01-01'
-            action_plugins:
-                - "tou"
         amapi:
             mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
             keystore_path: /opt/eduid/eduid-amapi/etc/keystore.jwks
@@ -692,18 +690,8 @@ eduid:
             mongo_dbname: eduid_msg
             sms_sender: 'eduID'
             template_dir: '/opt/eduid/eduid-msg/etc/templates'
-            devel_mode: true
             audit: true
-            mail_host: 'localhost'
-            mail_port: 25
-            mail_starttls: false
             navet_api_uri: 'http://eduid_navet_service_1:8080'
-        lookup_mobile:
-            mongo_uri: 'mongodb://eduid_lookup_mobile:eduid_lookup_mobile_pw@mongodb/eduid_lookup_mobile'
-            transaction_audit: true
-            devel_mode: true
-            teleadress_client_user: 'TEST'
-            teleadress_client_password: 'TEST'
 
         job_runner:
             log_level: DEBUG
@@ -735,41 +723,14 @@ eduid:
                   d: "tghyR6Z5kmJZiEw3VBF8d5VGCSaXX_-4w8TN94auHP0"
               access:
                   - type: amapi
-
-        user_cleaner:
-            skatteverket:
-                debug: true
-                dry_run: false
-                change_quota: 1.0
-                mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
-                minimum_delay: 1
-                periodicity: 30
-                amapi:
-                    url: http://amapi:8080
-                    tls_verify: false
-                gnap_auth_data:
-                    auth_server_url: https://api_haproxy/auth
-                    auth_server_verify: false
-                    key_name: devkey
-                    client_jwk:
-                        kty: EC
-                        kid: devkey
-                        crv: P-256
-                        x: "LsX8Jl-DwZfJjgkwvTiRu5nqMNYcwh29hdkDtCsj26w"
-                        y: "hifFMvRh_moHOvBLx58JokS0LMjjo3Ww5SfjzFVSVSA"
-                        d: "tghyR6Z5kmJZiEw3VBF8d5VGCSaXX_-4w8TN94auHP0"
-                    access:
-                        - type: amapi
-                logging_config:
-                    'root':
-                        handlers: [file, console]
-                    handlers:
-                        file:
-                            class: 'logging.handlers.RotatingFileHandler'
-                            filename: '/var/log/eduid/user_cleaner_skatteverket_worker.log'
-                            formatter: 'default'
-                            filters: ['app_filter']
-                            maxBytes: 1024
-                            backupCount: 10
-
+            logging_config:
+                loggers:
+                    'pymongo.serverSelection':
+                        level: 'INFO'
+                    'pymongo.command':
+                        level: 'INFO'
+                    'pymongo.connection':
+                        level: 'INFO'
+                    'pymongo.topology':
+                        level: 'INFO'
 

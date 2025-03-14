@@ -20,7 +20,7 @@ vagrant_halt: vagrant_stop
 	vagrant halt
 
 up:
-	./bin/docker-compose -f eduid/compose.yml up -d
+	./bin/docker-compose -f eduid/compose.yml up -d --remove-orphans
 
 vagrant_up:
 	vagrant ssh -c "cd /opt/eduid-developer; make up"
