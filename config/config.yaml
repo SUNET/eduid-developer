@@ -699,12 +699,15 @@ eduid:
             mongo_uri: mongodb://eduid_job_runner:eduid_job_runner_pw@mongodb/eduid_job_runner
             jobs:
               # jobs can be set on environment or host level with cron like timings
-              dev:
-                check_skv_users:
-                  minute: "*/15"
-              job_runner_tug:
-                gather_skv_users:
-                  hour: "*/6"
+            # no jobs configured to not spam Skatteverkar unnecessary
+            #  job_runner_fre:
+            #    check_skv_users:
+            #      minute: "0,12,24,36,48"
+            #  job_runner_tug:
+            #    check_skv_users:
+            #      minute: "6,18,30,42,54"
+            #    gather_skv_users:
+            #      week: "*/2"
             amapi:
                 url: http://amapi:8080
                 tls_verify: false
