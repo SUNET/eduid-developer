@@ -68,7 +68,8 @@ def create_user(db: AmDB, nin: str, given_name: str, surname: str) -> User | Non
 def main(args: Namespace):
     db = AmDB(db_uri=get_mongodb_uri())
     count = 0
-    users_to_be_removed: list[User] = []
+    users: list[User] = []
+    users_with_deregister_code: list[tuple[User, str]] = []
 
     with open(args.csv, 'r') as f:
         reader = csv.reader(f, delimiter=args.delimiter)
@@ -84,12 +85,19 @@ def main(args: Namespace):
                 if args.force is True:
                     db.save(user)
                 count += 1
-            if deregister_code == "AV":
-               users_to_be_removed.append(user) 
+                users.append(user)
+            if deregister_code:
+               users_with_deregister_code.append((user, deregister_code))
 
-    eppns = [u.eppn for u in users_to_be_removed]
+    for user, code in users_with_deregister_code:
+        print(f"{user.eppn} - deregistered code: {code}")
+
+    print("---------------------------------------")
+
+    for user in users:
+        print(f"{user.eppn} - given name: {user.given_name}, surname: {user.surname}, nin: {user.identities.nin.number}")
+
     print(f"Added {count} user(s)")
-    print(f"Users with code AV: {eppns}")
     return bool(count > 0)
 
 
