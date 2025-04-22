@@ -1,6 +1,6 @@
-#!/opt/eduid/bin/python
+#!/usr/bin/env python3
 #
-# Convert users to the new User database format.
+# Unlock an account that has tripped the "too many incorrect logins this month" limit
 #
 # Run as:
 #
@@ -10,15 +10,16 @@
 __author__ = 'lundberg'
 
 import datetime
+from pprint import pformat
 
 import sys
 
-from eduid_userdb import User
-from eduid_userdb.admin import RawDb
-from eduid_userdb.credentials import Password
+from eduid.userdb import User
+from eduid.userdb.admin import RawDb, get_argparser
+from eduid.userdb.credentials import Password
 
 
-def main(eppn, dry_run, max_fail_count=50):
+def main(eppn: str, dry_run: bool, max_fail_count: int = 50) -> bool:
     db = RawDb(myname='unlock-user')
     authndb = RawDb(myname='unlock-user')
 
@@ -29,14 +30,14 @@ def main(eppn, dry_run, max_fail_count=50):
 
     for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
         user = User.from_dict(raw_user.doc)
-        print(f'Found user {user.eppn} with user_id {user.user_id}.')
+        print(f'Found user {user}')
 
         remove_credential = False
         for authn_doc in authndb.find('eduid_idp_authninfo', 'authn_info', {'_id': user.user_id}):
 
-            print(f'Found authninfo document for user:\n{authn_doc.doc}')
+            print(f'Found authninfo document for user:\n{pformat(authn_doc.doc)}')
             current_fail_count = authn_doc.doc['fail_count'].get(this_month)
-            print(f'Current fail count for {this_month} is {int(current_fail_count)}.')
+            print(f'Current fail count for {this_month} is {current_fail_count}.')
 
             # minimize changes
             if current_fail_count and current_fail_count >= max_fail_count:
@@ -48,22 +49,23 @@ def main(eppn, dry_run, max_fail_count=50):
 
         if remove_credential:
             # remove password credential to force a password reset (and possibly re-validating user identity)
-            for pw in user.credentials.filter(Password).to_list():
+            for pw in user.credentials.filter(Password):
                 print(f'Removing password credential: {pw}')
                 user.credentials.remove(pw.key)
 
-            raw_user.doc = user.to_dict(old_userdb_format=False)
+            raw_user.doc = user.to_dict()
             db.save_with_backup(raw_user, dry_run=dry_run)
 
     return bool(count > 0)
 
 
 if __name__ == '__main__':
-    dry_run = bool('--force' not in sys.argv)
-    print('Dry run: {}'.format(dry_run))
-    eppn = input('Enter eppn: ')
+    parser = get_argparser(
+        description='Unlock an account that has tripped the "too many incorrect logins this month" limit', eppn=True
+    )
+    args = parser.parse_args()
 
-    if main(eppn, dry_run):
+    if main(args.eppn, not args.force):
         sys.exit(0)
 
     sys.exit(1)
