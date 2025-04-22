@@ -321,6 +321,7 @@ mongo_databases:
         - 'eduid_bankid'
         - 'eduid_maccapi'
         - 'eduid_freja_eid'
+        - 'eduid_job_runner'
       read:
         - 'eduid_support'
 
