@@ -334,6 +334,7 @@ eduid:
             identity_verify_redirect_url: https://html.eduid.docker/profile/verify-identity/
             freja_idp: http://dev.test.swedenconnect.se/idp
             foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
+            allow_eidas_credential_verification: true
             frontend_action_finish_url:
               eidasVerifyIdentity: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
               eidasVerifyCredential: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
