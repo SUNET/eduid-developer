@@ -708,6 +708,14 @@ eduid:
             #      minute: "6,18,30,42,54"
             #    gather_skv_users:
             #      week: "*/2"
+            skv:
+              termination_cause_codes:
+                - AV
+                - OB
+                - TA
+                - AS
+                - AN
+                - FI
             amapi:
                 url: http://amapi:8080
                 tls_verify: false
