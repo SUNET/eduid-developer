@@ -135,7 +135,7 @@ eduid:
             # available. This defaults to http
             preferred_url_scheme: https
             # CORS
-            cors_origins: ['.*\.eduid.docker$', '^eduid.docker$']
+            cors_origins: ['.*\.eduid.docker$', '^https://eduid.docker$']
             # Redis config
             redis_config:
               host: redis.eduid_dev
@@ -143,8 +143,8 @@ eduid:
             token_service_url: https://dashboard.eduid.docker/services/authn  # try to deprecate for authn_service_url
             authn_service_url: https://dashboard.eduid.docker/services/authn
             # Configure backdoor for UI testing
-            magic_cookie: magiccookie
-            magic_cookie_name: magiccookie
+            magic_cookie: w9eB5yt2TwEoDsTNgzmtINq03R24DPQD8ubmRVfXPOST3gRi
+            magic_cookie_name: autotests
             # NEW
             celery:
                 accept_content: ["application/json"]
