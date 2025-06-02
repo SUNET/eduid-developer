@@ -894,6 +894,7 @@ services:
       HOSTNAME: support
       eduid_name: support
       EDUID_CONFIG_NS: /eduid/webapp/support
+      FLASK_ENV: debug
     depends_on:
       - mongodb
       - redis

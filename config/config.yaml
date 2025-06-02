@@ -237,6 +237,11 @@ eduid:
                 high_security: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              supportLogin:
+                force_authn: false
+                force_mfa: true
+                allow_login_auth: true
+                finish_url: "https://support.eduid.docker"
             logging_config:
               loggers:
                 'eduid.webapp.common.session':
@@ -366,12 +371,14 @@ eduid:
             logger_name: support
             log_level: DEBUG
             mongo_uri: mongodb://eduid_support:eduid_support_pw@mongodb.eduid_dev
+            authn_service_url_login: https://dashboard.eduid.docker/services/authn/support/login
             authn_service_url_logout: https://dashboard.eduid.docker/services/authn/logout
             support_personnel:
               - mojud-dosiv
               - sadug-katoh
               - bamus-mutod
               - vonof-hitiz
+            templates_auto_reload: true
         personal_data:
             server_name: dashboard.eduid.docker
             application_root: /services/personal-data
