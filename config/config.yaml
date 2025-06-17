@@ -298,6 +298,7 @@ eduid:
             ekopost_api_verify_ssl: yes
             ekopost_api_user: ekopost_user
             ekopost_api_pw: ekopost_pw
+            letter_wait_time_hours: 360  # match automated tests
         oidc_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/oidc-proofing
@@ -372,6 +373,9 @@ eduid:
               - sadug-katoh
               - bamus-mutod
               - vonof-hitiz
+              - ponan-husoz
+              - sifob-kubib
+            templates_auto_reload: true
         personal_data:
             server_name: dashboard.eduid.docker
             application_root: /services/personal-data
@@ -701,14 +705,15 @@ eduid:
             jobs:
               # jobs can be set on environment or host level with cron like timings
             # no jobs configured to not spam Skatteverkar unnecessary
-            #  job_runner_fre:
-            #    check_skv_users:
-            #      minute: "0,12,24,36,48"
-            #  job_runner_tug:
-            #    check_skv_users:
-            #      minute: "6,18,30,42,54"
-            #    gather_skv_users:
-            #      week: "*/2"
+              job_runner_fre:
+                check_skv_users:
+                  second: "*/20"
+              job_runner_tug:
+                check_skv_users:
+                  second: "*/10"
+                gather_skv_users:
+                  hour: "7"
+                  minute: "6"
             skv:
               termination_cause_codes:
                 - AV
