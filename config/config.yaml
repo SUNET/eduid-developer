@@ -303,6 +303,7 @@ eduid:
             ekopost_api_verify_ssl: yes
             ekopost_api_user: ekopost_user
             ekopost_api_pw: ekopost_pw
+            letter_wait_time_hours: 360  # match automated tests
         oidc_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/oidc-proofing
@@ -378,6 +379,8 @@ eduid:
               - sadug-katoh
               - bamus-mutod
               - vonof-hitiz
+              - ponan-husoz
+              - sifob-kubib
             templates_auto_reload: true
         personal_data:
             server_name: dashboard.eduid.docker
