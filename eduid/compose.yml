@@ -29,6 +29,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: am
@@ -55,6 +56,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       eduid_name: amapi
@@ -78,6 +80,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: authn
@@ -144,6 +147,7 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/
@@ -208,6 +212,7 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
       - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/
@@ -250,6 +255,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: email
@@ -274,6 +280,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: group_management
@@ -433,6 +440,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/
@@ -459,6 +467,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: ladok
@@ -481,6 +490,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: letter_proofing
@@ -506,6 +516,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       eduid_name: maccapi
@@ -544,6 +555,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: msg
@@ -608,6 +620,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: orcid
@@ -636,6 +649,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: personal_data
@@ -677,6 +691,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     healthcheck:
       disable: true
     environment:
@@ -700,6 +715,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     healthcheck:
       disable: true
     environment:
@@ -722,6 +738,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     healthcheck:
       disable: true
     environment:
@@ -761,6 +778,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: reset_password
@@ -796,6 +814,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       eduid_name: scimapi
@@ -822,6 +841,7 @@ services:
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
       - ../sources/python-fido-mds/src/fido_mds:/opt/eduid/sources/fido_mds:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: security
@@ -850,6 +870,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: signup
@@ -890,6 +911,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: support
@@ -929,6 +951,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: freja_eid
@@ -955,6 +978,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: job_runner_fre
@@ -978,6 +1002,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       HOSTNAME: job_runner_tug
@@ -1007,6 +1032,7 @@ services:
       - eduidlogdata:/var/log/eduid
       # source volumes
       - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
       eduid_name: vccs
