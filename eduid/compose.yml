@@ -915,32 +915,6 @@ services:
     depends_on:
       - support
 
-  svipe_id:
-    image: docker.sunet.se/eduid/webapp:20250813T082249-staging
-    pull_policy: if_not_present
-    networks:
-      dev:
-    expose:
-      - 8080
-    volumes:
-      - ../eduid-svipe-id/etc:/opt/eduid/etc
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - ../pip_install_webapp.sh:/pip_install_webapp.sh
-      - appdata:/opt/eduid/run
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-    environment:
-      <<: *common-env-variables
-      HOSTNAME: svipe_id
-      eduid_name: svipe_id
-      EDUID_CONFIG_NS: /eduid/webapp/svipe_id
-    depends_on:
-      - mongodb
-      - am
-      - redis
-      - rsyslog
-
   freja_eid:
     image: docker.sunet.se/eduid/webapp:20250813T082249-staging
     pull_policy: if_not_present
