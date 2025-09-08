@@ -1,0 +1,53 @@
+#!/opt/eduid/admintools/bin/python3
+#
+# Convert users to the new User database format.
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/set-ladok-proofing
+#
+
+import sys
+
+from eduid.userdb import User
+from eduid.userdb.admin import RawDb
+from eduid.userdb.ladok import Ladok, University, UniversityName
+
+
+def main(dry_run, eppn, ladok_id):
+    db = RawDb(myname='set-ladok-proofing')
+
+    count = 0
+
+    for raw_user in db.find('eduid_am', 'attributes', {'eduPersonPrincipalName': eppn}):
+        user = User.from_dict(raw_user.doc)
+        print(user)
+
+        if user.ladok:
+            print(f"Replacing current Ladok entry: {user.ladok}")
+
+        user.ladok = Ladok(external_id=ladok_id, verified=True, university=University(ladok_name="Test", name=UniversityName(sv="Test", en="Testing")))
+        print(user.ladok)
+
+        raw_user.doc = user.to_dict()
+        db.save_with_backup(raw_user, dry_run=dry_run)
+        count += 1
+
+    return bool(count > 0)
+
+
+if __name__ == '__main__':
+    args = sys.argv[1:]
+    if not args:
+        print('Syntax: set-ladok-proofing [--force] eppn ladok_id')
+        sys.exit(1)
+    dry_run = True
+    if args[0] == '--force':
+        dry_run = False
+        args = args[1:]
+    eppn, ladok_id = args
+    print('Dry run: {}'.format(dry_run))
+    if main(dry_run, eppn, ladok_id):
+        sys.exit(0)
+
+    sys.exit(1)
