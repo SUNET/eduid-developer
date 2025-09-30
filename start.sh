@@ -30,6 +30,7 @@ done
     printf "172.16.10.227\tsecurity.eduid.docker\n";
     printf "172.16.10.228\tauthn.eduid.docker\n";
     printf "172.16.10.229\teidas.eduid.docker\n"
+    printf "172.16.10.230\teduid.docker\n";
     printf "172.16.10.230\thtml.eduid.docker\n";
     printf "172.16.10.231\tmanaged-accounts.eduid.docker\n";
     printf "172.16.10.232\tbankid.eduid.docker\n";
