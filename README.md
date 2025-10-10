@@ -176,15 +176,15 @@ Makefile recipes
 Recipes that starts with "vagrant\_" should be run from the host OS when using vagrant.
 
     $ make vagrant_run          # Start vagrant vm
-    $ make start                # Starts all containers using docker-compose
+    $ make start                # Starts all containers using docker compose
     $ make vagrant_start        # See above
     $ make vagrant_ssh          # Starts a shell in the vagrant vm
-    $ make stop                 # Stops all containers using docker-compose
+    $ make stop                 # Stops all containers using docker compose
     $ make vagrant_stop         # See above
     $ make vagrant_halt         # Stops all containers and shuts the vagrant vm down
     $ make up                   # Tries to start all non-running containers
     $ make vagrant_up           # See above
-    $ make pull                 # Pull all images using docker-compose
+    $ make pull                 # Pull all images using docker compose
     $ vagrant_pull              # See above
     $ make show_logs            # Starts a shell in a container with the log data volume mounted
                                 # Log files can be found in /var/log/eduid

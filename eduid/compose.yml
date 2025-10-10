@@ -1,10 +1,12 @@
 ---
-version: '3.6'
-
 x-common-env-variables: &common-env-variables
   PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/
   EDUID_CONFIG_YAML: /opt/eduid/config.yaml
   extra_args: --reload
+
+x-common-depends-on: &common-depends-on
+  log_cleanup:
+    condition: service_completed_successfully
 
 services:
 
@@ -38,9 +40,13 @@ services:
       celery_args: --loglevel DEBUG
       eduid_worker_min_nodes: 2
     depends_on:
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   amapi:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
@@ -64,7 +70,9 @@ services:
       EDUID_CONFIG_NS: /eduid/worker/amapi
       eduid_entrypoint: eduid.workers.amapi.run:api
     depends_on:
-      - mongodb
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
 
   authn:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -87,9 +95,13 @@ services:
       eduid_name: authn
       EDUID_CONFIG_NS: /eduid/webapp/authn
     depends_on:
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   auth_server:
     image: docker.sunet.se/sunet/sunet-auth-server:latest
@@ -113,7 +125,9 @@ services:
       config_ns: /eduid/api/auth_server
       app_entrypoint: auth_server.run:app
     depends_on:
-      - mongodb
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
 
   api_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -129,8 +143,11 @@ services:
       - scimapi
       - auth_server
     depends_on:
-      - scimapi
-      - auth_server
+      <<: *common-depends-on
+      scimapi:
+        condition: service_started
+      auth_server:
+        condition: service_started
 
   bankid:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -155,10 +172,15 @@ services:
       eduid_name: bankid
       EDUID_CONFIG_NS: /eduid/webapp/bankid
     depends_on:
-      - am
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   bankid_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -173,7 +195,9 @@ services:
       - ../bankid-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/bankid.pem:/etc/ssl/bankid.pem:ro
     depends_on:
-      - bankid
+      <<: *common-depends-on
+      bankid:
+        condition: service_started
 
   dashboard_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -186,16 +210,27 @@ services:
       - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/dashboard.pem:/etc/ssl/dashboard.pem
     depends_on:
-      - authn
-      - html
-      - jsconfig
-      - ladok
-      - letter_proofing
-      - orcid
-      - personal_data
-      - eidas
-      - bankid
-      - freja_eid
+      <<: *common-depends-on
+      authn:
+        condition: service_healthy
+      html:
+        condition: service_healthy
+      jsconfig:
+        condition: service_healthy
+      ladok:
+        condition: service_healthy
+      letter_proofing:
+        condition: service_healthy
+      orcid:
+        condition: service_healthy
+      personal_data:
+        condition: service_healthy
+      eidas:
+        condition: service_healthy
+      bankid:
+        condition: service_healthy
+      freja_eid:
+        condition: service_healthy
 
   eidas:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -220,10 +255,15 @@ services:
       eduid_name: eidas
       EDUID_CONFIG_NS: /eduid/webapp/eidas
     depends_on:
-      - am
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   eidas_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -238,7 +278,9 @@ services:
       - ../eidas-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/eidas.pem:/etc/ssl/eidas.pem:ro
     depends_on:
-      - eidas
+      <<: *common-depends-on
+      eidas:
+        condition: service_healthy
 
   email:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -262,34 +304,13 @@ services:
       eduid_name: email
       EDUID_CONFIG_NS: /eduid/webapp/email
     depends_on:
-      - redis
-      - mongodb
-
-  group_management:
-    image: docker.sunet.se/eduid/webapp:20250929T082727-staging
-    pull_policy: if_not_present
-    restart: on-failure
-    networks:
-      dev:
-    expose:
-      - 8080
-    volumes:
-      - ../eduid-group-management/etc:/opt/eduid/etc
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - appdata:/opt/eduid/run
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
-    environment:
-      <<: *common-env-variables
-      HOSTNAME: group_management
-      eduid_name: group_management
-      EDUID_CONFIG_NS: /eduid/webapp/group_management
-    depends_on:
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   html:
     image: docker.sunet.se/eduid/html:20250929T082727-staging
@@ -308,6 +329,8 @@ services:
       - ../sources/eduid-managed-accounts/dist:/src/eduid-managed-accounts:ro
     environment:
       HOSTNAME: html
+    depends_on:
+      <<: *common-depends-on
 
   html_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -322,7 +345,9 @@ services:
       - ../html-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/html.pem:/etc/ssl/html.pem:ro
     depends_on:
-      - html
+      <<: *common-depends-on
+      html:
+        condition: service_healthy
 
   managed_accounts_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -337,7 +362,9 @@ services:
       - ../managed-accounts-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/managed-accounts.pem:/etc/ssl/managed-accounts.pem:ro
     depends_on:
-      - html
+      <<: *common-depends-on
+      html:
+        condition: service_healthy
 
   idp:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -365,10 +392,15 @@ services:
       pysaml2_settings: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
       limit_request_line: 8190
     depends_on:
-      - mongodb
-      - redis
-      - rsyslog
-      - vccs
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
+      vccs:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   idp_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -381,9 +413,13 @@ services:
       - ../idp-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/idp.pem:/etc/ssl/idp.pem:ro
     depends_on:
-      - html
-      - idp
-      - reset_password
+      <<: *common-depends-on
+      html:
+        condition: service_healthy
+      idp:
+        condition: service_healthy
+      reset_password:
+        condition: service_healthy
 
   idpproxy:
     image: docker.sunet.se/eduid/satosa_scim:20250929T082727-staging
@@ -409,8 +445,11 @@ services:
       METADATA_DIR: opt/eduid/idpproxy/satosa/metadata
       limit_request_line: 8190
     depends_on:
-      - mongodb
-      - neo4jdb
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
+      neo4jdb:
+        condition: service_started
 
   idpproxy_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -423,7 +462,9 @@ services:
       - ../idpproxy-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/idpproxy.pem:/etc/ssl/idpproxy.pem:ro
     depends_on:
-      - idpproxy
+      <<: *common-depends-on
+      idpproxy:
+        condition: service_started
 
   jsconfig:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -450,9 +491,13 @@ services:
       # Can't set EDUID_CONFIG_NS for jsconfig as the value will be used for jsapps also
       # - "EDUID_CONFIG_NS=/eduid/webapp/jsconfig"
     depends_on:
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   ladok:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -474,8 +519,13 @@ services:
       eduid_name: ladok
       EDUID_CONFIG_NS: /eduid/webapp/ladok
     depends_on:
-      - am
-      - mongodb
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   letter_proofing:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -497,10 +547,15 @@ services:
       eduid_name: letter_proofing
       EDUID_CONFIG_NS: /eduid/webapp/letter_proofing
     depends_on:
-      - am
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   maccapi:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
@@ -524,8 +579,15 @@ services:
       EDUID_CONFIG_NS: /eduid/api/maccapi
       eduid_entrypoint: eduid.maccapi.run:api
     depends_on:
-      - mongodb
-      - vccs
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      vccs:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   mongodb:
     image: docker.sunet.se/eduid/mongodb
@@ -540,8 +602,15 @@ services:
       - mongodblogdata:/var/log/mongodb
       - ../mongodb/etc:/opt/eduid/etc:ro
       - ../mongodb/db-scripts:/opt/eduid/db-scripts:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "localhost/test", "--eval", "quit(db.runCommand({ ismaster: 1 }).ismaster ? 0 : 1)"]
+      interval: 40s
+      timeout: 30s
+      retries: 3
     environment:
       REPLSET: "yes"
+    depends_on:
+      <<: *common-depends-on
 
   msg:
     image: docker.sunet.se/eduid/worker:20250929T082727-staging
@@ -564,9 +633,13 @@ services:
       celery_args: --loglevel DEBUG
       eduid_worker_min_nodes: 2
     depends_on:
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   navet_service:
     image: docker.sunet.se/eduid/eduid-navet-service:staging
@@ -589,6 +662,8 @@ services:
       navet_intermediate_cert_file1: NOT_USED
       navet_intermediate_cert_file2: NOT_USED
       #command: "bash -c 'useradd eduid; cp /opt/eduid/eduid-navet-service/etc/kommun-a.p12 /opt/eduid/eduid-navet-service/etc/kommun-a.p12; cp /opt/eduid/eduid-navet-service/run/truststore.jks /opt/eduid/eduid-navet-service/run/truststore.jks; /start.sh'"
+    depends_on:
+      <<: *common-depends-on
 
   neo4jdb:
     image: neo4j:4.4-enterprise
@@ -605,6 +680,8 @@ services:
       - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
       - "NEO4J_dbms_allow__upgrade=true"
       - "NEO4J_metrics_enabled=false"
+    depends_on:
+      <<: *common-depends-on
 
   orcid:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -628,11 +705,17 @@ services:
       eduid_name: orcid
       EDUID_CONFIG_NS: /eduid/webapp/orcid
     depends_on:
-      - am
-      - mongodb
-      - redis
-      - rsyslog
-      - turq
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
+      turq:
+        condition: service_started
 
   personal_data:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -656,9 +739,17 @@ services:
       eduid_name: personal_data
       EDUID_CONFIG_NS: /eduid/webapp/personal_data
     depends_on:
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      msg:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   py11softhsm:
     image: docker.sunet.se/eduid/py11softhsm:latest
@@ -680,6 +771,8 @@ services:
     environment:
       PYTHONPATH: /opt/eduid/src/pyeleven/src
       ENABLE_PKCS11_SPY: anything
+    depends_on:
+      <<: *common-depends-on
 
   queue_mail_worker:
     image: docker.sunet.se/eduid/worker:20250929T082727-staging
@@ -703,7 +796,9 @@ services:
       NEW_QUEUE: "yes"
       eduid_entrypoint: eduid.queue.workers.mail
     depends_on:
-      - mongodb
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
 
   queue_scim_event:
     image: docker.sunet.se/eduid/worker:20250929T082727-staging
@@ -727,7 +822,9 @@ services:
       NEW_QUEUE: "yes"
       eduid_entrypoint: eduid.queue.workers.scim_event
     depends_on:
-      - mongodb
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
 
   queue_sink_worker:
     image: docker.sunet.se/eduid/worker:20250929T082727-staging
@@ -750,7 +847,9 @@ services:
       NEW_QUEUE: "yes"
       eduid_entrypoint: eduid.queue.workers.sink
     depends_on:
-      - mongodb
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
 
   redis:
     image: docker.sunet.se/eduid/redis
@@ -762,6 +861,8 @@ services:
     volumes:
       - ../redis/etc:/etc/redis
       - redisdata:/data
+    depends_on:
+      <<: *common-depends-on
 
   reset_password:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -785,11 +886,19 @@ services:
       eduid_name: reset_password
       EDUID_CONFIG_NS: /eduid/webapp/reset_password
     depends_on:
-      - mongodb
-      - msg
-      - redis
-      - rsyslog
-      - vccs
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      msg:
+        condition: service_healthy
+      vccs:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   rsyslog:
     image: docker.sunet.se/eduid/rsyslog
@@ -799,6 +908,8 @@ services:
       dev:
     volumes:
       - rsyslogdata:/var/log/eduid
+    depends_on:
+      <<: *common-depends-on
 
   scimapi:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
@@ -822,8 +933,11 @@ services:
       EDUID_CONFIG_NS: /eduid/api/scimapi
       eduid_entrypoint: eduid.scimapi.run:api
     depends_on:
-      - mongodb
-      - neo4jdb
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
+      neo4jdb:
+        condition: service_started
 
   security:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -848,11 +962,19 @@ services:
       eduid_name: security
       EDUID_CONFIG_NS: /eduid/webapp/security
     depends_on:
-      - mongodb
-      - msg
-      - redis
-      - rsyslog
-      - vccs
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      msg:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      vccs:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   signup:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -877,11 +999,19 @@ services:
       eduid_name: signup
       EDUID_CONFIG_NS: /eduid/webapp/signup
     depends_on:
-      - mongodb
-      - msg
-      - redis
-      - rsyslog
-      - vccs
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      msg:
+        condition: service_healthy
+      vccs:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   signup_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -894,9 +1024,13 @@ services:
       - ../signup-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/signup.pem:/etc/ssl/signup.pem:ro
     depends_on:
-      - html
-      - jsconfig
-      - signup
+      <<: *common-depends-on
+      html:
+        condition: service_healthy
+      jsconfig:
+        condition: service_healthy
+      signup:
+        condition: service_healthy
 
   support:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -919,9 +1053,13 @@ services:
       EDUID_CONFIG_NS: /eduid/webapp/support
       FLASK_ENV: debug
     depends_on:
-      - mongodb
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   support_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
@@ -936,7 +1074,9 @@ services:
     links:
       - support
     depends_on:
-      - support
+      <<: *common-depends-on
+      support:
+        condition: service_healthy
 
   freja_eid:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
@@ -959,16 +1099,23 @@ services:
       eduid_name: freja_eid
       EDUID_CONFIG_NS: /eduid/webapp/freja_eid
     depends_on:
-      - mongodb
-      - am
-      - redis
-      - rsyslog
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
 
   turq:
     image: docker.sunet.se/eduid/turq
     networks:
       dev:
         ipv4_address: 172.16.10.250
+    depends_on:
+      <<: *common-depends-on
 
   job_runner_fre:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
@@ -990,9 +1137,13 @@ services:
       worker_threads: 1
       workers: 1
     depends_on:
-      - mongodb
-      - am
-      - msg
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      msg:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
 
   job_runner_tug:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
@@ -1014,14 +1165,18 @@ services:
       worker_threads: 1
       workers: 1
     depends_on:
-      - mongodb
-      - am
-      - msg
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      msg:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
 
   vccs:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
     pull_policy: if_not_present
-    restart: always
+    restart: on-failure
     networks:
       dev:
         ipv4_address: 172.16.10.238
@@ -1039,6 +1194,10 @@ services:
       eduid_name: vccs
       EDUID_CONFIG_NS: /eduid/api/vccs_local
       eduid_entrypoint: eduid.vccs.server.run:app
+    depends_on:
+      <<: *common-depends-on
+      mongodb:
+        condition: service_healthy
 
 
 volumes:

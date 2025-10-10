@@ -1,4 +1,5 @@
 #!/bin/sh
+DOCKER=$(which docker)
 
 if [ ! -f eduid/compose.yml ]; then
     echo "Run $0 from the eduid-developer top level directory"
@@ -60,7 +61,7 @@ done
 if [ "$vagrant" = true ]; then
     vagrant ssh -c "cd /opt/eduid-developer; make start"
 else
-    ./bin/docker-compose -f eduid/compose.yml rm -s -f
-    ./bin/docker-compose -f eduid/compose.yml up --remove-orphans $*
-    ./bin/docker-compose -f eduid/compose.yml logs -tf
+    $DOCKER compose -f eduid/compose.yml rm -s -f
+    $DOCKER compose -f eduid/compose.yml up --remove-orphans $*
+    $DOCKER compose -f eduid/compose.yml logs -tf
 fi

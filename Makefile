@@ -1,3 +1,5 @@
+DOCKER=$(shell which docker)
+
 vagrant_run:
 	vagrant up
 
@@ -20,7 +22,7 @@ vagrant_halt: vagrant_stop
 	vagrant halt
 
 up:
-	./bin/docker-compose -f eduid/compose.yml up -d --remove-orphans
+	$(DOCKER) compose -f eduid/compose.yml up -d --remove-orphans
 
 vagrant_up:
 	vagrant ssh -c "cd /opt/eduid-developer; make up"
@@ -29,7 +31,7 @@ vagrant_docker_ps:
 	vagrant ssh -c "docker ps"
 
 pull:
-	./bin/docker-compose -f eduid/compose.yml pull
+	$(DOCKER) compose -f eduid/compose.yml pull
 
 vagrant_pull:
 	vagrant ssh -c "cd /opt/eduid-developer; make pull"
@@ -44,7 +46,7 @@ cp_appdata:
 	(echo "You need 'show_appdata' running in another terminal"; docker cp appdata:/appdata/${file} .)
 
 mongodb_cli:
-	./bin/docker-compose -f eduid/compose.yml exec mongodb mongosh
+	$(DOCKER) compose -f eduid/compose.yml exec mongodb mongosh
 
 vagrant_show_logs:
 	(vagrant ssh -c "cd /opt/eduid-developer; make show_logs")
