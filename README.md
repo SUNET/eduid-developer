@@ -1,155 +1,275 @@
-Setting up a development environment on your own machine
-========================================================
+# eduID Developer Environment Setup
 
+This repository provides a complete local development environment for eduID using Docker containers.
 
-Building
---------
+## Table of Contents
 
-All containers should be built by ci.sunet.se and will be pulled when starting the environment.
+- [Prerequisites](#prerequisites)
+- [First-Time Setup](#first-time-setup)
+- [Running the Environment](#running-the-environment)
+- [Development Workflow](#development-workflow)
+- [Services and URLs](#services-and-urls)
+- [Makefile Commands](#makefile-commands)
+- [Troubleshooting](#troubleshooting)
+- [Alternative: Vagrant Setup](#alternative-vagrant-setup)
 
-If you need to build docker containers use the Dockerfiles in the repository
-eduid-dockerfiles.
+## Prerequisites
 
-    $ git clone git@github.com:SUNET/eduid-dockerfiles.git
-    $ cd eduid-dockerfiles
-    $ ./build eduid-email
+Before starting, ensure you have the following installed:
 
+- **Docker** (version 20.10 or later)
+- **Docker Compose plugin** (v2.x - the `docker compose` command, not the legacy `docker-compose`)
+- **Make**
+- **Git**
+- A text editor for configuration files
 
-Running
--------
+To verify your Docker installation:
 
-Start all the containers with the Makefile in this repository.
+    docker --version
+    docker compose version
 
-The first time it will ask you for sudo rights to be able to write in your /etc/hosts. 
+**Note:** This guide assumes you're using Linux. For other operating systems, see the [Vagrant Setup](#alternative-vagrant-setup) section.
 
-##### Linux Docker environment:
+## First-Time Setup
 
-    $ make start
+### 1. Clone the Repository
 
-##### Other OS Vagrant environment:
+    git clone git@github.com:SUNET/eduid-developer.git
+    cd eduid-developer
 
-Install Vagrant and Virtualbox. Complete the Vagrant Getting started guide until you see that "vagrant up" works.
+### 2. Set Up TLS Certificates
 
-https://www.virtualbox.org/
+Before starting the environment for the first time, generate the TLS certificates:
 
-https://www.vagrantup.com/intro/getting-started/up
+    cd pki
+    ./create_pki.sh
+    cd ..
 
+This creates a local Certificate Authority (CA) and certificates for all services. You'll need to import the root CA certificate (`pki/rootCA.crt`) into your browser's certificate store (in the Authorities section).
 
-Create a file name __vagrant.yml__ in the repository root containing the following yaml:
+**Security Note:** Keep `pki/rootCA.key` private as it can be used for man-in-the-middle attacks against your development machine.
 
-    local_paths:
-      eduid_front: '/path/to/eduid-front'
-      eduid_html: '/path/to/eduid-html'
-    vm:
-      cpus: 2
-      memory: 4096
-      disksize: '20GB'
+### 3. Configure Source Directories (Optional)
 
-Then run:
+For live code reloading, set up symlinks to your local eduID source repositories in the `sources/` directory.
 
-    $ make vagrant_run  (only needed once per session)
-    $ make vagrant_start
+**Important:** Don't use `~` in `EDUID_SRC_PATH` as it may be expanded as a different user.
 
-To connect to the vagrant vm:
+Example setup:
 
-    $ make vagrant_ssh
+    export EDUID_SRC_PATH=/home/yourusername/projects
+    cd sources
+    ln -s $EDUID_SRC_PATH/eduid-backend ./eduid-backend
+    ln -s $EDUID_SRC_PATH/eduid-front ./eduid-front
+    ln -s $EDUID_SRC_PATH/eduid-html ./eduid-html
 
+The compose configuration will automatically mount available source directories into the containers. Both the main package and its eduID dependencies will be mounted for each container.
 
-Stopping
---------
+## Running the Environment
 
-##### Linux Docker environment
+### Starting the Environment
 
-    $ make stop
+Start all containers (this will modify `/etc/hosts` and may ask for sudo password):
 
+    make start
 
-##### Other OS Vagrant environment
+The first time you run this:
 
-    $ make vagrant_stop
-    $ make vagrant_halt
+- It will add entries to `/etc/hosts` for all eduID services (requires sudo)
+- It will pull all required Docker images from the registry
+- It may take several minutes to start all services
 
+### Stopping the Environment
 
-TLS certificate
----------------
+    make stop
 
-  #####  Linux Docker environment
+### Checking Running Containers
 
-  Run `create_pki.sh` in the `pki` directory before starting your environment.
+    docker ps
 
-  ##### Other OS Vagrant environment
+### Restarting Services
 
-  The script for creating the certificates will be run on `make vagrant_run`.
+To restart services without stopping everything:
 
-  ##### All OS
+    make up
 
-  The root certificate authority (CA) certificate is located at `pki/rootCA.crt`. This should be added to your browsers certificate in the Authorities section or equivalent.
+## Development Workflow
 
-  This certificate is generated for each environment so it should be ok to add it to your browser, but keep in mind that you should keep the rootCA.key to yourself as it can be used to do targeted man-in-the-middle attacks against your development machine.
+### Viewing Logs
 
-Logging
--------
+All logs from webapps are kept in a shared data volume called `eduidlogdata`.
 
-All logs from webapps are kept in a shared data volume called eduidlogdata.
+For a quick tail of logs for a specific service:
 
-For a quick tail -F run, ex:
+    ./bin/tailf signup
+    ./bin/tailf dashboard
 
-    $ ./bin/tailf signup
+To get a shell with all mounted log files:
 
-To get a shell with mounted log files:
+    make show_logs
 
-##### Linux Docker environment
+Log files are available in `/var/log/eduid` within this container.
 
-    $ make show_logs
+### Live Code Reloads
 
-##### Other OS Vagrant environment
+When source directories are properly symlinked in the `sources/` directory, changes to your local code will automatically reload in the running containers. The containers are configured to:
 
-    $ make vagrant_show_logs
+- Mount your local source tree in `/opt/eduid/src`
+- Add the source paths to `PYTHONPATH`
+- Run with the `--reload` flag for automatic reloading
 
-Authentication
---------------
+This applies to both the main package and its eduID dependencies.
 
-Turq (a mock HTTP server) is used to fake 'OK' responses to all calls to the
-VCCS authentication backend.
+### Accessing the Database
 
-Services
---------
+#### MongoDB
 
-  https://signup.eduid.docker/
-  https://dashboard.eduid.docker/
-  https://html.eduid.docker/
-  https://support.eduid.docker/
+To access the MongoDB shell:
 
-  http://turq.eduid.docker:13085/+turq/
+    make mongodb_cli
 
-  mongodb://mongodb.eduid.docker
-  redis://redis.eduid.docker
-  neo4j://neo4jdb.eduid.docker
+Direct connection:
 
-Live code reloads
------------------
+    mongodb://mongodb.eduid.docker
 
-For the different eduid components I've tried to set up the containers to
-'mount' a developers local source tree in /opt/eduid/src which will then
-also be inserted into the PYTHONPATH. The current mechanism for finding the
-source on the developers machine is through an environment variable
-`EDUID_SRC_PATH` (and defaults to ~/work/NORDUnet). Just be careful to not
-use '~' in the `EDUID_SRC_PATH`, since it may be expanded as a different user.
+#### Redis
 
-Both the main package and its eduid dependencies will be mounted for each 
-container (as long as they are present at `EDUID_SRC_PATH`).
+Direct connection:
 
+    redis://redis.eduid.docker
 
-Signup
-------
+#### Neo4j
 
-The confirmation email will be available in the log file.
+Direct connection:
 
+    neo4j://neo4jdb.eduid.docker
 
-ORCID
------
+### Building Frontend Bundles
 
-You need to obtain the OIDC secrets for the ORCID sandbox from a colleague.
-Create a file named __oidc_client_creds.yaml__ in `eduid-orcid/etc/` that looks like below.
+If you need to rebuild the frontend JavaScript bundles:
+
+    make build_frontend_bundle
+    make build_managed_account_bundle
+
+### Authentication Backend
+
+Turq (a mock HTTP server) is used to fake 'OK' responses to all calls to the VCCS authentication backend during development.
+
+Access Turq at: <http://turq.eduid.docker:13085/+turq/>
+
+## Services and URLs
+
+The development environment runs the following services:
+
+| Service          | URL                                    | Description                 |
+| ---------------- | -------------------------------------- | --------------------------- |
+| Signup           | <https://signup.eduid.docker/>           | User registration           |
+| Dashboard        | <https://dashboard.eduid.docker/>        | User dashboard              |
+| HTML/Landing     | <https://html.eduid.docker/>             | Static HTML pages           |
+| Support          | <https://support.eduid.docker/>          | Support interface           |
+| IdP              | <https://idp.eduid.docker/>              | Identity Provider           |
+| API              | <https://api.eduid.docker/>              | API endpoints               |
+| Managed Accounts | <https://managed-accounts.eduid.docker/> | Managed accounts interface  |
+| BankID           | <https://bankid.eduid.docker/>           | BankID integration          |
+| IdP Proxy        | <https://idpproxy.eduid.docker/>         | IdP proxy                   |
+| Turq (Mock)      | <http://turq.eduid.docker:13085/+turq/>  | Mock authentication backend |
+
+All services use HTTPS except Turq. Make sure you've imported the root CA certificate to avoid browser warnings.
+
+## Makefile Commands
+
+### Starting and Stopping
+
+| Command      | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| `make start` | Start all containers (modifies /etc/hosts, may request sudo) |
+| `make stop`  | Stop all containers                                          |
+| `make up`    | Start any non-running containers                             |
+| `make pull`  | Pull latest Docker images                                    |
+
+### Debugging and Development
+
+| Command                 | Description                                           |
+| ----------------------- | ----------------------------------------------------- |
+| `make show_logs`        | Open shell with log volumes mounted at /var/log/eduid |
+| `make show_appdata`     | Open shell with app data volume mounted at /appdata   |
+| `make mongodb_cli`      | Open MongoDB shell (mongosh)                          |
+| `./bin/tailf <service>` | Tail logs for a specific service                      |
+
+### Building
+
+| Command                             | Description                          |
+| ----------------------------------- | ------------------------------------ |
+| `make build_frontend_bundle`        | Build the frontend JavaScript bundle |
+| `make build_managed_account_bundle` | Build the managed accounts bundle    |
+| `make frontend_npm_start`           | Run frontend development server      |
+
+### Version Management
+
+| Command                                      | Description                                |
+| -------------------------------------------- | ------------------------------------------ |
+| `make developer_release VERSION=<timestamp>` | Update all service versions in compose.yml |
+
+## Troubleshooting
+
+### Port Conflicts
+
+If you see errors about ports already in use, make sure no other services are running on the same ports. Check with:
+
+    sudo netstat -tlnp | grep LISTEN
+
+### Permission Errors
+
+If you get permission errors with Docker:
+
+- Ensure your user is in the `docker` group: `sudo usermod -aG docker $USER`
+- Log out and back in for group changes to take effect
+
+### Cannot Connect to Services
+
+1. Verify /etc/hosts entries were added correctly:
+
+   ```
+   grep eduid.docker /etc/hosts
+   ```
+
+2. Check that containers are running:
+
+   ```
+   docker ps
+   ```
+
+3. Check container logs:
+
+   ```
+   docker compose -f eduid/compose.yml logs <service-name>
+   ```
+
+### Building Docker Images Locally
+
+All containers should be built by ci.sunet.se and will be pulled automatically. If you need to build Docker containers locally, use the Dockerfiles in the separate repository:
+
+    git clone git@github.com:SUNET/eduid-dockerfiles.git
+    cd eduid-dockerfiles
+    ./build <service-name>
+
+### Network Issues Between Docker and Vagrant
+
+If you want to run both Docker and Vagrant environments, you need to reset your networking before switching:
+
+**For Docker:**
+
+    docker network rm eduid_dev
+
+**For Vagrant (VirtualBox):**
+
+Open VirtualBox, go to File → Host Network Manager and remove the network 172.16.10.0/24.
+
+### ORCID Configuration
+
+To use ORCID integration, you need to obtain OIDC secrets for the ORCID sandbox from a colleague.
+
+Create a file named `oidc_client_creds.yaml` in `eduid-orcid/etc/`:
 
 ```yaml
 ---
@@ -158,36 +278,67 @@ CLIENT_REGISTRATION_INFO:
   client_secret: the_client_secret
 ```
 
-Local Docker vs Vagrant
------------------------
+### Signup Confirmation Emails
 
-If you want to run both you need to reset your networking before switching.
+When testing user signup, the confirmation email content will be available in the log files rather than being sent to an actual email address. Use `./bin/tailf signup` to see the confirmation links.
 
-##### Docker:
+## Alternative: Vagrant Setup
 
-    $ docker network rm eduid_dev
+For development on non-Linux systems (macOS, Windows), you can use Vagrant with VirtualBox.
 
-##### Vagrant (Virtualbox):
+### Prerequisites
 
-Open Virtualbox and go to File -> Host Network Manager and remove the network 172.16.10.0/24.
+- VirtualBox: <https://www.virtualbox.org/>
+- Vagrant: <https://www.vagrantup.com/>
 
-Makefile recipes
------------------
-Recipes that starts with "vagrant\_" should be run from the host OS when using vagrant.
+### Setup
 
-    $ make vagrant_run          # Start vagrant vm
-    $ make start                # Starts all containers using docker compose
-    $ make vagrant_start        # See above
-    $ make vagrant_ssh          # Starts a shell in the vagrant vm
-    $ make stop                 # Stops all containers using docker compose
-    $ make vagrant_stop         # See above
-    $ make vagrant_halt         # Stops all containers and shuts the vagrant vm down
-    $ make up                   # Tries to start all non-running containers
-    $ make vagrant_up           # See above
-    $ make pull                 # Pull all images using docker compose
-    $ vagrant_pull              # See above
-    $ make show_logs            # Starts a shell in a container with the log data volume mounted
-                                # Log files can be found in /var/log/eduid
-    $ make vagrant_show_logs    # See above
-    $ make vagrant_destroy      # Halts and removes the vagrant vm
+1. Create a file named `vagrant.yml` in the repository root:
 
+```yaml
+local_paths:
+  eduid_front: "/path/to/eduid-front"
+  eduid_html: "/path/to/eduid-html"
+vm:
+  cpus: 2
+  memory: 4096
+  disksize: "20GB"
+```
+
+2. Start the Vagrant VM (only needed once per session):
+
+   $ make vagrant_run
+
+3. Start the containers inside the VM:
+
+   $ make vagrant_start
+
+4. Connect to the Vagrant VM:
+
+   $ make vagrant_ssh
+
+### Vagrant Commands
+
+| Command                    | Description                        |
+| -------------------------- | ---------------------------------- |
+| `make vagrant_run`         | Start Vagrant VM                   |
+| `make vagrant_start`       | Start all containers in VM         |
+| `make vagrant_stop`        | Stop all containers in VM          |
+| `make vagrant_halt`        | Stop containers and halt VM        |
+| `make vagrant_ssh`         | SSH into the VM                    |
+| `make vagrant_up`          | Start non-running containers in VM |
+| `make vagrant_pull`        | Pull latest images in VM           |
+| `make vagrant_show_logs`   | View logs in VM                    |
+| `make vagrant_mongodb_cli` | MongoDB shell in VM                |
+| `make vagrant_destroy`     | Destroy the VM completely          |
+
+**Note:** The PKI certificate creation script runs automatically on `make vagrant_run`.
+
+---
+
+## Contributing
+
+When making changes to the environment:
+
+- Test both Docker and Vagrant setups if possible
+- Update this README with any new services or configuration requirements
