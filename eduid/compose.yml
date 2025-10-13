@@ -119,6 +119,8 @@ services:
     expose:
       - 8000
     volumes:
+      - ../auth-server/etc/passwd:/etc/passwd:ro
+      - ../auth-server/etc/group:/etc/group:ro
       - ../auth-server/etc:/opt/sunet/auth-server/etc
       - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/sunet
@@ -132,6 +134,8 @@ services:
       config_file: /opt/eduid/config.yaml
       config_ns: /eduid/api/auth_server
       app_entrypoint: auth_server.run:app
+      username: eduid
+      group: eduid
     depends_on:
       <<: *common-depends-on
       mongodb:
