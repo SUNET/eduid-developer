@@ -10,19 +10,27 @@ x-common-depends-on: &common-depends-on
 
 services:
 
-  # This is a one-off job that deletes old logs on startup (preserving permissions etc. on the log files).
+  # This is a one-off job that truncates old logs on startup and ensures correct permissions.
+  # Runs as root to: 1) truncate logs, 2) fix ownership to eduid (999:999), 3) set proper permissions.
   log_cleanup:
     image: 'docker.sunet.se/eduid/worker:20250929T082727-staging'
     volumes:
       - eduidlogdata:/var/log/eduid
       - mongodblogdata:/var/log/mongodb
       - htmlnginxlogdata:/var/log/nginx/eduid-html
-    entrypoint: "sh -c 'find /var/log/eduid/ /var/log/mongodb /var/log/nginx -type f -name '*.log' -exec truncate --size 0 {} \\;'"
+    entrypoint: >
+      sh -c '
+      find /var/log/eduid /var/log/mongodb /var/log/nginx -type f -name "*.log" -exec truncate --size 0 {} \; &&
+      chown -R 999:999 /var/log/eduid /var/log/mongodb /var/log/nginx &&
+      find /var/log/eduid /var/log/mongodb /var/log/nginx -type d -exec chmod 770 {} \; &&
+      find /var/log/eduid /var/log/mongodb /var/log/nginx -type f -name "*.log" -exec chmod 640 {} \;
+      '
 
 
   am:
     image: docker.sunet.se/eduid/worker:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     volumes:
