@@ -58,7 +58,8 @@ services:
 
   amapi:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
-    restart: on-failure
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.215
@@ -85,6 +86,7 @@ services:
   authn:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -113,7 +115,8 @@ services:
 
   auth_server:
     image: docker.sunet.se/sunet/sunet-auth-server:latest
-    restart: on-failure
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -143,6 +146,8 @@ services:
 
   api_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.235
@@ -164,6 +169,7 @@ services:
   bankid:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -196,6 +202,8 @@ services:
 
   bankid_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.232
@@ -213,6 +221,8 @@ services:
 
   dashboard_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.220
@@ -247,6 +257,7 @@ services:
   eidas:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -279,6 +290,8 @@ services:
 
   eidas_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.229
@@ -297,6 +310,7 @@ services:
   email:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.225
@@ -326,6 +340,8 @@ services:
 
   html:
     image: docker.sunet.se/eduid/html:20250929T082727-staging
+    pull_policy: if_not_present
+    restart: always
     expose:
       - 80
     dns: 172.16.10.1
@@ -346,6 +362,8 @@ services:
 
   html_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.230
@@ -363,6 +381,8 @@ services:
 
   managed_accounts_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.231
@@ -381,6 +401,7 @@ services:
   idp:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     volumes:
@@ -416,6 +437,8 @@ services:
 
   idp_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.200
@@ -435,7 +458,8 @@ services:
 
   idpproxy:
     image: docker.sunet.se/eduid/satosa_scim:20250929T082727-staging
-    restart: on-failure
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -465,6 +489,8 @@ services:
 
   idpproxy_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.233
@@ -481,6 +507,7 @@ services:
   jsconfig:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -514,6 +541,7 @@ services:
   ladok:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -542,6 +570,7 @@ services:
   letter_proofing:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -572,7 +601,7 @@ services:
   maccapi:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
     pull_policy: if_not_present
-    restart: on-failure
+    restart: always
     networks:
       dev:
     expose:
@@ -603,6 +632,8 @@ services:
 
   mongodb:
     image: docker.sunet.se/eduid/mongodb
+    pull_policy: if_not_present
+    restart: always
     expose:
       - 27017
     networks:
@@ -627,6 +658,7 @@ services:
   msg:
     image: docker.sunet.se/eduid/worker:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     volumes:
@@ -656,6 +688,7 @@ services:
   navet_service:
     image: docker.sunet.se/eduid/eduid-navet-service:staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     volumes:
@@ -679,6 +712,8 @@ services:
 
   neo4jdb:
     image: neo4j:4.4-enterprise
+    pull_policy: if_not_present
+    restart: always
     expose:
       - 7474
       - 7687
@@ -698,6 +733,7 @@ services:
   orcid:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -732,6 +768,7 @@ services:
   personal_data:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.224
@@ -765,6 +802,8 @@ services:
 
   py11softhsm:
     image: docker.sunet.se/eduid/py11softhsm:latest
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -789,6 +828,7 @@ services:
   queue_mail_worker:
     image: docker.sunet.se/eduid/worker:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     volumes:
@@ -815,6 +855,7 @@ services:
   queue_scim_event:
     image: docker.sunet.se/eduid/worker:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     volumes:
@@ -840,6 +881,8 @@ services:
 
   queue_sink_worker:
     image: docker.sunet.se/eduid/worker:20250929T082727-staging
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     volumes:
@@ -865,6 +908,8 @@ services:
 
   redis:
     image: docker.sunet.se/eduid/redis
+    pull_policy: if_not_present
+    restart: always
     expose:
       - 6379
     networks:
@@ -879,6 +924,7 @@ services:
   reset_password:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.213
@@ -914,6 +960,8 @@ services:
 
   rsyslog:
     image: docker.sunet.se/eduid/rsyslog
+    pull_policy: if_not_present
+    restart: always
     expose:
       - 514
     networks:
@@ -926,7 +974,7 @@ services:
   scimapi:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
     pull_policy: if_not_present
-    restart: on-failure
+    restart: always
     networks:
       dev:
     expose:
@@ -954,6 +1002,7 @@ services:
   security:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.227
@@ -991,6 +1040,7 @@ services:
   signup:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.211
@@ -1027,6 +1077,8 @@ services:
 
   signup_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.210
@@ -1047,6 +1099,7 @@ services:
   support:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -1075,6 +1128,8 @@ services:
 
   support_haproxy:
     image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.223
@@ -1093,6 +1148,7 @@ services:
   freja_eid:
     image: docker.sunet.se/eduid/webapp:20250929T082727-staging
     pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     expose:
@@ -1123,6 +1179,8 @@ services:
 
   turq:
     image: docker.sunet.se/eduid/turq
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.250
@@ -1131,6 +1189,8 @@ services:
 
   job_runner_fre:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     volumes:
@@ -1159,6 +1219,8 @@ services:
 
   job_runner_tug:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
+    pull_policy: if_not_present
+    restart: always
     networks:
       dev:
     volumes:
@@ -1188,7 +1250,7 @@ services:
   vccs:
     image: docker.sunet.se/eduid/fastapi:20250929T082727-staging
     pull_policy: if_not_present
-    restart: on-failure
+    restart: always
     networks:
       dev:
         ipv4_address: 172.16.10.238
