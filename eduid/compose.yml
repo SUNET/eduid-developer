@@ -239,19 +239,19 @@ services:
       jsconfig:
         condition: service_healthy
       ladok:
-        condition: service_healthy
+        condition: service_started
       letter_proofing:
         condition: service_healthy
       orcid:
-        condition: service_healthy
+        condition: service_started
       personal_data:
         condition: service_healthy
       eidas:
-        condition: service_healthy
+        condition: service_started
       bankid:
-        condition: service_healthy
+        condition: service_started
       freja_eid:
-        condition: service_healthy
+        condition: service_started
 
   eidas:
     image: docker.sunet.se/eduid/webapp:20251027T121929-staging
