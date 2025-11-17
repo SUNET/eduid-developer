@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+#
+# Remove old pysaml2 data from ident and session collections
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/pysaml2-cleanup
+#
+
+import sys
+from datetime import timedelta
+
+import pymongo.errors
+from eduid.common.misc.timeutil import utc_now
+from eduid.userdb.admin import get_argparser, get_client
+
+KEEP_DOCUMENTS_DAYS = int(365 / 2)  # six months
+
+
+def get_collection(db_name: str, collection_name: str) -> pymongo.collection.Collection:
+    return get_client()[db_name][collection_name]
+
+
+def main(dry_run):
+    remove_before = utc_now() - timedelta(days=KEEP_DOCUMENTS_DAYS)
+    db_name = "eduid_idp_pysaml2"
+    ident_collection = get_collection(db_name=db_name, collection_name="ident")
+    session_collection = get_collection(db_name=db_name, collection_name="session")
+    # old ident documents are missing created_at
+    query_ident_missing_created_at = {"created_at": {"$exists": False}}
+    # new ident documents can be removed by created_at
+    query_ident_cleanup = {"created_at": {"$lt": remove_before}}
+    # use issue instant as timestamp, sadly a string and not a proper date
+    query_session_cleanup = {"assertion.issue_instant": {"$lt": f"{remove_before:%Y-%m-%d}"}}
+
+    if dry_run:
+        # just find and report count
+        missing_created_at_count = ident_collection.count_documents(filter=query_ident_missing_created_at)
+        print(f"Ident documents missing created_at: {missing_created_at_count}")
+        ident_docs_count = ident_collection.count_documents(filter=query_ident_cleanup)
+        print(f"Ident documents older than {remove_before:%Y-%m-%d}: {ident_docs_count}")
+        session_docs_count = session_collection.count_documents(filter=query_session_cleanup)
+        print(f"Session documents older than {remove_before:%Y-%m-%d}: {session_docs_count}")
+        return True
+
+    # Remove documents older than KEEP_DOCUMENT_DAYS
+    res = ident_collection.delete_many(filter=query_ident_missing_created_at)
+    print(f"Removed {res.deleted_count} ident documents with missing created_at")
+    res = ident_collection.delete_many(filter=query_ident_cleanup)
+    print(f"Removed {res.deleted_count} ident documents older than {remove_before:%Y-%m-%d}")
+    res = session_collection.delete_many(filter=query_session_cleanup)
+    print(f"Removed {res.deleted_count} session documents older than {remove_before:%Y-%m-%d}")
+
+    return True
+
+
+if __name__ == "__main__":
+    parser = get_argparser(description="Cleanup old pysaml2 ident and session documents")
+    parser.add_argument(
+        "--ignore-not-master",
+        dest="ignore_not_master",
+        action="store_true",
+        default=False,
+        help="Ignore errors about not running on mongodb master",
+    )
+    args = parser.parse_args()
+
+    print("Dry run: {}".format(not args.force))
+    try:
+        if main(not args.force):
+            sys.exit(0)
+    except pymongo.errors.AutoReconnect:
+        if args.ignore_not_master:
+            print("Not running on database master - ignoring")
+            sys.exit(0)
+        raise
+    sys.exit(1)
