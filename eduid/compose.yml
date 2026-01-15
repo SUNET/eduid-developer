@@ -12,7 +12,7 @@ services:
 
   # This is a one-off job that deletes old logs on startup (preserving permissions etc. on the log files).
   log_cleanup:
-    image: 'docker.sunet.se/eduid/worker:20251215T105159-staging'
+    image: 'docker.sunet.se/eduid/worker:20260115T131926-staging'
     volumes:
       - eduidlogdata:/var/log/eduid
       - mongodblogdata:/var/log/mongodb
@@ -27,7 +27,7 @@ services:
 
 
   am:
-    image: docker.sunet.se/eduid/worker:20251215T105159-staging
+    image: docker.sunet.se/eduid/worker:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -56,7 +56,7 @@ services:
         condition: service_started
 
   amapi:
-    image: docker.sunet.se/eduid/fastapi:20251215T105159-staging
+    image: docker.sunet.se/eduid/fastapi:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -83,7 +83,7 @@ services:
         condition: service_healthy
 
   authn:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -166,7 +166,7 @@ services:
         condition: service_started
 
   bankid:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -254,7 +254,7 @@ services:
         condition: service_healthy
 
   eidas:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -307,7 +307,7 @@ services:
         condition: service_healthy
 
   email:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -338,7 +338,7 @@ services:
         condition: service_started
 
   html:
-    image: docker.sunet.se/eduid/html:20251215T105159-staging
+    image: docker.sunet.se/eduid/html:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     expose:
@@ -398,7 +398,7 @@ services:
         condition: service_healthy
 
   idp:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -456,7 +456,7 @@ services:
         condition: service_healthy
 
   idpproxy:
-    image: docker.sunet.se/eduid/satosa_scim:20251215T105159-staging
+    image: docker.sunet.se/eduid/satosa_scim:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -504,7 +504,7 @@ services:
         condition: service_started
 
   jsconfig:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -538,7 +538,7 @@ services:
         condition: service_started
 
   ladok:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -567,7 +567,7 @@ services:
         condition: service_started
 
   letter_proofing:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -598,7 +598,7 @@ services:
         condition: service_started
 
   maccapi:
-    image: docker.sunet.se/eduid/fastapi:20251215T105159-staging
+    image: docker.sunet.se/eduid/fastapi:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -655,7 +655,7 @@ services:
       <<: *common-depends-on
 
   msg:
-    image: docker.sunet.se/eduid/worker:20251215T105159-staging
+    image: docker.sunet.se/eduid/worker:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -730,7 +730,7 @@ services:
       <<: *common-depends-on
 
   orcid:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -765,7 +765,7 @@ services:
         condition: service_started
 
   personal_data:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -825,7 +825,7 @@ services:
       <<: *common-depends-on
 
   queue_mail_worker:
-    image: docker.sunet.se/eduid/worker:20251215T105159-staging
+    image: docker.sunet.se/eduid/worker:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -852,7 +852,7 @@ services:
         condition: service_healthy
 
   queue_scim_event:
-    image: docker.sunet.se/eduid/worker:20251215T105159-staging
+    image: docker.sunet.se/eduid/worker:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -879,7 +879,7 @@ services:
         condition: service_healthy
 
   queue_sink_worker:
-    image: docker.sunet.se/eduid/worker:20251215T105159-staging
+    image: docker.sunet.se/eduid/worker:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -921,7 +921,7 @@ services:
       <<: *common-depends-on
 
   reset_password:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -971,7 +971,7 @@ services:
       <<: *common-depends-on
 
   scimapi:
-    image: docker.sunet.se/eduid/fastapi:20251215T105159-staging
+    image: docker.sunet.se/eduid/fastapi:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -999,7 +999,7 @@ services:
         condition: service_started
 
   security:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1037,7 +1037,7 @@ services:
         condition: service_started
 
   signup:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1096,7 +1096,7 @@ services:
         condition: service_healthy
 
   support:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1145,7 +1145,7 @@ services:
         condition: service_healthy
 
   freja_eid:
-    image: docker.sunet.se/eduid/webapp:20251215T105159-staging
+    image: docker.sunet.se/eduid/webapp:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1187,7 +1187,7 @@ services:
       <<: *common-depends-on
 
   job_runner_fre:
-    image: docker.sunet.se/eduid/fastapi:20251215T105159-staging
+    image: docker.sunet.se/eduid/fastapi:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1217,7 +1217,7 @@ services:
         condition: service_healthy
 
   job_runner_tug:
-    image: docker.sunet.se/eduid/fastapi:20251215T105159-staging
+    image: docker.sunet.se/eduid/fastapi:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1247,7 +1247,7 @@ services:
         condition: service_healthy
 
   vccs:
-    image: docker.sunet.se/eduid/fastapi:20251215T105159-staging
+    image: docker.sunet.se/eduid/fastapi:20260115T131926-staging
     pull_policy: if_not_present
     restart: always
     networks:
