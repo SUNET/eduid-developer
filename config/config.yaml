@@ -415,6 +415,8 @@ eduid:
               #client_secret: 'secret'
               client_secret: 'B3gNvUK1cTct0ao0nRKMkMygkcptVAJg'
               issuer: https://oidc-ct.test.frejaeid.com/oidc
+            allow_mfa_authentication: true
+            allow_credential_verification: true
         security:
             server_name: dashboard.eduid.docker
             application_root: /services/security
