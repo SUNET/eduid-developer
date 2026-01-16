@@ -341,11 +341,6 @@ eduid:
             freja_idp: http://dev.test.swedenconnect.se/idp
             foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
             allow_eidas_credential_verification: true
-            frontend_action_finish_url:
-              eidasVerifyIdentity: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
-              eidasVerifyCredential: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
-              loginMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
-              resetpwMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
         bankid:
             server_name: bankid.eduid.docker
             application_root: /
