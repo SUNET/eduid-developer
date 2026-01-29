@@ -1247,8 +1247,10 @@ services:
         condition: service_healthy
 
   vccs:
-    image: docker.sunet.se/eduid/fastapi:20260116T091550-staging
-    pull_policy: if_not_present
+    #image: docker.sunet.se/eduid/fastapi:20260116T091550-staging
+    build:
+      context: ../vccs
+      dockerfile: ./Dockerfile
     restart: always
     networks:
       dev:
@@ -1256,7 +1258,7 @@ services:
     expose:
       - 8080
     volumes:
-      - ../vccs:/opt/eduid/vccs:ro
+      - ../vccs:/opt/eduid/vccs:rw
       - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
       # source volumes
@@ -1267,6 +1269,7 @@ services:
       eduid_name: vccs
       EDUID_CONFIG_NS: /eduid/api/vccs_local
       eduid_entrypoint: eduid.vccs.server.run:app
+      SOFTHSM2_CONF: /opt/eduid/vccs/softhsm2.conf
     depends_on:
       <<: *common-depends-on
       mongodb:

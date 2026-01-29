@@ -62,9 +62,19 @@ eduid:
                        maxBytes: 1024
                        backupCount: 10
         vccs_common: &vccs_common_config
-          add_creds_password_key_handle: 1
           mongo_uri: 'mongodb://mongodb.eduid_dev'
-          yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
+          #hasher:
+          #  add_creds_password_key_handle: 1
+          #  key_handles:
+          #    1: '11111111111111111111111111111111'
+          hasher:
+            # Key ID 0x20 (hex) = 32 (decimal) - the hmac-sha1 key in SoftHSM2
+            add_creds_password_key_handle: 32
+            module_path: /usr/lib/softhsm/libsofthsm2.so
+            token_label: "eduid-hasher"
+            user_pin: "1234"  # optional
+            #so_pin: null      # optional
+
         vccs_local:
           <<: *vccs_common_config
           environment: dev
