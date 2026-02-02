@@ -62,9 +62,11 @@ eduid:
                        maxBytes: 1024
                        backupCount: 10
         vccs_common: &vccs_common_config
-          add_creds_password_key_handle: 1
           mongo_uri: 'mongodb://mongodb.eduid_dev'
-          yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
+          hasher:
+            add_creds_password_key_handle: 1
+            key_handles:
+              1: '11111111111111111111111111111111'
         vccs_local:
           <<: *vccs_common_config
           environment: dev
