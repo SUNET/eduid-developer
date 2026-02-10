@@ -314,17 +314,6 @@ eduid:
             ekopost_api_user: ekopost_user
             ekopost_api_pw: ekopost_pw
             letter_wait_time_hours: 360  # match automated tests
-        oidc_proofing:
-            server_name: dashboard.eduid.docker
-            application_root: /services/oidc-proofing
-            logger_name: oidc_proofing
-            log_level: DEBUG
-            client_registration_info:
-                client_id: client1
-                client_secret: abcdef
-            provider_configuration_info:
-                issuer: http://turq:13085/op/
-            mongo_uri: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
         orcid:
             server_name: dashboard.eduid.docker
             application_root: /services/orcid
@@ -518,7 +507,6 @@ eduid:
               proofing_methods:
                   - letter
                   - lookup_mobile
-                  - oidc
                   - eidas
               default_country_code: 46
               # This key is for signup.eduid.docker
