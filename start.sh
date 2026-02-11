@@ -36,6 +36,7 @@ done
     printf "172.16.10.231\tmanaged-accounts.eduid.docker\n";
     printf "172.16.10.232\tbankid.eduid.docker\n";
     printf "172.16.10.233\tidpproxy.eduid.docker\n";
+    printf "172.16.10.234\tsamleid.eduid.docker\n";
     printf "172.16.10.235\tapi.eduid.docker\n";
     printf "172.16.10.236\tneo4jdb.eduid.docker\n";
     printf "172.16.10.240\tactions.eduid.docker\n";

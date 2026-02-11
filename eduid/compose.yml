@@ -970,6 +970,59 @@ services:
     depends_on:
       <<: *common-depends-on
 
+  samleid:
+    image: docker.sunet.se/eduid/webapp:20260210T135053-staging
+    pull_policy: if_not_present
+    restart: always
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../eduid-samleid/etc:/opt/eduid/etc:ro
+      - ../config/config.yaml:/opt/eduid/config.yaml:ro
+      - appdata:/opt/eduid/run
+      - eduidlogdata:/var/log/eduid
+      # source volumes
+      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
+      - ../sources/pysaml2:/opt/eduid/src/pysaml2:ro
+      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
+    environment:
+      <<: *common-env-variables
+      PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/
+      HOSTNAME: samleid
+      eduid_name: samleid
+      EDUID_CONFIG_NS: /eduid/webapp/samleid
+    depends_on:
+      <<: *common-depends-on
+      am:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rsyslog:
+        condition: service_started
+
+  samleid_haproxy:
+    image: 'docker.sunet.se/eduid/haproxy:latest'
+    pull_policy: if_not_present
+    restart: always
+    networks:
+      dev:
+        ipv4_address: 172.16.10.234
+        aliases:
+          - samleid.eduid.docker
+    expose:
+      - 443
+    volumes:
+      - ../samleid-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - ../pki/samleid.pem:/etc/ssl/samleid.pem:ro
+    depends_on:
+      <<: *common-depends-on
+      samleid:
+        condition: service_started
+
   scimapi:
     image: docker.sunet.se/eduid/fastapi:20260210T135053-staging
     pull_policy: if_not_present
