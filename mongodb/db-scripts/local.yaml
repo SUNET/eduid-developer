@@ -27,7 +27,6 @@ mongo_databases:
         - 'eduid_idp'
         - 'eduid_idproofing_letter'
         - 'eduid_lookup_mobile_proofing'
-        - 'eduid_oidc_proofing'
         - 'eduid_orcid'
         - 'eduid_personal_data'
         - 'eduid_phone'
@@ -169,18 +168,6 @@ mongo_databases:
         - 'eduid_am'
         - 'eduid_support'
 
-  eduid_oidc_proofing:
-    collections:
-      - 'profiles'
-      - 'proofing_data'
-      - 'proofs'
-    access:
-      readWrite:
-        - 'eduid_oidc_proofing'
-      read:
-        - 'eduid_am'
-        - 'eduid_support'
-
   eduid_orcid:
     collections:
       - 'profiles'
@@ -306,7 +293,6 @@ mongo_databases:
       - 'proofing_log'
     access:
       readWrite:
-        - 'eduid_oidc_proofing'
         - 'eduid_idproofing_letter'
         - 'eduid_lookup_mobile_proofing'
         - 'eduid_email'
