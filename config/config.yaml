@@ -17,7 +17,6 @@ eduid:
             server_name: 'api.eduid.docker'
             application_root: '/maccapi'
             mongo_uri: 'mongodb://eduid_maccapi:eduid_maccapi_pw@mongodb.eduid_dev'
-            vccs_url: 'http://vccs:8080/'
             authorization_mandatory: true
             keystore_path: /opt/eduid/eduid-maccapi/etc/keystore.jwks
             default_eppn_scope: local.eduid.se
@@ -63,14 +62,15 @@ eduid:
                        backupCount: 10
         vccs_common: &vccs_common_config
           mongo_uri: 'mongodb://mongodb.eduid_dev'
-          #hasher:
-          #  add_creds_password_key_handle: 1
-          #  key_handles:
-          #    1: '11111111111111111111111111111111'
           hasher:
+            add_creds_password_key_handle: 1
+            key_handles:
+              1: '11111111111111111111111111111111'
+          new_hasher:
             # Key ID 0x20 (hex) = 32 (decimal) - the hmac-sha1 key in SoftHSM2
-            add_creds_password_key_handle: 32
-            module_path: /usr/lib/softhsm/libsofthsm2.so
+            #add_creds_password_key_handle: 32
+            add_creds_password_key_label: "hmac-sha256"
+            module_path: "/usr/lib/softhsm/libsofthsm2.so"
             token_label: "eduid-hasher"
             user_pin: "1234"  # optional
             #so_pin: null      # optional
@@ -196,6 +196,8 @@ eduid:
             fido2_rp_id: eduid.docker
             u2f_app_id: https://dashboard.dev.eduid.se
             errors_url_template: 'https://html.eduid.docker/errors?code={ERRORURL_CODE}&ts={ERRORURL_TS}&rp={ERRORURL_RP}&tid={ERRORURL_TID}&ctx={ERRORURL_CTX}'
+            vccs_url: "http://vccs:8080/"
+            password_v2_upgrade_enabled: true
             frontend_action_authn_parameters:
               addSecurityKeyAuthn:
                 force_authn: true
@@ -428,7 +430,6 @@ eduid:
             mongo_uri: mongodb://eduid_security:eduid_security_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: security
-            vccs_url: 'http://vccs:8080/'
             password_length: 12
             password_entropy: 25
             chpass_reauthn_timeout: 120
@@ -448,7 +449,6 @@ eduid:
             log_level: DEBUG
             logger_name: signup
             password_length: 12
-            vccs_url: 'http://vccs:8080/'
             tou_url: not_used_remove_me_after_config_model_update
             signup_authn_url: not_used
             default_finish_url: https://www.eduid.se/
@@ -560,7 +560,6 @@ eduid:
             status_test_usernames: ['f-testuser1@spam.thulin.net']
             default_scoped_affiliation: affiliate@local.eduid.se
             max_authn_failures_per_month: 50
-            vccs_url: 'http://vccs:8080/'
             shared_session_cookie_name: sessid
             shared_session_secret_key: supersecretkey
             tou_reaccept_interval: 604800  # 1 week
@@ -609,7 +608,6 @@ eduid:
             password_generation_rounds: 32
             phone_verification_timeout: 24
             chpass_timeout: 600
-            vccs_url: http://vccs:8080/
             u2f_valid_facets:
                 - https://html.dev.eduid.se
                 - https://idp.dev.eduid.se
