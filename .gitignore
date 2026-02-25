@@ -24,3 +24,5 @@ pki/*csr
 tmp
 pypiserver/packages
 .idea/
+vccs/softhsm_tokens/*
+.mypy_cache/

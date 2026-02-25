@@ -1,9 +1,0 @@
----
-eduid:
-  api:
-    common:
-      bogus: true
-    vccs:
-      add_creds_password_key_handle: 1
-      mongo_uri: 'mongodb://mongodb.eduid_dev'
-      yhsm_device: 'soft_hasher:/opt/eduid/vccs/soft_hasher.yaml'
