@@ -1247,11 +1247,11 @@ services:
         condition: service_healthy
 
   vccs:
-    image: docker.sunet.se/eduid/fastapi:20260224T142047-staging
-    pull_policy: if_not_present
-    #build:
-    #  context: ../vccs
-    #  dockerfile: ./Dockerfile
+    #image: docker.sunet.se/eduid/fastapi:20260224T142047-staging
+    #pull_policy: if_not_present
+    build:
+      context: ../vccs
+      dockerfile: ./Dockerfile
     restart: always
     networks:
       dev:
