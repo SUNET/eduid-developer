@@ -15,4 +15,4 @@ softhsm2-util --init-token --free --label "${TOKEN_LABEL}" --so-pin "${PIN}" --p
 echo "Token initialized successfully"
 
 echo "Generating HMAC keys..."
-/opt/eduid/fastapi/bin/python3 /opt/eduid/python scripts/generate_hmac_keys.py
+/opt/eduid/fastapi/bin/python3 generate_hmac_keys.py
