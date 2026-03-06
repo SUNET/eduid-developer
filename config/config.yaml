@@ -69,7 +69,6 @@ eduid:
               1: '11111111111111111111111111111111'
           new_hasher:
             # Key ID 0x20 (hex) = 32 (decimal) - the hmac-sha1 key in SoftHSM2
-            #add_creds_password_key_handle: 32
             add_creds_password_key_label: "hmac-sha256"
             module_path: "/usr/lib/softhsm/libsofthsm2.so"
             token_label: "eduid-hasher"
@@ -199,6 +198,7 @@ eduid:
             errors_url_template: 'https://html.eduid.docker/errors?code={ERRORURL_CODE}&ts={ERRORURL_TS}&rp={ERRORURL_RP}&tid={ERRORURL_TID}&ctx={ERRORURL_CTX}'
             vccs_url: "http://vccs:8080/"
             password_v2_upgrade_enabled: true
+            #password_v2_grace_period: P180D
             frontend_action_authn_parameters:
               addSecurityKeyAuthn:
                 force_authn: true
@@ -692,7 +692,7 @@ eduid:
             mongo_uri: mongodb://eduid_job_runner:eduid_job_runner_pw@mongodb/eduid_job_runner
             jobs:
               # jobs can be set on environment or host level with cron like timings
-            # no jobs configured to not spam Skatteverkar unnecessary
+            # no jobs configured to not spam Skatteverket unnecessary
             #  job_runner_fre:
             #    check_skv_users:
             #      minute: "0,12,24,36,48"
