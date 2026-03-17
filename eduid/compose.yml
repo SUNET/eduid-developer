@@ -12,7 +12,7 @@ services:
 
   # This is a one-off job that deletes old logs on startup (preserving permissions etc. on the log files).
   log_cleanup:
-    image: 'docker.sunet.se/eduid/worker:20260311T130957-staging'
+    image: 'docker.sunet.se/eduid/worker:20260317T132226-staging'
     volumes:
       - eduidlogdata:/var/log/eduid
       - mongodblogdata:/var/log/mongodb
@@ -27,7 +27,7 @@ services:
 
 
   am:
-    image: docker.sunet.se/eduid/worker:20260311T130957-staging
+    image: docker.sunet.se/eduid/worker:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -56,7 +56,7 @@ services:
         condition: service_started
 
   amapi:
-    image: docker.sunet.se/eduid/fastapi:20260311T130957-staging
+    image: docker.sunet.se/eduid/fastapi:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -83,7 +83,7 @@ services:
         condition: service_healthy
 
   authn:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -166,7 +166,7 @@ services:
         condition: service_started
 
   bankid:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -230,6 +230,7 @@ services:
     volumes:
       - ../dashboard-haproxy/etc/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
       - ../pki/dashboard.pem:/etc/ssl/dashboard.pem
+      - "haproxy_control:/var/run/haproxy-control"
     depends_on:
       <<: *common-depends-on
       authn:
@@ -253,8 +254,34 @@ services:
       freja_eid:
         condition: service_healthy
 
+  dashboard_status:
+    #image: "docker.sunet.se/haproxy-status:latest"
+    image: "local/haproxy-status:latest"
+    pull_policy: if_not_present
+    restart: always
+    networks:
+      dev:
+    expose:
+      - 8080
+    volumes:
+      - ../haproxy-status:/opt/eduid/src/haproxy-status:ro
+      - ../haproxy-status/var:/var/haproxy-status:ro
+      - eduidlogdata:/var/log/haproxy_status
+      - haproxy_control:/var/run/haproxy-control
+    environment:
+      - "SERVICE_NAME=dashboard"
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost/status", "|", "grep", "-q", "STATUS_DOWN", "|", "FAIL"]
+      interval: 40s
+      timeout: 30s
+      retries: 3
+    depends_on:
+      <<: *common-depends-on
+      dashboard_haproxy:
+        condition: service_started
+
   eidas:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -307,7 +334,7 @@ services:
         condition: service_healthy
 
   email:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -338,7 +365,7 @@ services:
         condition: service_started
 
   html:
-    image: docker.sunet.se/eduid/html:20260311T130957-staging
+    image: docker.sunet.se/eduid/html:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     expose:
@@ -398,7 +425,7 @@ services:
         condition: service_healthy
 
   idp:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -456,7 +483,7 @@ services:
         condition: service_healthy
 
   idpproxy:
-    image: docker.sunet.se/eduid/satosa_scim:20260311T130957-staging
+    image: docker.sunet.se/eduid/satosa_scim:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -504,7 +531,7 @@ services:
         condition: service_started
 
   jsconfig:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -538,7 +565,7 @@ services:
         condition: service_started
 
   ladok:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -567,7 +594,7 @@ services:
         condition: service_started
 
   letter_proofing:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -598,7 +625,7 @@ services:
         condition: service_started
 
   maccapi:
-    image: docker.sunet.se/eduid/fastapi:20260311T130957-staging
+    image: docker.sunet.se/eduid/fastapi:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -655,7 +682,7 @@ services:
       <<: *common-depends-on
 
   msg:
-    image: docker.sunet.se/eduid/worker:20260311T130957-staging
+    image: docker.sunet.se/eduid/worker:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -730,7 +757,7 @@ services:
       <<: *common-depends-on
 
   orcid:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -765,7 +792,7 @@ services:
         condition: service_started
 
   personal_data:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -825,7 +852,7 @@ services:
       <<: *common-depends-on
 
   queue_mail_worker:
-    image: docker.sunet.se/eduid/worker:20260311T130957-staging
+    image: docker.sunet.se/eduid/worker:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -852,7 +879,7 @@ services:
         condition: service_healthy
 
   queue_scim_event:
-    image: docker.sunet.se/eduid/worker:20260311T130957-staging
+    image: docker.sunet.se/eduid/worker:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -879,7 +906,7 @@ services:
         condition: service_healthy
 
   queue_sink_worker:
-    image: docker.sunet.se/eduid/worker:20260311T130957-staging
+    image: docker.sunet.se/eduid/worker:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -921,7 +948,7 @@ services:
       <<: *common-depends-on
 
   reset_password:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -971,7 +998,7 @@ services:
       <<: *common-depends-on
 
   scimapi:
-    image: docker.sunet.se/eduid/fastapi:20260311T130957-staging
+    image: docker.sunet.se/eduid/fastapi:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -999,7 +1026,7 @@ services:
         condition: service_started
 
   security:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1037,7 +1064,7 @@ services:
         condition: service_started
 
   signup:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1096,7 +1123,7 @@ services:
         condition: service_healthy
 
   support:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1145,7 +1172,7 @@ services:
         condition: service_healthy
 
   freja_eid:
-    image: docker.sunet.se/eduid/webapp:20260311T130957-staging
+    image: docker.sunet.se/eduid/webapp:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1187,7 +1214,7 @@ services:
       <<: *common-depends-on
 
   job_runner_fre:
-    image: docker.sunet.se/eduid/fastapi:20260311T130957-staging
+    image: docker.sunet.se/eduid/fastapi:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1217,7 +1244,7 @@ services:
         condition: service_healthy
 
   job_runner_tug:
-    image: docker.sunet.se/eduid/fastapi:20260311T130957-staging
+    image: docker.sunet.se/eduid/fastapi:20260317T132226-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1247,7 +1274,7 @@ services:
         condition: service_healthy
 
   vccs:
-    image: docker.sunet.se/eduid/fastapi:20260311T130957-staging
+    image: docker.sunet.se/eduid/fastapi:20260317T132226-staging
     pull_policy: if_not_present
     #build:
     #  context: ../vccs
@@ -1296,6 +1323,8 @@ volumes:
     name: softhsmdata
   htmlnginxlogdata:
     name: htmlnginxlogdata
+  haproxy_control:
+    name: haproxy_control
 
 
 networks:
