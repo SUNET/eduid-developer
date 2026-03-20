@@ -113,7 +113,7 @@ services:
         condition: service_started
 
   auth_server:
-    image: platform.sunet.se/sunet/sunet-auth-server:latest
+    image: docker.sunet.se/sunet/sunet-auth-server:latest
     pull_policy: if_not_present
     restart: always
     networks:
