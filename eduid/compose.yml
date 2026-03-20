@@ -272,7 +272,7 @@ services:
       - "LOG_LEVEL=DEBUG"
       - "SERVICE_NAME=dashboard"
     healthcheck:
-      test: ["CMD", "curl", "http://localhost/status", "|", "grep", "-q", "STATUS_DOWN", "|", "FAIL"]
+      test: ["CMD", "curl", "--silent", "http://localhost:8080/status", "|", "grep", "-q", "'STATUS_DOWN|FAIL'"]
       interval: 40s
       timeout: 30s
       retries: 3
