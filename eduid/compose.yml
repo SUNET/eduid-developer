@@ -12,7 +12,7 @@ services:
 
   # This is a one-off job that deletes old logs on startup (preserving permissions etc. on the log files).
   log_cleanup:
-    image: 'platform.sunet.se/eduid/worker:20260320T113739-staging'
+    image: platform.sunet.se/eduid/worker:20260320T113739-staging
     volumes:
       - eduidlogdata:/var/log/eduid
       - mongodblogdata:/var/log/mongodb
@@ -114,7 +114,7 @@ services:
 
   auth_server:
     image: docker.sunet.se/sunet/sunet-auth-server:latest
-    pull_policy: if_not_present
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -144,8 +144,8 @@ services:
         condition: service_healthy
 
   api_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -200,8 +200,8 @@ services:
         condition: service_started
 
   bankid_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -219,8 +219,8 @@ services:
         condition: service_started
 
   dashboard_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -315,8 +315,8 @@ services:
         condition: service_started
 
   eidas_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -387,8 +387,8 @@ services:
       <<: *common-depends-on
 
   html_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -406,8 +406,8 @@ services:
         condition: service_healthy
 
   managed_accounts_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -462,8 +462,8 @@ services:
         condition: service_started
 
   idp_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -514,8 +514,8 @@ services:
         condition: service_started
 
   idpproxy_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -657,8 +657,8 @@ services:
         condition: service_started
 
   mongodb:
-    image: docker.sunet.se/eduid/mongodb
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/mongodb:latest
+    pull_policy: weekly
     restart: always
     expose:
       - 27017
@@ -712,7 +712,7 @@ services:
         condition: service_started
 
   navet_service:
-    image: docker.sunet.se/eduid/eduid-navet-service:staging
+    image: platform.sunet.se/eduid/eduid-navet-service:staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -827,8 +827,8 @@ services:
         condition: service_started
 
   py11softhsm:
-    image: docker.sunet.se/eduid/py11softhsm:latest
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/py11softhsm:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -933,8 +933,8 @@ services:
         condition: service_healthy
 
   redis:
-    image: docker.sunet.se/eduid/redis
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/redis:staging
+    pull_policy: weekly
     restart: always
     expose:
       - 6379
@@ -985,8 +985,8 @@ services:
         condition: service_started
 
   rsyslog:
-    image: docker.sunet.se/eduid/rsyslog
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/rsyslog:latest
+    pull_policy: weekly
     restart: always
     expose:
       - 514
@@ -1102,8 +1102,8 @@ services:
         condition: service_started
 
   signup_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -1153,8 +1153,8 @@ services:
         condition: service_started
 
   support_haproxy:
-    image: 'docker.sunet.se/eduid/haproxy:latest'
-    pull_policy: if_not_present
+    image: platform.sunet.se/eduid/haproxy:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -1204,7 +1204,7 @@ services:
         condition: service_started
 
   turq:
-    image: docker.sunet.se/eduid/turq
+    image: platform.sunet.se/eduid/turq
     pull_policy: if_not_present
     restart: always
     networks:
