@@ -255,9 +255,8 @@ services:
         condition: service_healthy
 
   dashboard_status:
-    #image: "docker.sunet.se/haproxy-status:latest"
-    image: "local/haproxy-status:latest"
-    pull_policy: if_not_present
+    image: docker.sunet.se/haproxy-status:latest
+    pull_policy: weekly
     restart: always
     networks:
       dev:
@@ -272,7 +271,7 @@ services:
       - "LOG_LEVEL=DEBUG"
       - "SERVICE_NAME=dashboard"
     healthcheck:
-      test: ["CMD", "curl", "--silent", "http://localhost:8080/status", "|", "grep", "-q", "'STATUS_DOWN|FAIL'"]
+      test: ["CMD-SHELL", "curl --silent http://localhost:8080/status | grep -qv 'STATUS_DOWN|FAIL'"]
       interval: 40s
       timeout: 30s
       retries: 3
