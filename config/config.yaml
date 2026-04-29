@@ -581,7 +581,7 @@ eduid:
                 'pymongo.connection':
                   level: 'INFO'
             allow_other_device_logins: true
-            allow_signup_auth: true
+            allow_new_signup_logins: true
         reset_password:
             server_name: idp.eduid.docker
             mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev
