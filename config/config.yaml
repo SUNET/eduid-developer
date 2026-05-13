@@ -247,6 +247,13 @@ eduid:
                 high_security: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              signupExternalMfa:
+                force_authnr: True
+                force_mfa: True,
+                same_user: False,
+                allow_signup_auth: True,
+                allow_login_auth: False,
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
               supportLogin:
                 force_authn: false
                 force_mfa: true
