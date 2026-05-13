@@ -49,7 +49,7 @@ This creates a local Certificate Authority (CA) and certificates for all service
 
 **Security Note:** Keep `pki/rootCA.key` private as it can be used for man-in-the-middle attacks against your development machine.
 
-### 3. Configure Source Directories (Optional)
+### 3. Configure Source Directories
 
 For live code reloading, set up symlinks to your local eduID source repositories in the `sources/` directory.
 
@@ -65,9 +65,12 @@ Example setup:
 
 The compose configuration will automatically mount available source directories into the containers. Both the main package and its eduID dependencies will be mounted for each container.
 
+**Important:** For the frontend to work you need to clone [eduid-front](https://github.com/SUNET/eduid-front/) and [eduid-html](https://github.com/SUNET/eduid-html/) and make them available in the sources directory. After they are available you need to run `make build_frontend_bundle` to generate the frontend.
+
 ## Running the Environment
 
 ### Starting the Environment
+
 
 Start all containers (this will modify `/etc/hosts` and may ask for sudo password):
 
@@ -78,6 +81,8 @@ The first time you run this:
 - It will add entries to `/etc/hosts` for all eduID services (requires sudo)
 - It will pull all required Docker images from the registry
 - It may take several minutes to start all services
+
+Go to https://eduid.docker in your browser.
 
 ### Stopping the Environment
 
@@ -161,18 +166,18 @@ Access Turq at: <http://turq.eduid.docker:13085/+turq/>
 
 The development environment runs the following services:
 
-| Service          | URL                                    | Description                 |
-| ---------------- | -------------------------------------- | --------------------------- |
-| Signup           | <https://signup.eduid.docker/>           | User registration           |
-| Dashboard        | <https://dashboard.eduid.docker/>        | User dashboard              |
-| HTML/Landing     | <https://html.eduid.docker/>             | Static HTML pages           |
-| Support          | <https://support.eduid.docker/>          | Support interface           |
-| IdP              | <https://idp.eduid.docker/>              | Identity Provider           |
-| API              | <https://api.eduid.docker/>              | API endpoints               |
+| Service          | URL                                 | Description                 |
+| ---------------- |-------------------------------------| --------------------------- |
+| Signup           | <https://eduid.docker/register>     | User registration           |
+| Dashboard        | <https://eduid.docker/start>        | User dashboard              |
+| HTML/Landing     | <https://eduid.docker/>             | Static HTML pages           |
+| Support          | <https://support.eduid.docker/>     | Support interface           |
+| IdP              | <https://idp.eduid.docker/>         | Identity Provider           |
+| API              | <https://api.eduid.docker/>         | API endpoints               |
 | Managed Accounts | <https://managed-accounts.eduid.docker/> | Managed accounts interface  |
-| BankID           | <https://bankid.eduid.docker/>           | BankID integration          |
-| IdP Proxy        | <https://idpproxy.eduid.docker/>         | IdP proxy                   |
-| Turq (Mock)      | <http://turq.eduid.docker:13085/+turq/>  | Mock authentication backend |
+| BankID           | <https://bankid.eduid.docker/>      | BankID integration          |
+| IdP Proxy        | <https://idpproxy.eduid.docker/>    | IdP proxy                   |
+| Turq (Mock)      | <http://turq.eduid.docker:13085/+turq/> | Mock authentication backend |
 
 All services use HTTPS except Turq. Make sure you've imported the root CA certificate to avoid browser warnings.
 
@@ -247,11 +252,17 @@ If you get permission errors with Docker:
 
 ### Building Docker Images Locally
 
-All containers should be built by ci.sunet.se and will be pulled automatically. If you need to build Docker containers locally, use the Dockerfiles in the separate repository:
+All containers should be built by ci.sunet.se/platform.sunet.se and will be pulled automatically. If you need to build Docker containers locally, use the Dockerfiles in the separate repository:
 
     git clone git@github.com:SUNET/eduid-dockerfiles.git
     cd eduid-dockerfiles
     ./build <service-name>
+
+    or
+
+    git clone git@github.com:SUNET/eduid-releng.git
+    cd eduid-releng
+    VERSION=some-version make build
 
 ### Network Issues Between Docker and Vagrant
 
