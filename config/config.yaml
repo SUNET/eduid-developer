@@ -253,7 +253,7 @@ eduid:
                 same_user: false
                 allow_signup_auth: true
                 allow_login_auth: false
-                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+                finish_url: "https://html.eduid.docker/register/ext-return/{app_name}/{authn_id}"
               supportLogin:
                 force_authn: false
                 force_mfa: true
