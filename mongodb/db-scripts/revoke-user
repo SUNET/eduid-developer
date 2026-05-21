@@ -1,119 +1,86 @@
-#!/opt/eduid/bin/python
+#!/usr/bin/env python3
 #
-# Revoke a user by eduPersonPrincipalName
+# Revoke a user by eduPersonPrincipalName.
+#
+# This replaces the user document with just the eppn and a revoked timestamp,
+# and removes related documents from auxiliary collections.
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/revoke-user EPPN
 #
 
-import sys
 import datetime
-import bson
-import pymongo
-from pymongo import MongoClient, ReadPreference
+import sys
+
+from eduid.userdb import User
+from eduid.userdb.admin import RawDb, get_argparser
 
 
-def print_value(key, value):
-    if isinstance(value, basestring):
-        print("  {!s:>25}: {!s}".format(key, value.encode('utf-8')))
-    elif isinstance(value, datetime.datetime):
-        print("  {!s:>25}: {!s}".format(key, value.isoformat()))
-    else:
-        print("  {!s:>25}: {!r}".format(key, value))
+AUX_COLLECTIONS = [
+    {"name": "eduid_idp_authninfo.authn_info", "key": "_id"},
+    {"name": "eduid_signup.registered", "key": "_id"},
+    {"name": "eduid_dashboard.profiles", "key": "_id"},
+    {"name": "eduid_dashboard.verifications", "key": "user_oid"},
+    {"name": "eduid_tou.consent", "key": "user_id"},
+]
 
 
-def show_user(user):
-    # Show general unidentified attributes
-    for (key, value) in sorted(user.items()):
-        if key == 'passwords':
-            continue
-        print_value(key, value)
+def show_user(user: User) -> None:
+    print(f"  eppn: {user.eppn}")
+    print(f"  user_id: {user.user_id}")
+    for identity in user.identities.to_list():
+        print(f"  identity: {identity.identity_type.value} {identity.unique_value}")
+    for mail in user.mail_addresses.to_list():
+        print(f"  mail: {mail.email}")
 
 
-def remove_user(user, coll, aux_collections):
-    for aux in aux_collections:
-        print('Removing from {!s}'.format(aux['name']))
-        aux['coll'].remove({aux['key']: user['_id']})
-    print('Removing from eduid_am.attributes')
-    coll.update({'_id': user['_id']}, {'eduPersonPrincipalName': user['eduPersonPrincipalName'],
-                                       'revoked_ts': datetime.datetime.utcnow(),
-                                       })
+def revoke_user(db: RawDb, raw_user, user: User, dry_run: bool) -> None:
+    for aux in AUX_COLLECTIONS:
+        db_name, coll_name = aux["name"].split(".")
+        for aux_doc in db.find(db_name, coll_name, {aux["key"]: user.user_id}):
+            print(f"  removing from {aux['name']}")
+            aux_doc.doc["DELETE_DOCUMENT"] = True
+            db.save_with_backup(aux_doc, dry_run=dry_run)
 
-def main(eppn):
-    client = MongoClient('mongodb://mongodb.docker:27017/', read_preference=ReadPreference.SECONDARY)
+    raw_user.doc = {
+        "_id": raw_user.doc["_id"],
+        "eduPersonPrincipalName": user.eppn,
+        "revoked_ts": datetime.datetime.now(tz=datetime.UTC),
+    }
+    print("  replacing user document in eduid_am.attributes")
+    db.save_with_backup(raw_user, dry_run=dry_run)
 
-    coll = client['eduid_am']['attributes']
 
-    aux_collections = [{'name': 'eduid_idp_authninfo.authn_info',
-                        'coll': client['eduid_idp_authninfo']['authn_info'],
-                        'key': '_id',
-                        },
-                       {'name': 'eduid_signup.registered',
-                        'coll': client['eduid_signup']['registered'],
-                        'key': '_id',
-                        },
-                       {'name': 'eduid_dashboard.profiles',
-                        'coll': client['eduid_dashboard']['profiles'],
-                        'key': '_id',
-                        },
-                       {'name': 'eduid_dashboard.verifications',
-                        'coll': client['eduid_dashboard']['verifications'],
-                        'key': 'user_oid',
-                        },
-                       {'name': 'eduid_dashboard.wizards',
-                        'coll': client['eduid_dashboard']['wizards'],
-                        'key': 'userid',
-                        },
-                       {'name': 'eduid_idp_authninfo.authn_info',
-                        'coll': client['eduid_idp_authninfo']['authn_info'],
-                        'key': '_id',
-                        },
-                       {'name': 'eduid_idp_pysaml2.ident',
-                        'coll': client['eduid_idp_pysaml2']['ident'],
-                        'key': 'user_id',
-                        },
-                       #{'name': 'eduid_idp_pysaml2.session',
-                       # 'coll': client['eduid_idp_pysaml2']['session'],
-                       # 'key': '',
-                       #},
-                       {'name': 'eduid_tou.consent',
-                        'coll': client['eduid_tou']['consent'],
-                        'key': 'user_id',
-                        },
-                       ]
-    separator = ''
-    user_iter = coll.find({'eduPersonPrincipalName': eppn})
-    if not user_iter:
-        return False
-
+def main(args) -> bool:
+    db = RawDb(myname="revoke-user")
+    dry_run = not args.force
     count = 0
-    for user in user_iter:
-        count += 1
-        print('Collection aduid_am.attributes:')
+
+    for raw_user in db.find("eduid_am", "attributes", {"eduPersonPrincipalName": args.eppn}):
+        user = User.from_dict(raw_user.doc)
+        print(f"Found user:")
         show_user(user)
 
-        print('\nEnter the eppn in UPPER CASE letters to remove the user and all related\n'
-              'information from the following database.collections:\n')
-
-        print('  eduid_am.attributes')
-        for this in aux_collections:
-            print('  {!s}'.format(this['name']))
-
-        print('')
-        answer = raw_input("Confirm eppn: ")
-
-        if answer == user['eduPersonPrincipalName'].upper():
-            print('Removing')
-            remove_user(user, coll, aux_collections)
+        if dry_run:
+            print("\nDry run - no changes made. Use --force to revoke.")
         else:
-            print('Abort')
+            print(f"\nRevoking user {user.eppn}...")
+            revoke_user(db, raw_user, user, dry_run=dry_run)
+            print("Done.")
+
+        count += 1
+
+    if not count:
+        print(f"No user found with eppn {args.eppn}")
 
     return bool(count > 0)
 
 
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        sys.stderr.write("Syntax: revoke-user eppn\n")
-        sys.exit(1)
+if __name__ == "__main__":
+    parser = get_argparser(description="Revoke a user by eduPersonPrincipalName", eppn=True)
+    args = parser.parse_args()
 
-    if main(sys.argv[1]):
+    if main(args):
         sys.exit(0)
-
     sys.exit(1)
