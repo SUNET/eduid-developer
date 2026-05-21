@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+#
+# List all current and locked identities across all users, grouped by identity.
+#
+# Run as:
+#
+#   run_with_admintools /opt/eduid/db-scripts/list-identities
+#
+
+import argparse
+from collections import defaultdict
+
+from eduid.userdb import User
+from eduid.userdb.admin import RawDb
+from eduid.userdb.exceptions import UserIsRevoked
+from eduid.userdb.identity import IdentityElement, IdentityType
+
+IDENTITY_TYPES = [t.value for t in IdentityType]
+
+
+def identity_label(identity: IdentityElement) -> str:
+    verified = "verified" if identity.is_verified else "not verified"
+    method = f", proofing: {identity.proofing_method}" if identity.proofing_method else ""
+    return f"{identity.identity_type.value} {identity.unique_value} ({verified}{method})"
+
+
+def main(args: argparse.Namespace):
+    db = RawDb(myname="list-identities")
+    type_filter: str | None = args.type
+
+    # key: (type, unique_value) -> list of (eppn, kind, label)
+    current_identities: dict[tuple[str, str], list[str]] = defaultdict(list)
+    locked_identities: dict[tuple[str, str], list[str]] = defaultdict(list)
+
+    for raw_user in db.find("eduid_am", "attributes", {}):
+        try:
+            user = User.from_dict(raw_user.doc)
+        except UserIsRevoked:
+            continue
+
+        for identity in user.identities.to_list():
+            if type_filter and identity.identity_type.value != type_filter:
+                continue
+            key = (identity.identity_type.value, identity.unique_value)
+            current_identities[key].append(user.eppn)
+
+        for identity in user.locked_identity.to_list():
+            if type_filter and identity.identity_type.value != type_filter:
+                continue
+            key = (identity.identity_type.value, identity.unique_value)
+            locked_identities[key].append(user.eppn)
+
+    print("Current identities:")
+    print()
+    for (id_type, value), eppns in sorted(current_identities.items()):
+        print(f"  {id_type:10} {value}")
+        for eppn in eppns:
+            print(f"    eppn: {eppn}")
+    print()
+
+    print("Locked identities:")
+    print()
+    for (id_type, value), eppns in sorted(locked_identities.items()):
+        print(f"  {id_type:10} {value}")
+        for eppn in eppns:
+            print(f"    eppn: {eppn}")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="List current and locked identities across all users")
+    parser.add_argument("--type", choices=IDENTITY_TYPES, default=None, help="Filter by identity type")
+    args = parser.parse_args()
+    main(args)
