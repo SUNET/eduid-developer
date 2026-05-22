@@ -119,7 +119,6 @@ Log files are available in `/var/log/eduid` within this container.
 When source directories are properly symlinked in the `sources/` directory, changes to your local code will automatically reload in the running containers. The containers are configured to:
 
 - Mount your local source tree in `/opt/eduid/src`
-- Add the source paths to `PYTHONPATH`
 - Run with the `--reload` flag for automatic reloading
 
 This applies to both the main package and its eduID dependencies.

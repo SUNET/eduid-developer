@@ -1,6 +1,5 @@
 ---
 x-common-env-variables: &common-env-variables
-  PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/
   EDUID_CONFIG_YAML: /opt/eduid/config.yaml
   extra_args: --reload
 
@@ -131,7 +130,6 @@ services:
       - ../sources/sunet-auth-server/src/auth_server:/opt/eduid/sources/auth_server:ro
     environment:
       <<: *common-env-variables
-      PYTHONPATH: /opt/eduid/sources/:/opt/sunet/sunet-auth-server/src/
       HOSTNAME: auth_server
       app_name: auth_server
       config_file: /opt/eduid/config.yaml
@@ -185,7 +183,6 @@ services:
       - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
-      PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/
       HOSTNAME: bankid
       eduid_name: bankid
       EDUID_CONFIG_NS: /eduid/webapp/bankid
@@ -300,7 +297,6 @@ services:
       - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
-      PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/
       HOSTNAME: eidas
       eduid_name: eidas
       EDUID_CONFIG_NS: /eduid/webapp/eidas
@@ -445,7 +441,6 @@ services:
       - ../eduid-idp/profiling:/opt/eduid/eduid-idp/profiling
     environment:
       <<: *common-env-variables
-      PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/pysaml2/src:/opt/eduid/src/pyXMLSecurity/src:/opt/eduid/src/
       HOSTNAME: idp
       eduid_name: idp
       EDUID_CONFIG_NS: /eduid/webapp/idp
@@ -550,7 +545,6 @@ services:
       - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
     environment:
       <<: *common-env-variables
-      PYTHONPATH: /opt/eduid/sources/:/opt/eduid/src/
       REQUESTS_CA_BUNDLE: /etc/ssl/rootCA.crt
       HOSTNAME: jsconfig
       eduid_name: jsconfig
@@ -847,7 +841,6 @@ services:
     tmpfs:
       - /var/lib/softhsm  # re-init every time
     environment:
-      PYTHONPATH: /opt/eduid/src/pyeleven/src
       ENABLE_PKCS11_SPY: anything
     depends_on:
       <<: *common-depends-on
