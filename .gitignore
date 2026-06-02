@@ -14,8 +14,6 @@ eduid-orcid/etc/oidc_client_creds.yaml
 etcd/data/
 py11softhsm/var/
 raw_db_changes
-vagrant.yml
-.vagrant/
 pki/*key
 pki/*crt
 pki/*pem

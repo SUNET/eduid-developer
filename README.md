@@ -11,7 +11,6 @@ This repository provides a complete local development environment for eduID usin
 - [Services and URLs](#services-and-urls)
 - [Makefile Commands](#makefile-commands)
 - [Troubleshooting](#troubleshooting)
-- [Alternative: Vagrant Setup](#alternative-vagrant-setup)
 
 ## Prerequisites
 
@@ -28,7 +27,7 @@ To verify your Docker installation:
     docker --version
     docker compose version
 
-**Note:** This guide assumes you're using Linux. For other operating systems, see the [Vagrant Setup](#alternative-vagrant-setup) section.
+**Note:** This guide assumes you're using Linux.
 
 ## First-Time Setup
 
@@ -264,17 +263,11 @@ All containers should be built by ci.sunet.se/platform.sunet.se and will be pull
     cd eduid-releng
     VERSION=some-version make build
 
-### Network Issues Between Docker and Vagrant
+### Reset the Docker Network
 
-If you want to run both Docker and Vagrant environments, you need to reset your networking before switching:
-
-**For Docker:**
+If the local bridge network gets into a bad state, remove it before starting the environment again:
 
     docker network rm eduid_dev
-
-**For Vagrant (VirtualBox):**
-
-Open VirtualBox, go to File → Host Network Manager and remove the network 172.16.10.0/24.
 
 ### ORCID Configuration
 
@@ -293,63 +286,9 @@ CLIENT_REGISTRATION_INFO:
 
 When testing user signup, the confirmation email content will be available in the log files rather than being sent to an actual email address. Use `./bin/tailf signup` to see the confirmation links.
 
-## Alternative: Vagrant Setup
-
-For development on non-Linux systems (macOS, Windows), you can use Vagrant with VirtualBox.
-
-### Prerequisites
-
-- VirtualBox: <https://www.virtualbox.org/>
-- Vagrant: <https://www.vagrantup.com/>
-
-### Setup
-
-1. Create a file named `vagrant.yml` in the repository root:
-
-```yaml
-local_paths:
-  eduid_front: "/path/to/eduid-front"
-  eduid_html: "/path/to/eduid-html"
-vm:
-  cpus: 2
-  memory: 4096
-  disksize: "20GB"
-```
-
-2. Start the Vagrant VM (only needed once per session):
-
-   $ make vagrant_run
-
-3. Start the containers inside the VM:
-
-   $ make vagrant_start
-
-4. Connect to the Vagrant VM:
-
-   $ make vagrant_ssh
-
-### Vagrant Commands
-
-| Command                    | Description                        |
-| -------------------------- | ---------------------------------- |
-| `make vagrant_run`         | Start Vagrant VM                   |
-| `make vagrant_start`       | Start all containers in VM         |
-| `make vagrant_stop`        | Stop all containers in VM          |
-| `make vagrant_halt`        | Stop containers and halt VM        |
-| `make vagrant_ssh`         | SSH into the VM                    |
-| `make vagrant_up`          | Start non-running containers in VM |
-| `make vagrant_pull`        | Pull latest images in VM           |
-| `make vagrant_show_logs`   | View logs in VM                    |
-| `make vagrant_mongodb_cli` | MongoDB shell in VM                |
-| `make vagrant_destroy`     | Destroy the VM completely          |
-
-**Note:** The PKI certificate creation script runs automatically on `make vagrant_run`.
-
----
-
 ## Contributing
 
 When making changes to the environment:
 
-- Test both Docker and Vagrant setups if possible
+- Test the Docker setup if possible
 - Update this README with any new services or configuration requirements

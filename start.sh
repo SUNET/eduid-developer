@@ -6,16 +6,6 @@ if [ ! -f eduid/compose.yml ]; then
     exit 1
 fi
 
-while [ "$1" != "" ]; do
-    case $1 in
-        --vagrant )             vagrant=true
-                                ;;
-        -h | --help )           echo "usage: start.sh [--vagrant]"
-                                exit
-    esac
-    shift
-done
-
 #
 # Set up entrys in /etc/hosts for the containers with externally accessible services
 # DON'T USE THE eduid_dev ONES, COOKIES ARE SCOPED FOR eduid.docker
@@ -58,10 +48,6 @@ done
     fi
 done
 
-if [ "$vagrant" = true ]; then
-    vagrant ssh -c "cd /opt/eduid-developer; make start"
-else
-    $DOCKER compose -f eduid/compose.yml rm -s -f
-    $DOCKER compose -f eduid/compose.yml up --remove-orphans $*
-    $DOCKER compose -f eduid/compose.yml logs -tf
-fi
+$DOCKER compose -f eduid/compose.yml rm -s -f
+$DOCKER compose -f eduid/compose.yml up --remove-orphans $*
+$DOCKER compose -f eduid/compose.yml logs -tf
