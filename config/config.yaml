@@ -334,7 +334,6 @@ eduid:
             provider_configuration_info:
                 issuer: https://sandbox.orcid.org
             mongo_uri: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
-            orcid_verify_redirect_url: /profile/accountlinking
         eidas:
             server_name: eidas.eduid.docker
             application_root: /
