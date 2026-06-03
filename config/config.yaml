@@ -358,11 +358,6 @@ eduid:
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             safe_relay_domain: eduid.docker
             bankid_idp: https://bankidp.qa.swamid.se/bankid/idp
-            frontend_action_finish_url:
-              bankidVerifyIdentity: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
-              bankidVerifyCredential: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
-              loginMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
-              resetpwMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/lookup-mobile-proofing
