@@ -250,7 +250,7 @@ eduid:
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
               signupExternalMfa:
-                force_authnr: true
+                force_authn: true
                 force_mfa: true
                 same_user: false
                 allow_signup_auth: true
