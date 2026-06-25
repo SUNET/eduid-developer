@@ -8,6 +8,7 @@ This repository provides a complete local development environment for eduID usin
 - [First-Time Setup](#first-time-setup)
 - [Running the Environment](#running-the-environment)
 - [Development Workflow](#development-workflow)
+- [Database Admin Scripts](#database-admin-scripts)
 - [Services and URLs](#services-and-urls)
 - [Makefile Commands](#makefile-commands)
 - [Troubleshooting](#troubleshooting)
@@ -160,6 +161,56 @@ If you need to rebuild the frontend JavaScript bundles:
 Turq (a mock HTTP server) is used to fake 'OK' responses to all calls to the VCCS authentication backend during development.
 
 Access Turq at: <http://turq.eduid.docker:13085/+turq/>
+
+## Database Admin Scripts
+
+The scripts in `mongodb/db-scripts/` operate on the eduID databases. They are
+run inside an `eduid-admintools` Docker container via the
+`bin/run_with_admintools` wrapper, which connects to the dev MongoDB and mounts
+the `db-scripts/` directory and your MongoDB credentials into the container.
+
+Run it from the `eduid-developer` top level directory:
+
+    ./bin/run_with_admintools /opt/eduid/db-scripts/<script> [arguments]
+
+Most scripts that modify data default to a dry run; pass `--force` (or the
+script's documented flag) to apply changes. Run a script without arguments to
+see its usage.
+
+### Inspecting
+
+| Script                 | Description                                                          |
+| ---------------------- | -------------------------------------------------------------------- |
+| `finger`               | Show information about a single eduID user matching search criteria  |
+| `list-users`           | List all users in the `eduid_am` database                            |
+| `list-identities`      | List all current and locked identities, grouped by identity          |
+| `list-old-credentials` | List credentials not used for some time (default 18 months)          |
+
+### Modifying users
+
+| Script                    | Description                                                       |
+| ------------------------- | ----------------------------------------------------------------- |
+| `unlock-user`             | Unlock an account that tripped the too-many-failed-logins limit   |
+| `revoke-user`             | Revoke a user by eppn and clean up related auxiliary documents    |
+| `load-save-users`         | Load and re-save user documents to clean out cruft                |
+| `remove-tous`             | Remove all accepted Terms of Use from a user (development)        |
+| `add-orcid`               | Add an ORCID element to a user (development)                      |
+| `add-security-key`        | Add a security key (U2F/webauthn) to a user (development)         |
+| `remove-security-keys`    | Remove all security keys from a user (development)                |
+| `make-user-al3`           | Set a verified NIN and proof a credential — never in production!  |
+| `set-ladok-proofing`      | Set Ladok proofing data on a user                                 |
+| `set-credential-proofing` | Set the proofing method on one of a user's credentials            |
+
+### Maintenance and bulk operations
+
+| Script                       | Description                                                    |
+| ---------------------------- | -------------------------------------------------------------- |
+| `remove-terminated-users`    | Remove users that asked to terminate more than 7 days ago      |
+| `pysaml2-cleanup`            | Remove old pysaml2 data from the `ident` and `session` collections |
+| `drop-all-managed-accounts`  | Drop the collection holding all managed accounts               |
+| `source-queue-items`         | Source eduID queue items for testing                           |
+| `import_test_navet_users`    | Import Navet test users from a CSV file                        |
+| `db_setup.py`                | Create users and collections from a YAML definition            |
 
 ## Services and URLs
 
