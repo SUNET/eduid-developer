@@ -1288,8 +1288,8 @@ services:
       - 8080
     volumes:
       - ../vccs:/opt/eduid/vccs:rw
-      - ../vccs/lunahsm/cert:/usr/safenet/lunaclient/cert
-      - ../vccs/lunahsm/Chrystoki.conf.d:/etc/Chrystoki.conf.d
+      #- ../vccs/lunahsm/cert:/usr/safenet/lunaclient/cert
+      #- ../vccs/lunahsm/Chrystoki.conf.d:/etc/Chrystoki.conf.d
       - ../config/config.yaml:/opt/eduid/config.yaml:ro
       - eduidlogdata:/var/log/eduid
       # source volumes
