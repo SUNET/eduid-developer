@@ -212,6 +212,8 @@ eduid:
                 high_security: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              connectOrcid:
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
               login:
                 same_user: false
                 finish_url: "https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}"
@@ -247,6 +249,13 @@ eduid:
                 high_security: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              signupExternalMfa:
+                force_authn: true
+                force_mfa: true
+                same_user: false
+                allow_signup_auth: true
+                allow_login_auth: false
+                finish_url: "https://html.eduid.docker/register/ext-return/{app_name}/{authn_id}"
               supportLogin:
                 force_authn: false
                 force_mfa: true
@@ -314,17 +323,6 @@ eduid:
             ekopost_api_user: ekopost_user
             ekopost_api_pw: ekopost_pw
             letter_wait_time_hours: 360  # match automated tests
-        oidc_proofing:
-            server_name: dashboard.eduid.docker
-            application_root: /services/oidc-proofing
-            logger_name: oidc_proofing
-            log_level: DEBUG
-            client_registration_info:
-                client_id: client1
-                client_secret: abcdef
-            provider_configuration_info:
-                issuer: http://turq:13085/op/
-            mongo_uri: mongodb://eduid_oidc_proofing:eduid_oidc_proofing_pw@mongodb.eduid_dev
         orcid:
             server_name: dashboard.eduid.docker
             application_root: /services/orcid
@@ -336,7 +334,6 @@ eduid:
             provider_configuration_info:
                 issuer: https://sandbox.orcid.org
             mongo_uri: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
-            orcid_verify_redirect_url: /profile/accountlinking
         eidas:
             server_name: eidas.eduid.docker
             application_root: /
@@ -516,11 +513,11 @@ eduid:
               orcid_service_url: https://dashboard.eduid.docker/services/orcid/
               freja_eid_service_url: https://dashboard.eduid.docker/services/freja-eid/
               group_mgmt_service_url: https://dashboard.eduid.docker/services/group-management/
-              eidas_service_url: https://samleid.eduid.docker/
+              eidas_service_url: https://eidas.eduid.docker/
               reset_password_service_url: https://idp.eduid.docker/services/reset-password/
               svipe_service_url: https://dashboard.eduid.docker/services/svipe-id/
               token_verify_idp: http://dev.test.swedenconnect.se/idp
-              bankid_service_url: https://samleid.eduid.docker/
+              bankid_service_url: https://bankid.eduid.docker/
               signup_service_url: https://signup.eduid.docker/services/signup/
               password_length: 12
               password_entropy: 25
@@ -528,7 +525,6 @@ eduid:
               proofing_methods:
                   - letter
                   - lookup_mobile
-                  - oidc
                   - eidas
               default_country_code: 46
               # This key is for signup.eduid.docker
@@ -603,6 +599,7 @@ eduid:
                 'pymongo.connection':
                   level: 'INFO'
             allow_other_device_logins: true
+            allow_new_signup_logins: true
         reset_password:
             server_name: idp.eduid.docker
             mongo_uri: mongodb://eduid_reset_password:eduid_reset_password_pw@mongodb.eduid_dev

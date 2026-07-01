@@ -1,40 +1,16 @@
 DOCKER=$(shell which docker)
 
-vagrant_run:
-	vagrant up
-
 start:
 	./start.sh
-
-vagrant_start:
-	./start.sh --vagrant
-
-vagrant_ssh:
-	vagrant ssh
 
 stop:
 	./stop.sh
 
-vagrant_stop:
-	vagrant ssh -c "cd /opt/eduid-developer; make stop"
-
-vagrant_halt: vagrant_stop
-	vagrant halt
-
 up:
 	$(DOCKER) compose -f eduid/compose.yml up -d --remove-orphans
 
-vagrant_up:
-	vagrant ssh -c "cd /opt/eduid-developer; make up"
-
-vagrant_docker_ps:
-	vagrant ssh -c "docker ps"
-
 pull:
 	$(DOCKER) compose -f eduid/compose.yml pull
-
-vagrant_pull:
-	vagrant ssh -c "cd /opt/eduid-developer; make pull"
 
 show_logs:
 	docker run -it --init --rm --name showlogs --workdir /var/log/eduid/ -v eduidlogdata:/var/log/eduid -v mongodblogdata:/var/log/mongodb -v htmlnginxlogdata:/var/log/nginx/eduid-html busybox:stable sh
@@ -47,21 +23,6 @@ cp_appdata:
 
 mongodb_cli:
 	$(DOCKER) compose -f eduid/compose.yml exec mongodb mongosh
-
-vagrant_show_logs:
-	(vagrant ssh -c "cd /opt/eduid-developer; make show_logs")
-
-vagrant_show_appdata:
-	(vagrant ssh -c "cd /opt/eduid-developer; make show_appdata")
-
-vagrant_cp_appdata:
-	(vagrant ssh -c "cd /opt/eduid-developer; make cp_appdata file=${file}")
-
-vagrant_mongodb_cli:
-	vagrant ssh -c "cd /opt/eduid-developer; make mongodb_cli"
-
-vagrant_destroy:
-	vagrant destroy
 
 build_frontend_bundle:
 	ls -l sources/eduid-front/build
@@ -93,4 +54,4 @@ developer_release:
 	done
 	git commit -m "Updated version to $(VERSION)" ./eduid/compose.yml
 
-.PHONY: vagrant_run start vagrant_start vagrant_ssh stop vagrant_stop vagrant_halt up vagrant_up pull vagrant_pull show_logs vagrant_show_logs show_appdata vagrant_show_appdata cp_appdata vagrant_cp_appdata mongodb_cli vagrant_mongodb_cli vagrant_destroy build_frontend_bundle frontend_npm_start
+.PHONY: start stop up pull show_logs show_appdata cp_appdata mongodb_cli build_frontend_bundle frontend_npm_start
