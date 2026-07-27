@@ -212,6 +212,8 @@ eduid:
                 high_security: true
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
+              connectOrcid:
+                finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
               login:
                 same_user: false
                 finish_url: "https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}"
@@ -248,7 +250,7 @@ eduid:
                 allow_login_auth: true
                 finish_url: "https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}"
               signupExternalMfa:
-                force_authnr: true
+                force_authn: true
                 force_mfa: true
                 same_user: false
                 allow_signup_auth: true
@@ -332,7 +334,6 @@ eduid:
             provider_configuration_info:
                 issuer: https://sandbox.orcid.org
             mongo_uri: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
-            orcid_verify_redirect_url: /profile/accountlinking
         eidas:
             server_name: eidas.eduid.docker
             application_root: /
@@ -357,11 +358,6 @@ eduid:
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             safe_relay_domain: eduid.docker
             bankid_idp: https://bankidp.qa.swamid.se/bankid/idp
-            frontend_action_finish_url:
-              bankidVerifyIdentity: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
-              bankidVerifyCredential: https://html.eduid.docker/profile/ext-return/{app_name}/{authn_id}
-              loginMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
-              resetpwMfaAuthn: https://html.eduid.docker/login/ext-return/{app_name}/{authn_id}
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/lookup-mobile-proofing
