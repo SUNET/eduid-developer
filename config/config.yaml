@@ -373,6 +373,9 @@ eduid:
             foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
             bankid_idp: https://bankidp.qa.swamid.se/bankid/idp
             allow_eidas_credential_verification: true
+            magic_cookie_idp: https://ref-idp.sandbox.swedenconnect.se/idp
+            magic_cookie_bankid_idp: https://bankidp.qa.swamid.se/bankid/idp
+            magic_cookie_foreign_id_idp: https://dev.connector.swedenconnect.se/eidas
         lookup_mobile_proofing:
             server_name: dashboard.eduid.docker
             application_root: /services/lookup-mobile-proofing
