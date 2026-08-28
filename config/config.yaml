@@ -369,7 +369,7 @@ eduid:
             safe_relay_domain: eduid.docker
             token_verify_redirect_url: https://html.eduid.docker/profile/settings/advanced-settings
             identity_verify_redirect_url: https://html.eduid.docker/profile/verify-identity/
-            freja_idp: http://dev.test.swedenconnect.se/idp
+            freja_idp: https://idp-sweden-connect-valfr-2017-sandbox.test.frejaeid.com
             foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
             bankid_idp: https://bankidp.qa.swamid.se/bankid/idp
             allow_eidas_credential_verification: true
