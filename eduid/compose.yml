@@ -999,7 +999,7 @@ services:
       <<: *common-depends-on
 
   samleid:
-    image: docker.sunet.se/eduid/webapp:20260901T100818-staging
+    image: platform.sunet.se/eduid/webapp:20260901T100818-staging
     pull_policy: if_not_present
     restart: always
     networks:
