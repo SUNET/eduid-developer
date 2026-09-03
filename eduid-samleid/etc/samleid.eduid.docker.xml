@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" xmlns:ns4="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:ns5="urn:oasis:names:tc:SAML:2.0:assertion" entityID="https://samleid.eduid.docker/saml2-metadata">
+  <ns0:Extensions>
+    <ns4:EntityAttributes>
+      <ns5:Attribute Name="http://macedir.org/entity-category" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <ns5:AttributeValue>http://id.elegnamnden.se/ec/1.0/loa3-pnr</ns5:AttributeValue>
+        <ns5:AttributeValue>http://id.elegnamnden.se/ec/1.0/eidas-naturalperson</ns5:AttributeValue>
+        <ns5:AttributeValue>http://id.elegnamnden.se/sprop/1.0/mobile-auth</ns5:AttributeValue>
+        <ns5:AttributeValue>http://id.elegnamnden.se/st/1.0/public-sector-sp</ns5:AttributeValue>
+        <ns5:AttributeValue>http://id.swedenconnect.se/general-ec/1.0/accepts-coordination-number</ns5:AttributeValue>
+      </ns5:Attribute>
+    </ns4:EntityAttributes>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+    <ns1:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
+    <ns1:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+  </ns0:Extensions>
+  <ns0:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" AuthnRequestsSigned="true" WantAssertionsSigned="true">
+    <ns0:Extensions>
+      <mdui:UIInfo xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui">
+        <mdui:DisplayName xml:lang="en">eduID Dev</mdui:DisplayName>
+        <mdui:DisplayName xml:lang="sv">eduID Dev</mdui:DisplayName>
+        <mdui:Logo height="120" width="350">https://www.eduid.se/static/img/ds-eduID-logo-black350x120px.png</mdui:Logo>
+        <mdui:Description xml:lang="sv">e-konto f&#xF6;r h&#xF6;gskolan</mdui:Description>
+        <mdui:Description xml:lang="en">e-account for university</mdui:Description>
+      </mdui:UIInfo>
+    </ns0:Extensions>
+    <ns0:KeyDescriptor use="signing">
+      <ns2:KeyInfo>
+        <ns2:X509Data>
+          <ns2:X509Certificate>MIIFQzCCAyugAwIBAgIUHz/5aot0WNqLaxzSbAznCNrnss0wDQYJKoZIhvcNAQELBQAwMTELMAkGA1UEBhMCU0UxIjAgBgNVBAMMGWVpZC0yMDI2MDIxMC5lZHVpZC5kb2NrZXIwHhcNMjYwMjEwMTQ0MTUyWhcNMzYwMjA4MTQ0MTUyWjAxMQswCQYDVQQGEwJTRTEiMCAGA1UEAwwZZWlkLTIwMjYwMjEwLmVkdWlkLmRvY2tlcjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAKrPDKtpbCKlbBlLOHqRpl2VXkWjiDYI3FLu37u6yXu++T0LNPBAB2anJYxRE/nKhX9YJ/ljUe5mmxsva/Q6O07JXiXs55HuqoLW9k1pA5Yo1TyvV6md+wvL5YmoWzkhE6TlAbaLwo0+mO6BcBFaux3g3Oy3TgiHcKgA/dgohPDwFW0Csgl92ymTjOukROmmKu2nEKADLN20nupicQCuCv19DtBtfREIFiUCUY5I33pFjg8qLwkJ7AIPI6K1KHghYrcmi64LQfgr/A46QpOEivjz2LWSo4lD/qv7iS8zM53ZaVMMvkLZFgHZTO1NNljUsDmERoH9mF5ZWRQJ4+EgUnnuLEWe0sLo9qfcKywXLLAwv/GI0dc+gf0n67BYTjHS/DLgPXyamPqVW+2r8y8P5JJ2ATyYsHgrZO9YLMcP8V6BY5Vq2VYwihQM1AwV5QJLIICCEve91f0qHt7qtjJUKp3nDCAWgxVs7vi+jc5URFBPPCfnZNtELnVc9PjjgncijNCcEUib0C5Vc0Blj/3ov/1aSMfCs9Iq02kHzQB0d8npUe+KkA2kYRrOl53KsIRAjR/PaESdawbufTeZm556If9fVEkp0pZpbUyAvlt9W2SkQV/HQHLZy3k5lbcDUrk+zpthEHFAYKAcAoabNOsdg3E0GCOWl0/LDRSv9/8hyv0xAgMBAAGjUzBRMB0GA1UdDgQWBBRIJ+fCPsMIh00azFSCYIgVOl5kIzAfBgNVHSMEGDAWgBRIJ+fCPsMIh00azFSCYIgVOl5kIzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQBKvn1h27tT0RQJyeJzsgVNUcwsv/LcOGTGZOGetSOtBdo7zlqrq0h7hfuILJWG8uS6L3yjoRtoPa1UWBzgVF4CIy9TyRLyOMVOYlTLJ7t1SDKNsqlLKxNpn561VIEG81KNCe2jTiajlWPJGriya4dJcFG5jwCGR9O7dojHH7XvOqHNqjTRcGpbciwnW9xDjF2MMPagsrOyZjGwXAaNeqc0097i0KBj6nROK+qRXTVq3loybV8LnptIf3AFxOhfqUB8a5skwZb+vFNPH1V4xXcxVEZsQtbyZv/nIZ2V8/HKcYbRkPOwltnmGLCvlRz03+sormp9jItOM7fLU6E8rET61tgXEGP5UQ/hqviUHehQ5IYOsghvhR2vUMscBtKDfpGVhkPhD73AUme0WdKoT44x67vNPmwtrEKUA8Knj3cIkYnfwAU2WDDiUcTcn0BO0HhWyzrZ+ORF8mivnZDjWLKaglXJHFiiv/xxhAb5WwJQ8oQ1jBUHdjA5pbPoe3kPGvCqXf2muBmq75BrJcR8PslLXtbqvVI4yV9ulcC3glJ8fM5u3VGjTaMM8k/tSz8ZXWBXVNE8ok+MnEBbkGvCDmfKszLn1242CuAixFpxR1AwBIuk0fYfn2QNyIJ0+iU3XY0nkfm6OSxRSZGRiwigk3n/hZG4uThu3uVzqpvOuaAvNQ==</ns2:X509Certificate>
+        </ns2:X509Data>
+      </ns2:KeyInfo>
+    </ns0:KeyDescriptor>
+    <ns0:KeyDescriptor use="encryption">
+      <ns2:KeyInfo>
+        <ns2:X509Data>
+          <ns2:X509Certificate>MIIFQzCCAyugAwIBAgIUHz/5aot0WNqLaxzSbAznCNrnss0wDQYJKoZIhvcNAQELBQAwMTELMAkGA1UEBhMCU0UxIjAgBgNVBAMMGWVpZC0yMDI2MDIxMC5lZHVpZC5kb2NrZXIwHhcNMjYwMjEwMTQ0MTUyWhcNMzYwMjA4MTQ0MTUyWjAxMQswCQYDVQQGEwJTRTEiMCAGA1UEAwwZZWlkLTIwMjYwMjEwLmVkdWlkLmRvY2tlcjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAKrPDKtpbCKlbBlLOHqRpl2VXkWjiDYI3FLu37u6yXu++T0LNPBAB2anJYxRE/nKhX9YJ/ljUe5mmxsva/Q6O07JXiXs55HuqoLW9k1pA5Yo1TyvV6md+wvL5YmoWzkhE6TlAbaLwo0+mO6BcBFaux3g3Oy3TgiHcKgA/dgohPDwFW0Csgl92ymTjOukROmmKu2nEKADLN20nupicQCuCv19DtBtfREIFiUCUY5I33pFjg8qLwkJ7AIPI6K1KHghYrcmi64LQfgr/A46QpOEivjz2LWSo4lD/qv7iS8zM53ZaVMMvkLZFgHZTO1NNljUsDmERoH9mF5ZWRQJ4+EgUnnuLEWe0sLo9qfcKywXLLAwv/GI0dc+gf0n67BYTjHS/DLgPXyamPqVW+2r8y8P5JJ2ATyYsHgrZO9YLMcP8V6BY5Vq2VYwihQM1AwV5QJLIICCEve91f0qHt7qtjJUKp3nDCAWgxVs7vi+jc5URFBPPCfnZNtELnVc9PjjgncijNCcEUib0C5Vc0Blj/3ov/1aSMfCs9Iq02kHzQB0d8npUe+KkA2kYRrOl53KsIRAjR/PaESdawbufTeZm556If9fVEkp0pZpbUyAvlt9W2SkQV/HQHLZy3k5lbcDUrk+zpthEHFAYKAcAoabNOsdg3E0GCOWl0/LDRSv9/8hyv0xAgMBAAGjUzBRMB0GA1UdDgQWBBRIJ+fCPsMIh00azFSCYIgVOl5kIzAfBgNVHSMEGDAWgBRIJ+fCPsMIh00azFSCYIgVOl5kIzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQBKvn1h27tT0RQJyeJzsgVNUcwsv/LcOGTGZOGetSOtBdo7zlqrq0h7hfuILJWG8uS6L3yjoRtoPa1UWBzgVF4CIy9TyRLyOMVOYlTLJ7t1SDKNsqlLKxNpn561VIEG81KNCe2jTiajlWPJGriya4dJcFG5jwCGR9O7dojHH7XvOqHNqjTRcGpbciwnW9xDjF2MMPagsrOyZjGwXAaNeqc0097i0KBj6nROK+qRXTVq3loybV8LnptIf3AFxOhfqUB8a5skwZb+vFNPH1V4xXcxVEZsQtbyZv/nIZ2V8/HKcYbRkPOwltnmGLCvlRz03+sormp9jItOM7fLU6E8rET61tgXEGP5UQ/hqviUHehQ5IYOsghvhR2vUMscBtKDfpGVhkPhD73AUme0WdKoT44x67vNPmwtrEKUA8Knj3cIkYnfwAU2WDDiUcTcn0BO0HhWyzrZ+ORF8mivnZDjWLKaglXJHFiiv/xxhAb5WwJQ8oQ1jBUHdjA5pbPoe3kPGvCqXf2muBmq75BrJcR8PslLXtbqvVI4yV9ulcC3glJ8fM5u3VGjTaMM8k/tSz8ZXWBXVNE8ok+MnEBbkGvCDmfKszLn1242CuAixFpxR1AwBIuk0fYfn2QNyIJ0+iU3XY0nkfm6OSxRSZGRiwigk3n/hZG4uThu3uVzqpvOuaAvNQ==</ns2:X509Certificate>
+        </ns2:X509Data>
+      </ns2:KeyInfo>
+    </ns0:KeyDescriptor>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://samleid.eduid.docker/logout"/>
+    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://samleid.eduid.docker/saml2-acs" index="1"/>
+    <ns0:AttributeConsumingService index="1">
+      <ns0:ServiceName xml:lang="en"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.2.752.29.4.13" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="personalIdentityNumber" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.3.6.1.5.5.7.9.1" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="dateOfBirth" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:2.16.840.1.113730.3.1.241" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="displayName" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:2.5.4.42" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="givenName" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:2.5.4.4" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="sn" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.3.6.1.5.5.7.9.4" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="countryOfCitizenship" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.2.752.201.3.2" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="transactionIdentifier" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.2.752.201.3.3" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="authContextParams" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.2.752.201.3.4" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="prid" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.2.752.201.3.5" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="pridPersistence" isRequired="false"/>
+      <ns0:RequestedAttribute Name="urn:oid:1.2.752.201.3.7" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="eidasPersonIdentifier" isRequired="false"/>
+    </ns0:AttributeConsumingService>
+  </ns0:SPSSODescriptor>
+  <ns0:Organization>
+    <ns0:OrganizationName xml:lang="en">eduID Dev</ns0:OrganizationName>
+    <ns0:OrganizationDisplayName xml:lang="en">eduID Dev</ns0:OrganizationDisplayName>
+    <ns0:OrganizationURL xml:lang="en">https://www.dev.eduid.se/</ns0:OrganizationURL>
+  </ns0:Organization>
+  <ns0:ContactPerson contactType="technical">
+    <ns0:Company>eduID</ns0:Company>
+    <ns0:GivenName>Sysadmin</ns0:GivenName>
+    <ns0:SurName>Sysadmin</ns0:SurName>
+    <ns0:EmailAddress>feedback@eduid.se</ns0:EmailAddress>
+  </ns0:ContactPerson>
+</ns0:EntityDescriptor>
