@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" xmlns:ns4="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:ns5="urn:oasis:names:tc:SAML:2.0:assertion" entityID="https://samleid.eduid.docker/saml2-metadata">
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" xmlns:ns4="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:ns5="urn:oasis:names:tc:SAML:2.0:assertion" entityID="https://eid.eduid.docker/saml2-metadata">
   <ns0:Extensions>
     <ns4:EntityAttributes>
       <ns5:Attribute Name="http://macedir.org/entity-category" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
@@ -44,8 +44,8 @@
         </ns2:X509Data>
       </ns2:KeyInfo>
     </ns0:KeyDescriptor>
-    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://samleid.eduid.docker/logout"/>
-    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://samleid.eduid.docker/saml2-acs" index="1"/>
+    <ns0:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://eid.eduid.docker/logout"/>
+    <ns0:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://eid.eduid.docker/saml2-acs" index="1"/>
     <ns0:AttributeConsumingService index="1">
       <ns0:ServiceName xml:lang="en"/>
       <ns0:RequestedAttribute Name="urn:oid:1.2.752.29.4.13" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="personalIdentityNumber" isRequired="false"/>
