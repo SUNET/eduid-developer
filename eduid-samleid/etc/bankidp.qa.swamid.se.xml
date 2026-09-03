@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:samla="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi" xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" xmlns:ns1="http://id.swedenconnect.se/authn/1.0/principal-selection/ns" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="https://bankidp.qa.swamid.se/bankid/idp">
+  <md:Extensions>
+    <mdattr:EntityAttributes>
+      <samla:Attribute Name="urn:oasis:names:tc:SAML:attribute:assurance-certification" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <samla:AttributeValue>http://id.swedenconnect.se/loa/1.0/uncertified-loa3</samla:AttributeValue>
+        <samla:AttributeValue>http://www.swamid.se/policy/assurance/al1</samla:AttributeValue>
+      </samla:Attribute>
+      <samla:Attribute Name="http://macedir.org/entity-category" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <samla:AttributeValue>http://id.elegnamnden.se/ec/1.0/loa3-pnr</samla:AttributeValue>
+        <samla:AttributeValue>http://id.swedenconnect.se/ec/1.0/loa3-name</samla:AttributeValue>
+        <samla:AttributeValue>http://id.elegnamnden.se/sprop/1.0/mobile-auth</samla:AttributeValue>
+        <samla:AttributeValue>http://id.elegnamnden.se/sprop/1.0/scal2</samla:AttributeValue>
+        <samla:AttributeValue>http://id.swedenconnect.se/general-ec/1.0/secure-authenticator-binding</samla:AttributeValue>
+      </samla:Attribute>
+    </mdattr:EntityAttributes>
+    <mdrpi:RegistrationInfo registrationAuthority="http://www.swamid.se/" registrationInstant="2023-10-23T08:48:33Z">
+      <mdrpi:RegistrationPolicy xml:lang="en">http://swamid.se/policy/mdrps</mdrpi:RegistrationPolicy>
+    </mdrpi:RegistrationInfo>
+  </md:Extensions>
+  <md:IDPSSODescriptor WantAuthnRequestsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" errorURL="https://error.swamid.se">
+    <md:Extensions>
+      <shibmd:Scope regexp="false">sunet.se</shibmd:Scope>
+      <mdui:UIInfo>
+        <mdui:DisplayName xml:lang="en">BankID</mdui:DisplayName>
+        <mdui:DisplayName xml:lang="sv">BankID</mdui:DisplayName>
+        <mdui:Description xml:lang="en">BankID Identity Provider (QA)</mdui:Description>
+        <mdui:Description xml:lang="sv">BankID legitimeringstjänst (QA)</mdui:Description>
+        <mdui:Logo xml:lang="en" height="171" width="20">https://bankidp.qa.swamid.se/bankid/idp/images/BankID_logo.svg</mdui:Logo>
+        <mdui:Logo xml:lang="sv" height="171" width="20">https://bankidp.qa.swamid.se/bankid/idp/images/BankID_logo.svg</mdui:Logo>
+        <mdui:InformationURL xml:lang="en">https://wiki.sunet.se/pages/viewpage.action?pageId=163708962</mdui:InformationURL>
+        <mdui:InformationURL xml:lang="sv">https://wiki.sunet.se/pages/viewpage.action?pageId=163708962</mdui:InformationURL>
+        <mdui:PrivacyStatementURL xml:lang="sv">https://wiki.sunet.se/pages/viewpage.action?pageId=163708962</mdui:PrivacyStatementURL>
+        <mdui:PrivacyStatementURL xml:lang="en">https://wiki.sunet.se/pages/viewpage.action?pageId=163708962</mdui:PrivacyStatementURL>
+      </mdui:UIInfo>
+      <ns1:RequestedPrincipalSelection>
+        <ns1:MatchValue Name="urn:oid:1.2.752.29.4.13"/>
+      </ns1:RequestedPrincipalSelection>
+    </md:Extensions>
+    <md:KeyDescriptor>
+      <ds:KeyInfo>
+        <ds:X509Data>
+          <ds:X509Certificate>MIIFJzCCAw+gAwIBAgIUDjDwmUTh2t7Yp7/OP4GSI5i7MTgwDQYJKoZIhvcNAQEL
+BQAwIzEhMB8GA1UEAwwYYmFua2lkX3NhbWxfbWV0YWRhdGFfa2V5MB4XDTIzMTEw
+MzA3NTkxM1oXDTMzMTAzMTA3NTkxM1owIzEhMB8GA1UEAwwYYmFua2lkX3NhbWxf
+bWV0YWRhdGFfa2V5MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAzfg3
+3jklUb4hNpNkKAf42ZAXP7s4ef8rkKiQZ/VdORCrvtcVigaRYeR4CkPCAU/m5vDB
+PhTIn2MgB1v/DPGURwKWiIa+GiDkOCI1LG0jJH4HEhPQFa5kIeQ5mw+I9SWrxRhr
+Vxh1iDDSCuakG/Q7LV5qAGGSTZvvcMvC61j45kEX0iGurF0JOdluB0MVTWRiGGua
+iLkLyRg2yhe7ujChRRCDpRC8x/VDaMzATwapiiunjTGHYz2oTjal+OEgbvgWZkVX
+YTELsC9H2jEYAkzdl0jhUnU7914fQvQKsD+ksHbAfAETzu7hyrHviHP+GN7wjsQQ
+5CYR/bFMwEUeftUzm6mQWMwaXljqeK12XxbQJE0uJOHDgLAGGzWIpHAWDR1WYUfs
+nVw22STvqLGqy/QZyHdADmBxI6tw2+Ibr9+ieRq6AzwZHmfrtrcIYr8opzlGJ2oN
+uNyyLMcxNDj23NhbVHXnpyyd/KWqs6AhKfQn3ORQwZzGpioViMRb+CHzcxB52wD+
+CPRGl8DD1dfBC3B6bqROR/1EZL2j1pgw5Giby7fOOtPug7aBpVQtKtddAX2pawkz
+cicQqCQIo5+9oreqEy5JV/tPVXrERWuZxsGfdtlL2YF1mpTcv9mdz1pJ+YrPQISO
+4aeI9zwi8vgDg0NRVec8UBH2/IWrtNzDeZwHAO0CAwEAAaNTMFEwHQYDVR0OBBYE
+FEKjNGJEcregbAGGAyJZYwYCP7MxMB8GA1UdIwQYMBaAFEKjNGJEcregbAGGAyJZ
+YwYCP7MxMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggIBABzxAmkO
+puvMJ2LDTAEJs1uLcrDOePUmvK5E+bm3Dvsg+a6LWarqM8Jj5G8z4B1MuOPUZY42
+09d40arg6KKLCVChVgn+YHXq4y8yUNjT/30JduTT+QkgwTUYhVnFkQt9KUSRTCnv
+n7SRi1t5uTxSWwyLAzloDyuw/uS1HvgBduVYfyeAG2tbVO+vc/g8W0CfxOaGq8Dh
+MJWNUgFCUtXZJdLoBe6G4viOlHycLYDBm/fB0g58BdAAMeKsGlTx+llreG5uSUfM
+5/TbmGObrYvj+FXXmsbagSushM/s36azBOS3WjcasgKMqk/3DEzM2ofizbBKktL0
+9yXb2f/QrM+toPYiWnLyqBsxnbKfj1htdBbj118ZLRGiDvoXNQMrlyrwUzaSWuYY
+J2vjfDuDg+uA7fwuV5AGAW1MhIeILGiXAQY/h5fwJriqWRweuIVIGpB2jKUDO+Tb
+e42A5eC+7qNrYh5JTbsNHRwWoVghZJq3GofNA5JFTPUIK9U5gPtjzHI7aewSapdT
+v2XGOSQ7cAvemrGbfyyM9rfvvVnkW27S5KZ2yYKshQX1faDZKuYTmEXN1ek7dsfI
+VGwXBHcfVAZxhnmDTeuAyvWPEBWVeBS+uA5RjEwm/cwGh0kRVbP/JCXUytPBYAL8
+zHnv2gbfnK6FZnmy3vQSkKwzbbMk3ffEGWb4</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://bankidp.qa.swamid.se/bankid/idp/saml2/redirect/authn"/>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://bankidp.qa.swamid.se/bankid/idp/saml2/post/authn"/>
+  </md:IDPSSODescriptor>
+  <md:Organization>
+    <md:OrganizationName xml:lang="en">Sweden Connect</md:OrganizationName>
+    <md:OrganizationName xml:lang="sv">Sweden Connect</md:OrganizationName>
+    <md:OrganizationDisplayName xml:lang="en">Sweden Connect</md:OrganizationDisplayName>
+    <md:OrganizationDisplayName xml:lang="sv">Sweden Connect</md:OrganizationDisplayName>
+    <md:OrganizationURL xml:lang="en">https://sunet.se/en</md:OrganizationURL>
+    <md:OrganizationURL xml:lang="sv">https://sunet.se</md:OrganizationURL>
+  </md:Organization>
+  <md:ContactPerson contactType="technical">
+    <md:Company>Sunet</md:Company>
+    <md:EmailAddress>mailto:operations@swamid.se</md:EmailAddress>
+  </md:ContactPerson>
+  <md:ContactPerson contactType="support">
+    <md:Company>Sunet</md:Company>
+    <md:EmailAddress>mailto:operations@swamid.se</md:EmailAddress>
+  </md:ContactPerson>
+  <md:ContactPerson contactType="administrative">
+    <md:EmailAddress>mailto:operations@swamid.se</md:EmailAddress>
+  </md:ContactPerson>
+</md:EntityDescriptor>
