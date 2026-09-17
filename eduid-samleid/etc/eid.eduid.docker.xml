@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:samla="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" entityID="https://eid.eduid.docker/saml/saml2-metadata">
+  <md:Extensions>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#ripemd160"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2009/xmldsig11#dsa-sha256"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha224"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+    <mdattr:EntityAttributes>
+      <samla:Attribute Name="http://macedir.org/entity-category" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <samla:AttributeValue>http://id.elegnamnden.se/ec/1.0/eidas-naturalperson</samla:AttributeValue>
+        <samla:AttributeValue>http://id.elegnamnden.se/ec/1.0/loa3-pnr</samla:AttributeValue>
+        <samla:AttributeValue>http://id.elegnamnden.se/sprop/1.0/mobile-auth</samla:AttributeValue>
+        <samla:AttributeValue>http://id.elegnamnden.se/st/1.0/public-sector-sp</samla:AttributeValue>
+        <samla:AttributeValue>http://id.swedenconnect.se/general-ec/1.0/accepts-coordination-number</samla:AttributeValue>
+      </samla:Attribute>
+    </mdattr:EntityAttributes>
+  </md:Extensions>
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" AuthnRequestsSigned="true" WantAssertionsSigned="true">
+    <md:Extensions>
+      <mdui:UIInfo>
+        <mdui:Description xml:lang="en">eduID eID SP</mdui:Description>
+        <mdui:Description xml:lang="sv">eduID eID SP</mdui:Description>
+        <mdui:DisplayName xml:lang="en">eduID eID SP</mdui:DisplayName>
+        <mdui:DisplayName xml:lang="sv">eduID eID SP</mdui:DisplayName>
+        <mdui:InformationURL xml:lang="en">https://eduid.se/faq</mdui:InformationURL>
+        <mdui:InformationURL xml:lang="sv">https://eduid.se/faq</mdui:InformationURL>
+        <mdui:Logo xml:lang="en" height="160" width="452">https://www.eduid.se/static/img/ds-eduID-logo-black350x120px.png</mdui:Logo>
+        <mdui:Logo xml:lang="sv" height="160" width="452">https://www.eduid.se/static/img/ds-eduID-logo-black350x120px.png</mdui:Logo>
+        <mdui:PrivacyStatementURL xml:lang="en">https://wiki.sunet.se/display/SWAMID/SWAMID+Entity+Category+Release+Check+-+Privacy+Policy?showLanguage=en_GB</mdui:PrivacyStatementURL>
+        <mdui:PrivacyStatementURL xml:lang="sv">https://wiki.sunet.se/display/SWAMID/SWAMID+Entity+Category+Release+Check+-+Privacy+Policy?showLanguage=sv_SE</mdui:PrivacyStatementURL>
+      </mdui:UIInfo>
+    </md:Extensions>
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo>
+        <ds:X509Data>
+          <ds:X509Certificate>MIIFQzCCAyugAwIBAgIUHz/5aot0WNqLaxzSbAznCNrnss0wDQYJKoZIhvcNAQELBQAwMTELMAkGA1UEBhMCU0UxIjAgBgNVBAMMGWVpZC0yMDI2MDIxMC5lZHVpZC5kb2NrZXIwHhcNMjYwMjEwMTQ0MTUyWhcNMzYwMjA4MTQ0MTUyWjAxMQswCQYDVQQGEwJTRTEiMCAGA1UEAwwZZWlkLTIwMjYwMjEwLmVkdWlkLmRvY2tlcjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAKrPDKtpbCKlbBlLOHqRpl2VXkWjiDYI3FLu37u6yXu++T0LNPBAB2anJYxRE/nKhX9YJ/ljUe5mmxsva/Q6O07JXiXs55HuqoLW9k1pA5Yo1TyvV6md+wvL5YmoWzkhE6TlAbaLwo0+mO6BcBFaux3g3Oy3TgiHcKgA/dgohPDwFW0Csgl92ymTjOukROmmKu2nEKADLN20nupicQCuCv19DtBtfREIFiUCUY5I33pFjg8qLwkJ7AIPI6K1KHghYrcmi64LQfgr/A46QpOEivjz2LWSo4lD/qv7iS8zM53ZaVMMvkLZFgHZTO1NNljUsDmERoH9mF5ZWRQJ4+EgUnnuLEWe0sLo9qfcKywXLLAwv/GI0dc+gf0n67BYTjHS/DLgPXyamPqVW+2r8y8P5JJ2ATyYsHgrZO9YLMcP8V6BY5Vq2VYwihQM1AwV5QJLIICCEve91f0qHt7qtjJUKp3nDCAWgxVs7vi+jc5URFBPPCfnZNtELnVc9PjjgncijNCcEUib0C5Vc0Blj/3ov/1aSMfCs9Iq02kHzQB0d8npUe+KkA2kYRrOl53KsIRAjR/PaESdawbufTeZm556If9fVEkp0pZpbUyAvlt9W2SkQV/HQHLZy3k5lbcDUrk+zpthEHFAYKAcAoabNOsdg3E0GCOWl0/LDRSv9/8hyv0xAgMBAAGjUzBRMB0GA1UdDgQWBBRIJ+fCPsMIh00azFSCYIgVOl5kIzAfBgNVHSMEGDAWgBRIJ+fCPsMIh00azFSCYIgVOl5kIzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQBKvn1h27tT0RQJyeJzsgVNUcwsv/LcOGTGZOGetSOtBdo7zlqrq0h7hfuILJWG8uS6L3yjoRtoPa1UWBzgVF4CIy9TyRLyOMVOYlTLJ7t1SDKNsqlLKxNpn561VIEG81KNCe2jTiajlWPJGriya4dJcFG5jwCGR9O7dojHH7XvOqHNqjTRcGpbciwnW9xDjF2MMPagsrOyZjGwXAaNeqc0097i0KBj6nROK+qRXTVq3loybV8LnptIf3AFxOhfqUB8a5skwZb+vFNPH1V4xXcxVEZsQtbyZv/nIZ2V8/HKcYbRkPOwltnmGLCvlRz03+sormp9jItOM7fLU6E8rET61tgXEGP5UQ/hqviUHehQ5IYOsghvhR2vUMscBtKDfpGVhkPhD73AUme0WdKoT44x67vNPmwtrEKUA8Knj3cIkYnfwAU2WDDiUcTcn0BO0HhWyzrZ+ORF8mivnZDjWLKaglXJHFiiv/xxhAb5WwJQ8oQ1jBUHdjA5pbPoe3kPGvCqXf2muBmq75BrJcR8PslLXtbqvVI4yV9ulcC3glJ8fM5u3VGjTaMM8k/tSz8ZXWBXVNE8ok+MnEBbkGvCDmfKszLn1242CuAixFpxR1AwBIuk0fYfn2QNyIJ0+iU3XY0nkfm6OSxRSZGRiwigk3n/hZG4uThu3uVzqpvOuaAvNQ==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo>
+        <ds:X509Data>
+          <ds:X509Certificate>MIIFQzCCAyugAwIBAgIUHz/5aot0WNqLaxzSbAznCNrnss0wDQYJKoZIhvcNAQELBQAwMTELMAkGA1UEBhMCU0UxIjAgBgNVBAMMGWVpZC0yMDI2MDIxMC5lZHVpZC5kb2NrZXIwHhcNMjYwMjEwMTQ0MTUyWhcNMzYwMjA4MTQ0MTUyWjAxMQswCQYDVQQGEwJTRTEiMCAGA1UEAwwZZWlkLTIwMjYwMjEwLmVkdWlkLmRvY2tlcjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAKrPDKtpbCKlbBlLOHqRpl2VXkWjiDYI3FLu37u6yXu++T0LNPBAB2anJYxRE/nKhX9YJ/ljUe5mmxsva/Q6O07JXiXs55HuqoLW9k1pA5Yo1TyvV6md+wvL5YmoWzkhE6TlAbaLwo0+mO6BcBFaux3g3Oy3TgiHcKgA/dgohPDwFW0Csgl92ymTjOukROmmKu2nEKADLN20nupicQCuCv19DtBtfREIFiUCUY5I33pFjg8qLwkJ7AIPI6K1KHghYrcmi64LQfgr/A46QpOEivjz2LWSo4lD/qv7iS8zM53ZaVMMvkLZFgHZTO1NNljUsDmERoH9mF5ZWRQJ4+EgUnnuLEWe0sLo9qfcKywXLLAwv/GI0dc+gf0n67BYTjHS/DLgPXyamPqVW+2r8y8P5JJ2ATyYsHgrZO9YLMcP8V6BY5Vq2VYwihQM1AwV5QJLIICCEve91f0qHt7qtjJUKp3nDCAWgxVs7vi+jc5URFBPPCfnZNtELnVc9PjjgncijNCcEUib0C5Vc0Blj/3ov/1aSMfCs9Iq02kHzQB0d8npUe+KkA2kYRrOl53KsIRAjR/PaESdawbufTeZm556If9fVEkp0pZpbUyAvlt9W2SkQV/HQHLZy3k5lbcDUrk+zpthEHFAYKAcAoabNOsdg3E0GCOWl0/LDRSv9/8hyv0xAgMBAAGjUzBRMB0GA1UdDgQWBBRIJ+fCPsMIh00azFSCYIgVOl5kIzAfBgNVHSMEGDAWgBRIJ+fCPsMIh00azFSCYIgVOl5kIzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQBKvn1h27tT0RQJyeJzsgVNUcwsv/LcOGTGZOGetSOtBdo7zlqrq0h7hfuILJWG8uS6L3yjoRtoPa1UWBzgVF4CIy9TyRLyOMVOYlTLJ7t1SDKNsqlLKxNpn561VIEG81KNCe2jTiajlWPJGriya4dJcFG5jwCGR9O7dojHH7XvOqHNqjTRcGpbciwnW9xDjF2MMPagsrOyZjGwXAaNeqc0097i0KBj6nROK+qRXTVq3loybV8LnptIf3AFxOhfqUB8a5skwZb+vFNPH1V4xXcxVEZsQtbyZv/nIZ2V8/HKcYbRkPOwltnmGLCvlRz03+sormp9jItOM7fLU6E8rET61tgXEGP5UQ/hqviUHehQ5IYOsghvhR2vUMscBtKDfpGVhkPhD73AUme0WdKoT44x67vNPmwtrEKUA8Knj3cIkYnfwAU2WDDiUcTcn0BO0HhWyzrZ+ORF8mivnZDjWLKaglXJHFiiv/xxhAb5WwJQ8oQ1jBUHdjA5pbPoe3kPGvCqXf2muBmq75BrJcR8PslLXtbqvVI4yV9ulcC3glJ8fM5u3VGjTaMM8k/tSz8ZXWBXVNE8ok+MnEBbkGvCDmfKszLn1242CuAixFpxR1AwBIuk0fYfn2QNyIJ0+iU3XY0nkfm6OSxRSZGRiwigk3n/hZG4uThu3uVzqpvOuaAvNQ==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://eid.eduid.docker/saml/logout"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://eid.eduid.docker/saml/saml2-acs" index="1"/>
+    <md:AttributeConsumingService index="1">
+      <md:ServiceName xml:lang="en"/>
+      <md:ServiceName xml:lang="sv">eduID SAML eid för lokal dev</md:ServiceName>
+      <md:RequestedAttribute Name="urn:oid:1.2.752.29.4.13" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="personalIdentityNumber" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:1.3.6.1.5.5.7.9.1" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="dateOfBirth" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:2.16.840.1.113730.3.1.241" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="displayName" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:2.5.4.42" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="givenName" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:2.5.4.4" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="sn" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:1.3.6.1.5.5.7.9.4" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="countryOfCitizenship" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:1.2.752.201.3.2" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="transactionIdentifier" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:1.2.752.201.3.3" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="authContextParams" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:1.2.752.201.3.4" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="prid" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:1.2.752.201.3.5" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="pridPersistence" isRequired="false"/>
+      <md:RequestedAttribute Name="urn:oid:1.2.752.201.3.7" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="eidasPersonIdentifier" isRequired="false"/>
+    </md:AttributeConsumingService>
+  </md:SPSSODescriptor>
+  <md:Organization>
+    <md:OrganizationName xml:lang="en">The Swedish Research Council</md:OrganizationName>
+    <md:OrganizationName xml:lang="sv">Vetenskapsrådet</md:OrganizationName>
+    <md:OrganizationDisplayName xml:lang="en">Sunet</md:OrganizationDisplayName>
+    <md:OrganizationDisplayName xml:lang="sv">Sunet</md:OrganizationDisplayName>
+    <md:OrganizationURL xml:lang="en">https://www.sunet.se</md:OrganizationURL>
+    <md:OrganizationURL xml:lang="sv">https://www.sunet.se</md:OrganizationURL>
+  </md:Organization>
+  <md:ContactPerson contactType="technical">
+    <md:Company>eduID</md:Company>
+    <md:GivenName>Sysadmin</md:GivenName>
+    <md:EmailAddress>mailto:feedback@eduid.se</md:EmailAddress>
+  </md:ContactPerson>
+  <md:ContactPerson contactType="administrative">
+    <md:Company>Vetenskapsrådet</md:Company>
+    <md:GivenName>Sysadmin</md:GivenName>
+    <md:EmailAddress>mailto:feedback@eduid.se</md:EmailAddress>
+  </md:ContactPerson>
+</md:EntityDescriptor>

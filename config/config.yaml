@@ -360,7 +360,7 @@ eduid:
             bankid_idp: https://bankidp.qa.swamid.se/bankid/idp
         samleid:
             server_name: eid.eduid.docker
-            application_root: /
+            application_root: /saml
             logger_name: samleid
             log_level: DEBUG
             mongo_uri: mongodb://eduid_samleid:eduid_samleid_pw@mongodb.eduid_dev
@@ -516,11 +516,11 @@ eduid:
               orcid_service_url: https://dashboard.eduid.docker/services/orcid/
               freja_eid_service_url: https://dashboard.eduid.docker/services/freja-eid/
               group_mgmt_service_url: https://dashboard.eduid.docker/services/group-management/
-              eidas_service_url: https://eidas.eduid.docker/
+              eidas_service_url: https://eid.eduid.docker/saml/
               reset_password_service_url: https://idp.eduid.docker/services/reset-password/
               svipe_service_url: https://dashboard.eduid.docker/services/svipe-id/
               token_verify_idp: https://ref-idp.sandbox.swedenconnect.se/idp
-              bankid_service_url: https://bankid.eduid.docker/
+              bankid_service_url: https://eid.eduid.docker/saml/
               signup_service_url: https://signup.eduid.docker/services/signup/
               password_length: 12
               password_entropy: 25
