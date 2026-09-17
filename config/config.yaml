@@ -708,7 +708,7 @@ eduid:
             sms_sender: 'eduID'
             template_dir: '/opt/eduid/eduid-msg/etc/templates'
             audit: true
-            navet_api_uri: 'http://eduid_navet_service_1:8080'
+            navet_api_uri: 'http://navet_service:8080'
 
         job_runner:
             log_level: DEBUG
