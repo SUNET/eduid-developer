@@ -328,11 +328,10 @@ eduid:
             application_root: /services/orcid
             logger_name: orcid
             log_level: DEBUG
-            client_registration_info:
+            orcid_client:
+                issuer: https://sandbox.orcid.org
                 client_id: client1
                 client_secret: abcdef
-            provider_configuration_info:
-                issuer: https://sandbox.orcid.org
             mongo_uri: mongodb://eduid_orcid:eduid_orcid_pw@mongodb.eduid_dev
         eidas:
             server_name: eidas.eduid.docker
