@@ -12,7 +12,7 @@ services:
 
   # This is a one-off job that deletes old logs on startup (preserving permissions etc. on the log files).
   log_cleanup:
-    image: platform.sunet.se/eduid/worker:20260908T092529-staging
+    image: platform.sunet.se/eduid/worker:20261001T120113-staging
     volumes:
       - eduidlogdata:/var/log/eduid
       - mongodblogdata:/var/log/mongodb
@@ -27,7 +27,7 @@ services:
 
 
   am:
-    image: platform.sunet.se/eduid/worker:20260908T092529-staging
+    image: platform.sunet.se/eduid/worker:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -56,7 +56,7 @@ services:
         condition: service_started
 
   amapi:
-    image: platform.sunet.se/eduid/fastapi:20260908T092529-staging
+    image: platform.sunet.se/eduid/fastapi:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -83,7 +83,7 @@ services:
         condition: service_healthy
 
   authn:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -168,7 +168,7 @@ services:
         condition: service_started
 
   bankid:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -283,7 +283,7 @@ services:
         condition: service_started
 
   eidas:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -336,7 +336,7 @@ services:
         condition: service_healthy
 
   email:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -367,7 +367,7 @@ services:
         condition: service_started
 
   html:
-    image: platform.sunet.se/eduid/html:20260908T092529-staging
+    image: platform.sunet.se/eduid/html:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     expose:
@@ -427,7 +427,7 @@ services:
         condition: service_healthy
 
   idp:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -485,7 +485,7 @@ services:
         condition: service_healthy
 
   idpproxy:
-    image: platform.sunet.se/eduid/satosa_scim:20260908T092529-staging
+    image: platform.sunet.se/eduid/satosa_scim:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -533,7 +533,7 @@ services:
         condition: service_started
 
   jsconfig:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -567,7 +567,7 @@ services:
         condition: service_started
 
   ladok:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -596,7 +596,7 @@ services:
         condition: service_started
 
   letter_proofing:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -627,7 +627,7 @@ services:
         condition: service_started
 
   maccapi:
-    image: platform.sunet.se/eduid/fastapi:20260908T092529-staging
+    image: platform.sunet.se/eduid/fastapi:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -684,7 +684,7 @@ services:
       <<: *common-depends-on
 
   msg:
-    image: platform.sunet.se/eduid/worker:20260908T092529-staging
+    image: platform.sunet.se/eduid/worker:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -759,7 +759,7 @@ services:
       <<: *common-depends-on
 
   orcid:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -794,7 +794,7 @@ services:
         condition: service_started
 
   personal_data:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -854,7 +854,7 @@ services:
       <<: *common-depends-on
 
   queue_mail_worker:
-    image: platform.sunet.se/eduid/worker:20260908T092529-staging
+    image: platform.sunet.se/eduid/worker:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -881,7 +881,7 @@ services:
         condition: service_healthy
 
   queue_scim_event:
-    image: platform.sunet.se/eduid/worker:20260908T092529-staging
+    image: platform.sunet.se/eduid/worker:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -908,7 +908,7 @@ services:
         condition: service_healthy
 
   queue_sink_worker:
-    image: platform.sunet.se/eduid/worker:20260908T092529-staging
+    image: platform.sunet.se/eduid/worker:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -950,7 +950,7 @@ services:
       <<: *common-depends-on
 
   reset_password:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1000,7 +1000,7 @@ services:
       <<: *common-depends-on
 
   samleid:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1053,7 +1053,7 @@ services:
         condition: service_started
 
   scimapi:
-    image: platform.sunet.se/eduid/fastapi:20260908T092529-staging
+    image: platform.sunet.se/eduid/fastapi:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1081,7 +1081,7 @@ services:
         condition: service_started
 
   security:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1119,7 +1119,7 @@ services:
         condition: service_started
 
   signup:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1178,7 +1178,7 @@ services:
         condition: service_healthy
 
   support:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1227,7 +1227,7 @@ services:
         condition: service_healthy
 
   freja_eid:
-    image: platform.sunet.se/eduid/webapp:20260908T092529-staging
+    image: platform.sunet.se/eduid/webapp:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1269,7 +1269,7 @@ services:
       <<: *common-depends-on
 
   job_runner_fre:
-    image: platform.sunet.se/eduid/fastapi:20260908T092529-staging
+    image: platform.sunet.se/eduid/fastapi:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1299,7 +1299,7 @@ services:
         condition: service_healthy
 
   job_runner_tug:
-    image: platform.sunet.se/eduid/fastapi:20260908T092529-staging
+    image: platform.sunet.se/eduid/fastapi:20261001T120113-staging
     pull_policy: if_not_present
     restart: always
     networks:
@@ -1329,7 +1329,7 @@ services:
         condition: service_healthy
 
   vccs:
-    image: platform.sunet.se/eduid/vccs:20260908T092529-staging
+    image: platform.sunet.se/eduid/vccs:20261001T120113-staging
     pull_policy: if_not_present
     #build:
     #  context: ../vccs
