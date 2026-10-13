@@ -55,33 +55,6 @@ services:
       rsyslog:
         condition: service_started
 
-  amapi:
-    image: platform.sunet.se/eduid/fastapi:20261002T115535-staging
-    pull_policy: if_not_present
-    restart: always
-    networks:
-      dev:
-        ipv4_address: 172.16.10.215
-    expose:
-      - 8080
-    volumes:
-      - ../config/config.yaml:/opt/eduid/config.yaml:ro
-      - ../eduid-amapi/etc:/opt/eduid/eduid-amapi/etc:ro
-      - eduidlogdata:/var/log/eduid
-      # source volumes
-      - ../sources/eduid-backend/src/eduid:/opt/eduid/sources/eduid:ro
-      - ../sources/eduid/dev-extra-modules.txt:/opt/eduid/sources/eduid/dev-extra-modules.txt:ro
-    environment:
-      <<: *common-env-variables
-      eduid_name: amapi
-      HOSTNAME: amapi
-      EDUID_CONFIG_NS: /eduid/worker/amapi
-      eduid_entrypoint: eduid.workers.amapi.run:api
-    depends_on:
-      <<: *common-depends-on
-      mongodb:
-        condition: service_healthy
-
   authn:
     image: platform.sunet.se/eduid/webapp:20261002T115535-staging
     pull_policy: if_not_present

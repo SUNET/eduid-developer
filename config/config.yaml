@@ -685,22 +685,6 @@ eduid:
         am:
             mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
             new_user_date: '2001-01-01'
-        amapi:
-            mongo_uri: mongodb://eduid_am:eduid_am_pw@mongodb/eduid_am
-            keystore_path: /opt/eduid/eduid-amapi/etc/keystore.jwks
-            user_restriction:
-                test_service_name:
-                    - endpoint: "/users/*/name"
-                      method: put
-                    - endpoint: "/users/*/email"
-                      method: put
-                    - endpoint: "/users/*/language"
-                      method: put
-                    - endpoint: "/users/*/phone"
-                      method: put
-                    - endpoint: "/users/*/terminate"
-                      method: put
-
         msg:
             mongo_uri: mongodb://mongodb/eduid_msg
             mongo_dbname: eduid_msg
@@ -731,22 +715,6 @@ eduid:
                 - AS
                 - AN
                 - FI
-            amapi:
-                url: http://amapi:8080
-                tls_verify: false
-            gnap_auth_data:
-              authn_server_url: https://api_haproxy/auth
-              authn_server_verify: false
-              key_name: devkey
-              client_jwk:
-                  kty: EC
-                  kid: devkey
-                  crv: P-256
-                  x: "LsX8Jl-DwZfJjgkwvTiRu5nqMNYcwh29hdkDtCsj26w"
-                  y: "hifFMvRh_moHOvBLx58JokS0LMjjo3Ww5SfjzFVSVSA"
-                  d: "tghyR6Z5kmJZiEw3VBF8d5VGCSaXX_-4w8TN94auHP0"
-              access:
-                  - type: amapi
             logging_config:
                 loggers:
                     'pymongo.serverSelection':
