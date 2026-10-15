@@ -3,7 +3,6 @@ eduid:
     api:
         common:
             debug: true
-            schema: 'http'
             log_level: 'DEBUG'
             log_format: '{asctime} | {levelname:7} | {name} | {module:10} | {message}'
             environment: 'dev'
@@ -131,7 +130,6 @@ eduid:
                   - eduid.docker
     webapp:
         common:
-            devel_mode: yes
             # enable disable debug mode
             debug: yes
             # the domain for the session cookie. If this is not set, the cookie will
@@ -150,8 +148,6 @@ eduid:
             redis_config:
               host: redis.eduid_dev
             saml2_logout_redirect_url: https://html.eduid.docker/
-            token_service_url: https://dashboard.eduid.docker/services/authn  # try to deprecate for authn_service_url
-            authn_service_url: https://dashboard.eduid.docker/services/authn
             # Configure backdoor for UI testing
             magic_cookie: w9eB5yt2TwEoDsTNgzmtINq03R24DPQD8ubmRVfXPOST3gRi
             magic_cookie_name: autotests
@@ -173,28 +169,20 @@ eduid:
             available_languages:
                 en: English
                 sv: Svenska
-            mail_default_from: info@eduid.se
             eduid_site_name: eduID Developer
             eduid_site_url: https://html.eduid.docker
             eduid_static_url: https://html.eduid.docker/static/
-            static_url: https://html.eduid.docker/static/
             dashboard_url: https://html.eduid.docker/profile/
-            reset_passwd_url: https://dashboard.eduid.docker/services/security/reset-password
             # set absolute URL so it can be included in emails
             signup_url: https://html.eduid.docker/register/
             no_authn_urls:
               - "^/status/healthy$"
               - "^/status/sanity-check$"
-            action_plugins:
-              - tou
-              - mfa
             # ENVIRONMENT=(dev|staging|pro)
             environment: 'dev'
             tou_version: 2016-v1
             secret_key: supersecretkey
-            enable_authn_json_response: true
             fido2_rp_id: eduid.docker
-            u2f_app_id: https://dashboard.dev.eduid.se
             errors_url_template: 'https://html.eduid.docker/errors?code={ERRORURL_CODE}&ts={ERRORURL_TS}&rp={ERRORURL_RP}&tid={ERRORURL_TID}&ctx={ERRORURL_CTX}'
             frontend_action_authn_parameters:
               addSecurityKeyAuthn:
@@ -284,11 +272,9 @@ eduid:
             # SAML2 and SP config
             saml2_login_redirect_url: /
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
-            saml2_user_main_attribute: eduPersonPrincipalName
             saml2_strip_saml_user_suffix: "@local.eduid.se"
             signup_authn_success_redirect_url: https://dashboard.eduid.docker
             signup_authn_failure_redirect_url: https://html.eduid.docker/
-            unsolicited_response_redirect_url: https://html.eduid.docker
             safe_relay_domain: eduid.docker
         ladok:
             server_name: dashboard.eduid.docker
@@ -342,8 +328,6 @@ eduid:
             # SAML2 and SP config
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             safe_relay_domain: eduid.docker
-            token_verify_redirect_url: https://html.eduid.docker/profile/settings/advanced-settings
-            identity_verify_redirect_url: https://html.eduid.docker/profile/verify-identity/
             freja_idp: https://ref-idp.sandbox.swedenconnect.se/idp
             foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
             allow_eidas_credential_verification: true
@@ -366,8 +350,6 @@ eduid:
             # SAML2 and SP config
             saml2_settings_module: /opt/eduid/etc/saml2_settings.py
             safe_relay_domain: eduid.docker
-            token_verify_redirect_url: https://html.eduid.docker/profile/settings/advanced-settings
-            identity_verify_redirect_url: https://html.eduid.docker/profile/verify-identity/
             freja_idp: https://idp-sweden-connect-valfr-2017-sandbox.test.frejaeid.com
             foreign_identity_idp: https://dev.connector.swedenconnect.se/eidas
             bankid_idp: https://bankidp.qa.swamid.se/bankid/idp
@@ -408,7 +390,6 @@ eduid:
             mongo_uri: mongodb://eduid_email:eduid_email_pw@mongodb.eduid_dev
             log_level: DEBUG
             logger_name: email
-            email_verify_redirect_url: /profile/emails
         group_management:
             server_name: dashboard.eduid.docker
             application_root: /services/group-management
@@ -442,11 +423,6 @@ eduid:
             password_entropy: 25
             chpass_reauthn_timeout: 120
             chpass_old_password_needed: false
-            u2f_max_allowed_tokens: 50
-            u2f_max_description_length: 64
-            u2f_valid_facets:
-                - https://html.dev.eduid.se
-                - https://idp.dev.eduid.se
             webauthn_attestation: 'direct'
             logout_endpoint: 'https://dashboard.eduid.docker/services/authn/logout'
             termination_redirect_url: 'https://html.eduid.docker'
@@ -458,16 +434,8 @@ eduid:
             logger_name: signup
             password_length: 12
             vccs_url: 'http://vccs:8080/'
-            tou_url: not_used_remove_me_after_config_model_update
-            signup_authn_url: not_used
             default_finish_url: https://www.eduid.se/
             # These keys are for *.eduid.docker
-            recaptcha_public_key: 6Ldnrg0TAAAAALM_DflInQkCQP6cuVZaGWzEvrzF
-            recaptcha_private_key: 6Ldnrg0TAAAAADZGaZtPUV-yf96y5d4fJnD88hjC
-            students_link: https://www.eduid.se/index.html
-            technicians_link: https://www.eduid.se/tekniker.html
-            staff_link: https://www.eduid.se/personal.html
-            faq_link: https://www.eduid.se/faq.html
             am_relay_for_override: eduid_signup
             scim_api_url: https://api_haproxy/scim
             gnap_auth_data:
@@ -486,10 +454,6 @@ eduid:
             application_root: /services/jsconfig
             log_level: DEBUG
             logger_name: jsconfig
-            fix_dashboard_uppercase_config: false
-            fix_dashboard_available_languages: true
-            fix_signup_uppercase_config: false
-            fix_signup_available_languages: false
             jsapps:
               ### this is the configuration for the js apps, that is sent by the jsconfig
               ### microservice to the js apps.
@@ -546,10 +510,6 @@ eduid:
             application_root: /
             pysaml2_config: /opt/eduid/eduid-idp/etc/idp_pysaml2_settings.py
             mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/
-            userdb_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_am
-            userdb_mongo_database: eduid_am
-            sso_session_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_idp
-            authn_info_mongo_uri: mongodb://eduid_idp:eduid_idp_pw@mongodb.eduid_dev/eduid_idp_authninfo
             password_reset_link: https://dashboard.eduid.docker/services/security/reset-password
             signup_link: https://signup.eduid.docker/
             dashboard_link: https://dashboard.eduid.docker/
@@ -557,25 +517,15 @@ eduid:
             technicians_link: https://html.eduid.docker/tekniker.html
             staff_link: https://html.eduid.docker/personal.html
             faq_link: https://html.eduid.docker/faq.html
-            privacy_link: https://html.eduid.docker/privacy.html
             static_link: https://html.eduid.docker/static
-            base_url: https://idp.eduid.docker/
             # uncomment login_bundle_url to enable the IdP API (and disable the template IdP)
             login_bundle_url: https://html.eduid.docker/login
             other_device_url: https://html.eduid.docker/login/other
             default_eppn_scope: local.eduid.se
-            login_state_ttl: 1
-            status_test_usernames: ['f-testuser1@spam.thulin.net']
-            default_scoped_affiliation: affiliate@local.eduid.se
             max_authn_failures_per_month: 50
             vccs_url: 'http://vccs:8080/'
-            shared_session_cookie_name: sessid
-            shared_session_secret_key: supersecretkey
             tou_reaccept_interval: 604800  # 1 week
             #tou_reaccept_interval: 60  # 1 min
-            u2f_valid_facets:
-                - https://html.dev.eduid.se
-                - https://idp.dev.eduid.se
             other_device_logins_ttl: PT3M
             other_device_secret_key: 'lx0sg0g21QUkiu9JAPfhx4hJ5prJtbk1PPE-OBvpiAk='
             known_devices_secret_key: 'WwemHQgPm1hpx41NYaVBQpRV7BAq0OMtfF3k4H72J7c='
@@ -613,21 +563,11 @@ eduid:
             phone_code_timeout: 600
             password_entropy: 25
             password_length: 12
-            password_salt_length: 32
-            password_hash_length: 32
-            password_generation_rounds: 32
-            phone_verification_timeout: 24
-            chpass_timeout: 600
             vccs_url: http://vccs:8080/
-            u2f_valid_facets:
-                - https://html.dev.eduid.se
-                - https://idp.dev.eduid.se
-            password_reset_link: https://html.eduid.docker/reset-password/email-code
     queue:
       common:
         environment: dev
         log_level: DEBUG
-        logger_name: queue
         logging_config:
           loggers:
             'pymongo.serverSelection':
@@ -690,7 +630,6 @@ eduid:
             mongo_dbname: eduid_msg
             sms_sender: 'eduID'
             template_dir: '/opt/eduid/eduid-msg/etc/templates'
-            audit: true
             navet_api_uri: 'http://navet_service:8080'
 
         job_runner:
