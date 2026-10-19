@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -lt 1 ]; then
+    echo "Usage: run_playwright <playwright_file.js> [extra args passed on to node]" >&2
+    exit 1
+fi
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+test_file="$1"
+
+if [ ! -f "$test_file" ]; then
+    test_file="$script_dir/$1"
+fi
+
+if [ ! -f "$test_file" ]; then
+    echo "File not found: $1" >&2
+    exit 1
+fi
+
+npx --yes -p playwright true
+
+npx_cache="${NPM_CONFIG_CACHE:-$HOME/.npm}/_npx"
+playwright_node_modules="$(find "$npx_cache" -maxdepth 2 -type d -name node_modules -exec test -d '{}/playwright' \; -print -quit)"
+
+if [ -z "$playwright_node_modules" ]; then
+    echo "Could not locate npx-cached playwright install under $npx_cache" >&2
+    exit 1
+fi
+
+NODE_PATH="$playwright_node_modules" exec node "$test_file" "${@:2}"
