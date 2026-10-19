@@ -18,14 +18,42 @@ if [ ! -f "$test_file" ]; then
     exit 1
 fi
 
-npx --yes -p playwright true
+if ! command -v node >/dev/null 2>&1; then
+    echo "node is not on PATH" >&2
+    exit 1
+fi
+
+# These scripts drive a browser that holds a live authenticated session, so which playwright runs
+# them should be pinned and reported, not whatever the npx cache happens to hold. Override with
+# PLAYWRIGHT_VERSION when a test needs another release (browsers are downloaded per version).
+PLAYWRIGHT_VERSION="${PLAYWRIGHT_VERSION:-1.64.1}"
+
+npx --yes -p "playwright@${PLAYWRIGHT_VERSION}" true
 
 npx_cache="${NPM_CONFIG_CACHE:-$HOME/.npm}/_npx"
-playwright_node_modules="$(find "$npx_cache" -maxdepth 2 -type d -name node_modules -exec test -d '{}/playwright' \; -print -quit)"
+
+version_of() { node -p "require('${1}/playwright/package.json').version" 2>/dev/null || true; }
+
+playwright_node_modules=""
+for candidate in $(find "$npx_cache" -maxdepth 2 -type d -name node_modules 2>/dev/null); do
+    [ -d "${candidate}/playwright" ] || continue
+    if [ "$(version_of "$candidate")" = "$PLAYWRIGHT_VERSION" ]; then
+        playwright_node_modules="$candidate"
+        break
+    fi
+    # keep the first usable one as a fallback, so a version change still runs something
+    [ -n "$playwright_node_modules" ] || playwright_node_modules="$candidate"
+done
 
 if [ -z "$playwright_node_modules" ]; then
     echo "Could not locate npx-cached playwright install under $npx_cache" >&2
     exit 1
+fi
+
+playwright_version="$(version_of "$playwright_node_modules")"
+echo "playwright ${playwright_version:-unknown} from $playwright_node_modules" >&2
+if [ "${playwright_version:-unknown}" != "$PLAYWRIGHT_VERSION" ]; then
+    echo "warning: wanted playwright@$PLAYWRIGHT_VERSION, got ${playwright_version:-unknown}" >&2
 fi
 
 NODE_PATH="$playwright_node_modules" exec node "$test_file" "${@:2}"

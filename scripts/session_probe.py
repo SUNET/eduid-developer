@@ -16,10 +16,13 @@ Usage (from the eduid-developer checkout):
 
 Commands (all print one JSON object on stdout):
 
+    config                               the session settings the apps in this container use
     keys                                 list session-looking keys in the session db
     create [eppn]                        make a session (optionally logged in as eppn)
     read    <cookie>                     decrypted session data + ttl
-    raw     <cookie>                     the stored (encrypted) value, truncated
+    raw     <cookie> [needle]            the shape of the stored (encrypted) value; with <needle>,
+                                         whether that string appears anywhere in the stored value.
+                                         The stored value itself is never printed: it is session data
     ttl     <cookie>                     remaining ttl in seconds (-2 = key missing)
     exists  <cookie>                     does the backend session exist
     expire  <cookie> <seconds>           shorten the ttl (simulate an about-to-expire session)
@@ -32,8 +35,16 @@ Commands (all print one JSON object on stdout):
     reset   <cookie>                     as another writer: behave like EduidSession.reset():
                                          drop all namespaces, keep the csrf token, new generation
 
-The environment variables EDUID_REDIS_HOST and EDUID_SECRET override the (dev stack defaults)
-redis.eduid_dev / "supersecretkey" from config/config.yaml.
+Redis host, app secret, session ttl and cookie name are read from the config the webapp container
+itself mounts ($EDUID_CONFIG_YAML, namespace $EDUID_CONFIG_NS), so nothing is duplicated from
+config/config.yaml here.
+
+This probe mints authenticated sessions for any eppn and prints the decrypted contents of any cookie,
+so it refuses to run unless the configuration it finds says `environment: dev`, and refuses when it
+can read no configuration at all. EDUID_PROBE_I_KNOW_THIS_IS_DEV=1 overrides that for a dev stack
+that keeps its config somewhere else.
+
+The environment variables EDUID_REDIS_HOST and EDUID_SECRET override the values read from config.
 
 Path syntax is dotted: "common.preferred_language", "_csrft_", "idp.pending_requests.abc.used".
 """
@@ -42,19 +53,85 @@ from __future__ import annotations
 
 import json
 import os
+import secrets
 import sys
+from pathlib import Path
+from typing import Any
 
 import redis
-from eduid.common.config.base import RedisConfig
+from eduid.common.config.base import EduIDBaseAppConfig, RedisConfig
 from eduid.webapp.common.session.meta import SessionMeta
 from eduid.webapp.common.session.redis_session import SessionManager
 
-REDIS_HOST = os.environ.get("EDUID_REDIS_HOST", "redis.eduid_dev")
-SECRET = os.environ.get("EDUID_SECRET", "supersecretkey")
-# SessionFactory uses ttl = 2 * flask.permanent_session_lifetime
-TTL = int(os.environ.get("EDUID_SESSION_TTL", "28800"))
-
 _session_id_len = 64  # hex chars of a 256 bit session id
+
+
+def _app_config() -> dict[str, Any]:
+    """
+    The merged configuration of the webapp whose container this probe runs in, as a plain dict.
+
+    The same traversal and common-namespace merge as eduid.common.config.parsers.load_config, without
+    instantiating any app config model (that wants to write to /dev/shm as the app user).
+    """
+    yaml_file = os.environ.get("EDUID_CONFIG_YAML", "/opt/eduid/config.yaml")
+    if not yaml_file or not Path(yaml_file).is_file():
+        return {}
+    from eduid.common.config.parsers.yaml_parser import YamlConfigParser
+
+    app_ns = os.environ.get("EDUID_CONFIG_NS", "/eduid/webapp/idp")
+    common_ns = os.environ.get("EDUID_CONFIG_COMMON_NS") or f"{app_ns.rsplit('/', 1)[0]}/common/"
+    parser = YamlConfigParser(path=Path(yaml_file))
+    try:
+        merged = dict(parser.read_configuration(common_ns))
+        merged.update(parser.read_configuration(app_ns))
+    except KeyError:
+        return {}
+    return merged
+
+
+_CFG = _app_config()
+ENVIRONMENT = str(_CFG.get("environment") or "")
+REDIS_HOST = os.environ.get("EDUID_REDIS_HOST") or str(_CFG.get("redis_config", {}).get("host") or "")
+SECRET = os.environ.get("EDUID_SECRET") or str(_CFG.get("secret_key") or "")
+SESSION_COOKIE_NAME = str(_CFG.get("session_cookie_name") or "sessid")
+# SessionFactory uses ttl = 2 * flask.permanent_session_lifetime
+TTL = int(os.environ.get("EDUID_SESSION_TTL") or 2 * int(_CFG.get("permanent_session_lifetime") or 14400))
+
+
+def _refusal() -> str | None:
+    """Why this probe will not run here, or None when it accepts the environment."""
+    if os.environ.get("EDUID_PROBE_I_KNOW_THIS_IS_DEV") == "1":
+        return None
+    if not _CFG:
+        return (
+            "no webapp configuration found (set EDUID_CONFIG_YAML, or EDUID_PROBE_I_KNOW_THIS_IS_DEV=1 "
+            "for a dev stack that keeps its config elsewhere)"
+        )
+    if ENVIRONMENT != "dev":
+        return f"this probe only runs against environment: dev, this configuration says {ENVIRONMENT!r}"
+    if not SECRET:
+        return "the configuration has no secret_key"
+    if not REDIS_HOST:
+        return "the configuration has no redis_config.host"
+    return None
+
+
+def cmd_config(_: list[str]) -> dict:
+    """What the apps in this container do with sessions. Reports no session data and no secret."""
+    fields = EduIDBaseAppConfig.model_fields
+    return {
+        "environment": ENVIRONMENT,
+        "session_cookie_name": SESSION_COOKIE_NAME,
+        "session_ttl": TTL,
+        "redis_host": REDIS_HOST,
+        "session_safe_to_lose_paths": list(
+            _CFG.get("session_safe_to_lose_paths") or fields["session_safe_to_lose_paths"].default
+        ),
+        "session_fatal_other_writer_paths": list(
+            _CFG.get("session_fatal_other_writer_paths") or fields["session_fatal_other_writer_paths"].default
+        ),
+        "safe_to_lose_from_config": "session_safe_to_lose_paths" in _CFG,
+    }
 
 
 def _conn() -> redis.StrictRedis:
@@ -122,9 +199,14 @@ def _del_path(sess, path: str) -> None:
 
 
 def cmd_keys(_: list[str]) -> dict:
-    keys = [k.decode() for k in _conn().keys("*")]
-    sessions = [k for k in keys if len(k) == _session_id_len and all(c in "0123456789abcdef" for c in k)]
-    return {"keys": sorted(sessions), "other_keys": sorted(set(keys) - set(sessions)), "count": len(sessions)}
+    # SCAN, not KEYS: this is the db 0 that the apps are serving requests from, and there is no
+    # reason to enumerate the non-session keys of that instance into a JSON blob either
+    sessions = [
+        k.decode()
+        for k in _conn().scan_iter(match="*", count=500)
+        if len(k) == _session_id_len and all(c in b"0123456789abcdef" for c in k)
+    ]
+    return {"keys": sorted(sessions), "count": len(sessions)}
 
 
 def cmd_create(args: list[str]) -> dict:
@@ -133,11 +215,13 @@ def cmd_create(args: list[str]) -> dict:
     sess = _manager().get_session(meta=meta, new=True)
     if eppn:
         sess["common"] = {"eppn": eppn, "is_logged_in": True, "login_source": "idp", "preferred_language": "en"}
-    sess["_csrft_"] = "probe-csrf-token"
+    csrf = secrets.token_hex(20)  # unguessable, like the tokens the apps generate
+    sess["_csrft_"] = csrf
     sess.commit()
     return {
         "cookie": meta.cookie_val,
         "session_id": meta.session_id,
+        "csrf": csrf,
         "generation": getattr(sess, "generation", None),
         "ttl": _conn().ttl(meta.session_id),
     }
@@ -160,12 +244,32 @@ def cmd_read(args: list[str]) -> dict:
 
 
 def cmd_raw(args: list[str]) -> dict:
+    """
+    The shape of the stored value, and whether a caller-named string occurs anywhere in it.
+
+    The stored value is session data: it is scanned here rather than handed to the caller, so that a
+    test can check the whole value without the suite printing part of it.
+    """
     meta = _meta(args[0])
     raw = _conn().get(meta.session_id)
     if raw is None:
-        return {"exists": False, "session_id": meta.session_id, "raw": None}
+        return {"exists": False, "session_id": meta.session_id, "envelope_keys": None, "length": 0}
     text = raw.decode("utf-8", "replace")
-    return {"exists": True, "session_id": meta.session_id, "raw": text[:120], "length": len(text)}
+    try:
+        envelope_keys: list[str] | None = sorted(json.loads(text).keys())
+    except ValueError:
+        envelope_keys = None
+    res: dict = {
+        "exists": True,
+        "session_id": meta.session_id,
+        "envelope_keys": envelope_keys,
+        "length": len(text),
+        # ciphertext framing, not session data; enough to see which envelope version is in use
+        "prefix": text[:16],
+    }
+    if len(args) > 1 and args[1]:
+        res["found"] = args[1] in text
+    return res
 
 
 def cmd_ttl(args: list[str]) -> dict:
@@ -259,6 +363,7 @@ def cmd_setns(args: list[str]) -> dict:
 
 
 COMMANDS = {
+    "config": cmd_config,
     "keys": cmd_keys,
     "create": cmd_create,
     "read": cmd_read,
@@ -280,6 +385,12 @@ def main() -> int:
         print(f"usage: session_probe.py {{{'|'.join(sorted(COMMANDS))}}} ...", file=sys.stderr)
         return 2
     args = sys.argv[2:]
+    if sys.argv[1] != "config":
+        # minting or reading sessions of an environment we cannot identify is not a dev convenience
+        refusal = _refusal()
+        if refusal:
+            print(json.dumps({"error": f"session_probe refuses to run: {refusal}"}))
+            return 3
     try:
         result = COMMANDS[sys.argv[1]](args)
     except Exception as exc:  # noqa: BLE001 - report to the caller as JSON

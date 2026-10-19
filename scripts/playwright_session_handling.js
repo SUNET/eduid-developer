@@ -20,6 +20,19 @@
 //      logout/reset by the other writer must always be fatal, which is what the session generation
 //      marker (_generation_) is for.
 //
+//      Covered: the other writer deleting the session key, clearing the login namespace, resetting
+//      the session, or only replacing the generation marker - all fatal; a sibling setting
+//      idp.pending_requests.<id>.aborted, the case session_fatal_other_writer_paths exists for
+//      (an in-flight /next must not answer for a request the user aborted) - fatal; a lost write
+//      that is not on session_safe_to_lose_paths - fatal; a lost write that is on it - swallowed.
+//      Each case also asserts the conflict was reported exactly once.
+//
+//      Not covered here, and advertised as such: that an *empty* session_safe_to_lose_paths never
+//      swallows a conflict (that needs a config override and a restarted webapp), and a lost write
+//      of the browser cannot provoke, e.g. an auth-state or one-time-grant path. Both are unit
+//      covered in eduid-backend; the two path lists themselves are checked as configuration by the
+//      "concurrency: the session path lists hold no auth state" test.
+//
 //      Reproducing that race in a browser is normally timing-luck. It is made deterministic here by
 //      freezing MongoDB (docker pause) *after* the request has loaded its session from Redis
 //      (every @require_user view reads Mongo), performing the sibling write in Redis while the
@@ -37,6 +50,14 @@
 //      safe-to-lose list. It reports XPASS whenever the writes happen not to collide, or once the
 //      gap is fixed - check the session log to tell the two apart.
 //
+// How a verdict is read: from the webapp log, and a log line only counts as this session's verdict
+// when the same line carries both the session's short id (first 9 characters of the cookie) and the
+// verdict. That needs the verdict lines in eduid-backend's webapp/common/session/eduid_session.py
+// to include session.short_id; if they do not, this suite says so rather than passing on a
+// neighbouring session's log lines. Nothing here prints a raw log region: DEBUG records are dropped
+// whole (they carry session data, including CSRF tokens and credential salts) and what is left is
+// filtered to the tested session and redacted.
+//
 // Prereqs: dev stack up (`make start`), docker CLI usable from this shell, the `playwright` npm
 // package with Chromium. ignoreHTTPSErrors is on, so pki/rootCA.crt need not be imported.
 //
@@ -51,14 +72,22 @@
 //   --skip <substring>    skip those tests
 //   --list                list test names and exit
 //   --email <addr> --password <pw>   reuse an existing account instead of signing up
-//   --account-file <path>            read/write {email, password} here, to re-run the suite
-//                                    against the same account without signing up again
-//   --no-chaos            skip the tests that need `docker pause` on the mongodb container
+//   --password-env <VAR>             read that password from this environment variable instead of
+//                                    putting it on the command line (where `ps` can see it)
+//   --account-file <path>            read/write {email, password} here (mode 0600), to re-run the
+//                                    suite against the same account without signing up again.
+//                                    Defaults to a file under the system temp directory.
+//   --no-chaos            skip the tests that freeze MongoDB, and do not touch that container
 //   --keep-open <ms>      keep the browser open at the end, for debugging
+//
+// Environment: PROBE_CONTAINER (default eduid-idp-1) is the webapp container that runs
+// scripts/session_probe.py, MONGO_CONTAINER (default eduid-mongodb-1) the one section B freezes.
+// Both are verified to belong to *this* checkout's compose project before anything is frozen, and a
+// run takes a lock so that two runs cannot fight over one MongoDB.
 //
 // The suite only touches the dev stack: it creates accounts, writes sessions, and pauses/unpauses
 // the mongodb container for a few seconds per concurrency test (always unfrozen again on the way
-// out, also when a test fails).
+// out, also when a test fails or the run is interrupted).
 //
 // Signup uses the dev/staging magic-cookie backdoor (config/config.yaml webapp.common.magic_cookie)
 // for the captcha and the e-mail verification code, like the other playwright_* scripts here.
@@ -66,6 +95,8 @@
 const { chromium } = require("playwright");
 const { execFileSync } = require("child_process");
 const fs = require("fs");
+const os = require("os");
+const path = require("path");
 
 // --------------------------------------------------------------------------------------------
 // configuration
@@ -91,15 +122,23 @@ const EP = {
 // webapp container used to run scripts/session_probe.py (it needs the eduid venv + Redis access)
 const PROBE_CONTAINER = process.env.PROBE_CONTAINER || "eduid-idp-1";
 const MONGO_CONTAINER = process.env.MONGO_CONTAINER || "eduid-mongodb-1";
+// a run that freezes MongoDB is a run that stops the whole dev stack from answering, so only one
+// may do it at a time
+const CHAOS_LOCK = process.env.CHAOS_LOCK || path.join(os.tmpdir(), "eduid-mongo-chaos.lock");
 const MAGIC_COOKIE_NAME = process.env.MAGIC_COOKIE_NAME || "autotests";
 const MAGIC_COOKIE_VALUE =
   process.env.MAGIC_COOKIE_VALUE || "w9eB5yt2TwEoDsTNgzmtINq03R24DPQD8ubmRVfXPOST3gRi";
 const CAPTCHA_BACKDOOR_CODE = "123456"; // MagicCookieMixin.captcha_backdoor_code default
-const SESSION_COOKIE = "sessid"; // webapp.common.flask.session_cookie_name
-const SESSION_TTL = 28800; // 2 * flask.permanent_session_lifetime (14400), see SessionFactory
 const SCREENSHOT_DIR = process.env.SCREENSHOT_DIR || "/tmp";
 // the webapps' CSRF check wants this header on state changing requests
 const XHR = { "X-Requested-With": "XMLHttpRequest" };
+
+// Session cookie name and ttl are read from the app's own configuration by initFromConfig() (see
+// scripts/session_probe.py `config`); these are only the values used until then.
+let SESSION_COOKIE = "sessid"; // webapp.common.flask.session_cookie_name
+let SESSION_TTL = 28800; // 2 * flask.permanent_session_lifetime (14400), see SessionFactory
+// what the apps in PROBE_CONTAINER are configured to do with session conflicts
+const APP_CONFIG = { session_safe_to_lose_paths: [], session_fatal_other_writer_paths: [] };
 
 const argv = process.argv.slice(2);
 
@@ -113,9 +152,11 @@ const OPTS = {
   skip: flagValue("--skip"),
   listOnly: argv.includes("--list"),
   email: flagValue("--email"),
-  password: flagValue("--password"),
+  // a password on the command line is visible to every process on the machine, so allow an env var
+  password: process.env[flagValue("--password-env")] || flagValue("--password") || process.env.EDUID_TEST_PASSWORD || "",
   chaos: !argv.includes("--no-chaos") && process.env.NO_CHAOS !== "1",
-  accountFile: flagValue("--account-file") || process.env.ACCOUNT_FILE || "",
+  // the file holds a password: keep it out of the checkout and out of other users' hands
+  accountFile: flagValue("--account-file") || process.env.ACCOUNT_FILE || path.join(os.tmpdir(), "eduid-session-test-account.json"),
   keepOpen: Number(flagValue("--keep-open") || 0),
 };
 
@@ -127,8 +168,31 @@ function docker(cmdArgs, options = {}) {
   return execFileSync("docker", cmdArgs, { encoding: "utf8", maxBuffer: 64 * 1024 * 1024, ...options });
 }
 
+/**
+ * The probe is copied into the webapp container only while a run needs it: it can mint an
+ * authenticated session for any eppn, so it must not sit in a container with `restart: always`.
+ */
+let probeInContainer = false;
+
+function ensureProbe() {
+  if (probeInContainer) return;
+  execFileSync("docker", ["cp", `${__dirname}/session_probe.py`, `${PROBE_CONTAINER}:/tmp/session_probe.py`]);
+  probeInContainer = true;
+}
+
+function removeProbe() {
+  if (!probeInContainer) return;
+  probeInContainer = false;
+  try {
+    docker(["exec", PROBE_CONTAINER, "rm", "-f", "/tmp/session_probe.py"]);
+  } catch (e) {
+    console.log(`      note: could not remove /tmp/session_probe.py from ${PROBE_CONTAINER}: ${e.message}`);
+  }
+}
+
 /** Run scripts/session_probe.py inside PROBE_CONTAINER and return the JSON it printed. */
 function probe(...probeArgs) {
+  ensureProbe();
   const out = docker(
     [
       "exec", "-i", "-e", "PYTHONPATH=/opt/eduid/sources", PROBE_CONTAINER,
@@ -148,28 +212,226 @@ function probe(...probeArgs) {
   return parsed;
 }
 
+/**
+ * Take the session settings from the configuration the apps themselves use, instead of duplicating
+ * cookie name / ttl / conflict path lists from config/config.yaml here.
+ */
+function initFromConfig() {
+  const cfg = probe("config");
+  Object.assign(APP_CONFIG, cfg);
+  SESSION_COOKIE = cfg.session_cookie_name || SESSION_COOKIE;
+  SESSION_TTL = cfg.session_ttl || SESSION_TTL;
+  console.log(
+    `      app config: environment ${cfg.environment}, cookie ${SESSION_COOKIE}, ttl ${SESSION_TTL}s, ` +
+      `safe-to-lose ${JSON.stringify(APP_CONFIG.session_safe_to_lose_paths)}`,
+  );
+  return cfg;
+}
+
 function readSession(cookieValue) {
   return probe("read", cookieValue);
 }
 
+/** The id the apps log a session by: the first 9 characters of the cookie (EduidSession.short_id). */
+function shortId(cookie) {
+  return cookie.slice(0, 9);
+}
+
 /**
- * Everything the apps logged about one session: every session-related log line carries the short
- * session id (the first 9 characters of the cookie), and the conflict decision lines are logged
- * immediately after it. Grep rather than slicing by time or offset: these files are DEBUG chatty,
- * size-cycled, and rewritten whenever the dev apps reload.
+ * The strings eduid-backend's SessionFactory.save_session logs when a commit loses to another
+ * writer. One of them per conflict, and each names the session it is about.
  */
-function sessionLog(app, cookie, lines = 14) {
+const VERDICT = {
+  conflict: "failed because it has been changed by someone else",
+  fatal: "failing the request",
+  swallowed: "all safe to lose",
+  generation: "generation changed",
+  cleared: "deleted or cleared by other writer",
+  fatalPath: "changed by other writer in a fatal path",
+  notSafe: "not all changes are safe to lose",
+};
+
+/**
+ * The lines this session's verdict consists of: log lines that carry both this session's short id
+ * and one of the verdict phrases, on the same line.
+ *
+ * Deliberately not a line window around the session id: the verdict lines used to be matched by
+ * proximity only, and a nearby session's verdict then satisfied the assertion (a false pass). Use
+ * sessionLogWindow() for looking around, never for deciding.
+ */
+function verdictLines(app, cookie, phrases) {
+  const wanted = (Array.isArray(phrases) ? phrases : [phrases]).map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
   try {
-    return docker(["exec", `eduid-${app}-1`, "grep", "-a", "-A", String(lines), cookie.slice(0, 9),
+    return docker(["exec", `eduid-${app}-1`, "grep", "-aE", `${shortId(cookie)}.*(${wanted.join("|")})`,
+      `/var/log/eduid/${app}-error.log`])
+      .split("\n")
+      .filter(Boolean);
+  } catch (e) {
+    return []; // grep exits 1 when nothing matched
+  }
+}
+
+function verdictCount(app, cookie, phrases) {
+  return verdictLines(app, cookie, phrases).length;
+}
+
+/**
+ * Everything the apps logged about one session, as a fixed-size window after the last line naming
+ * it. Only for human diagnostics: the window is not session-scoped, other sessions log in it too.
+ */
+function sessionLogWindow(app, cookie, lines = 14) {
+  try {
+    return docker(["exec", `eduid-${app}-1`, "grep", "-a", "-A", String(lines), shortId(cookie),
       `/var/log/eduid/${app}-error.log`]);
   } catch (e) {
     return ""; // grep exits 1 when nothing matched
   }
 }
 
-/** Drop the DEBUG noise from a log excerpt. */
+/**
+ * Drop DEBUG records from a log excerpt - whole records, not just their first line.
+ *
+ * The dev stack runs the webapps at log_level DEBUG and eduID logs multi-line pprint dumps of
+ * session contents (which include CSRF tokens, e-mail addresses and credential salts). Under the
+ * rsyslog template only the first line of such a record carries the level token, so filtering line
+ * by line leaks the rest of it into this suite's own output.
+ */
 function quiet(log) {
-  return log.split("\n").filter((line) => !/\bDEBUG\b/.test(line)).join("\n");
+  const out = [];
+  let dropping = false;
+  for (const line of String(log).split("\n")) {
+    if (/^\d{4}-\d{2}-\d{2}[T ]/.test(line)) {
+      dropping = /\bDEBUG\b/.test(line);
+      if (!dropping) out.push(line);
+    } else if (!dropping) {
+      out.push(line); // continuation of a record that was not DEBUG
+    }
+  }
+  return out.join("\n");
+}
+
+/** Belt and braces: never let session values or addresses into this suite's output or a paste of it. */
+function redact(text) {
+  return String(text)
+    .replace(/"(salt|password|password_hash|csrf_token|credential_id|cookie|_csrft_|personal_number|ssn)"\s*:\s*"[^"]*"/gi,
+      '"$1": "<redacted>"')
+    .replace(/["']?(csrf_token|csrf)[="']+[0-9a-f]{16,}/gi, '$1=<redacted>')
+    .replace(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g, "<redacted-email>");
+}
+
+/**
+ * A short, safe excerpt of what the apps logged about one session, for a failure message: the
+ * non-DEBUG lines that name this session, or - when nothing names it - a note saying so.
+ */
+function diagnose(app, cookie) {
+  const kept = quiet(sessionLogWindow(app, cookie))
+    .split("\n")
+    .filter((line) => line.includes(shortId(cookie)))
+    .slice(-12);
+  if (!kept.length) {
+    return "nothing in the session log names this session";
+  }
+  return redact(kept.join("\n"));
+}
+
+/**
+ * Why a verdict assertion could not be answered. The verdict lines must name the session they are
+ * about, or this suite cannot tell one session's conflict from another's; it then says so instead
+ * of deciding on somebody else's log lines.
+ */
+function verdictNamingHint(app, cookie) {
+  const namedVerdict =
+    verdictCount(app, cookie, VERDICT.fatal) + verdictCount(app, cookie, VERDICT.swallowed);
+  if (verdictCount(app, cookie, VERDICT.conflict) > 0 && namedVerdict === 0) {
+    return (
+      `\n      note: the conflict was detected for ${shortId(cookie)} but no single log line names both that ` +
+      `session and a verdict. The verdict lines in eduid-backend's webapp/common/session/eduid_session.py ` +
+      `must include session.short_id for this suite to tell two sessions' conflicts apart.`
+    );
+  }
+  return "";
+}
+
+// --------------------------------------------------------------------------------------------
+// freezing MongoDB: only this checkout's dev stack, only one run at a time
+// --------------------------------------------------------------------------------------------
+
+let chaosTargetProblem = null;
+let chaosTargetChecked = false;
+
+/** Refuse to freeze a MongoDB that this checkout does not own (a remote DOCKER_HOST is routine). */
+function chaosTargetError() {
+  if (chaosTargetChecked) return chaosTargetProblem;
+  chaosTargetChecked = true;
+  let labels;
+  try {
+    labels = JSON.parse(docker(["inspect", "-f", "{{json .Config.Labels}}", MONGO_CONTAINER]).trim());
+  } catch (e) {
+    return (chaosTargetProblem = `cannot inspect ${MONGO_CONTAINER}: ${String(e.message).split("\n")[0]}`);
+  }
+  const project = labels["com.docker.compose.project"] || "(no compose project)";
+  const configFiles = labels["com.docker.compose.project.config_files"] || "(unknown)";
+  const repoRoot = path.resolve(__dirname, "..");
+  const ours = path.resolve(configFiles).startsWith(repoRoot);
+  if (!ours && process.env.ALLOW_FOREIGN_STACK === "1") {
+    console.log(`      note: freezing ${MONGO_CONTAINER} of compose project ${project} (allowed by ALLOW_FOREIGN_STACK)`);
+    return (chaosTargetProblem = "");
+  }
+  if (!ours) {
+    return (
+      (chaosTargetProblem =
+        `${MONGO_CONTAINER} belongs to compose project ${project} (${configFiles}), not to this ` +
+        `checkout (${repoRoot}) - not freezing it. Set ALLOW_FOREIGN_STACK=1 to override.`)
+    );
+  }
+  return (chaosTargetProblem = "");
+}
+
+function requireChaos() {
+  if (!OPTS.chaos) throw new Skip("needs docker pause on the mongodb container (--no-chaos)");
+}
+
+function requireChaosTarget() {
+  requireChaos();
+  const problem = chaosTargetError();
+  if (problem) throw new Skip(problem);
+}
+
+let chaosLockFd = null;
+
+/** Take the single MongoDB-freeze lock; false when another run is holding it. */
+function acquireChaosLock() {
+  try {
+    chaosLockFd = fs.openSync(CHAOS_LOCK, "wx");
+  } catch (e) {
+    if (e.code !== "EEXIST") throw e;
+    let holderAlive = true;
+    try {
+      process.kill(Number((fs.readFileSync(CHAOS_LOCK, "utf8") || "0").trim()), 0);
+    } catch (dead) {
+      holderAlive = false; // a run that was killed without cleaning up
+    }
+    if (holderAlive) return false;
+    fs.rmSync(CHAOS_LOCK, { force: true });
+    chaosLockFd = fs.openSync(CHAOS_LOCK, "wx");
+  }
+  fs.writeSync(chaosLockFd, `${process.pid}\n`);
+  return true;
+}
+
+function releaseChaosLock() {
+  if (chaosLockFd === null) return;
+  try {
+    fs.closeSync(chaosLockFd);
+  } catch (e) {
+    /* already closed */
+  }
+  chaosLockFd = null;
+  try {
+    fs.rmSync(CHAOS_LOCK, { force: true });
+  } catch (e) {
+    /* not ours anymore */
+  }
 }
 
 function containerPaused(name) {
@@ -180,23 +442,42 @@ function containerPaused(name) {
   }
 }
 
+// only containers this run paused itself; never unpause a container somebody else froze
+const frozen = new Set();
+
+function thawAll() {
+  for (const name of [...frozen]) {
+    try {
+      docker(["unpause", name]);
+    } catch (e) {
+      /* the container is gone */
+    }
+  }
+  frozen.clear();
+}
+
 /**
  * Freeze MongoDB: a request that has already loaded its Redis session then stalls before it can
  * commit, which is the window the sibling writer needs. Unfreezing lets the request commit
  * against data it never saw.
  */
 async function withFrozenMongo(body) {
+  const problem = chaosTargetError();
+  if (problem) throw new Error(problem);
   docker(["pause", MONGO_CONTAINER]);
+  frozen.add(MONGO_CONTAINER);
   // the freezer takes effect asynchronously
   for (let i = 0; i < 20 && !containerPaused(MONGO_CONTAINER); i++) await sleep(100);
   if (!containerPaused(MONGO_CONTAINER)) {
     docker(["unpause", MONGO_CONTAINER]);
+    frozen.delete(MONGO_CONTAINER);
     throw new Error(`could not pause ${MONGO_CONTAINER} (needed to make the race deterministic)`);
   }
   try {
     return await body();
   } finally {
     docker(["unpause", MONGO_CONTAINER]);
+    frozen.delete(MONGO_CONTAINER);
     await new Promise((r) => setTimeout(r, 400)); // let the thawed request finish
   }
 }
@@ -400,6 +681,23 @@ async function logOutThroughUi(page) {
 }
 
 /**
+ * The account file holds a password, so write it 0600 - and re-apply the mode when the file already
+ * existed, which writeFileSync's `mode` does not do.
+ */
+function writeAccountFile(account) {
+  if (!OPTS.accountFile) return;
+  fs.writeFileSync(OPTS.accountFile, JSON.stringify({ email: account.email, password: account.password }), {
+    mode: 0o600,
+  });
+  try {
+    fs.chmodSync(OPTS.accountFile, 0o600);
+  } catch (e) {
+    /* not ours to chmod */
+  }
+  note(`account written to ${OPTS.accountFile} (mode 0600)`);
+}
+
+/**
  * A logged-in session for `eppn`, created through the apps' own session code, plus a browser
  * context carrying its cookie. Lets each concurrency test start from a known session state.
  */
@@ -444,7 +742,7 @@ async function suite(browser) {
       const created = await signUp(main.page);
       user.email = created.email;
       user.password = created.password;
-      if (OPTS.accountFile) fs.writeFileSync(OPTS.accountFile, JSON.stringify({ email: user.email, password: user.password }));
+      writeAccountFile({ email: user.email, password: user.password });
     }
     await logIn(main.page, user.email, user.password);
     assert(await isLoggedIn(main.page), `login of ${user.email} did not result in a logged in dashboard`);
@@ -491,9 +789,12 @@ async function suite(browser) {
     await page.goto(`${URLS.html}/`, { waitUntil: "domcontentloaded" });
     const visibleToJs = await page.evaluate(() => document.cookie);
     assert(!visibleToJs.includes(SESSION_COOKIE), "session cookie is visible to JavaScript");
-    const raw = probe("raw", cookie.value);
-    assert(raw.raw.startsWith('{"v2"'), `unexpected stored format: ${raw.raw}`);
-    assert(!raw.raw.includes(csrf), "session data is stored unencrypted in Redis");
+    const raw = probe("raw", cookie.value, csrf);
+    // the probe scans the whole stored value and only reports the envelope's shape back
+    assert(raw.prefix.startsWith('{"v2"'), `unexpected stored envelope: ${raw.prefix}`);
+    assertEqual(JSON.stringify(raw.envelope_keys), JSON.stringify(["v2"]),
+      `the stored session is more than the encrypted v2 envelope: ${JSON.stringify(raw.envelope_keys)}`);
+    assert(!raw.found, `the csrf token is readable in the stored session (${raw.length} bytes scanned)`);
 
     await context.close();
   });
@@ -573,7 +874,7 @@ async function suite(browser) {
     }
   });
 
-  await test("lifecycle: a tampered cookie cannot borrow someone elses session", async () => {
+  await test("lifecycle: a tampered cookie is rejected (signature, not session id)", async () => {
     await ensureUser();
     const { context, cookie } = await sessionContext(browser, user.eppn);
     try {
@@ -596,6 +897,45 @@ async function suite(browser) {
     }
   });
 
+  await test("lifecycle: a valid cookie never answers for the other account", async () => {
+    await ensureUser();
+    // The tampered-cookie test above only proves a broken signature is refused. Cross-contamination
+    // - one account's *valid* cookie resolving to another account's session, which is what a
+    // session-fixation regression looks like - needs two real accounts in the same run.
+    const second = await browser.newContext({ ignoreHTTPSErrors: true });
+    await second.addCookies([
+      { name: MAGIC_COOKIE_NAME, value: MAGIC_COOKIE_VALUE, domain: ".eduid.docker", path: "/", secure: true },
+    ]);
+    const secondPage = await second.newPage();
+    secondPage.setDefaultTimeout(60000);
+    try {
+      const other = await signUp(secondPage);
+      await logIn(secondPage, other.email, other.password);
+      assert(await isLoggedIn(secondPage), `the second account ${other.email} did not get a logged in dashboard`);
+
+      const otherCookie = await cookieValue(second);
+      assert(otherCookie, "the second account got no session cookie");
+      assert(otherCookie !== user.cookie, "two accounts share one session cookie");
+      const otherEppn = readSession(otherCookie).data?.common?.eppn;
+      assert(otherEppn, "the second account's session has no login state");
+      assert(otherEppn !== user.eppn, `both accounts ended up as the same user: ${otherEppn}`);
+
+      // each cookie, from a context holding nothing else, still resolves to its own account
+      for (const [eppn, cookie] of [[user.eppn, user.cookie], [otherEppn, otherCookie]]) {
+        const ctx = await browser.newContext({ ignoreHTTPSErrors: true });
+        await ctx.addCookies([{ name: SESSION_COOKIE, value: cookie, domain: ".eduid.docker", path: "/", secure: true }]);
+        const resp = await ctx.request.get(EP.allUserData);
+        assert(resp.ok(), `a valid session cookie was not accepted: ${resp.status()}`);
+        const payload = (await resp.json()).payload;
+        assertEqual(payload.eppn, eppn, "a session cookie answered for the wrong account");
+        await ctx.close();
+      }
+      note("two accounts, two sessions: neither cookie answered for the other account");
+    } finally {
+      await second.close();
+    }
+  });
+
   await test("lifecycle: parallel requests across webapps keep the session consistent", async () => {
     await ensureUser();
     const urls = [EP.allUserData, EP.credentials, EP.authnStatus, EP.jsconfig, EP.suggestedPassword];
@@ -613,17 +953,34 @@ async function suite(browser) {
   // B. concurrency: a sibling writer commits while a request is in flight
   // ==========================================================================================
 
-  const CONFLICT_LOG = "failed because it has been changed by someone else";
-  const SWALLOW_LOG = "all safe to lose";
-  const FATAL_LOG = "failing the request";
-
   await test("concurrency: readiness - can freeze MongoDB to make the races deterministic", async () => {
-    if (!OPTS.chaos) throw new Skip("needs docker pause on the mongodb container (--no-chaos)");
+    requireChaosTarget();
+    // a freeze lost to a killed run would leave every webapp of the dev stack stalled
+    if (containerPaused(MONGO_CONTAINER)) {
+      note(`${MONGO_CONTAINER} was already paused (left by an interrupted run?), unpausing`);
+      docker(["unpause", MONGO_CONTAINER]);
+    }
     await ensureUser();
     await withFrozenMongo(async () => {
       assert(containerPaused(MONGO_CONTAINER), `${MONGO_CONTAINER} is not paused`);
     });
-    note(`MongoDB freezing works; the concurrency tests below are deterministic, not timing-luck`);
+    note(`MongoDB freezing works on ${MONGO_CONTAINER}; the concurrency tests below are deterministic, not timing-luck`);
+  });
+
+  await test("concurrency: the session path lists hold no auth state", async () => {
+    // session_safe_to_lose_paths decides which lost writes may be swallowed, so nothing that carries
+    // a security decision may ever be on it (see EduIDBaseAppConfig). session_fatal_other_writer_paths
+    // is the other way round: a sibling change to one of its paths must invalidate our response.
+    initFromConfig();
+    const safe = APP_CONFIG.session_safe_to_lose_paths || [];
+    const fatal = APP_CONFIG.session_fatal_other_writer_paths || [];
+    const authState = /\.eppn$|\.is_logged_in$|consumed|\bmfa|csrf|authn\.|\.authn$/;
+    const offending = safe.filter((p) => authState.test(p));
+    assertEqual(JSON.stringify(offending), "[]",
+      `session_safe_to_lose_paths must never list auth-state or one-time-grant paths: ${JSON.stringify(offending)}`);
+    assert(fatal.includes("idp.pending_requests.*.aborted"),
+      `an aborted pending request is the documented fatal other-writer path, found ${JSON.stringify(fatal)}`);
+    note(`safe to lose ${JSON.stringify(safe)}; fatal when a sibling changes ${JSON.stringify(fatal)}`);
   });
 
   /**
@@ -651,9 +1008,17 @@ async function suite(browser) {
     return { response };
   }
 
-  async function concurrencyTest({ title, prepare, siblingWrite, deletesSession, expectStatus, expectLog, expectFatal }) {
+  /**
+   * One staged race: the sibling writes while this request is stuck, and the request then commits
+   * against a session it never saw.
+   *
+   * expectVerdict is the ONE classification this test's conflict must get (an assertion that accepts
+   * several classifications cannot tell which guard fired, so a future change that makes the wrong
+   * branch answer stops being noticed), and expectFatal the verdict that goes with it.
+   */
+  async function concurrencyTest({ title, prepare, siblingWrite, deletesSession, expectStatus, expectVerdict, expectFatal }) {
     await test(title, async () => {
-      if (!OPTS.chaos) throw new Skip("needs docker pause on the mongodb container (--no-chaos)");
+      requireChaosTarget();
       await ensureUser();
       const t0 = Date.now();
       const { context, cookie } = await sessionContext(browser, user.eppn);
@@ -666,30 +1031,38 @@ async function suite(browser) {
           pending = await stageRacingRequest(cookie, context, siblingWrite, deletesSession);
         });
         const response = await pending.response;
+        const id = shortId(cookie);
 
-        const log = quiet(sessionLog("personal_data", cookie));
+        // check what the apps made of the conflict before the status: when the race never happened
+        // the failure must say that, not "wrong status code"
+        const conflicts = verdictCount("personal_data", cookie, VERDICT.conflict);
         assert(
-          log.includes(CONFLICT_LOG),
-          `the write conflict was not detected at all ("${CONFLICT_LOG}"). Session log lines:\n${log.slice(-2500)}`,
+          conflicts >= 1,
+          `the write conflict was not detected at all (no log line names ${id} and `+
+            `"${VERDICT.conflict}"). ${diagnose("personal_data", cookie)}`,
         );
+        // a conflict raised by an explicit persist() is reported once, not once per save_session
+        assertEqual(conflicts, 1, `the conflict was reported ${conflicts} times for ${id}`);
+
         assertEqual(
           response.status(),
           expectStatus,
           `${expectFatal ? "a fatal conflict must fail the request" : "a harmless loss must be swallowed"}; ` +
-            `log tail:\n${log.slice(-2000)}`,
+            `verdict lines for ${id}:\n${redact(verdictLines("personal_data", cookie, [VERDICT.fatal, VERDICT.swallowed]).join("\n"))}` +
+            verdictNamingHint("personal_data", cookie),
         );
-        if (expectLog) {
-          const wanted = Array.isArray(expectLog) ? expectLog : [expectLog];
-          assert(
-            wanted.some((w) => log.includes(w)),
-            `the conflict should be classified as one of ${JSON.stringify(wanted)}; session log lines:\n${log.slice(-2500)}`,
-          );
-        }
+        assert(
+          verdictCount("personal_data", cookie, expectVerdict) >= 1,
+          `the conflict should be classified as "${expectVerdict}" on a line naming ${id}.` +
+            verdictNamingHint("personal_data", cookie) +
+            `\n      what this session's verdict lines say:\n${diagnose("personal_data", cookie)}`,
+        );
+        const fatal = verdictCount("personal_data", cookie, VERDICT.fatal);
         if (expectFatal) {
-          assert(
-            log.includes(FATAL_LOG),
-            `a fatal conflict must log that it fails the request; session log lines:\n${log.slice(-2500)}`,
-          );
+          assert(fatal >= 1, `a fatal conflict must log that it fails the request, for ${id}.` +
+            verdictNamingHint("personal_data", cookie));
+        } else {
+          assertEqual(fatal, 0, `a swallowed conflict must not log that it fails the request, did ${fatal} times`);
         }
         note(`verdict ${response.status()} as expected (${Date.now() - t0} ms)`);
       } finally {
@@ -704,7 +1077,8 @@ async function suite(browser) {
     siblingWrite: async (cookie) => probe("delete", cookie),
     deletesSession: true,
     expectStatus: 500,
-    expectLog: ["generation changed", "deleted or cleared by other writer"],
+    // a deleted key is the primary generation/deleted-key guard, not the removed-paths heuristic
+    expectVerdict: VERDICT.generation,
     expectFatal: true,
   });
 
@@ -713,7 +1087,29 @@ async function suite(browser) {
       "concurrency: an in-flight request is failed when a sibling logout clears the auth state",
     siblingWrite: async (cookie) => probe("setns", cookie, "common", "null"),
     expectStatus: 500,
-    expectLog: ["generation changed", "deleted or cleared by other writer"],
+    // nothing replaced the generation marker here, this is the removed-paths heuristic catching it
+    expectVerdict: VERDICT.cleared,
+    expectFatal: true,
+  });
+
+  await concurrencyTest({
+    title:
+      "concurrency: a sibling aborting a pending request fails the in-flight response",
+    // the case session_fatal_other_writer_paths exists for: the user aborted a pending SAML request
+    // while this one was in flight, so answering it would send an assertion for an aborted request
+    prepare: async (cookie) =>
+      probe(
+        "setpath", cookie, "idp.pending_requests.ID-e2e-racing-request",
+        JSON.stringify({
+          request: "e2e-stored-saml-request",
+          binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+          used: false,
+        }),
+      ),
+    siblingWrite: async (cookie) =>
+      probe("setpath", cookie, "idp.pending_requests.ID-e2e-racing-request.aborted", "true"),
+    expectStatus: 500,
+    expectVerdict: VERDICT.fatalPath,
     expectFatal: true,
   });
 
@@ -722,7 +1118,7 @@ async function suite(browser) {
       "concurrency: a request that writes nothing survives a benign sibling change (swallowed)",
     siblingWrite: async (cookie) => probe("setpath", cookie, "common.preferred_language", JSON.stringify("sv")),
     expectStatus: 200,
-    expectLog: SWALLOW_LOG,
+    expectVerdict: VERDICT.swallowed,
     expectFatal: false,
   });
 
@@ -733,7 +1129,7 @@ async function suite(browser) {
     prepare: async (cookie) => probe("delpath", cookie, "_csrft_"),
     siblingWrite: async (cookie) => probe("setpath", cookie, "common.preferred_language", JSON.stringify("sv")),
     expectStatus: 500,
-    expectLog: "not all changes are safe to lose",
+    expectVerdict: VERDICT.notSafe,
     expectFatal: true,
   });
 
@@ -744,7 +1140,7 @@ async function suite(browser) {
     // key-path comparison can tell that the session this request belongs to is gone.
     siblingWrite: async (cookie) => probe("regen", cookie),
     expectStatus: 500,
-    expectLog: "generation changed",
+    expectVerdict: VERDICT.generation,
     expectFatal: true,
   });
 
@@ -753,7 +1149,7 @@ async function suite(browser) {
       "concurrency: a sibling logout (reset, new generation) fails an in-flight request",
     siblingWrite: async (cookie) => probe("reset", cookie),
     expectStatus: 500,
-    expectLog: "generation changed",
+    expectVerdict: VERDICT.generation,
     expectFatal: true,
   });
 
@@ -775,7 +1171,7 @@ async function suite(browser) {
       const failed = responses.filter((r) => r.status() >= 500);
       const stored = readSession(cookie);
       if (failed.length) {
-        note(`session log lines:\n${quiet(sessionLog("personal_data", cookie)).slice(-1500)}`);
+        note(`what this session's verdict lines say:\n${diagnose("personal_data", cookie)}`);
       }
       assertEqual(
         failed.length,
@@ -896,16 +1292,46 @@ async function suite(browser) {
 // runner
 // --------------------------------------------------------------------------------------------
 
-// never leave the dev stack frozen, whatever happens to this script
-process.on("exit", () => {
-  try {
-    if (containerPaused(MONGO_CONTAINER)) docker(["unpause", MONGO_CONTAINER]);
-  } catch (e) {
-    /* nothing to clean up */
-  }
-});
+// never leave the dev stack frozen, the freeze lock held or the probe sitting in a container,
+// whatever happens to this script
+function cleanup() {
+  thawAll();
+  releaseChaosLock();
+  removeProbe();
+}
+
+process.on("exit", cleanup);
+for (const signal of ["SIGINT", "SIGTERM"]) {
+  process.on(signal, () => {
+    cleanup();
+    process.exit(signal === "SIGINT" ? 130 : 143);
+  });
+}
 
 (async () => {
+  if (!OPTS.listOnly) {
+    // freezing the dev stack's MongoDB is a shared-state operation: one run at a time, on a
+    // container this checkout owns, and never on one left frozen by an interrupted run
+    if (OPTS.chaos) {
+      if (!acquireChaosLock()) {
+        console.log(
+          `note: another run holds the freeze lock (${CHAOS_LOCK}); continuing without the tests\n` +
+          `      that freeze MongoDB (they will be reported as skipped)`,
+        );
+        OPTS.chaos = false;
+      } else {
+        const problem = chaosTargetError();
+        if (problem) {
+          console.log(`note: ${problem}; continuing without the tests that freeze MongoDB`);
+          OPTS.chaos = false;
+        } else if (containerPaused(MONGO_CONTAINER)) {
+          console.log(`note: ${MONGO_CONTAINER} was left paused, unpausing it before doing anything else`);
+          docker(["unpause", MONGO_CONTAINER]);
+        }
+      }
+    }
+  }
+
   const browser = await chromium.launch({
     headless: !process.env.HEADED,
     slowMo: process.env.HEADED ? 50 : 0,
@@ -914,9 +1340,8 @@ process.on("exit", () => {
   });
   let exitCode = 1;
   try {
-    // make scripts/session_probe.py available inside the webapp container
-    execFileSync("docker", ["cp", `${__dirname}/session_probe.py`, `${PROBE_CONTAINER}:/tmp/session_probe.py`]);
     console.log(`eduID session handling e2e (${OPTS.only ? `only "${OPTS.only}"` : "all tests"})`);
+    if (!OPTS.listOnly) initFromConfig();
     await suite(browser);
     console.log("\n" + "-".repeat(70));
     for (const r of results) {
@@ -941,6 +1366,7 @@ process.on("exit", () => {
       await sleep(OPTS.keepOpen);
     }
     await browser.close();
+    cleanup();
   }
   process.exit(exitCode);
 })();
