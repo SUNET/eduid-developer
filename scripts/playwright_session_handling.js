@@ -39,6 +39,16 @@
 //      request is stuck, and thawing MongoDB again. The request then commits against a session it
 //      never saw - which is what a second browser tab or a second webapp does in production.
 //
+//      A frozen MongoDB is necessary but not sufficient for that: the apps are gunicorn
+//      "--workers 1 --worker-class sync --threads 1" (one request at a time) and haproxy asks their
+//      /status/healthy every 2s, which runs a Mongo round trip when its 10s response cache is cold.
+//      Such a health check that reaches the app first stalls *in the only worker* for the whole
+//      freeze while the racing request waits in the queue - it then loads its session *after* the
+//      sibling write, so there is no conflict to detect at all (client status 401, nothing naming the
+//      session in the log). Each race is therefore staged right after warming that cache
+//      (warmHealthCheckCache), and a race the app never served is staged again (RACE_ATTEMPTS,
+//      default 3) with a note saying so.
+//
 //      The "sibling writer" is scripts/session_probe.py, run inside a webapp container so it uses
 //      the real session code and can read/write the encrypted session data. Verdicts are checked
 //      both as seen by the client (HTTP status) and as logged by the app (which classification the
@@ -83,7 +93,8 @@
 // Environment: PROBE_CONTAINER (default eduid-idp-1) is the webapp container that runs
 // scripts/session_probe.py, MONGO_CONTAINER (default eduid-mongodb-1) the one section B freezes.
 // Both are verified to belong to *this* checkout's compose project before anything is frozen, and a
-// run takes a lock so that two runs cannot fight over one MongoDB.
+// run takes a lock so that two runs cannot fight over one MongoDB. RACE_ATTEMPTS (default 3) is how
+// often a staged race is retried when the app did not serve the request while MongoDB was frozen.
 //
 // The suite only touches the dev stack: it creates accounts, writes sessions, and pauses/unpauses
 // the mongodb container for a few seconds per concurrency test (always unfrozen again on the way
@@ -95,6 +106,7 @@
 const { chromium } = require("playwright");
 const { execFileSync } = require("child_process");
 const fs = require("fs");
+const https = require("https");
 const os = require("os");
 const path = require("path");
 
@@ -112,6 +124,7 @@ const URLS = {
 const EP = {
   jsconfig: `${URLS.dashboard}/services/jsconfig/config`,
   allUserData: `${URLS.dashboard}/services/personal-data/all-user-data`,
+  healthCheck: (app) => `${URLS.dashboard}/services/${app.replace(/_/g, "-")}/status/healthy`,
   userLanguage: `${URLS.dashboard}/services/personal-data/user/language`,
   credentials: `${URLS.dashboard}/services/security/credentials`,
   authnStatus: `${URLS.dashboard}/services/security/authn-status`,
@@ -964,7 +977,12 @@ async function suite(browser) {
     await withFrozenMongo(async () => {
       assert(containerPaused(MONGO_CONTAINER), `${MONGO_CONTAINER} is not paused`);
     });
-    note(`MongoDB freezing works on ${MONGO_CONTAINER}; the concurrency tests below are deterministic, not timing-luck`);
+    note(`MongoDB freezing works on ${MONGO_CONTAINER}`);
+    note(
+      "every race below is staged just after warming the app's /status/healthy cache: each app has " +
+        "one sync worker, and a health check that runs its Mongo round trip while MongoDB is frozen " +
+        "stalls that worker for the whole freeze, leaving the racing request to queue",
+    );
   });
 
   await test("concurrency: the session path lists hold no auth state", async () => {
@@ -984,13 +1002,45 @@ async function suite(browser) {
   });
 
   /**
-   * Run inside withFrozenMongo(): fire the request, confirm it is stuck on MongoDB, let the
-   * sibling writer change the session, and hand back the still-pending response so the caller can
-   * await it *after* MongoDB thaws. (Awaiting it here would just run it into a gateway timeout,
-   * and returning it from an async function would await it too - hence the wrapper object.)
+   * Warm the app's /status/healthy response cache, immediately before freezing MongoDB.
+   *
+   * The webapps are gunicorn "--workers 1 --worker-class sync --threads 1" - one request at a time -
+   * and haproxy asks /status/healthy every 2s. That view caches its answer for status_cache_seconds
+   * (10, webapp/common/api/views/status.py), so one check in five runs the real checks, of which
+   * check_mongo (webapp/common/api/checks.py) is a Mongo round trip. A check doing that round trip
+   * while MongoDB is frozen stalls the only worker for the whole freeze, and a racing request that
+   * arrives behind it waits in the queue instead of being served: it loads its session *after* the
+   * sibling write, and when that write removed the auth state it answers 401 (get_user() never gets
+   * to Mongo) without ever committing - no conflict, nothing naming the session in the log.
+   *
+   * A health check answered from the cache occupies the worker for milliseconds instead.
+   */
+  async function warmHealthCheckCache(app) {
+    // plain https from this process, not through the browser: no cookie jar to disturb the race and
+    // no browser context to spin up per attempt (the certificate is the dev stack's own)
+    return new Promise((resolve) => {
+      const req = https.get(EP.healthCheck(app), { rejectUnauthorized: false, timeout: 5000 }, (res) => {
+        res.resume();
+        resolve(res.statusCode >= 200 && res.statusCode < 300);
+      });
+      req.on("error", () => resolve(false));
+      req.on("timeout", () => {
+        req.destroy();
+        resolve(false);
+      });
+    });
+  }
+
+  /**
+   * Run inside withFrozenMongo(): fire the request, confirm it is still pending (i.e. it did not
+   * settle while MongoDB was frozen), let the sibling writer change the session, and hand back the
+   * still-pending response so the caller can await it *after* MongoDB thaws. (Awaiting it here would
+   * just run it into a gateway timeout, and returning it from an async function would await it too -
+   * hence the wrapper object.)
+   *
+   * "still pending" is not proof that the app is serving this request - see warmHealthCheckCache().
    */
   async function stageRacingRequest(cookieRef, context, siblingWrite, deletesSession) {
-    assert(readSession(cookieRef).exists, "the backend session must exist before the request is fired");
     const response = context.request.get(EP.allUserData, { timeout: 60000 });
     const settledFirst = await Promise.race([
       response.then((r) => `settled:${r.status()}`),
@@ -1009,8 +1059,39 @@ async function suite(browser) {
   }
 
   /**
-   * One staged race: the sibling writes while this request is stuck, and the request then commits
-   * against a session it never saw.
+   * One staged race, from a freshly minted session: returns what the client and the app log saw.
+   */
+  async function raceOnce({ prepare, siblingWrite, deletesSession }) {
+    const { context, cookie } = await sessionContext(browser, user.eppn);
+    try {
+      if (prepare) await prepare(cookie);
+      assert(readSession(cookie).exists, "the backend session must exist before the request is fired");
+      // a health check with a cold cache would grab the single worker and stall there, so warm it
+      // and fire the racing request in the same breath: the window that matters is the milliseconds
+      // between the freeze taking effect and the request reaching the worker
+      const warmed = await warmHealthCheckCache("personal_data");
+      // NB: only the staging (firing the request + the sibling write) happens while MongoDB is
+      // frozen. Awaiting the response inside that block would run it into the gateway timeout.
+      let pending;
+      await withFrozenMongo(async () => {
+        pending = await stageRacingRequest(cookie, context, siblingWrite, deletesSession);
+      });
+      const response = await pending.response;
+      return {
+        cookie,
+        id: shortId(cookie),
+        status: response.status(),
+        warmed,
+        conflicts: verdictCount("personal_data", cookie, VERDICT.conflict),
+      };
+    } finally {
+      await context.close();
+    }
+  }
+
+  /**
+   * One staged race, retried while it keeps missing: the sibling writes while the request is stuck,
+   * and the request then commits against a session it never saw.
    *
    * expectVerdict is the ONE classification this test's conflict must get (an assertion that accepts
    * several classifications cannot tell which guard fired, so a future change that makes the wrong
@@ -1021,53 +1102,56 @@ async function suite(browser) {
       requireChaosTarget();
       await ensureUser();
       const t0 = Date.now();
-      const { context, cookie } = await sessionContext(browser, user.eppn);
-      try {
-        if (prepare) await prepare(cookie);
-        // NB: only the staging (firing the request + the sibling write) happens while MongoDB is
-        // frozen. Awaiting the response inside that block would run it into the gateway timeout.
-        let pending;
-        await withFrozenMongo(async () => {
-          pending = await stageRacingRequest(cookie, context, siblingWrite, deletesSession);
-        });
-        const response = await pending.response;
-        const id = shortId(cookie);
-
-        // check what the apps made of the conflict before the status: when the race never happened
-        // the failure must say that, not "wrong status code"
-        const conflicts = verdictCount("personal_data", cookie, VERDICT.conflict);
-        assert(
-          conflicts >= 1,
-          `the write conflict was not detected at all (no log line names ${id} and `+
-            `"${VERDICT.conflict}"). ${diagnose("personal_data", cookie)}`,
+      const maxAttempts = Math.max(1, Number(process.env.RACE_ATTEMPTS || 3));
+      let race;
+      for (let attempt = 1; ; attempt++) {
+        race = await raceOnce({ prepare, siblingWrite, deletesSession });
+        if (race.conflicts >= 1 || attempt >= maxAttempts) break;
+        // the app never reported a conflict for this session, which means it never served the
+        // request while MongoDB was frozen - the write then landed after the session was loaded
+        note(
+          `attempt ${attempt}/${maxAttempts}: ${race.status} and no conflict for ${race.id} - the` +
+            ` request waited behind another request in the app's single sync worker instead of being` +
+            ` served, so the sibling write landed before it loaded its session` +
+            (race.warmed ? "" : " (and the /status/healthy cache could not be warmed first)") +
+            "; staging the race again",
         );
-        // a conflict raised by an explicit persist() is reported once, not once per save_session
-        assertEqual(conflicts, 1, `the conflict was reported ${conflicts} times for ${id}`);
-
-        assertEqual(
-          response.status(),
-          expectStatus,
-          `${expectFatal ? "a fatal conflict must fail the request" : "a harmless loss must be swallowed"}; ` +
-            `verdict lines for ${id}:\n${redact(verdictLines("personal_data", cookie, [VERDICT.fatal, VERDICT.swallowed]).join("\n"))}` +
-            verdictNamingHint("personal_data", cookie),
-        );
-        assert(
-          verdictCount("personal_data", cookie, expectVerdict) >= 1,
-          `the conflict should be classified as "${expectVerdict}" on a line naming ${id}.` +
-            verdictNamingHint("personal_data", cookie) +
-            `\n      what this session's verdict lines say:\n${diagnose("personal_data", cookie)}`,
-        );
-        const fatal = verdictCount("personal_data", cookie, VERDICT.fatal);
-        if (expectFatal) {
-          assert(fatal >= 1, `a fatal conflict must log that it fails the request, for ${id}.` +
-            verdictNamingHint("personal_data", cookie));
-        } else {
-          assertEqual(fatal, 0, `a swallowed conflict must not log that it fails the request, did ${fatal} times`);
-        }
-        note(`verdict ${response.status()} as expected (${Date.now() - t0} ms)`);
-      } finally {
-        await context.close();
       }
+      const cookie = race.cookie;
+      const id = race.id;
+      const conflicts = race.conflicts;
+
+      // check what the apps made of the conflict before the status: when the race never happened
+      // the failure must say that, not "wrong status code"
+      assert(
+        conflicts >= 1,
+        `the write conflict was not detected at all (no log line names ${id} and `+
+          `"${VERDICT.conflict}"; the client saw ${race.status}). ${diagnose("personal_data", cookie)}`,
+      );
+      // a conflict raised by an explicit persist() is reported once, not once per save_session
+      assertEqual(conflicts, 1, `the conflict was reported ${conflicts} times for ${id}`);
+
+      assertEqual(
+        race.status,
+        expectStatus,
+        `${expectFatal ? "a fatal conflict must fail the request" : "a harmless loss must be swallowed"}; ` +
+          `verdict lines for ${id}:\n${redact(verdictLines("personal_data", cookie, [VERDICT.fatal, VERDICT.swallowed]).join("\n"))}` +
+          verdictNamingHint("personal_data", cookie),
+      );
+      assert(
+        verdictCount("personal_data", cookie, expectVerdict) >= 1,
+        `the conflict should be classified as "${expectVerdict}" on a line naming ${id}.` +
+          verdictNamingHint("personal_data", cookie) +
+          `\n      what this session's verdict lines say:\n${diagnose("personal_data", cookie)}`,
+      );
+      const fatal = verdictCount("personal_data", cookie, VERDICT.fatal);
+      if (expectFatal) {
+        assert(fatal >= 1, `a fatal conflict must log that it fails the request, for ${id}.` +
+          verdictNamingHint("personal_data", cookie));
+      } else {
+        assertEqual(fatal, 0, `a swallowed conflict must not log that it fails the request, did ${fatal} times`);
+      }
+      note(`verdict ${race.status} as expected (${Date.now() - t0} ms)`);
     });
   }
 
